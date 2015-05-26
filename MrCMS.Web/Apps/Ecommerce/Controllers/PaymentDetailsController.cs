@@ -94,6 +94,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return Redirect(UniquePageHelper.GetUrl<PaymentDetails>());
         }
 
+        [HttpGet]
+        public PartialViewResult Methods()
+        {
+            return PartialView(_cart);
+        }
+
         [HttpPost]
         public JsonResult SetPaymentMethod(string paymentMethod)
         {

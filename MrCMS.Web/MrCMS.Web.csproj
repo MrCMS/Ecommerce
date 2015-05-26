@@ -4408,6 +4408,7 @@
     <Content Include="Apps\Stats\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Stats\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Stats\LICENSE" />
+    <Content Include="Apps\Ecommerce\Views\PaymentDetails\Methods.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
