@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Models;
 
@@ -9,6 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services
     {
         string GenerateClientToken();
         BraintreeResponse MakePayment(string nonce);
+        BraintreeResponse MakePaymentPaypal(string nonce);
         IEnumerable<SelectListItem> ExpiryMonths();
         IEnumerable<SelectListItem> ExpiryYears();
     }
