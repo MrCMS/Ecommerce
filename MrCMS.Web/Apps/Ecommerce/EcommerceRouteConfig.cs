@@ -287,6 +287,10 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new { controller = "PaymentDetails", action = "SetPaymentMethod" },
                 new[] { typeof(PaymentDetailsController).Namespace });
 
+            context.MapRoute("Checkout - Get Payment Methods", "Apps/Ecommerce/PaymentDetails/Methods",
+                new { controller = "PaymentDetails", action = "Methods" },
+                new[] { typeof(PaymentDetailsController).Namespace });
+
             context.MapRoute("Order Placed - Login and associate order", "order-placed/login",
                 new { controller = "OrderPlaced", action = "LoginAndAssociateOrder" },
                 new[] { typeof(OrderPlacedController).Namespace });
