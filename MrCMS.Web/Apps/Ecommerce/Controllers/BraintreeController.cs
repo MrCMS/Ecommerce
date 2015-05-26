@@ -33,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         }
 
         [HttpPost]
-        public ActionResult MakePayment(string nonce, bool liabilityShifted, bool liabilityShiftPossible)
+        public ActionResult MakePaymentCard(string nonce, bool? liabilityShifted, bool? liabilityShiftPossible)
         {
             BraintreeResponse response = _braintreePaymentService.MakePayment(nonce);
 
@@ -41,6 +41,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             {
                 return _uniquePageService.RedirectTo<OrderPlaced>(new { id = response.Order.Guid });
             }
+
+            TempData.ErrorMessages().AddRange(response.Errors);
+            return _uniquePageService.RedirectTo<PaymentDetails>();
+        }
+
+        [HttpPost]
+        public ActionResult MakePaymentPaypal(string nonce)
+        {
+            BraintreeResponse response = _braintreePaymentService.MakePaymentPaypal(nonce);
+            if (response.Success)
+                return _uniquePageService.RedirectTo<OrderPlaced>(new {id = response.Order.Guid});
 
             TempData.ErrorMessages().AddRange(response.Errors);
             return _uniquePageService.RedirectTo<PaymentDetails>();
