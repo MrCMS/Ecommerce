@@ -1,7 +1,6 @@
 using System;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
-using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
