@@ -15,7 +15,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         private readonly IAmazonFeedsApiService _amazonFeedsApiService;
         private readonly IAmazonOrderService _amazonOrderService;
 
-        public ShipAmazonOrderService(ISession session, IAmazonOrderRequestService amazonOrderRequestService, 
+        public ShipAmazonOrderService(ISession session, IAmazonOrderRequestService amazonOrderRequestService,
             IAmazonFeedsApiService amazonFeedsApiService, IAmazonOrderService amazonOrderService)
         {
             _session = session;
@@ -28,12 +28,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         {
             var orders =
                 _session.QueryOver<AmazonOrder>()
-                        .Where(
-                            order =>
-                            order.Status == AmazonOrderStatus.Unshipped ||
-                            order.Status == AmazonOrderStatus.PartiallyShipped)
-                        .Fetch(order => order.Order)
-                        .Eager.List();
+                    .Where(
+                        order =>
+                            (order.Status == AmazonOrderStatus.Unshipped ||
+                             order.Status == AmazonOrderStatus.PartiallyShipped)
+                            && order.Order != null)
+                    .Fetch(order => order.Order)
+                    .Eager.List();
 
             var shippedOrders = orders.Where(order => order.Order.ShippingStatus == ShippingStatus.Shipped).ToList();
 
