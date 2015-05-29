@@ -19,13 +19,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 {
     public class ProductReviewAdminService : IProductReviewAdminService
     {
-        private readonly IProductReviewUIService _productReviewUIService;
         private readonly ISession _session;
 
-        public ProductReviewAdminService(IProductReviewUIService productReviewUIService, ISession session)
+        public ProductReviewAdminService(ISession session)
         {
-            _productReviewUIService = productReviewUIService;
             _session = session;
+        }
+
+        public void Update(ProductReview productReview)
+        {
+            _session.Transact(session => session.Update(productReview));
+        }
+
+        public void Delete(ProductReview productReview)
+        {
+            _session.Transact(session => session.Delete(productReview));
         }
 
         public void BulkAction(ReviewUpdateModel model)
@@ -35,24 +43,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
             switch (currentOperation)
             {
                 case ProductReviewOperation.Approve:
-                    foreach (var item in model.Reviews)
+                    _session.Transact(session =>
                     {
-                        item.Approved = true;
-                        _productReviewUIService.Update(item);
-                    }
+                        foreach (var item in model.Reviews)
+                        {
+                            item.Approved = true;
+                            Update(item);
+                        }
+                    });
                     break;
                 case ProductReviewOperation.Reject:
-                    foreach (var item in model.Reviews)
+                    _session.Transact(session =>
                     {
-                        item.Approved = false;
-                        _productReviewUIService.Update(item);
-                    }
+                        foreach (var item in model.Reviews)
+                        {
+                            item.Approved = false;
+                            Update(item);
+                        }
+                    });
                     break;
                 case ProductReviewOperation.Delete:
-                    foreach (var item in model.Reviews)
+                    _session.Transact(session =>
                     {
-                        _productReviewUIService.Delete(item);
-                    }
+                        foreach (var item in model.Reviews)
+                        {
+                            Delete(item);
+                        }
+                    });
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

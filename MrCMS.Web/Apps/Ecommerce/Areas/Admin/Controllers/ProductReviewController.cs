@@ -4,7 +4,6 @@ using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
-using MrCMS.Web.Apps.Ecommerce.Services.ProductReviews;
 using MrCMS.Website;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
@@ -14,14 +13,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class ProductReviewController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly IProductReviewUIService _productReviewUIService;
         private readonly IProductReviewAdminService _productReviewAdminService;
 
-        public ProductReviewController(IProductReviewAdminService productReviewAdminService,
-            IProductReviewUIService productReviewUIService)
+        public ProductReviewController(IProductReviewAdminService productReviewAdminService)
         {
             _productReviewAdminService = productReviewAdminService;
-            _productReviewUIService = productReviewUIService;
         }
 
         [HttpGet]
@@ -55,7 +51,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [MrCMSACLRule(typeof(ProductReviewACL), ProductReviewACL.Edit)]
         public ActionResult Edit_POST(ProductReview productReview)
         {
-            _productReviewUIService.Update(productReview);
+            _productReviewAdminService.Update(productReview);
             return RedirectToAction("Index");
         }
 
@@ -71,7 +67,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [MrCMSACLRule(typeof(ProductReviewACL), ProductReviewACL.Delete)]
         public RedirectToRouteResult Delete_POST(ProductReview productReview)
         {
-            _productReviewUIService.Delete(productReview);
+            _productReviewAdminService.Delete(productReview);
             return RedirectToAction("Index");
         }
 
@@ -84,7 +80,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectToRouteResult Approval(
             [IoCModelBinder(typeof(ProductReviewApprovalModelBinder))] ProductReview productReview)
         {
-            _productReviewUIService.Update(productReview);
+            _productReviewAdminService.Update(productReview);
             return RedirectToAction("Index");
         }
     }

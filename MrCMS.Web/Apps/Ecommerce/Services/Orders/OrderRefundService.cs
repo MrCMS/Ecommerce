@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MrCMS.Helpers;
+﻿using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
 using NHibernate;
@@ -14,11 +13,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         public OrderRefundService(ISession session)
         {
             _session = session;
-        }
-
-        public IList<OrderRefund> GetAll()
-        {
-            return _session.QueryOver<OrderRefund>().Cacheable().List();
         }
 
         public void Add(OrderRefund orderRefund)
