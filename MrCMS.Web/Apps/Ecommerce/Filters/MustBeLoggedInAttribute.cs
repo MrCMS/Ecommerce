@@ -10,10 +10,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var uniquePageService = filterContext.HttpContext.Get<IUniquePageService>();
             User user = CurrentRequestData.CurrentUser;
             if (user == null)
+            {
+                var uniquePageService = filterContext.HttpContext.Get<IUniquePageService>();
                 filterContext.Result = uniquePageService.RedirectTo<LoginPage>();
+            }
         }
     }
 }

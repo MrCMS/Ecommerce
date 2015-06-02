@@ -1098,6 +1098,8 @@
     <Compile Include="Apps\Ecommerce\Helpers\Pricing\ProductPricingExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\Pricing\ShippingPricingExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ProductExtensions.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\ProductReviewExtensions.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\ProductReviewResponseInfoExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ProductSearchQueryExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ProductVariantExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\RequestHelper.cs" />
@@ -1249,8 +1251,10 @@
     <Compile Include="Apps\Ecommerce\Models\GoogleBaseCalculationInfo.cs" />
     <Compile Include="Apps\Ecommerce\Models\GoogleBaseModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\HelpfulnessVoteModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\HelpfulnessVoteResponse.cs" />
     <Compile Include="Apps\Ecommerce\Models\IAddress.cs" />
     <Compile Include="Apps\Ecommerce\Models\IGiftCardUserDetails.cs" />
+    <Compile Include="Apps\Ecommerce\Models\IProductReviewResponseInfo.cs" />
     <Compile Include="Apps\Ecommerce\Models\ItemPrice.cs" />
     <Compile Include="Apps\Ecommerce\Models\KeyEqualityComparer.cs" />
     <Compile Include="Apps\Ecommerce\Models\LoginAndAssociateOrderResult.cs" />
@@ -1273,6 +1277,7 @@
     <Compile Include="Apps\Ecommerce\Models\ProductCondition.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductOptionModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductPagedList.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ProductReviewResponseType.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductSearchQuery.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductSearchSort.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductValueModel.cs" />
