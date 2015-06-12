@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MrCMS.Helpers;
+﻿using MrCMS.Helpers;
 using NHibernate;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
@@ -12,11 +11,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         public OrderNoteService(ISession session)
         {
             _session = session;
-        }
-
-        public IList<OrderNote> GetAll()
-        {
-            return _session.QueryOver<OrderNote>().Cacheable().List();
         }
 
         public void Save(OrderNote item)
