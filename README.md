@@ -119,5 +119,8 @@ Version 0.4 (May 2015)
 	* My account pages broken down into: details, change password, orders, reviews, rewards, addresses		
 	* Reward points can be used during checkout
 	* Newsletter build made into app
-	* Feedback app
 	* Braintree support
+
+Version 0.5 (Future)
+	* Feedback app
+	* nopCommerce 1.9 import
