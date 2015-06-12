@@ -19,7 +19,7 @@ Mr CMS eCommerce project is currently supplied with the latest version of Mr CMS
 	* Stock management
 	* Lucene based filterable search (automatically managed)
 	* Message template management for order confirmations etc
-	* Price breats (buy 10 for £1.99 instead of £2.50)
+	* Price breaks (buy 10 for £1.99 instead of £2.50)
 	* Country based shipping
 	* Shipping by weight
 	* Payments by: PayPal, Braintree, Paypoint, SagePay, WorldPay and CharityClear
@@ -34,7 +34,7 @@ Mr CMS eCommerce project is currently supplied with the latest version of Mr CMS
 	* Google Base Integration
 	* Brand Management / Brand filterable search
 	* Discounts - Automatic, Code based, Time based
-	* Discount Limitations - Cart Total Greater than X, Item Has SKU, Item is in Catgory, Cart has at least X itmes, Cart Subtotal greater than X, Shipping country is, Shipping postcode starts with, Single Use, Single use per customer
+	* Discount Limitations - Cart Total Greater than X, Item Has SKU, Item is in Category, Cart has at least X items, Cart Subtotal greater than X, Shipping country is, Shipping postcode starts with, Single Use, Single use per customer
 	* Discount Application - Buy X get Y free, Free Shipping, Order total fixed amount, X % from items, X% from order
 	* Discount Usage - View discount useage
 	* E-tags (show tags over product images such as 2-4-1 or similar)
@@ -44,11 +44,19 @@ Mr CMS eCommerce project is currently supplied with the latest version of Mr CMS
 	* Digital download support
 	* Reward points system
 
+# Screenshots
+
+![Home](https://mrcms.blob.core.windows.net/web/1/ecommerce-screen-grabs/ecommerce11.png)
+![Category View](https://mrcms.blob.core.windows.net/web/1/ecommerce-screen-grabs/ecommerce21.png)
+![Add to cart View](https://mrcms.blob.core.windows.net/web/1/mobile-friendly-navigation/mobile-nav-31.png)
+![Checkout View](https://mrcms.blob.core.windows.net/web/1/mobile-friendly-navigation/ecommerce41.png)
+![Admin View](https://mrcms.blob.core.windows.net/web/1/ecommerce-screen-grabs/ecommerce51.png)
+
 # Limitations
 
 Mr CMS Ecommerce does not currently support multiple currencies or multisite functionality. It also does not yet support the American tax system.
 
-# Contribuation
+# Contribution
 
 If you would like to contribute to Mr CMS ecommerce by supplying any missing features please do so by submitting a pull request.
 
@@ -70,8 +78,7 @@ Version 0.2
 		* Localise resources like brand text etc 
 	* Newsletter Builder
 	* Allow filtering to be turned on/off per spec/attribute
-	* Check over index management set up
-	*	lated updates do not action index update
+	* Check over index management set up related updates do not action index update
 	* In Order Placed email use product name and variant name for items
 	* Create generic design
 	* Create discount code limitation to SKU and Category
@@ -106,7 +113,7 @@ Version 0.4 (May 2015)
 -----------
 	* Custom stock messages for in/out of stock
 	* Brand search page and search
-	* URL Generator configuation for products/brands/categories	
+	* URL Generator configuration for products/brands/categories	
 	* Review score can be viewed on product card
 	* E-tag admin
 	* My account pages broken down into: details, change password, orders, reviews, rewards, addresses		
