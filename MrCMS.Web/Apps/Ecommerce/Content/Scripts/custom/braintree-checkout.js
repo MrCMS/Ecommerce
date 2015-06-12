@@ -6,6 +6,9 @@
         $('#braintree-checkout').on('submit', check3DSecure);
         token = getClientToken();
         client = new braintree.api.Client({ clientToken: token });
+
+        paypalSetup();
+        $('[data-paypal]').on('click', paypalPost);
     });
 
     function getClientToken() {
@@ -14,6 +17,28 @@
 
     function getForm() {
         return $("[data-braintree-checkout-form]");
+    }
+
+    function paypalSetup() {
+        braintree.setup(token, "paypal", {
+            container: "paypal-container",
+            onPaymentMethodReceived: function (obj) {
+                $('[data-card]').hide();
+                $('[data-paypal]').show();
+            },
+            onUnsupported: function() {
+            },
+            onCancelled: function () {
+                $('[data-paypal]').hide();
+                $('[data-card]').show();
+            }
+        });
+    }
+    function paypalPost(e) {
+        e.preventDefault();
+        postToUrl("/Apps/Ecommerce/Confirm/BraintreePayment/Paypal", {
+            nonce: $("[name='payment_method_nonce']").val()
+        });
     }
 
     function check3DSecure(event) {
@@ -39,7 +64,7 @@
             }
         }, function (error, response) {
             if (!error) {
-                postToUrl("/Apps/Ecommerce/Confirm/BraintreePayment", {
+                postToUrl("/Apps/Ecommerce/Confirm/BraintreePayment/Card", {
                     nonce: response.nonce,
                     liabilityShifted: response.verificationDetails.liabilityShifted,
                     liabilityShiftPossible: response.verificationDetails.liabilityShiftPossible

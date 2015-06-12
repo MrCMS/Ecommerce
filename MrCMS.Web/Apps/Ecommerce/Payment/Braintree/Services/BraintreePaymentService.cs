@@ -38,6 +38,39 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services
             return clientToken;
         }
 
+        public BraintreeResponse MakePaymentPaypal(string nonce)
+        {
+            BraintreeGateway braintreeGateway = GetGateway();
+            TransactionRequest request = new TransactionRequest
+            {
+                Amount = _cartModel.TotalToPay,
+                PaymentMethodNonce = nonce,
+                BillingAddress = GetBillingAddress(),
+                Options = new TransactionOptionsRequest
+                {
+                    SubmitForSettlement = true
+                }
+            };
+
+            Result<Transaction> result = braintreeGateway.Transaction.Sale(request);
+
+            if (result.IsSuccess())
+            {
+                Order order = _orderPlacementService.PlaceOrder(_cartModel,
+                    o =>
+                    {
+                        o.PaymentStatus = PaymentStatus.Paid;
+                        o.CaptureTransactionId = result.Target.Id;
+                    });
+                return new BraintreeResponse { Success = true, Order = order };
+            }
+            return new BraintreeResponse
+            {
+                Success = false,
+                Errors = new List<string> { result.Message }
+            };
+        }
+
         public BraintreeResponse MakePayment(string nonce)
         {
             BraintreeGateway braintreeGateway = GetGateway();

@@ -1,0 +1,8 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+
+<div data-payment-methods="true">
+    <div id="loading-message" style="display: none;"><img src="~/Apps/Ecommerce/Content/Images/ajax-loader.gif" alt="Loading" title="Loading" /></div>
+    @{ Html.RenderPartial("SelectMethod", Model); }
+    <div id="payment-confirmation">
+    </div>
+</div>

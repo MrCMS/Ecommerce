@@ -8,8 +8,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
     public interface IProductReviewUIService
     {
         void Add(ProductReview productReview);
-        void Update(ProductReview productReview);
-        void Delete(ProductReview productReview);
 
         IPagedList<ProductReview> GetReviewsForVariant(ProductVariant productVariant, int page = 1, int pageSize = 10);
         decimal GetAverageRatingForProductVariant(ProductVariant productVariant);

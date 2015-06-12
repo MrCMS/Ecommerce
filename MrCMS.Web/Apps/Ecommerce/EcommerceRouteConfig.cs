@@ -205,8 +205,12 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new {controller = "Braintree", action = "Form"},
                 new[] {typeof (BraintreeController).Namespace});
 
-            context.MapRoute("Braintree Form Post", "Apps/Ecommerce/Confirm/BraintreePayment",
-                new {controller = "Braintree", action = "MakePayment"},
+            context.MapRoute("Braintree Form Post", "Apps/Ecommerce/Confirm/BraintreePayment/Card",
+                new {controller = "Braintree", action = "MakePaymentCard"},
+                new[] {typeof (BraintreeController).Namespace});
+
+            context.MapRoute("Braintree Paypal Post", "Apps/Ecommerce/Confirm/BraintreePayment/Paypal",
+                new {controller = "Braintree", action = "MakePaymentPaypal"},
                 new[] {typeof (BraintreeController).Namespace});
         }
 
@@ -281,6 +285,10 @@ namespace MrCMS.Web.Apps.Ecommerce
 
             context.MapRoute("Checkout - Set Payment Method", "Apps/Ecommerce/PaymentDetails/SetPaymentMethod",
                 new { controller = "PaymentDetails", action = "SetPaymentMethod" },
+                new[] { typeof(PaymentDetailsController).Namespace });
+
+            context.MapRoute("Checkout - Get Payment Methods", "Apps/Ecommerce/PaymentDetails/Methods",
+                new { controller = "PaymentDetails", action = "Methods" },
                 new[] { typeof(PaymentDetailsController).Namespace });
 
             context.MapRoute("Order Placed - Login and associate order", "order-placed/login",
