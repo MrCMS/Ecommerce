@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0F690EEC-BB1B-4916-BA16-682D9D7A7A19}"
 EndProject
@@ -22,6 +22,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MrCMS.EcommerceApp.Tests", "MrCMS.EcommerceApp.Tests\MrCMS.EcommerceApp.Tests.csproj", "{A8A0A220-6389-4A38-9D8D-189D52A9C347}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MrCMS.PaypointService", "MrCMS.PaypointService\MrCMS.PaypointService.csproj", "{94C17669-9AC5-43D3-81B2-3AD0D2F223DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{57351305-8ED2-4AF8-81AA-6EC95488B974}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

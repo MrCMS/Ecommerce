@@ -26,7 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                                            ItemPrice = item.UnitPricePreTax,
                                            ItemTax = item.UnitTax,
                                            ItemTotal = item.UnitPrice,
-                                           LineTotal = item.Price,
+                                           LineTotal = item.PricePreDiscount,
                                            Quantity = item.Quantity
                                        });
                 if (item.DiscountAmount > 0)
@@ -34,7 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                     shoppingBasket.Add(new BasketItem
                                            {
                                                Description = "Discount for - " + item.Name,
-                                               LineTotal = item.DiscountAmount,
+                                               LineTotal = -item.DiscountAmount,
                                            });
                 }
             }
@@ -44,7 +44,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                 shoppingBasket.Add(new BasketItem
                                        {
                                            Description = "Order Discount - " + model.DiscountCodes,
-                                           LineTotal = model.OrderTotalDiscount,
+                                           LineTotal = -model.OrderTotalDiscount,
                                        });
             }
 

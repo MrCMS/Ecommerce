@@ -15,5 +15,9 @@ namespace MrCMS.EcommerceApp.Tests
                 .InMemory()
                 .Raw(Environment.ReleaseConnections, "on_close");
         }
+
+        public void AddProviderSpecificConfiguration(Configuration config)
+        {
+        }
     }
 }

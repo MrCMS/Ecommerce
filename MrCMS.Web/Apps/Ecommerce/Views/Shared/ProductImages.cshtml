@@ -5,11 +5,14 @@
 
 <div class="grey-border text-center product-image-box">
     @Html.RenderImage(Model.DisplayImageUrl, new Size { Width = 400, Height = 400 }, Model.Name, Model.Name, new { @class = "img-responsive center-block", itemprop = "image" })    
+    @if (Model.CanShowEtag)
+    {
+        @RenderImage(Model.ETag.Image, attributes: new { @class = "img-responsive e-tag-image" })
+    }
     <div class="clearfix"></div>
 
     <div class="row">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-8">
+        <div class="col-sm-12">
             <div id="product-image-thumbnails">
                 <ul class="thumbnails">
                     @foreach (var item in Model.Images.Skip(1))
@@ -23,9 +26,6 @@
                 </ul>
                 <div class="clearfix"></div>
             </div>
-        </div>
-        <div class="col-sm-2">
-            
         </div>
     </div>
 </div>

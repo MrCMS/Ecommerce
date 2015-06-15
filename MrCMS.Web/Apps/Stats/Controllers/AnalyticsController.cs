@@ -1,5 +1,6 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using MrCMS.Web.Apps.Stats.Filters;
+using MrCMS.Web.Apps.Stats.Models;
 using MrCMS.Web.Apps.Stats.Services;
 using MrCMS.Website.Controllers;
 
@@ -14,17 +15,11 @@ namespace MrCMS.Web.Apps.Stats.Controllers
             _logPageViewService = logPageViewService;
         }
 
+        [PreventBots]
         public JsonResult LogPageView(PageViewInfo info)
         {
             _logPageViewService.LogPageView(info);
             return Json(true);
         }
-    }
-
-    public class PageViewInfo
-    {
-        public Guid User { get; set; }
-        public Guid Session { get; set; }
-        public string Url { get; set; }
     }
 }

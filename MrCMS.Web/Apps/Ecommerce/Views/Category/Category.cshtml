@@ -14,7 +14,7 @@
 @Html.HiddenFor(x => x.LiveUrlSegment)
 
 <div class="margin-bottom-30">
-    <div class="row" id="product-search-container">
+    <div class="row" id="product-search-container" data-product-search-container="true" data-product-search-scroll-to="#product-search-container">
         <div class="col-sm-3">
             @{ Html.RenderAction("Query", "ProductSearch", new { query });}
         </div>

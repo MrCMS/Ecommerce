@@ -31,10 +31,13 @@ namespace MrCMS.Web.Apps.Stats.Areas.Admin.Services
             IQueryOver<AnalyticsPageView, AnalyticsPageView> queryOver = _session.QueryOver(() => pageView)
                 .JoinAlias(() => pageView.AnalyticsSession, () => analyticsSession)
                 .JoinAlias(() => analyticsSession.AnalyticsUser, () => analyticsUser);
-            if (query.From.HasValue)
-                queryOver = queryOver.Where(() => pageView.CreatedOn >= query.From);
-            if (query.To.HasValue)
-                queryOver = queryOver.Where(() => pageView.CreatedOn <= query.To);
+            if (!string.IsNullOrWhiteSpace(query.Url))
+            {
+                queryOver = queryOver.Where(view => view.Url.IsInsensitiveLike(query.Url, MatchMode.Anywhere));
+            }
+
+            queryOver = queryOver.Where(() => pageView.CreatedOn >= query.From && pageView.CreatedOn <= query.To);
+            
             switch (query.SearchType)
             {
                 case PageViewSearchType.UsersOnly:
@@ -64,7 +67,7 @@ namespace MrCMS.Web.Apps.Stats.Areas.Admin.Services
                 .OrderBy(Projections.CountDistinct(() => analyticsUser.Id)).Desc
                 .ThenBy(Projections.CountDistinct(() => analyticsSession.Id)).Desc
                 .ThenBy(Projections.CountDistinct(() => pageView.Id)).Desc
-                .Paged<AnalyticsPageView, PageViewResult>(Projections.CountDistinct(() => pageView.Url), query.Page);
+                .Paged<AnalyticsPageView, PageViewResult>(Projections.CountDistinct(() => pageView.Url), query.Page, enableCache:false); //todo enable cache when Nhibernate is updated to 4.1
 
             List<int?> ids = pageViewResults.Select(viewResult => viewResult.WebpageId).Where(i => i.HasValue).ToList();
             Dictionary<int, Webpage> webpages =
@@ -87,7 +90,7 @@ namespace MrCMS.Web.Apps.Stats.Areas.Admin.Services
 
         public List<SelectListItem> GetSearchTypeOptions()
         {
-            return Enum.GetValues(typeof (PageViewSearchType)).Cast<PageViewSearchType>()
+            return Enum.GetValues(typeof(PageViewSearchType)).Cast<PageViewSearchType>()
                 .BuildSelectItemList(type => type.ToString(), emptyItem: null);
         }
     }

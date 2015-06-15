@@ -21,6 +21,12 @@
         </legend>
         <div class="row">
             <div class="col-xs-4">
+                @Html.LabelFor(query => query.Url)
+                @Html.TextBoxFor(query => query.Url, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
                 @Html.LabelFor(query => query.From)
                 @Html.EditorFor(query => query.From)
             </div>

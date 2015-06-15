@@ -1,0 +1,50 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Website
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    @{
+        Html.IncludeCss("~/Apps/Ecommerce/Content/Bootstrap/css/bootstrap.min.css");
+    }
+    @{ Html.RenderCss();}
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+<body>
+    <div style="min-height: 500px; width: 100%;">
+        <div style="padding: 10px">@RenderBody()</div>
+    </div>
+
+    <style type="text/css">
+        html, body {
+            padding-top: 0;
+            height: auto;
+            overflow: auto;
+        }
+        legend {
+            font-size: 28px;
+        }
+    </style>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/globalize/0.1.1/globalize.js"></script>
+    <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/globalize/0.1.1/cultures/globalize.culture.@(CurrentRequestData.CultureInfo.Name).js"></script>
+
+    @{
+        Html.IncludeScript("~/Apps/Ecommerce/Content/bootstrap/js/bootstrap.min.js");
+        Html.IncludeScript("~/Apps/Core/Content/Scripts/respond.min.js");
+        Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.min.js");
+        Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.unobtrusive.min.js");
+    }
+
+    @{ Html.RenderScripts();}
+
+    @Html.Hidden("UICulture", CurrentRequestData.CultureInfo.Name)
+
+    @if (IsSectionDefined("JavaScriptBlock"))
+    {
+        @RenderSection("JavaScriptBlock")
+    }
+</body>
+</html>

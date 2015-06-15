@@ -1,0 +1,16 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Brand
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(brand => brand.FeatureImage)<br />
+            @Html.TextBoxFor(brand => brand.FeatureImage, new { data_type = "media-selector" })
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(brand => brand.BrandAbstract)
+            @Html.TextAreaFor(brand => brand.BrandAbstract, 4, 100, new { @class = "form-control" })
+        </div>
+    </div>
+</div>

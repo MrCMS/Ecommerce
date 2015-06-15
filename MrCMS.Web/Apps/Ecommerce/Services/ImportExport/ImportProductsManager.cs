@@ -33,8 +33,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             if (businessLogicErrors.Any())
                 ImportProductsResult.Failure(GetErrors(businessLogicErrors));
             Batch batch = _importProductsService.CreateBatch(productsToImport);
-            //_importProductsService.Initialize();
-            //_importProductsService.ImportProductsFromDTOs(productsToImport);
             return ImportProductsResult.Successful(batch);
         }
 

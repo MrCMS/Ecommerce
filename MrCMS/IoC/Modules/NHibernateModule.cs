@@ -1,9 +1,11 @@
+using System.Web;
 using MrCMS.DbConfiguration;
 using MrCMS.Helpers;
 using MrCMS.Settings;
 using MrCMS.Website;
 using NHibernate;
 using Ninject;
+using Ninject.Activation;
 using Ninject.Modules;
 using Ninject.Web.Common;
 
@@ -35,7 +37,7 @@ namespace MrCMS.IoC.Modules
                 }
                 return null;
             });
-            _configurator = _configurator ?? new NHibernateConfigurator(Kernel.Get<IDatabaseProvider>(),Kernel.Get<ISystemConfigurationProvider>());
+            _configurator = _configurator ?? new NHibernateConfigurator(Kernel.Get<IDatabaseProvider>());
             _configurator.CacheEnabled = _cacheEnabled;
 
             Kernel.Bind<ISessionFactory>()
@@ -45,17 +47,28 @@ namespace MrCMS.IoC.Modules
 
             if (_forWebsite)
             {
-                Kernel.Bind<ISession>().ToMethod(
-                    context =>
-                         context.Kernel.Get<ISessionFactory>().OpenFilteredSession()).InRequestScope();
+                Kernel.Bind<ISession>().ToMethod(GetSession).InRequestScope();
             }
             else
             {
-                Kernel.Bind<ISession>()
-                    .ToMethod(
-                        context => context.Kernel.Get<ISessionFactory>().OpenFilteredSession())
-                    .InThreadScope();
+                Kernel.Bind<ISession>().ToMethod(GetSession).InThreadScope();
             }
+            Kernel.Bind<IStatelessSession>()
+                .ToMethod(context => context.Kernel.Get<ISessionFactory>().OpenStatelessSession()).InRequestScope();
+
+        }
+
+        private static ISession GetSession(IContext context)
+        {
+            HttpContextBase httpContext = null;
+            try
+            {
+                httpContext = context.Kernel.Get<HttpContextBase>();
+            }
+            catch
+            {
+            }
+            return context.Kernel.Get<ISessionFactory>().OpenFilteredSession(httpContext);
         }
     }
 }

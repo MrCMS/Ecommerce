@@ -1,55 +1,63 @@
-﻿$(function () {
-    var History = window.History; // Note: We are using a capital H instead of a lower h
-    $(document).on('change', '#product-search-container input, #product-search-container select', function () {
-        var data = getData(1);
-        History.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
+﻿(function ($, window) {
+    'use strict';
+    var history = window.History;
+    $(function () {
+        $(document).on('change', '#product-search-container input, #product-search-container select', onElementChange);
+        $(document).on('click', '#product-results-container .pagination a', changePage);
+
+        $(document).on('click', '#product-query-container a[data-action=remove-specification]', removeSpecification);
+        $(document).on('click', '#product-query-container a[data-action=remove-option]', removeOption);
+
+        // Bind to StateChange Event
+        history.Adapter.bind(window, 'statechange', updatePage);
+
+        initializeSlider();
     });
+
+    function onElementChange() {
+        var data = getData(1);
+        history.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
+    }
 
     function getPage(href) {
         var querystring = href.split('?')[1];
         var parts = querystring.split('&');
-        return $.grep(parts, function (el, index) {
-            return el.split('=')[0] == "page";
-        })[0].split('=')[1];
+        return $.grep(parts, keyIsPage)[0].split('=')[1];
     }
-    $(document).on('click', '#product-results-container .pagination a', function () {
-        if ($(this).attr('href') === undefined)
-            return false;
-        var page = getPage($(this).attr('href'));
-        var data = getData(page);
 
-        History.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
-        return false;
-    });
-    $(document).on('click', '#product-query-container a[data-action=remove-specification]', function (event) {
-        event.preventDefault();
-        $(this).siblings('input[name=Specifications]').remove();
-        var data = getData(1);
+    function keyIsPage(el, index) {
+        return el.split('=')[0] == "page";
+    }
 
-        History.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
-    });
+    function initializeSlider() {
+        $("#slider-range").slider({
+            range: true,
+            max: $('#MaxPrice').val(),
+            step: 5,
+            values: [parseFloat($('#PriceFrom').val()), parseFloat($('#PriceTo').val())],
+            slide: updateSliderAmount,
+            change: onElementChange
+        });
+        $("#amount").text("£" + parseFloat($("#slider-range").slider("values", 0)).toFixed(2) +
+            " - £" + parseFloat($("#slider-range").slider("values", 1)).toFixed(2));
+    }
 
-    $(document).on('click', '#product-query-container a[data-action=remove-option]', function (event) {
-        event.preventDefault();
-        $(this).siblings('input[name=Options]').remove();
-        var data = getData(1);
+    function updateSliderAmount(event, ui) {
+        var from = parseFloat(ui.values[0]);
+        var to = parseFloat(ui.values[1]);
+        $("#amount").text("£" + from.toFixed(2) + " - £" + to.toFixed(2));
+    }
 
-        History.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
-    });
+    function getValue(index, element) {
+        var val = $(element).val();
+        if (val == '' || val == undefined)
+            return null;
+        return val;
+    }
 
     function getData(page) {
-        var specifications = $('#product-query-container select[name="Specifications"], #product-query-container input[name="Specifications"]').map(function (index, element) {
-            var val = $(element).val();
-            if (val == '' || val == undefined)
-                return null;
-            return val;
-        }).toArray();
-        var options = $('#product-query-container select[name="Options"], #product-query-container input[name="Options"]').map(function (index, element) {
-            var val = $(element).val();
-            if (val == '' || val == undefined)
-                return null;
-            return val;
-        }).toArray();
+        var specifications = $('#product-query-container select[name="Specifications"], #product-query-container input[name="Specifications"]').map(getValue).toArray();
+        var options = $('#product-query-container select[name="Options"], #product-query-container input[name="Options"]').map(getValue).toArray();
         var sortBy = $('#SortBy').val();
         var pageSize = $('#PageSize').val();
         var categoryId = $('#CategoryId').val();
@@ -62,19 +70,20 @@
             SortBy: sortBy,
             PageSize: pageSize,
             CategoryId: categoryId,
-            PriceFrom: getFromValue(),
-            PriceTo: getToValue(),
+            PriceFrom: getSliderFromValue(),
+            PriceTo: getSliderToValue(),
             BrandId: brandId,
             SearchTerm: searchTerm,
             Page: page
         };
     }
-    function getFromValue() {
+
+    function getSliderFromValue() {
         var value = $("#slider-range").slider("values", 0);
         return value == 0 ? null : value;
     }
 
-    function getToValue() {
+    function getSliderToValue() {
         var value = $("#slider-range").slider("values", 1);
         return value == $('#MaxPrice').val() ? null : value;
     }
@@ -132,44 +141,58 @@
         return "?" + queryString;
     }
 
-    // Bind to StateChange Event
-    History.Adapter.bind(window, 'statechange', function () { // Note: We are using statechange instead of popstate
-        var State = History.getState();
-        var data = State.data;
-        $.get('/search/query', data, function (response) {
-            $('#product-query-container').replaceWith(response);
-            initializeSlider();
-        });
-        $("#loading-message").show();
-        $.get('/search/results', data, function (response) {
-            $("#loading-message").hide();
-            $('#product-results-container').replaceWith(response);
-            var top = $("#product-search-container").offset().top;
-            $('html,body').animate({
-                scrollTop: top
-            }, 350);
-        });
-    });
+    function changePage(event) {
+        event.preventDefault();
+        var element = $(event.target);
+        if (element.attr('href') === undefined)
+            return;
+        var page = getPage(element.attr('href'));
+        var data = getData(page);
 
-    function initializeSlider() {
-        $("#slider-range").slider({
-            range: true,
-            max: $('#MaxPrice').val(),
-            step: 5,
-            values: [parseFloat($('#PriceFrom').val()), parseFloat($('#PriceTo').val())],
-            slide: function (event, ui) {
-                var from = parseFloat(ui.values[0]);
-                var to = parseFloat(ui.values[1]);
-                $("#amount").text("£" + from.toFixed(2) + " - £" + to.toFixed(2));
-            },
-            change: function (event, ui) {
-                var data = getData(1);
-                History.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
-            }
-        });
-        $("#amount").text("£" + parseFloat($("#slider-range").slider("values", 0)).toFixed(2) +
-            " - £" + parseFloat($("#slider-range").slider("values", 1)).toFixed(2));
+        history.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
     }
 
-    initializeSlider();
-});
+    function removeSpecification(event) {
+        event.preventDefault();
+        var element = $(event.currentTarget);
+        element.siblings('input[name=Specifications]').remove();
+        var data = getData(1);
+
+        history.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
+    }
+
+    function removeOption(event) {
+        event.preventDefault();
+        var element = $(event.currentTarget);
+        element.siblings('input[name=Options]').remove();
+        var data = getData(1);
+
+        history.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
+    }
+
+    function updatePage(event) { // Note: We are using statechange instead of popstate
+        var state = history.getState();
+        var data = state.data;
+        $.get('/search/query', data, updateQuery);
+        $("#loading-message").show();
+        $.get('/search/results', data, updateResults);
+    }
+
+    function updateQuery(response) {
+        $('#product-query-container').replaceWith(response);
+        initializeSlider();
+    }
+
+    function updateResults(response) {
+        $("#loading-message").hide();
+        $('#product-results-container').replaceWith(response);
+        var container = $("[data-product-search-container]");
+        var scrollTo = container.data('product-search-scroll-to');
+        if (scrollTo) {
+            var top = $(scrollTo).offset().top;
+            $('html, body').animate({
+                scrollTop: top
+            }, 350);
+        }
+    }
+})(jQuery, window);

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
+using MrCMS.Web.Apps.Ecommerce.Entities.ETags;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
@@ -15,13 +17,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     {
         private readonly IImportProductVariantPriceBreaksService _importProductVariantPriceBreaksService;
         private readonly ISession _session;
+        private readonly IETagAdminService _eTagAdminService;
         private readonly ITaxRateManager _taxRateManager;
 
         public ImportProductVariantsService(IImportProductVariantPriceBreaksService importPriceBreaksService,
-            ITaxRateManager taxRateManager, ISession session)
+            ITaxRateManager taxRateManager, ISession session, IETagAdminService eTagAdminService)
         {
             _taxRateManager = taxRateManager;
             _session = session;
+            _eTagAdminService = eTagAdminService;
             _importProductVariantPriceBreaksService = importPriceBreaksService;
         }
 
@@ -39,9 +43,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 if (productVariant == null)
                 {
                     productVariant = new ProductVariant();
-                    product.Variants.Add(productVariant);
                     _session.Transact(session => session.Save(productVariant));
                 }
+
+                if (!product.Variants.Contains(productVariant))
+                    product.Variants.Add(productVariant);
 
                 productVariant.Name = item.Name;
                 productVariant.SKU = item.SKU;
@@ -57,7 +63,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     : _taxRateManager.GetDefaultRate();
                 productVariant.Product = product;
 
-            
+                if (!string.IsNullOrEmpty(item.ETag))
+                {
+                    var eTag = _eTagAdminService.GetETagByName(item.ETag);
+                    if (eTag == null)
+                    {
+                        eTag = new ETag
+                        {
+                            Name = item.ETag
+                        };
+                        _eTagAdminService.Add(eTag);
+                    }
+
+                    productVariant.ETag = eTag;
+                }
+                else
+                    productVariant.ETag = null;
+
                 List<KeyValuePair<string, string>> optionsToAdd =
                     item.Options.Where(
                         s =>

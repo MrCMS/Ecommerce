@@ -37,8 +37,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                         LastName = userData.LastName.LimitCharacters(255),
                         Email = userData.Email,
                         IsActive = userData.Active,
-                        Guid = userData.Guid
                     };
+                    user.SetGuid(userData.Guid);
                     session.Save(user);
                     foreach (AddressData addressData in userData.AddressData)
                     {

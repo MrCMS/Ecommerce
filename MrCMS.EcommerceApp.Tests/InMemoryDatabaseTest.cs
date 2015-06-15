@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Web;
 using Elmah;
 using Iesi.Collections.Generic;
 using MrCMS.DbConfiguration;
@@ -44,8 +45,9 @@ namespace MrCMS.EcommerceApp.Tests
                     SessionFactory = Configuration.BuildSessionFactory();
                 }
             }
-            Session = SessionFactory.OpenFilteredSession();
+            Session = SessionFactory.OpenFilteredSession(Kernel.Get<HttpContextBase>());
             Kernel.Bind<ISession>().ToMethod(context => Session);
+            Kernel.Bind<IStatelessSession>().ToMethod(context => SessionFactory.OpenStatelessSession());
 
             new SchemaExport(Configuration).Execute(false, true, false, Session.Connection, null);
 
@@ -72,6 +74,7 @@ namespace MrCMS.EcommerceApp.Tests
             Kernel.Load(new GenericBindingsModule());
             _eventContext = new TestableEventContext(Kernel.Get<EventContext>());
             Kernel.Rebind<IEventContext>().ToMethod(context => EventContext);
+
         }
 
         protected Site CurrentSite { get; set; }
@@ -90,8 +93,8 @@ namespace MrCMS.EcommerceApp.Tests
                 Name = UserRole.Administrator
             };
 
-            user.Roles = new HashedSet<UserRole> { adminUserRole };
-            adminUserRole.Users = new HashedSet<User> { user };
+            user.Roles = new HashSet<UserRole> { adminUserRole };
+            adminUserRole.Users = new HashSet<User> { user };
 
             CurrentRequestData.CurrentUser = user;
         }

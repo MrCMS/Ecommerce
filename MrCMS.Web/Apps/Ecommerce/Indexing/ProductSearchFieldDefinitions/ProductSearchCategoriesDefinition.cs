@@ -7,9 +7,9 @@ using MrCMS.Helpers;
 using MrCMS.Indexing;
 using MrCMS.Indexing.Management;
 using MrCMS.Tasks;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
+using NHibernate.Transform;
 
 namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 {
@@ -30,21 +30,41 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 
         protected override Dictionary<Product, IEnumerable<string>> GetValues(List<Product> objs)
         {
-            var categories = new HashSet<Category>(_session.QueryOver<Category>().Fetch(category => category.Products).Eager.List());
+            var allCategories = _session.QueryOver<Category>().Cacheable().List().ToDictionary(x => x.Id);
 
-            return objs.ToDictionary(product => product, product => GetCategories(product, categories));
+            Category categoryAlias = null;
+            CategoryMapping mapping = null;
+            var mappings = _session.QueryOver<Product>()
+                .JoinAlias(x => x.Categories, () => categoryAlias)
+                .SelectList(builder =>
+                {
+                    builder.Select(x => x.Id).WithAlias(() => mapping.ProductId);
+                    builder.Select(() => categoryAlias.Id).WithAlias(() => mapping.CategoryId);
+                    return builder;
+                }).TransformUsing(Transformers.AliasToBean<CategoryMapping>()).List<CategoryMapping>()
+                .GroupBy(x => x.ProductId, x => x.CategoryId)
+                .ToDictionary(x => x.Key);
+
+            return objs.ToDictionary(product => product, product => GetCategories(mappings.ContainsKey(product.Id)
+                ? mappings[product.Id] : Enumerable.Empty<int>(), allCategories));
         }
 
-        private IEnumerable<string> GetCategories(Product product, HashSet<Category> categories)
+        private class CategoryMapping
         {
-            foreach (var category in categories.Where(category => category.Products.Contains(product)))
+            public int ProductId { get; set; }
+            public int CategoryId { get; set; }
+        }
+
+        private IEnumerable<string> GetCategories(IEnumerable<int> categoryIds, Dictionary<int, Category> allCategories)
+        {
+            foreach (var category in categoryIds.Select(id => allCategories[id]))
             {
                 yield return category.Id.ToString();
-                var parent = categories.FirstOrDefault(c => c.Id == category.ParentId);
+                var parent = allCategories.ContainsKey(category.ParentId) ? allCategories[category.ParentId] : null;
                 while (parent != null)
                 {
                     yield return parent.Id.ToString();
-                    parent = categories.FirstOrDefault(c => c.Id == parent.ParentId);
+                    parent = allCategories.ContainsKey(parent.ParentId) ? allCategories[parent.ParentId] : null;
                 }
             }
         }

@@ -41,11 +41,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [SetProductSearchViewData]
         public PartialViewResult QueryInternal(ProductSearchQuery query)
         {
-            //SetViewData(query);
             return PartialView("Query", query);
         }
 
-        [AcceptVerbs(new[] {"GET", "HEAD"})]
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Head)]
         public ActionResult Results([IoCModelBinder(typeof (ProductSearchQueryModelBinder))] ProductSearchQuery query)
         {
             return _htmlCacheService.GetContent(this, _productSearchIndexService.GetCachingInfo(query, "-results"),

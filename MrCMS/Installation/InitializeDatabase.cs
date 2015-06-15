@@ -1,6 +1,7 @@
 using System;
 using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
+using MrCMS.Indexing;
 using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Tasks;
@@ -32,7 +33,8 @@ namespace MrCMS.Installation
                 UICulture = model.UiCulture,
                 EnableInlineEditing = true,
                 SiteIsLive = true,
-                FormRendererType = FormRenderingType.Bootstrap3
+                FormRendererType = FormRenderingType.Bootstrap3,
+
             };
             var mediaSettings = new MediaSettings
             {
@@ -52,7 +54,7 @@ namespace MrCMS.Installation
             };
             var fileSystemSettings = new FileSystemSettings
             {
-                StorageType = typeof (FileSystem).FullName
+                StorageType = typeof(FileSystem).FullName
             };
 
             _configurationProvider.SaveSettings(siteSettings);
@@ -66,19 +68,37 @@ namespace MrCMS.Installation
             var deleteLogsTask = new ScheduledTask
             {
                 Type = typeof(DeleteExpiredLogsTask).FullName,
-                EveryXSeconds = 60
+                EveryXSeconds = 600
             };
 
             var deleteQueuedTask = new ScheduledTask
             {
                 Type = typeof(DeleteOldQueuedTasks).FullName,
-                EveryXSeconds = 60
+                EveryXSeconds = 600
             };
 
             var sendQueueEmailsTask = new ScheduledTask
             {
                 Type = typeof(SendQueuedMessagesTask).FullName,
-                EveryXSeconds = 60
+                EveryXSeconds = 30
+            };
+
+            var publishPagesTask = new ScheduledTask
+            {
+                Type = typeof(PublishScheduledWebpagesTask).FullName,
+                EveryXSeconds = 10
+            };
+
+            var deleteOldLogsTask = new ScheduledTask
+            {
+                Type = typeof(DeleteExpiredLogsTask).FullName,
+                EveryXSeconds = 600
+            };
+
+            var optimizeIndexes = new ScheduledTask
+            {
+                Type = typeof(OptimiseIndexes).FullName,
+                EveryXSeconds = 600
             };
 
             _session.Transact(s =>
@@ -86,6 +106,9 @@ namespace MrCMS.Installation
                 s.Save(deleteLogsTask);
                 s.Save(deleteQueuedTask);
                 s.Save(sendQueueEmailsTask);
+                s.Save(publishPagesTask);
+                s.Save(deleteOldLogsTask);
+                s.Save(optimizeIndexes);
             });
 
         }

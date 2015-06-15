@@ -1,11 +1,7 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
-@using System.Web.UI.WebControls
 @using MrCMS.Helpers
 @using System.Linq
-@using MrCMS.Paging
-@using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
 @using MrCMS.Web.Apps.Ecommerce.Entities.Products
-@using MrCMS.Website
 @{
     var selectedVariant = ViewData["selected-variant"] as ProductVariant ?? Model.Variants.First();
     var productReviewsEnabled = (bool)ViewData["productreviews-enabled"];

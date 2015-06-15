@@ -1,37 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using MrCMS.Entities.Messaging;
-using MrCMS.Helpers;
-using MrCMS.Services;
-using MrCMS.Website;
-using NHibernate;
+﻿using MrCMS.Messages;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Settings;
 
 namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
 {
-    public class SendOrderCancelledEmailToCustomerMessageTemplate : MessageTemplate, IMessageTemplate<Order>
+    public class SendOrderCancelledEmailToCustomerMessageTemplate : MessageTemplate<Order>
     {
-        public override MessageTemplate GetInitialTemplate(ISession session)
-        {
-            var fromName = CurrentRequestData.CurrentSite.Name;
-
-            return new SendOrderCancelledEmailToCustomerMessageTemplate
-            {
-                FromName = fromName,
-                ToAddress = "{OrderEmail}",
-                ToName = "{CustomerName}",
-                Bcc = String.Empty,
-                Cc = String.Empty,
-                Subject = String.Format("{0} - Order Cancelled", fromName),
-                Body = "Your order (ID:{Id}) was cancelled.",
-                IsHtml = false
-            };
-        }
-
-        public override List<string> GetTokens(IMessageTemplateParser messageTemplateParser)
-        {
-            return messageTemplateParser.GetAllTokens<Order>();
-        }
     }
 }

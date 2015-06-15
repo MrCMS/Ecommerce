@@ -1,4 +1,5 @@
 using System;
+using MrCMS.Web.Apps.Ecommerce.Models.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using PayPal.OpenIdConnect;
 

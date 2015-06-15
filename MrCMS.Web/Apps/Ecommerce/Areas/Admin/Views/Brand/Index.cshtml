@@ -1,66 +1,90 @@
 ﻿@using MrCMS.Helpers
-@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Ecommerce.Entities.Products.Brand>
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.BrandSearchModel
 @{
     ViewBag.Title = "Brands";
+    var listing = ViewData["listing-page"] as BrandListing;
+    var anyToMigrate = ViewData["any-to-migrate"] is bool && (bool)ViewData["any-to-migrate"];
+    var results = ViewData["results"] as IPagedList<Brand> ?? BasePagedList<Brand>.Empty;
 }
 
-@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/brands.js");}
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/brands.js"); }
+
 
 <form>
     <fieldset>
         <legend>
             Brands
-            <span class="btn-group  display-inline  pull-right">
-                <a href="@Url.Action("Add", "Brand")" class="btn btn-primary" data-toggle="fb-modal">Add Brand</a>
+            <span class="btn-group display-inline pull-right">
+                @if (listing != null)
+                {
+                    if (anyToMigrate)
+                    {
+                        <a href="@Url.Action("Migrate", "Brand")" class="btn btn-default" data-toggle="fb-modal">Migrate</a>
+                    }
+                    <a href="@Url.Action("Add", "Webpage", new {listing.Id})" class="btn btn-primary">Add Brand</a>
+                }
             </span>
         </legend>
-
-        @using (Html.BeginForm("Index", "Brand", FormMethod.Get))
+        @if (listing == null)
         {
-            <div class="input-group">
-                <input type="text" class="search-query form-control" placeholder="Search" id="searchParam" name="q" value="@ViewData["query"]" />
-                <span class="input-group-btn">
-                    <input type="submit" class="btn btn-primary btn-success" value="Search" />
-                </span>
+            <div class="alert alert-info">
+                <p>
+                    You haven't got a brand listing page to add the brands to. Please @Html.ActionLink("add one", "Add", "Webpage") and return here.
+                </p>
             </div>
         }
-        <hr />
-        @if (Model.Count == 0)
-        {
-            @:No brands.
-            }
         else
         {
-            <table class="table table-condensed table-striped">
-                <thead>
-                    <tr>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Actions
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+            using (Html.BeginForm("Index", "Brand", FormMethod.Get))
+            {
+                <div class="input-group">
+                    @Html.TextBoxFor(x => x.Query, new { @class = "form-control", placeholder = Resource("Search") })
+                    @*<input type="text" class="form-control" placeholder="Search" id="searchParam" name="q" value="@ViewData["query"]" />*@
+                    <span class="input-group-btn">
+                        <input type="submit" class="btn btn-primary btn-success" value="Search" />
+                    </span>
+                </div>
+            }
+            <hr />
+            if (!results.Any())
+            {
+                @:No brands.
+            }
+            else
+            {
+                <table class="table table-condensed table-striped">
+                    <thead>
                         <tr>
-                            <td>
-                                @item.Name
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    @Html.ActionLink("Edit", "Edit", "Brand", new { id = item.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
-                                    @Html.ActionLink("Delete", "Delete", "Brand", new { id = item.Id }, new { @class = "btn btn-xs btn-danger", data_toggle = "fb-modal" })
-                                </div>
-                            </td>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Actions
+                            </th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in results)
+                        {
+                            <tr>
+                                <td>
+                                    @item.Name
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        @Html.ActionLink("Edit", "Edit", "Webpage", new { id = item.Id }, new { @class = "btn btn-xs btn-default" })
+                                        @Html.ActionLink("Delete", "Delete", "Webpage", new { id = item.Id }, new { @class = "btn btn-xs btn-danger", data_toggle = "fb-modal" })
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
         }
     </fieldset>
 </form>
 
-@Html.Pager(Model, "Index", i => new { page = i })
+@Html.Pager(results, "Index", i => new { page = i })

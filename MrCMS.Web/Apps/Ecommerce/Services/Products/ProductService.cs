@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using NHibernate.Criterion;
 using NHibernate.SqlCommand;
+using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
 using ProductSearchQuery = MrCMS.Web.Apps.Ecommerce.Models.ProductSearchQuery;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
@@ -227,7 +228,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (!string.IsNullOrWhiteSpace(query.Brand))
             {
                 Brand brandAlias = null;
-                queryOver = queryOver.JoinAlias(product => product.Brand, () => brandAlias)
+                queryOver = queryOver.JoinAlias(product => product.BrandPage, () => brandAlias)
                     .Where(() => brandAlias.Name.IsInsensitiveLike(query.Brand, MatchMode.Anywhere));
             }
 

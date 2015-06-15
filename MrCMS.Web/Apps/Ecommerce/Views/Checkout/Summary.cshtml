@@ -75,30 +75,48 @@
                         <th>@Resource("Total"):</th>
                         <td class="green"><strong>@Model.Total.ToCurrencyFormat()</strong></td>
                     </tr>
-                    @if (Model.AppliedGiftCards.Any() || Model.UseRewardPoints)
+                    @foreach (GiftCard card in Model.AppliedGiftCards)
                     {
-                        foreach (GiftCard card in Model.AppliedGiftCards)
-                        {
-                            <tr>
-                                <td>
-                                    @Resource("Gift Card") @card.Code
-                                </td>
-                                <td>
-                                    @card.AvailableAmount.ToCurrencyFormat()
-                                </td>
-                            </tr>
-                        }
-                        if (Model.UseRewardPoints)
-                        {
-                            <tr>
-                                <td>
-                                    Reward points applied (@Model.AppliedRewardPoints)
-                                </td>
-                                <td>
+                        <tr>
+                            <td>
+                                @Resource("Gift Card") @card.Code
+                            </td>
+                            <td>
+                                @card.AvailableAmount.ToCurrencyFormat()
+                            </td>
+                        </tr>
+                    }
+                    @if (ecommerceSettings.RewardPointsEnabled && Model.AvailablePoints > 0)
+                    {
+                        <tr>
+                            <td>
+                                <div style="line-height:30px">
+                                    @Html.InlineCheckboxFor(x => x.UseRewardPoints, checkboxAttributes: new { @class = "checkbox", data_use_reward_points = true })
+                                </div>
+
+                                @if (!Model.UseRewardPoints)
+                                {
+                                    <span>
+                                        <strong>@Resource("Available balance"):</strong> @Model.AvailablePoints (@Model.AvailablePointsValue.ToCurrencyFormat())
+                                    </span>
+                                }
+                                @if (Model.AppliedRewardPoints > 0)
+                                {
+                                    <span>
+                                        <strong>@Resource("Reward points applied"):</strong> (@Model.AppliedRewardPoints)
+                                    </span>
+                                }
+                            </td>
+                            <td style="vertical-align: bottom">
+                                @if (Model.AppliedRewardPoints > 0)
+                                {
                                     @((-Model.AppliedRewardPointsAmount).ToCurrencyFormat())
-                                </td>
-                            </tr>
-                        }
+                                }
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.AppliedGiftCards.Any() || Model.AppliedRewardPoints > 0)
+                    {
                         <tr>
                             <th>@Resource("Total to pay"):</th>
                             <td><strong>@Model.TotalToPay.ToCurrencyFormat()</strong></td>
@@ -109,7 +127,7 @@
             <a class="btn btn-default margin-bottom-20" id="edit" href="@(UniquePageHelper.GetUrl<Cart>())">@Resource("Edit")</a>
         </div>
     }
-    
+
     @if (ecommerceSettings.GiftMessageEnabled)
     {
         <div class="grey-background padding-20 margin-bottom-20">
@@ -132,10 +150,10 @@
     @if (ecommerceSettings.GiftCardsEnabled)
     {
         <div class="grey-background padding-20 margin-bottom-20">
-            @{ Html.RenderAction("GiftCards", "Cart"); }    
+            @{ Html.RenderAction("GiftCards", "Cart"); }
         </div>
     }
-    
+
     <div class="grey-background padding-20 margin-bottom-20">
         @{ Html.RenderAction("Discounts", "Cart"); }
     </div>

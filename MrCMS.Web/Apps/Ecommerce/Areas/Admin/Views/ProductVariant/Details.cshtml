@@ -3,9 +3,9 @@
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
     var productVariantTypeOptions = ViewData["product-variant-type-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    var eTagOptions = ViewData["e-tag-options"] as List<SelectListItem> ?? new List<SelectListItem>();
 }
-<div id="details" class="tab-pane active">
-
+<div id="details" class="tab-pane active" style="padding-left: 5px; padding-right: 5px;">
     @Html.HiddenFor(variant => variant.Product.Id)
     <div class="row">
         <div class="col-xs-6">
@@ -87,6 +87,15 @@
         </div>
         <div class="col-xs-6">
             <div class="form-group">
+                @Html.LabelFor(variant => variant.ETag)
+                @Html.DropDownListFor(variant => variant.ETag.Id, eTagOptions, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
                 @if (MrCMS.Website.MrCMSApplication.Get<MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings>().TaxesEnabled)
                 {
                     @Html.LabelFor(product => product.TaxRate.Id, "Tax Rate")
@@ -95,23 +104,4 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-6">
-            <div class="form-group">
-                @Html.LabelFor(product => product.TrackingPolicy)
-                @Html.DropDownListFor(product => product.TrackingPolicy, ViewData["tracking-policy"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="col-xs-6">
-            <div class="form-group">
-                @if (!SiteSettings<EcommerceSettings>().WarehouseStockEnabled)
-                {
-                    @Html.LabelFor(variant => variant.StockRemaining)
-                    @Html.TextBoxFor(variant => variant.StockRemaining, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(variant => variant.StockRemaining)
-                }
-            </div>
-        </div>
-    </div>
-
 </div>

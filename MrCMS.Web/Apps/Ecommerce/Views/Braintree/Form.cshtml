@@ -1,0 +1,74 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Payment.Braintree
+@model MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Models.BraintreePaymentDetailsModel
+<script type="text/javascript" src="~/Apps/Ecommerce/Content/Scripts/custom/braintree-checkout.js"></script>
+@{
+    var token = ViewData["token"] as string;
+    var expiryMonths = ViewData["expiry-months"] as IEnumerable<SelectListItem>;
+    var expiryYears = ViewData["expiry-years"] as IEnumerable<SelectListItem>;
+}
+<hr />
+<div class="alert alert-danger" role="alert" data-braintree-errors="true" style="display: none;"></div>
+
+@if (SiteSettings<BraintreeSettings>().PayPalPaymentEnabled)
+{
+    <div id="paypal-container"></div>
+    <hr />
+    <a href="#" data-paypal="true" class="btn btn-primary btn-lg" style="display:none;">@Resource("Confirm Order")</a>
+}
+
+<div class="row">
+    <div class="col-sm-8">
+        <div data-card="true">
+            <h4>@Resource("Pay by card")</h4>
+            @using (Html.BeginForm("MakePaymentCard", "Braintree", FormMethod.Post, new { id = "braintree-checkout", data_braintree_checkout_form = true }))
+            {
+                @Html.Hidden("ClientToken", token)
+                @Html.HiddenFor(x => x.TotalToPay)
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CardNumber)
+                    @Html.TextBoxFor(x => x.CardNumber, new { @class = "form-control", data_braintree_name = "number" })
+                    @Html.ValidationMessageFor(x => x.CardNumber)
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CardholderName)
+                    @Html.TextBoxFor(x => x.CardholderName, new { @class = "form-control", data_braintree_name = "cardholder_name" })
+                    @Html.ValidationMessageFor(x => x.CardholderName)
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CVV)
+                    @Html.TextBoxFor(x => x.CVV, new { @class = "form-control", data_braintree_name = "cvv" })
+                    @Html.ValidationMessageFor(x => x.CVV)
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.ExpirationMonth)
+                            @Html.DropDownListFor(x => x.ExpirationMonth, expiryMonths, new { @class = "form-control", data_braintree_name = "expiration_month" })
+                            @Html.ValidationMessageFor(x => x.ExpirationMonth)
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.ExpirationYear)
+                            @Html.DropDownListFor(x => x.ExpirationYear, expiryYears, new { @class = "form-control", data_braintree_name = "expiration_year" })
+                            @Html.ValidationMessageFor(x => x.ExpirationYear)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.PostalCode)
+                    @Html.TextBoxFor(x => x.PostalCode, new { @class = "form-control", data_braintree_name = "postal_code" })
+                    @Html.ValidationMessageFor(x => x.PostalCode)
+                </div>
+
+                <input type="submit" value="@Resource("Confirm Order")" class="btn btn-primary btn-lg" data-submit-button="true" />
+            }
+        </div>
+
+    </div>
+</div>

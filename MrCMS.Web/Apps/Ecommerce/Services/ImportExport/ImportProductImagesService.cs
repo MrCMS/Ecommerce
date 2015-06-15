@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
-using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
@@ -67,6 +63,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 {
                     var memoryStream = new MemoryStream();
                     responseStream.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
 
                     var fileName = Path.GetFileName(fileLocation);
                     _fileService.AddFile(memoryStream, fileName, httpWebResponse.ContentType,

@@ -10,6 +10,7 @@ using MrCMS.Entities;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Helpers.Validation;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
+using MrCMS.Web.Apps.Ecommerce.Entities.ETags;
 using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
@@ -288,6 +289,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             }
         }
 
+        [DisplayName("Custom In Stock Message")]
+        public virtual string CustomStockInStockMessage { get; set; }
+        
+        [DisplayName("Custom Out Of Stock Message")]
+        public virtual string CustomStockOutOfStockMessage { get; set; }
+
         private PriceBreak GetPriceBreak(int quantity)
         {
             return PriceBreaks != null
@@ -348,5 +355,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
             return title;
         }
+
+        public virtual decimal Rating { get; set; }
+
+        [DisplayName("Number of Reviews")]
+        public virtual int NumberOfReviews { get; set; }
+
+        [DisplayName("E-Tag")]
+        public virtual ETag ETag { get; set; }
+
+        public virtual bool CanShowEtag
+        {
+            get { return this.ETag != null && !string.IsNullOrWhiteSpace(this.ETag.Image); }
+        }
+
     }
 }

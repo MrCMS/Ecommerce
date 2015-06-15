@@ -193,8 +193,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             }
 
             //BRAND
-            if (productVariant.Product != null && productVariant.Product.Brand != null && !String.IsNullOrWhiteSpace(productVariant.Product.Brand.Name))
-                xml.WriteElementString("g", "brand", ns, productVariant.Product.Brand.Name);
+            if (productVariant.Product != null && productVariant.Product.BrandPage != null && !String.IsNullOrWhiteSpace(productVariant.Product.BrandPage.Name))
+                xml.WriteElementString("g", "brand", ns, productVariant.Product.BrandPage.Name);
 
             //ID
             xml.WriteElementString("g", "id", ns, productVariant.Id.ToString(new CultureInfo("en-GB", false).NumberFormat));

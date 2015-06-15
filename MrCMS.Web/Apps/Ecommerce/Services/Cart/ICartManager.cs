@@ -15,7 +15,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         void AddGiftCard(string code);
         void RemoveGiftCard(string code);
         BasePaymentMethod SetPaymentMethod(string methodName);
+        
         void SetPayPalExpressPayerId(string payerId);
         void SetPayPalExpressToken(string token);
+        void ResetPayPalExpress();
     }
 }

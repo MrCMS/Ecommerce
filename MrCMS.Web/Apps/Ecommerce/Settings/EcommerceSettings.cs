@@ -17,9 +17,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
             TermsAndConditionsRequired = true;
             DefaultProductSearchSort = ProductSearchSort.MostPopular;
             GiftMessageMaxLength = 250;
-
             EncryptionPassPhrase = "MrCMS Ecommerce's passphrase for session encryption and decryption";
             DefaultSessionExpiryDays = 28;
+            BrandUrl = "brand/{0}";
+            ProductUrl = "product/{0}";
+            CategoryUrl = "category/{0}";
         }
 
 
@@ -97,5 +99,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 
         public string EncryptionPassPhrase { get; set; }
         public int DefaultSessionExpiryDays { get; set; }
+
+        [DisplayName("Product Url")]
+        public string ProductUrl { get; set; }
+
+        [DisplayName("Brand Url")]
+        public string BrandUrl { get; set; }
+
+        [DisplayName("Category Url")]
+        public string CategoryUrl { get; set; }
     }
 }

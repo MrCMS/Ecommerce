@@ -8,18 +8,19 @@ using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Areas.Admin.Services;
+using MrCMS.Website.ActionResults;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
     public class ProductControllerTests
     {
-        private readonly IBrandService _brandService;
         private readonly ICategoryService _categoryService;
         private readonly IDocumentService _documentService;
         private readonly IFileAdminService _fileService;
@@ -30,7 +31,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private readonly IProductService _productService;
         private readonly SiteSettings _siteSettings;
         private readonly IUniquePageService _uniquePageService;
-
+        private readonly IETagAdminService _eTagAdminService;
         public ProductControllerTests()
         {
             _documentService = A.Fake<IDocumentService>();
@@ -38,15 +39,15 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _categoryService = A.Fake<ICategoryService>();
             _productOptionManager = A.Fake<IProductOptionManager>();
             _fileService = A.Fake<IFileAdminService>();
-            _brandService = A.Fake<IBrandService>();
             _productOptionManagementService = A.Fake<IProductOptionManagementService>();
             _siteSettings = new SiteSettings {DefaultPageSize = 10};
             _uniquePageService = A.Fake<IUniquePageService>();
             _productSearch = new ProductSearch();
+            _eTagAdminService = A.Fake<IETagAdminService>();
             A.CallTo(() => _uniquePageService.GetUniquePage<ProductSearch>()).Returns(_productSearch);
             _productController = new ProductController(_productService, _documentService, _categoryService,
                 _productOptionManager,
-                _fileService, _brandService, _productOptionManagementService, _siteSettings, _uniquePageService);
+                _fileService, _productOptionManagementService, _siteSettings, _uniquePageService, _eTagAdminService);
         }
 
         [Fact]
@@ -136,9 +137,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var product = new Product {Id = 123};
 
-            JsonResult result = _productController.AddCategory(product, 1);
+            var result = _productController.AddCategory(product, 1);
 
-            result.Should().BeOfType<JsonResult>();
+            result.Should().BeOfType<JsonNetResult>();
         }
 
         [Fact]

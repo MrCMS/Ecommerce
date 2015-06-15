@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Models.Cart;
 using MrCMS.Web.Apps.Ecommerce.Payment.Paypoint;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website;

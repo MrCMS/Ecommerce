@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Apps;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
-using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce
@@ -22,6 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             MapPaymentMethodRoutes(context);
             MapRemoteValidationRoutes(context);
             MapWishlistRoutes(context);
+            MapUserAccount(context);
 
             context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders",
                 new { controller = "UserAccount", action = "UserAccountOrders" });
@@ -33,6 +33,13 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Product Search - Results", "search/results",
                 new { controller = "ProductSearch", action = "Results" },
                 new[] { typeof(ProductSearchController).Namespace });
+
+            context.MapRoute("Brand Search - Query", "brand/search/query",
+                new { controller = "Brand", action = "Query" }, new[] { typeof(BrandController).Namespace });
+            context.MapRoute("Brand Search - Results", "brand/search/results",
+                new { controller = "Brand", action = "Results" },
+                new[] { typeof(BrandController).Namespace });
+
             context.MapRoute("Category Container - Categories", "Apps/Ecommerce/CategoryContainer/Categories",
                 new { controller = "CategoryContainer", action = "Categories" },
                 new[] { typeof(ProductContainer).Namespace });
@@ -72,6 +79,25 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Generate Contact Us Map", "get-contact-map",
                 new { controller = "ContactUs", action = "GenerateMap" },
                 new[] { typeof(ContactUsController).Namespace });
+        }
+
+        private static void MapUserAccount(MrCMSAppRegistrationContext context)
+        {
+            context.MapRoute("Update User Info", "user-account/handle/user-info",
+                new {controller = "UserAccountInfo", action = "UpdateUserInfo"},
+                new[] {typeof (UserAccountInfoController).Namespace});
+
+            context.MapRoute("Update Password", "user-account/handle/update-password",
+                new { controller = "UserAccountChangePassword", action = "UpdatePassword" },
+                new[] {typeof (UserAccountChangePasswordController).Namespace});
+
+            context.MapRoute("User Account - Edit", "user-account/handle/edit-address",
+                new { controller = "UserAccountEditAddress", action = "Edit" },
+                new[] {typeof (UserAccountEditAddressController).Namespace});
+
+            context.MapRoute("User Account - Delete Address", "user-account/handle/delete-address/{id}",
+                new {controller = "UserAccountAddresses", action = "DeleteAddress"},
+                new[] {typeof (UserAccountAddressesController).Namespace});
         }
 
         private static void MapWishlistRoutes(MrCMSAppRegistrationContext context)
@@ -119,6 +145,10 @@ namespace MrCMS.Web.Apps.Ecommerce
                 "Apps/Ecommerce/PayPalExpress/SetExpressCheckout",
                 new { controller = "PayPalExpressCheckout", action = "SetExpressCheckout" },
                 new[] { typeof(PayPalExpressCheckoutController).Namespace });
+            context.MapRoute("PayPal Express Checkout - Reset",
+                "Apps/Ecommerce/PayPalExpress/Reset",
+                new { controller = "PayPalExpressCheckout", action = "Reset" },
+                new[] { typeof(PayPalExpressCheckoutController).Namespace });
             context.MapRoute("PayPal Express Checkout - IPN", "Apps/Ecommerce/PayPalExpress/IPN",
                 new { controller = "PayPalExpressIPN", action = "Handle" },
                 new[] { typeof(PayPalExpressIPNController).Namespace });
@@ -157,8 +187,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new { controller = "WorldPay", action = "Form" },
                 new[] { typeof(WorldPayController).Namespace });
             context.MapRoute("Checkout - WorldPay Notification Url", "Apps/Ecommerce/WorldPay/Notification",
-                new {controller = "WorldPay", action = "Notification"},
-                new[] {typeof (WorldPayController).Namespace});
+                new { controller = "WorldPay", action = "Notification" },
+                new[] { typeof(WorldPayController).Namespace });
 
 
 
@@ -170,6 +200,18 @@ namespace MrCMS.Web.Apps.Ecommerce
                  "Apps/Ecommerce/CharityClear/Notification",
                  new { controller = "CharityClear", action = "Notification" },
                  new[] { typeof(CharityClearController).Namespace });
+
+            context.MapRoute("Braintree Form", "Apps/Ecommerce/Confirm/Braintree",
+                new {controller = "Braintree", action = "Form"},
+                new[] {typeof (BraintreeController).Namespace});
+
+            context.MapRoute("Braintree Form Post", "Apps/Ecommerce/Confirm/BraintreePayment/Card",
+                new {controller = "Braintree", action = "MakePaymentCard"},
+                new[] {typeof (BraintreeController).Namespace});
+
+            context.MapRoute("Braintree Paypal Post", "Apps/Ecommerce/Confirm/BraintreePayment/Paypal",
+                new {controller = "Braintree", action = "MakePaymentPaypal"},
+                new[] {typeof (BraintreeController).Namespace});
         }
 
 
@@ -243,6 +285,10 @@ namespace MrCMS.Web.Apps.Ecommerce
 
             context.MapRoute("Checkout - Set Payment Method", "Apps/Ecommerce/PaymentDetails/SetPaymentMethod",
                 new { controller = "PaymentDetails", action = "SetPaymentMethod" },
+                new[] { typeof(PaymentDetailsController).Namespace });
+
+            context.MapRoute("Checkout - Get Payment Methods", "Apps/Ecommerce/PaymentDetails/Methods",
+                new { controller = "PaymentDetails", action = "Methods" },
                 new[] { typeof(PaymentDetailsController).Namespace });
 
             context.MapRoute("Order Placed - Login and associate order", "order-placed/login",

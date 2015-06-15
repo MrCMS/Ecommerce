@@ -28,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 cart.Items.FindAll(x =>
                 {
                     Query query = GetQuery(x.Item.Product.Id);
-                    List<int> ids = _getProductCategories.Get(query, null);
+                    List<int> ids = _getProductCategories.Get(query);
                     return categories.Intersect(ids).Any();
                 });
             return cartItems;

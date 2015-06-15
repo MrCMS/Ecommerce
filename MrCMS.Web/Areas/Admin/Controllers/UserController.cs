@@ -67,6 +67,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
             ViewData["AvailableRoles"] = _roleService.GetAllRoles();
             ViewData["OnlyAdmin"] = _roleService.IsOnlyAdmin(user);
             ViewData["culture-options"] = _getUserCultureOptions.Get();
+
             ViewData["edit-tabs"] = _getUserEditTabsService.GetEditTabs(user);
             return user == null
                        ? (ActionResult)RedirectToAction("Index")
