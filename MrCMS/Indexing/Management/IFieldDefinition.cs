@@ -1,4 +1,4 @@
-﻿using MrCMS.Entities;
+using MrCMS.Entities;
 
 namespace MrCMS.Indexing.Management
 {

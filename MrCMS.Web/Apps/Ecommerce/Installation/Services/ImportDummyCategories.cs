@@ -29,13 +29,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var result = _importExportManager.ImportDocumentsFromExcel(memoryStream, false);
             
             var batchRun = result.Batch.BatchRuns.First();
-            batchRun.Status = BatchRunStatus.Executing;
             _synchronousBatchRunExecution.Execute(batchRun);
 
-            SetFeaturedProducts(model);
+            SetFeaturedCategories(model);
         }
 
-        private void SetFeaturedProducts(MediaModel model)
+        private void SetFeaturedCategories(MediaModel model)
         {
             var cat1 = _documentService.GetDocumentByUrl<Category>(FeaturedCategoriesInfo.Category1Url);
             var cat2 = _documentService.GetDocumentByUrl<Category>(FeaturedCategoriesInfo.Category2Url);

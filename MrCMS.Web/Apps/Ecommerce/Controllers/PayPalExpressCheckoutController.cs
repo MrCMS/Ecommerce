@@ -86,5 +86,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                        ? _uniquePageService.RedirectTo<SetShippingDetails>()
                        : _uniquePageService.RedirectTo<Cart>();
         }
+
+        public RedirectResult Reset()
+        {
+            _payPalExpressService.Reset();
+            return _uniquePageService.RedirectTo<PaymentDetails>();
+        }
     }
 }

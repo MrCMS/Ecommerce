@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Helpers.Cart;
+using MrCMS.Web.Apps.Ecommerce.Models.Cart;
 using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
@@ -129,10 +130,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             _cartSessionManager.SetSessionValue(CurrentPayPalExpressToken, _getUserGuid.UserGuid, token, SessionDataTimeoutDefaults.PaymentInfo);
         }
-    }
 
-    public static class SessionDataTimeoutDefaults
-    {
-        public static readonly TimeSpan PaymentInfo = TimeSpan.FromMinutes(20);
+        public void ResetPayPalExpress()
+        {
+            _cartSessionManager.RemoveValue(CurrentPayPalExpressPayerId, _getUserGuid.UserGuid);
+            _cartSessionManager.RemoveValue(CurrentPayPalExpressToken, _getUserGuid.UserGuid);
+        }
     }
 }

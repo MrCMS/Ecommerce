@@ -43,7 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
         private IEnumerable<string> GetValues(Product product, HashSet<ProductSpecificationValue> values)
         {
             return
-                values.Where(value => value.Product == product)
+                values.Where(value => value.Product != null && value.Product.Id == product.Id)
                     .Select(value => value.ProductSpecificationAttributeOption.Id.ToString())
                     .ToList();
         }
@@ -55,8 +55,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                            {
                                typeof (ProductSpecificationAttributeOption),
                                GetActions
+                           },
+                           {
+                               typeof (ProductSpecificationValue),
+                               GetValueActions
                            }
                        };
+        }
+
+        private IEnumerable<LuceneAction> GetValueActions(SystemEntity entity)
+        {
+            var line = entity as ProductSpecificationValue;
+            if (line == null)
+                yield break;
+
+            yield return new LuceneAction
+            {
+                Entity = line.Product.Unproxy(),
+                Operation = LuceneOperation.Update,
+                IndexDefinition = IndexingHelper.Get<ProductSearchIndex>()
+            };
         }
 
         private static IEnumerable<LuceneAction> GetActions(SystemEntity entity)

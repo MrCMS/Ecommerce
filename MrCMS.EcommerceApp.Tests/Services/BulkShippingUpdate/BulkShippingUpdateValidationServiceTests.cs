@@ -32,7 +32,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.BulkShippingUpdate
                 Enumerable.Range(1, 10).Select(i => A.Fake<IBulkShippingUpdateValidationRule>()).ToList();
             validationRules.ForEach(rule => mockingKernel.Bind<IBulkShippingUpdateValidationRule>()
                                                                       .ToMethod(context => rule));
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
 
             var items = Enumerable.Range(1, 10).Select(i => new BulkShippingUpdateDataTransferObject()).ToList();
 

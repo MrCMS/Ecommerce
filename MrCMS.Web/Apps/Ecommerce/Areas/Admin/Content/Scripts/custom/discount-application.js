@@ -5,7 +5,7 @@
         formSelector = '[data-discount-application]';
 
     function updateFancyBox() {
-        parent.$.fancybox.update();
+        //parent.$.fancybox.update();
     }
     function setFields(html) {
         var fieldsContainer = $(fieldsSelector);
@@ -20,7 +20,7 @@
         $.post(form.attr('action'), form.serialize(), function (response) {
             if (response) {
                 parent.$(parent.document).trigger('reload-applications');
-                parent.$.fancybox.close();
+                parent.$.featherlight.close();
             }
         });
     }

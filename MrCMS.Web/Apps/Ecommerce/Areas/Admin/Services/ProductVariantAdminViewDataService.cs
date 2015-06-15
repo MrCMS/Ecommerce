@@ -13,10 +13,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         private readonly IGetTrackingPolicyOptions _getTrackingPolicyOptions;
         private readonly IGetShippingOptions _getShippingOptions;
         private readonly IProductReviewUIService _productReviewUIService;
+        private readonly IETagAdminService _eTagAdminService;
 
         public ProductVariantAdminViewDataService(IGetGiftCardTypeOptions getGiftCardTypeOptions,
             IGetProductVariantTypeOptions getProductVariantTypeOptions, IGetTaxRateOptions getTaxRateOptions,
-            IGetTrackingPolicyOptions getTrackingPolicyOptions, IGetShippingOptions getShippingOptions, IProductReviewUIService productReviewUIService)
+            IGetTrackingPolicyOptions getTrackingPolicyOptions, IGetShippingOptions getShippingOptions, IProductReviewUIService productReviewUIService, IETagAdminService eTagAdminService)
         {
             _getGiftCardTypeOptions = getGiftCardTypeOptions;
             _getProductVariantTypeOptions = getProductVariantTypeOptions;
@@ -24,6 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
             _getTrackingPolicyOptions = getTrackingPolicyOptions;
             _getShippingOptions = getShippingOptions;
             _productReviewUIService = productReviewUIService;
+            _eTagAdminService = eTagAdminService;
         }
 
         public void SetViewData(ViewDataDictionary viewData, ProductVariant productVariant)
@@ -33,6 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
             viewData["tax-rate-options"] = _getTaxRateOptions.GetOptions();
             viewData["tracking-policy"] = _getTrackingPolicyOptions.Get();
             viewData["shipping-options"] = _getShippingOptions.Get(productVariant);
+            viewData["e-tag-options"] = _eTagAdminService.GetOptions();
         }
     }
 }

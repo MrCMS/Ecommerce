@@ -1,6 +1,5 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers
-@using MrCMS.Web.Apps.Ecommerce.Helpers.Cart
 @using MrCMS.Web.Apps.Ecommerce.Models
 @model MrCMS.Web.Apps.Ecommerce.Pages.PaymentDetails
 @{ var cart = ViewData["cart"] as CartModel;}
@@ -78,21 +77,10 @@
                 <div class="padding-20">
                     @if (!settingBillingAddress)
                     {
-                        <div data-payment-methods="true">
-                            <div id="loading-message" style="display: none;"><img src="~/Apps/Ecommerce/Content/Images/ajax-loader.gif" alt="Loading" title="Loading" /></div>
-                            @{ Html.RenderPartial("SelectMethod", cart); }
-                            <div id="payment-confirmation">
-                                @if (cart.CanShowPaymentMethod())
-                                {
-                                    Html.RenderAction(cart.PaymentMethodAction, cart.PaymentMethodController);
-                                }
-                            </div>
-                        </div>
+                        Html.RenderAction("Methods", "PaymentDetails", cart);
                         <div data-please-accept="true">
                             @Resource("Please accept the terms and conditions to proceed to payment")
                         </div>
-                        
-
                     }
                     else
                     {
@@ -111,4 +99,7 @@
         </div>
     </div>
 </div>
-@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/payment-details.js"); }
+@{
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/payment-details.js");
+    Html.IncludeScript("https://js.braintreegateway.com/v2/braintree.js");
+}

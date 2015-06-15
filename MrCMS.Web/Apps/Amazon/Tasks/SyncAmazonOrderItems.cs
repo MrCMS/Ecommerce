@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MrCMS.Tasks;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
@@ -13,7 +14,8 @@ namespace MrCMS.Web.Apps.Amazon.Tasks
         private readonly IAmazonOrderSyncDataService _amazonOrderSyncDataService;
         private readonly IUpdateAmazonOrder _updateAmazonOrder;
 
-        public SyncAmazonOrdersItems(IAmazonOrderSyncDataService amazonOrderSyncDataService, IUpdateAmazonOrder updateAmazonOrder)
+        public SyncAmazonOrdersItems(IAmazonOrderSyncDataService amazonOrderSyncDataService,
+            IUpdateAmazonOrder updateAmazonOrder)
         {
             _amazonOrderSyncDataService = amazonOrderSyncDataService;
             _updateAmazonOrder = updateAmazonOrder;
@@ -28,12 +30,14 @@ namespace MrCMS.Web.Apps.Amazon.Tasks
         {
             try
             {
-                var ordersForAdd = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Add, 10);
-                foreach (var amazonOrderSyncData in ordersForAdd)
+                IList<AmazonOrderSyncData> ordersForAdd =
+                    _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Add, 10);
+                foreach (AmazonOrderSyncData amazonOrderSyncData in ordersForAdd)
                     Update(amazonOrderSyncData);
 
-                var ordersForUpdate = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Update);
-                foreach (var amazonOrderSyncData in ordersForUpdate)
+                IList<AmazonOrderSyncData> ordersForUpdate =
+                    _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Update);
+                foreach (AmazonOrderSyncData amazonOrderSyncData in ordersForUpdate)
                     Update(amazonOrderSyncData);
             }
             catch (Exception ex)
@@ -41,6 +45,7 @@ namespace MrCMS.Web.Apps.Amazon.Tasks
                 CurrentRequestData.ErrorSignal.Raise(ex);
             }
         }
+
         private void Update(AmazonOrderSyncData data)
         {
             if (data.Status != SyncAmazonOrderStatus.Pending)
@@ -48,6 +53,7 @@ namespace MrCMS.Web.Apps.Amazon.Tasks
             LogStatus(data, SyncAmazonOrderStatus.InProgress);
             _updateAmazonOrder.UpdateOrder(data);
         }
+
         private void LogStatus(AmazonOrderSyncData data, SyncAmazonOrderStatus status)
         {
             data.Status = status;

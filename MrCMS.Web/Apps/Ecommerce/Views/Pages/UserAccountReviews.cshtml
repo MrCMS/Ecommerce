@@ -1,0 +1,40 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
+@model MrCMS.Web.Apps.Ecommerce.Pages.UserAccountReviews
+@{
+    var reviews = ViewData["reviews"] as IPagedList<ProductReview> ?? PagedList<ProductReview>.Empty;
+}
+<h1>@Editable(Model, page => page.Name)</h1>
+@Editable(Model, page => page.BodyContent, true)
+
+@if (reviews.Any())
+{
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>@Resource("Product")</th>
+                <th>@Resource("Review Title")</th>
+                <th>@Resource("Your Rating")</th>
+                <th>@Resource("Average Rating")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var review in reviews)
+            {
+                <tr>
+                    <td><a href="@review.ProductVariant.DirectUrl">@review.ProductVariant.Name</a></td>
+                    <td>@review.Title</td>
+                    <td>@review.Rating</td>
+                    <td>@review.ProductVariant.Rating.ToString("#.#")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @Html.PageCurrentPage(reviews, page => new { page }, PagedListRenderOptions.OnlyShowFivePagesAtATime)
+}
+else
+{
+    <p>@Resource("You have not made any product reviews.")</p>
+}

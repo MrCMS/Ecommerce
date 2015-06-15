@@ -10,6 +10,7 @@ using MrCMS.Web.Apps.Amazon.Services.Listings.Sync;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.Currencies;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -17,6 +18,7 @@ using MrCMS.Website;
 using NHibernate;
 using Ninject.MockingKernel;
 using Xunit;
+using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
 using Product = MrCMS.Web.Apps.Ecommerce.Pages.Product;
 
 namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
@@ -48,7 +50,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
         public void PrepareForSyncAmazonListingService_UpdateAmazonListing_ShouldReturnAmazonListingType()
         {
             var mockingKernel = new MockingKernel();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
 
             var product = new Product();
@@ -72,13 +74,13 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             Session.Transact(session => session.Save(item));
 
             var mockingKernel = new MockingKernel();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
             mockingKernel.Bind<EcommerceSettings>().ToMethod(context => new EcommerceSettings(){CurrencyId = 1});
 
             var product = new Product()
                 {
-                    Brand = new Brand(){Name = "B"}
+                    BrandPage = new Brand(){Name = "B"}
                 };
             var productVariant = new ProductVariant()
                 {
@@ -125,13 +127,13 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             Session.Transact(session => session.Save(item));
 
             var mockingKernel = new MockingKernel();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
             mockingKernel.Bind<EcommerceSettings>().ToMethod(context => new EcommerceSettings() { CurrencyId = 1 });
 
             var product = new Product()
             {
-                Brand = new Brand() { Name = "B" }
+                BrandPage = new Brand() { Name = "B" }
             };
             var productVariant = new ProductVariant()
             {
@@ -165,7 +167,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
         public void PrepareForSyncAmazonListingService_InitAmazonListingFromProductVariant_ShouldReturnAmazonListingType()
         {
             var mockingKernel = new MockingKernel();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
 
             var model = new AmazonListing();
@@ -182,13 +184,13 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             Session.Transact(session => session.Save(item));
 
             var mockingKernel = new MockingKernel();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
             mockingKernel.Bind<EcommerceSettings>().ToMethod(context => new EcommerceSettings() { CurrencyId = 1 });
 
             var product = new Product()
             {
-                Brand = new Brand() { Name = "B" }
+                BrandPage = new Brand() { Name = "B" }
             };
             var productVariant = new ProductVariant()
             {
@@ -239,13 +241,13 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             Session.Transact(session => session.Save(item));
 
             var mockingKernel = new MockingKernel();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
             mockingKernel.Bind<EcommerceSettings>().ToMethod(context => new EcommerceSettings() { CurrencyId = 1 });
 
             var product = new Product()
             {
-                Brand = new Brand() { Name = "B" }
+                BrandPage = new Brand() { Name = "B" }
             };
             var productVariant = new ProductVariant()
             {

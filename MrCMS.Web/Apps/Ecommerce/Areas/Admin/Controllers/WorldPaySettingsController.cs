@@ -19,7 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _configurationProvider = configurationProvider;
         }
 
-        [MrCMSACLRule(typeof(WorldPaySettingsACL), SagePaySettingsACL.View)]
+        [MrCMSACLRule(typeof(WorldPaySettingsACL), WorldPaySettingsACL.View)]
         public ViewResult Index()
         {
             return View(_configurationProvider.GetSiteSettings<WorldPaySettings>());

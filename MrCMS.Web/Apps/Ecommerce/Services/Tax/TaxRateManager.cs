@@ -45,7 +45,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
 
         public IList<TaxRate> GetAll()
         {
-            return _session.QueryOver<TaxRate>().Cacheable().List();
+            return _session.QueryOver<TaxRate>().Cacheable().List().OrderByDescending(x => x.IsDefault).ThenBy(x => x.Percentage).ToList();
         }
 
         public void Add(TaxRate taxRate)

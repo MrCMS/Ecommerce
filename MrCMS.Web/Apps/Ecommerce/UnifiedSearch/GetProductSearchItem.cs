@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using MrCMS.Helpers;
 using MrCMS.Search;
 using MrCMS.Search.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
@@ -12,29 +13,51 @@ namespace MrCMS.Web.Apps.Ecommerce.UnifiedSearch
 {
     public class GetProductSearchItem : GetUniversalSearchItemBase<Product>
     {
-        private readonly UrlHelper _urlHelper;
         private readonly ISession _session;
 
-        public GetProductSearchItem(UrlHelper urlHelper, ISession session)
+        public GetProductSearchItem( ISession session)
         {
-            _urlHelper = urlHelper;
             _session = session;
         }
 
         public override UniversalSearchItem GetSearchItem(Product product)
         {
             var productVariants = _session.QueryOver<ProductVariant>().Where(x => x.Product.Id == product.Id).Cacheable().List();
-            var searchTerms = new List<string> { product.Name, GetVariantNames(productVariants) };
-            searchTerms.AddRange(GetSkus(productVariants));
+            return GetItem(product, productVariants);
+        }
+
+        private UniversalSearchItem GetItem(Product product, IList<ProductVariant> productVariants)
+        {
+            var searchTerms = new List<string> {product.Name, GetVariantNames(productVariants)};
 
             return new UniversalSearchItem
             {
                 DisplayName = product.Name,
                 Id = product.Id,
-                SearchTerms = searchTerms,
+                PrimarySearchTerms = searchTerms,
+                SecondarySearchTerms = GetSkus(productVariants),
                 SystemType = product.GetType().FullName,
-                ActionUrl = _urlHelper.Action("Edit", "Webpage", new { id = product.Id, area = "admin" }),
+                ActionUrl = string.Format("/admin/webpage/edit/{0}", product.Id),
             };
+        }
+
+        public override HashSet<UniversalSearchItem> GetSearchItems(HashSet<Product> entities)
+        {
+            var allVariants =
+                _session.QueryOver<ProductVariant>()
+                    .Where(x => x.Product != null)
+                    .Cacheable()
+                    .List()
+                    .GroupBy(x => x.Product.Id)
+                    .ToDictionary(x => x.Key);
+
+            return
+                entities.Select(
+                    product =>
+                        GetItem(product,
+                            allVariants.ContainsKey(product.Id)
+                                ? allVariants[product.Id].ToList()
+                                : new List<ProductVariant>())).ToHashSet();
         }
 
         private string GetVariantNames(IList<ProductVariant> productVariants)

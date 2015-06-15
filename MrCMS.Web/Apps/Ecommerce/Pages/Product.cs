@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Entities.ETags;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
@@ -38,7 +40,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual IList<ProductOption> Options { get; set; }
 
-        public virtual Brand Brand { get; set; }
+        [Obsolete("Use BrandPage instead")]
+        public virtual OldBrand Brand { get; set; }
+        public virtual Brand BrandPage { get; set; }
 
         [DisplayName("Abstract")]
         [StringLength(500, ErrorMessage = "Abstract cannot be longer than 500 characters.")]
@@ -50,7 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             {
                 return Gallery != null
                     ? (IEnumerable<MediaFile>)
-                        Gallery.Files.Where(file => file.IsImage).OrderBy(file => file.DisplayOrder)
+                        Gallery.Files.Where(file => file.IsImage()).OrderBy(file => file.DisplayOrder)
                     : new List<MediaFile>();
             }
         }

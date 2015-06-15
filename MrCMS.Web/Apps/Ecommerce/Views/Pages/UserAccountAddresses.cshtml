@@ -1,0 +1,45 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Entities.Users
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model UserAccountAddresses      
+@{
+    var addresses = ViewData["addresses"] as IList<Address> ?? new List<Address>();
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/bootbox.min.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/user-account-addresses.js");
+}
+<h1>@Editable(Model, page => page.Name)</h1>
+@Editable(Model, page => page.BodyContent, true)
+@{Html.RenderPartial("ShowMessages");}
+@if (addresses.Any())
+{
+    foreach (var chunk in addresses.Chunk(3))
+    {
+        <div class="row">
+            @foreach (var address in chunk)
+            {
+                <div class="col-sm-4">
+                    <ul class="list-unstyled">
+                        <li>@address.Name</li>
+                        <li>@address.Company</li>
+                        <li>@address.PhoneNumber</li>
+                        <li>@address.Address1</li>
+                        <li>@address.Address2</li>
+                        <li>@address.City</li>
+                        <li>@address.StateProvince</li>
+                        <li>@address.PostalCode</li>
+                        <li>@address.GetCountryName()</li>
+                    </ul>
+                    <a href="@(UniquePageHelper.GetUrl<UserAccountEditAddress>(new { id = address.Id }))" class="btn btn-default btn-xs">Edit</a>
+                    <a href="#" data-delete-address="@address.Id" class="btn btn-danger btn-xs">Delete</a>
+                </div>
+            }
+        </div>
+    }
+}
+else
+{
+    <p>@Resource("User Account Addresses - No Addresses", "No addresses.")</p>
+}
+
+<div class="hidden" data-delete-message="true">@Resource("Are you sure you wish to delete this address?")</div>

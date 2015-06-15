@@ -47,7 +47,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                             CustomerIP = data.CustomerIp,
                             DiscountAmount = data.OrderDiscount,
                             Id = data.Id,
-                            Guid = data.Guid,
                             OrderEmail = data.Email,
                             PaidDate = data.PaidDate,
                             PaymentStatus = GetPaymentStatus(data.PaymentStatus),
@@ -65,6 +64,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                             PaymentMethod = data.PaymentMethod,
                             OrderDate = data.OrderDate
                         };
+                        order.SetGuid(data.Guid);
                         session.Save(order);
 
                         if (order.OrderNotes == null)

@@ -1,0 +1,49 @@
+﻿@using System.Drawing
+@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Controllers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model BrandListing
+@{
+    var brands = ViewData[BrandListingController.BrandsKey] as IPagedList<Brand> ?? BasePagedList<Brand>.Empty;
+}
+<h1>@Editable(Model, page => page.Name)</h1>
+@Editable(Model, page => page.BodyContent, true)
+
+    @foreach (var chunk in brands.Chunk(4))
+    {
+        var p = 1;
+        <div class="row">
+            @foreach (var brand in chunk)
+            {
+                var urlSegment = string.Format("/{0}", brand.LiveUrlSegment);
+                var image = brand.FeatureImage;
+                var imageSize = new Size(240, 180);
+                var name = brand.Name;
+                var abstractText = brand.BrandAbstract;
+
+                <div class="col-sm-6 col-md-3">
+                    <div class="brand-container">
+                        @if (!string.IsNullOrWhiteSpace(image))
+                        {
+                            <div class="brand-image">
+                                <a href="@urlSegment">
+                                    @RenderImage(image, imageSize, attributes: new { @class = "img-responsive center-block" })
+                                </a>
+                            </div>
+                        }
+                        <h3><a href="@urlSegment">@name</a></h3>
+                        <p>
+                            @abstractText
+                        </p>
+                    </div>
+                </div>
+
+                if (p%2 == 0)
+                {
+                    <div class="clearfix visible-sm"></div>
+                }
+                p++;
+            }
+        </div>
+    }

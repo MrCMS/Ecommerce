@@ -181,7 +181,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     ProductSpecificationAttributeOption = option
                 };
                 product.SpecificationValues.Add(productSpecificationValue);
-                _session.Transact(session => session.SaveOrUpdate(product));
+                _session.Transact(session => session.Update(product));
             }
         }
 
@@ -244,18 +244,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public void DeleteProductAttributeValue(ProductOptionValue value)
         {
             _session.Transact(session => session.Delete(value));
-        }
-
-        public List<ProductOptionModel<string>> GetSearchAttributeOptions(ProductSearchQuery query)
-        {
-            List<OptionInfo> values = _productSearchIndexService.GetOptions(query);
-            return GetSearchAttributeOptions(values);
-        }
-
-        public List<ProductOptionModel<int>> GetSearchSpecificationAttributes(ProductSearchQuery query)
-        {
-            List<int> values = _productSearchIndexService.GetSpecifications(query);
-            return GetSearchSpecificationAttributes(query, values);
         }
 
         public ProductOptionSearchData GetSearchData(ProductSearchQuery query)

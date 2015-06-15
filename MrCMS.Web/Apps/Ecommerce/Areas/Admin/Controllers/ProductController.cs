@@ -9,11 +9,13 @@ using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Web.Areas.Admin.Services;
 using MrCMS.Website;
 using MrCMS.Website.Binders;
@@ -24,7 +26,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class ProductController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly IBrandService _brandService;
         private readonly ICategoryService _categoryService;
         private readonly IDocumentService _documentService;
         private readonly IFileAdminService _fileAdminService;
@@ -33,22 +34,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IProductService _productService;
         private readonly SiteSettings _siteSettings;
         private readonly IUniquePageService _uniquePageService;
+        private readonly IETagAdminService _eTagAdminService;
 
         public ProductController(IProductService productService, IDocumentService documentService,
             ICategoryService categoryService,
-            IProductOptionManager productOptionManager, IFileAdminService fileAdminService, IBrandService brandService,
+            IProductOptionManager productOptionManager, IFileAdminService fileAdminService,
             IProductOptionManagementService productOptionManagementService, SiteSettings siteSettings,
-            IUniquePageService uniquePageService)
+            IUniquePageService uniquePageService, IETagAdminService eTagAdminService)
         {
             _productService = productService;
             _documentService = documentService;
             _categoryService = categoryService;
             _productOptionManager = productOptionManager;
             _fileAdminService = fileAdminService;
-            _brandService = brandService;
             _productOptionManagementService = productOptionManagementService;
             _siteSettings = siteSettings;
             _uniquePageService = uniquePageService;
+            _eTagAdminService = eTagAdminService;
         }
 
         /// <summary>
@@ -281,17 +283,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             ViewBag.Product = product;
             List<ImageSortItem> sortItems =
-                _fileAdminService.GetFiles(product.Gallery).OrderBy(arg => arg.display_order)
-                    .Select(
-                        arg => new ImageSortItem
-                               {
-                                   Order = arg.display_order,
-                                   Id = arg.Id,
-                                   Name = arg.name,
-                                   ImageUrl = arg.url,
-                                   IsImage = arg.is_image
-                               })
-                    .ToList();
+                _fileAdminService.GetFilesToSort(product.Gallery);
 
             return View(sortItems);
         }
@@ -346,29 +338,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                             .ToList());
 
             return Json(String.Empty, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public PartialViewResult Brands(Product product)
-        {
-            ViewData["brands"] = _brandService.GetOptions();
-            return PartialView(product);
-        }
-
-        [HttpGet]
-        public PartialViewResult AddBrand(Product product)
-        {
-            ViewData["product"] = product;
-            return PartialView(new Brand());
-        }
-
-        [HttpPost]
-        [ActionName("AddBrand")]
-        [ForceImmediateLuceneUpdate]
-        public JsonResult AddBrand_POST(Brand brand)
-        {
-            _brandService.Add(brand);
-            return Json(brand.Id);
         }
 
         [HttpGet]

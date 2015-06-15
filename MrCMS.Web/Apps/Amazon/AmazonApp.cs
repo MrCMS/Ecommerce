@@ -39,6 +39,11 @@ namespace MrCMS.Web.Apps.Amazon
             get { return "0.1"; }
         }
 
+        public override IEnumerable<Type> Conventions
+        {
+            get { yield return typeof(AmazonTableNameConvention); }
+        }
+
         protected override void RegisterServices(IKernel kernel)
         {
             kernel.Bind<MarketplaceWebServiceOrders.MarketplaceWebServiceOrders>().ToMethod(context =>
@@ -69,11 +74,6 @@ namespace MrCMS.Web.Apps.Amazon
             context.MapAreaRoute("Amazon Admin controllers", "Admin", "Admin/Apps/Amazon/{controller}/{action}/{id}",
                                  new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                                  new[] { typeof(SettingsController).Namespace });
-        }
-
-        public override IEnumerable<Type> Conventions
-        {
-            get { yield return typeof(AmazonTableNameConvention); }
         }
     }
 }

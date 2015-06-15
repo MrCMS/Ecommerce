@@ -8,6 +8,7 @@ using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Listings;
 using MrCMS.Web.Apps.Amazon.Services.Listings.Sync;
 using MrCMS.Web.Apps.Amazon.Settings;
+using MrCMS.Website.ActionResults;
 using Xunit;
 
 namespace MrCMS.AmazonApp.Tests.Admin.Controllers
@@ -221,7 +222,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         {
             var result = _listingController.SyncOne(new AmazonSyncModel());
 
-            result.Should().BeOfType<JsonResult>();
+            result.Should().BeOfType<JsonNetResult>();
         }
 
         [Fact]
@@ -291,7 +292,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         {
             var result = _listingController.SyncMany(new AmazonSyncModel());
 
-            result.Should().BeOfType<JsonResult>();
+            result.Should().BeOfType<JsonNetResult>();
         }
 
         [Fact]
@@ -361,7 +362,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         {
             var result = _listingController.CloseOne_POST(new AmazonSyncModel());
 
-            result.Should().BeOfType<JsonResult>();
+            result.Should().BeOfType<JsonNetResult>();
         }
 
         [Fact]
@@ -431,7 +432,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         {
             var result = _listingController.CloseMany_POST(new AmazonSyncModel());
 
-            result.Should().BeOfType<JsonResult>();
+            result.Should().BeOfType<JsonNetResult>();
         }
 
         [Fact]

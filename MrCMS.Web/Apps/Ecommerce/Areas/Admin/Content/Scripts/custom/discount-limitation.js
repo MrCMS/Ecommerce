@@ -6,7 +6,7 @@
     function setFields(html) {
         var fieldsContainer = $(fieldsSelector);
         fieldsContainer.html(html);
-        parent.$.fancybox.update();
+        //parent.$.fancybox.update();
     }
 
     function submitForm(event) {
@@ -15,7 +15,7 @@
         $.post(form.attr('action'), form.serialize(), function(response) {
             if (response) {
                 parent.$(parent.document).trigger('reload-limitations');
-                parent.$.fancybox.close();
+                parent.$.featherlight.close();
             }
         });
     }

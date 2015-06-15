@@ -25,27 +25,22 @@ namespace MrCMS.Logging
         public MrCMSErrorLog(IDictionary config)
         {
             if (CurrentRequestData.DatabaseIsInstalled)
-                _session = MrCMSApplication.Get<ISessionFactory>().OpenFilteredSession();
+                _session = MrCMSApplication.Get<ISessionFactory>().OpenFilteredSession(CurrentRequestData.CurrentContext);
         }
 
         public override string Log(Error error)
         {
-            var newGuid = Guid.NewGuid();
-
-            if (_session != null)
+            if (_session == null) 
+                return Guid.NewGuid().ToString();
+            var log = new Log
             {
-                var log = new Log
-                              {
-                                  Error = BinaryData.CanSerialize(error) ? error : new Error(),
-                                  Guid = newGuid,
-                                  Message = error.Message,
-                                  Detail = error.Detail,
-                                  Site = _session.Get<Site>(CurrentRequestData.CurrentSite.Id)
-                              };
-                _session.Transact(session => session.Save(log));
-            }
-
-            return newGuid.ToString();
+                Error = BinaryData.CanSerialize(error) ? error : new Error(),
+                Message = error.Message,
+                Detail = error.Detail,
+                Site = _session.Get<Site>(CurrentRequestData.CurrentSite.Id)
+            };
+            _session.Transact(session => session.Save(log));
+            return log.Guid.ToString();
         }
 
         public override int GetErrors(int pageIndex, int pageSize, IList errorEntryList)

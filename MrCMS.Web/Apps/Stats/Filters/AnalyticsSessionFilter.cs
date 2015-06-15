@@ -1,6 +1,8 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
+using MrCMS.Helpers;
+using MrCMS.Web.Apps.Stats.Settings;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Stats.Filters
@@ -12,6 +14,13 @@ namespace MrCMS.Web.Apps.Stats.Filters
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            var botAgentsAndIPs = filterContext.HttpContext.Get<BotAgentsAndIPs>();
+            if (botAgentsAndIPs == null)
+                return;
+
+            if (botAgentsAndIPs.IsABot(filterContext.HttpContext.Request))
+                return;
+
             var httpContext = filterContext.HttpContext;
             var now = CurrentRequestData.Now;
             httpContext.Response.SetCookie(

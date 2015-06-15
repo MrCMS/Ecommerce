@@ -1,0 +1,39 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.TemplateData.ProductListTemplateData
+
+@using (Html.BeginForm("Edit", "ProductListTemplateData", FormMethod.Post))
+{
+    @Html.ReturnToReferrer()
+    <fieldset>
+        <legend>
+            Update Top Product List Template Data for @Model.NewsletterTemplate.Name
+            <span class="pull-right display-inline btn-group">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </span>
+        </legend>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ProductGridTemplate)
+            @Html.TextAreaFor(x => x.ProductGridTemplate, new { @class = "form-control", rows = 6 })
+            @Html.ValidationMessageFor(x => x.ProductGridTemplate)
+        </div>
+        <div class="alert alert-info">
+            <strong>Available Tokens: </strong> [ProductRow]
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ProductRowTemplate)
+            @Html.TextAreaFor(x => x.ProductRowTemplate, new { @class = "form-control", rows = 6 })
+            @Html.ValidationMessageFor(x => x.ProductRowTemplate)
+        </div>
+        <div class="alert alert-info">
+            <strong>Available Tokens: </strong> [Product]
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ProductTemplate)
+            @Html.TextAreaFor(x => x.ProductTemplate, new { @class = "form-control", rows = 6 })
+            @Html.ValidationMessageFor(x => x.ProductTemplate)
+        </div>
+        <div class="alert alert-info">
+            <strong>Available Tokens: </strong> [ProductImage], [ProductName], [ProductUrl], [ProductPrice], [ProductOldPrice]
+        </div>
+    </fieldset>
+}

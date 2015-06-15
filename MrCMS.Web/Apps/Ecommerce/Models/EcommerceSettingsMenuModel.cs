@@ -1,6 +1,8 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Helpers;
 using MrCMS.Models;
 using MrCMS.Web.Apps.Ecommerce.ACL;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
@@ -62,27 +64,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                 subMenu.Add(new ChildMenuItem("Payment Settings", "#", subMenu: new SubMenu
                 {
                     new ChildMenuItem("Payment Settings",
-                        _urlHelper.Action("Index","PaymentSettings"),
+                        _urlHelper.Action("Index", "PaymentSettings"),
                         ACLOption.Create(new PaymentSettingsACL(), PaymentSettingsACL.View)),
-                    new ChildMenuItem("Paypoint",_urlHelper.Action("Index","PaypointSettings"),
+                    new ChildMenuItem("Paypoint", _urlHelper.Action("Index", "PaypointSettings"),
                         ACLOption.Create(new PaypointSettingsACL(), PaypointSettingsACL.View)),
                     new ChildMenuItem("PayPal Express Checkout",
-                        _urlHelper.Action("Index","PayPalExpressCheckoutSettings"),
+                        _urlHelper.Action("Index", "PayPalExpressCheckoutSettings"),
                         ACLOption.Create(new PayPalExpressCheckoutSettingsACL(),
                             PayPalExpressCheckoutSettingsACL.View)),
-                    new ChildMenuItem("SagePay",_urlHelper.Action("Index","SagePaySettings"),
+                    new ChildMenuItem("SagePay", _urlHelper.Action("Index", "SagePaySettings"),
                         ACLOption.Create(new SagePaySettingsACL(), SagePaySettingsACL.View)),
-                    new ChildMenuItem("WorldPay", _urlHelper.Action("Index","WorldPaySettings"),
+                    new ChildMenuItem("WorldPay", _urlHelper.Action("Index", "WorldPaySettings"),
                         ACLOption.Create(new WorldPaySettingsACL(), WorldPaySettingsACL.View)),
-                    new ChildMenuItem("Charity Clear", _urlHelper.Action("Index","CharityClearSettings"),
+                    new ChildMenuItem("Charity Clear", _urlHelper.Action("Index", "CharityClearSettings"),
                         ACLOption.Create(new WorldPaySettingsACL(), WorldPaySettingsACL.View)),
+                    new ChildMenuItem("Braintree", _urlHelper.Action("Index", "BraintreeSettings"),
+                        ACLOption.Create(new BraintreeSettingsACL(), BraintreeSettingsACL.View))
                 }));
                 subMenu.Add(new ChildMenuItem("Product Review Settings", "/Admin/Apps/Ecommerce/ProductReviewSettings/Edit",
                         ACLOption.Create(new ProductReviewSettingsAcl(), ProductReviewSettingsAcl.Edit)));
                 return subMenu;
-
-
-                        
             }
         }
 

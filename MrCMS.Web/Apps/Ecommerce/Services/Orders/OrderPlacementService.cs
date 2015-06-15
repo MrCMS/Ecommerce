@@ -63,9 +63,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                     ShippingStatus = cartModel.RequiresShipping ? ShippingStatus.Pending : ShippingStatus.ShippingNotRequired,
                     ShippingTaxPercentage = cartModel.ShippingTaxPercentage,
                     SalesChannel = EcommerceApp.DefaultSalesChannel,
-                    Guid = cartModel.CartGuid,
                     OrderDate = CurrentRequestData.Now
                 };
+                order.SetGuid(cartModel.CartGuid);
                 session.Save(order);
                 foreach (var discount in cartModel.Discounts)
                 {

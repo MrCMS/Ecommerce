@@ -1,0 +1,30 @@
+﻿@using System.Linq
+@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Entities.Discounts
+@using MrCMS.Web.Apps.Ecommerce.Entities.ETags
+@model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.ETagSearchQuery
+@{
+    ViewBag.Title = "E-Tags";
+    var eTags = ViewData["results"] as IPagedList<ETag> ?? PagedList<ETag>.Empty;
+}
+
+<h1 class="page-header">
+    E-Tags
+    <span class="btn-group  display-inline  pull-right">
+        <a href="@Url.Action("Add", "ETag")" class="btn btn-primary" data-toggle="fb-modal">Add E-Tag</a>
+    </span>
+</h1>
+
+<br/>
+@if (eTags.Any())
+{
+    Html.RenderPartial("ETagList", eTags.ToList());
+    @Html.Pager(eTags, "Index", page => new { page })
+}
+else
+{
+    @Resource("No e-tags available")
+}
+
+

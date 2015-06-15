@@ -21,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             var cartItems = new HashSet<CartItem>();
             cartItems.AddRange(_getCartItemsBySKUList.GetCartItems(cart, application.SKUs));
-            cartItems.AddRange(_getCartItemsByCategoryIdList.GetCartItems(cart, application.SKUs));
+            cartItems.AddRange(_getCartItemsByCategoryIdList.GetCartItems(cart, application.CategoryIds));
             return cartItems;
         }
     }

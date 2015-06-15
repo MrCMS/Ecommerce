@@ -199,8 +199,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
             if (order.ShippingAddress != null)
             {
-                p = frame2.AddParagraph();
-                p.AddText(order.ShippingAddress.PhoneNumber);
+                if (!string.IsNullOrWhiteSpace(order.ShippingAddress.PhoneNumber))
+                {
+                    p = frame2.AddParagraph();
+                    p.AddText(order.ShippingAddress.PhoneNumber);
+                }
             }
 
             p = frame1.AddParagraph();
@@ -208,11 +211,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
             if (order.ShippingAddress != null)
             {
-                p = frame2.AddParagraph();
-                p.AddText(order.ShippingAddress.Address1);
+                if (!string.IsNullOrWhiteSpace(order.ShippingAddress.Address1))
+                {
+                    p = frame2.AddParagraph();
+                    p.AddText(order.ShippingAddress.Address1);   
+                }
             }
 
-            if (!String.IsNullOrWhiteSpace(order.BillingAddress.Address2))
+            if (!string.IsNullOrWhiteSpace(order.BillingAddress.Address2))
             {
                 p = frame1.AddParagraph();
                 p.AddText(order.BillingAddress.Address2);
@@ -220,14 +226,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
             if (order.ShippingAddress != null)
             {
-                if (!String.IsNullOrWhiteSpace(order.ShippingAddress.Address2))
+                if (!string.IsNullOrWhiteSpace(order.ShippingAddress.Address2))
                 {
                     p = frame2.AddParagraph();
                     p.AddText(order.ShippingAddress.Address2);
                 }
             }
 
-            if (!String.IsNullOrWhiteSpace(order.BillingAddress.City))
+            if (!string.IsNullOrWhiteSpace(order.BillingAddress.City))
             {
                 p = frame1.AddParagraph();
                 p.AddText(order.BillingAddress.City);
@@ -235,14 +241,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
             if (order.ShippingAddress != null)
             {
-                if (!String.IsNullOrWhiteSpace(order.ShippingAddress.City))
+                if (!string.IsNullOrWhiteSpace(order.ShippingAddress.City))
                 {
                     p = frame2.AddParagraph();
                     p.AddText(order.ShippingAddress.City);
                 }
             }
 
-            if (!String.IsNullOrWhiteSpace(order.BillingAddress.StateProvince))
+            if (!string.IsNullOrWhiteSpace(order.BillingAddress.StateProvince))
             {
                 p = frame1.AddParagraph();
                 p.AddText(order.BillingAddress.StateProvince);
@@ -250,7 +256,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
             if (order.ShippingAddress != null)
             {
-                if (!String.IsNullOrWhiteSpace(order.ShippingAddress.StateProvince))
+                if (!string.IsNullOrWhiteSpace(order.ShippingAddress.StateProvince))
                 {
                     p = frame2.AddParagraph();
                     p.AddText(order.ShippingAddress.StateProvince);
@@ -274,7 +280,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 }
             }
 
-            if (!String.IsNullOrWhiteSpace(order.BillingAddress.PostalCode))
+            if (!string.IsNullOrWhiteSpace(order.BillingAddress.PostalCode))
             {
                 p = frame1.AddParagraph();
                 p.AddText(order.BillingAddress.PostalCode);
@@ -282,7 +288,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
             if (order.ShippingAddress != null)
             {
-                if (!String.IsNullOrWhiteSpace(order.ShippingAddress.PostalCode))
+                if (!string.IsNullOrWhiteSpace(order.ShippingAddress.PostalCode))
                 {
                     p = frame2.AddParagraph();
                     p.AddText(order.ShippingAddress.PostalCode);

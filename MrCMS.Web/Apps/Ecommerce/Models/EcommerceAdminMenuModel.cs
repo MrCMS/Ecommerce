@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using MrCMS.Helpers;
 using MrCMS.Models;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -57,6 +58,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                         ACLOption.Create(new ProductOptionSortingACL(), ProductOptionSortingACL.List)),
                     new ChildMenuItem("Discounts", _urlHelper.Action("Index", "Discount"),
                         ACLOption.Create(new DiscountACL(), DiscountACL.List)),
+                    new ChildMenuItem("E-Tags", _urlHelper.Action("Index", "ETag"),
+                        ACLOption.Create(new ETagACL(), ETagACL.List)),
                 };
                 if (_ecommerceSettings.GiftCardsEnabled)
                 {
@@ -74,10 +77,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
                 var ecommerceMenu = new SubMenu();
                 ecommerceMenu.AddRange(adminItems);
-                ecommerceMenu.Add(new ChildMenuItem("Templates", _urlHelper.Action("Index", "NewsletterTemplate"),
-                    ACLOption.Create(new NewsletterTemplateACL(), NewsletterTemplateACL.List)));
-                ecommerceMenu.Add(new ChildMenuItem("Newsletter", _urlHelper.Action("Index", "Newsletter"),
-                    ACLOption.Create(new NewsletterACL(), NewsletterACL.List)));
                 ecommerceMenu.Add(new ChildMenuItem("Product Reviews", _urlHelper.Action("Index", "ProductReview"),
                     ACLOption.Create(new ProductReviewACL(), ProductReviewACL.List)));
                 return ecommerceMenu;

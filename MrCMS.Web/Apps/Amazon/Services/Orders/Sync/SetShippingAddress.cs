@@ -13,13 +13,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             _validateAmazonOrderService = validateAmazonOrderService;
         }
 
-        public void Update(AmazonOrder amazonOrder, Order order)
+        public bool Update(AmazonOrder amazonOrder, Order order)
         {
             if (amazonOrder.Status == AmazonOrderStatus.Unshipped)
             {
                 var shippingAddress = _validateAmazonOrderService.GetAmazonOrderAddress(order);
                 _validateAmazonOrderService.SetShippingAddress(amazonOrder, shippingAddress);
             }
+            return true;
         }
 
         public int Order { get; private set; }

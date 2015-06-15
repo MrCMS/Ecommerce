@@ -9,6 +9,7 @@ using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
 using MrCMS.Indexing;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.Batching;
@@ -18,12 +19,14 @@ using Newtonsoft.Json;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;
+using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public class ImportProductsService : IImportProductsService
     {
-        private readonly ICreateBatchRun _createBatchRun;
+        private readonly ICreateBatch _createBatch;
+        private readonly IGetNewBrandPage _getNewBrandPage;
         private readonly IDocumentService _documentService;
         private readonly IImportProductImagesService _importProductImagesService;
         private readonly IImportProductVariantsService _importProductVariantsService;
@@ -38,7 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             IImportProductVariantsService importProductVariantsService,
             IImportProductImagesService importProductImagesService,
             IImportProductUrlHistoryService importUrlHistoryService, ISession session,
-            IUniquePageService uniquePageService, ICreateBatchRun createBatchRun)
+            IUniquePageService uniquePageService, ICreateBatch createBatch, IGetNewBrandPage getNewBrandPage)
         {
             _documentService = documentService;
             _importSpecificationsService = importSpecificationsService;
@@ -47,51 +50,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _importUrlHistoryService = importUrlHistoryService;
             _session = session;
             _uniquePageService = uniquePageService;
-            _createBatchRun = createBatchRun;
+            _createBatch = createBatch;
+            _getNewBrandPage = getNewBrandPage;
         }
 
         public Batch CreateBatch(HashSet<ProductImportDataTransferObject> productsToImport)
         {
-            var batch = new Batch { BatchJobs = new List<BatchJob>(),BatchRuns = new List<BatchRun>()};
-            _session.Transact(session => session.Save(batch));
-            _session.Transact(session =>
+            List<BatchJob> jobs = productsToImport.Select(item => new ImportProductBatchJob
             {
-                foreach (ProductImportDataTransferObject item in productsToImport)
-                {
-                    var importProductBatchJob = new ImportProductBatchJob
-                    {
-                        Batch = batch,
-                        Data = JsonConvert.SerializeObject(item),
-                        ProductName = item.Name,
-                        UrlSegment = item.UrlSegment
-                    };
-                    batch.BatchJobs.Add(importProductBatchJob);
-                    session.Save(importProductBatchJob);
-                }
-                // Reindex Universal search when done
-                var universalIndexRebuilder = new RebuildUniversalSearchIndex
-                {
-                    Batch = batch
-                };
-                batch.BatchJobs.Add(universalIndexRebuilder);
-                session.Save(universalIndexRebuilder);
+                Data = JsonConvert.SerializeObject(item),
+                ProductName = item.Name,
+                UrlSegment = item.UrlSegment
+            } as BatchJob).ToList();
+            jobs.Add(new RebuildUniversalSearchIndex());
+            jobs.AddRange(IndexingHelper.IndexDefinitionTypes.Select(definition => new RebuildLuceneIndex
+            {
+                IndexName = definition.SystemName
+            }));
 
-                // Reindex standard indexes
-                foreach (var type in IndexingHelper.IndexDefinitionTypes)
-                {
-                    var luceneIndex = new RebuildLuceneIndex
-                    {
-                        Batch = batch,
-                        IndexName = type.SystemName
-                    };
-                    batch.BatchJobs.Add(luceneIndex);
-                    session.Save(luceneIndex);
-                }
-            });
-            var batchRun = _createBatchRun.Create(batch);
-            batch.BatchRuns.Add(batchRun);
-
-            return batch;
+            return _createBatch.Create(jobs).Batch;
         }
 
         /// <summary>
@@ -198,10 +175,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                         .SingleOrDefault();
                 if (brand == null)
                 {
-                    brand = new Brand { Name = dtoBrand };
+
+                    brand = _getNewBrandPage.Get(dtoBrand);
                     _session.Transact(session => session.Save(brand));
                 }
-                product.Brand = brand;
+                product.BrandPage = brand;
             }
         }
 

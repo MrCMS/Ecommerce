@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder;
 using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems;
+using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.TemplateData;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services.NewsletterBuilder;
+using MrCMS.Web.Apps.NewsletterBuilder.Entities;
+using MrCMS.Web.Apps.NewsletterBuilder.Services;
+using MrCMS.Web.Apps.NewsletterBuilder.Services.Parsing;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Parsing
@@ -13,20 +17,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Parsing
     {
         private static readonly Regex RowRegex = new Regex(@"\[(?i)ProductRow\]");
         private static readonly Regex ProductRegex = new Regex(@"\[(?i)Product\]");
-        private readonly INewsletterItemParser<Product> _productParser;
+        private readonly IGetContentItemTemplateData _getContentItemTemplateData;
+        private readonly INewsletterProductParser _productParser;
         private readonly ISession _session;
 
-        public ProductListItemParser(ISession session, INewsletterItemParser<Product> productParser)
+        public ProductListItemParser(ISession session, INewsletterProductParser productParser,
+            IGetContentItemTemplateData getContentItemTemplateData)
         {
             _session = session;
             _productParser = productParser;
+            _getContentItemTemplateData = getContentItemTemplateData;
         }
 
         public string Parse(NewsletterTemplate template, ProductList item)
         {
-            string output = template.ProductGridTemplate;
+            var templateData = _getContentItemTemplateData.Get<ProductListTemplateData>(template);
+            if (templateData == null)
+                return string.Empty;
+
+            string output = templateData.ProductGridTemplate;
+            if (string.IsNullOrWhiteSpace(output))
+                return string.Empty;
+
             Product[] products = GetProducts(item);
-            output = RowRegex.Replace(output, match => ParseRows(template, products));
+            output = RowRegex.Replace(output, match => ParseRows(templateData, products));
             return output;
         }
 
@@ -49,27 +63,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Parsing
                 .ToArray();
         }
 
-        private string ParseRows(NewsletterTemplate template, Product[] products)
+        private string ParseRows(ProductListTemplateData templateData, Product[] products)
         {
-            int numProductsInRow = ProductRegex.Matches(template.ProductRowTemplate).Count;
+            int numProductsInRow = ProductRegex.Matches(templateData.ProductRowTemplate).Count;
             string output = string.Empty;
 
             for (int i = 0; i < products.Length; i += numProductsInRow)
             {
-                output += ParseRow(template, products.Skip(i).Take(numProductsInRow));
+                output += ParseRow(templateData, products.Skip(i).Take(numProductsInRow));
             }
 
             return output;
         }
 
-        private string ParseRow(NewsletterTemplate template, IEnumerable<Product> rowProducts)
+        private string ParseRow(ProductListTemplateData templateData, IEnumerable<Product> rowProducts)
         {
-            string rowOutput = template.ProductRowTemplate;
-
-            foreach (Product product in rowProducts)
-            {
-                rowOutput = ProductRegex.Replace(rowOutput, replace => _productParser.Parse(template, product), 1);
-            }
+            string rowOutput = rowProducts.Aggregate(templateData.ProductRowTemplate,
+                (current, product) =>
+                    ProductRegex.Replace(current, replace => _productParser.Parse(templateData, product), 1));
 
             // Blank any remaining shortcodes as we may have ran out of products
             rowOutput = ProductRegex.Replace(rowOutput, string.Empty);
