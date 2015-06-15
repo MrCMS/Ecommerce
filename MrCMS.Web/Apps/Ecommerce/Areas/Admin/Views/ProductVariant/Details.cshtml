@@ -5,7 +5,7 @@
     var productVariantTypeOptions = ViewData["product-variant-type-options"] as List<SelectListItem> ?? new List<SelectListItem>();
     var eTagOptions = ViewData["e-tag-options"] as List<SelectListItem> ?? new List<SelectListItem>();
 }
-<div id="details" class="tab-pane active">
+<div id="details" class="tab-pane active" style="padding-left: 5px; padding-right: 5px;">
     @Html.HiddenFor(variant => variant.Product.Id)
     <div class="row">
         <div class="col-xs-6">
