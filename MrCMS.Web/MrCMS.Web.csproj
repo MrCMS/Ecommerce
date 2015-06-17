@@ -588,6 +588,8 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Bundles\EcommerceAdminStylesheetBundle.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListTemplateDataController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Nop190\Nop190.designer.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Nop190\NopCommerce190DataReader.cs" />
     <Compile Include="Apps\Ecommerce\Bundles\CheckoutLibScriptBundle.cs" />
     <Compile Include="Apps\Ecommerce\Bundles\CheckoutStylesheetBundle.cs" />
     <Compile Include="Apps\Ecommerce\Bundles\EcommerceLibScriptBundle.cs" />
@@ -4409,6 +4411,11 @@
     <Content Include="Areas\Admin\Views\Widget\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Widget\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Nop190\Nop190.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>Nop1901.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
@@ -4472,6 +4479,11 @@
   <ItemGroup>
     <None Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Nop280\Nop280.dbml.layout">
       <DependentUpon>Nop280.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Nop190\Nop190.dbml.layout">
+      <DependentUpon>Nop190.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <PropertyGroup>
