@@ -399,7 +399,35 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
                         : new HashSet<OrderNoteData>(),
                     PaidDate = order.PaidDate,
                     ShippingMethodName = order.ShippingMethod,
-                    PaymentMethod = order.PaymentMethodName
+                    PaymentMethod = order.PaymentMethodName,
+                    BillingAddress = new AddressData
+                    {
+                        Address1 = order.BillingAddress1,
+                        Address2 = order.BillingAddress2,
+                        City = order.BillingCity,
+                        Company = order.BillingCompany,
+                        Country = order.BillingCountryID,
+                        Email = order.BillingEmail,
+                        FirstName = order.BillingFirstName,
+                        LastName= order.BillingLastName,
+                        PhoneNumber = order.BillingPhoneNumber,
+                        PostalCode = order.BillingZipPostalCode,
+                        StateProvince = order.BillingStateProvince 
+                    },
+                    ShippingAddress = new AddressData
+                    {
+                        Address1 = order.ShippingAddress1,
+                        Address2 = order.ShippingAddress2,
+                        City = order.ShippingCity,
+                        Company = order.ShippingCompany,
+                        Country = order.ShippingCountryID,
+                        Email = order.ShippingEmail,
+                        FirstName = order.ShippingFirstName,
+                        LastName = order.ShippingLastName,
+                        PhoneNumber = order.ShippingPhoneNumber,
+                        PostalCode = order.ShippingZipPostalCode,
+                        StateProvince = order.ShippingStateProvince 
+                    }
                 }).ToHashSet();
             }
         }

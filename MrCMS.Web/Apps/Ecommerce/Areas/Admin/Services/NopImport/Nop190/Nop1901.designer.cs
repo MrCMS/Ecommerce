@@ -17967,7 +17967,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
 		
 		private string _CheckoutAttributeDescription;
 		
-		private System.Xml.Linq.XElement _CheckoutAttributesXML;
+		private string _CheckoutAttributesXML;
 		
 		private decimal _OrderWeight;
 		
@@ -18163,7 +18163,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
     partial void OnCustomerCurrencyCodeChanged();
     partial void OnCheckoutAttributeDescriptionChanging(string value);
     partial void OnCheckoutAttributeDescriptionChanged();
-    partial void OnCheckoutAttributesXMLChanging(System.Xml.Linq.XElement value);
+    partial void OnCheckoutAttributesXMLChanging(string value);
     partial void OnCheckoutAttributesXMLChanged();
     partial void OnOrderWeightChanging(decimal value);
     partial void OnOrderWeightChanged();
@@ -18954,7 +18954,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckoutAttributesXML", DbType="Xml NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
-		public System.Xml.Linq.XElement CheckoutAttributesXML
+		public string CheckoutAttributesXML
 		{
 			get
 			{

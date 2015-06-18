@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="nop-1.90" Class="Nop190DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=NEW-NOTEBOOK\SQL2008R2;Initial Catalog=nop-1.90;Persist Security Info=True;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="nop_1_90ConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=localhost;Initial Catalog=nop-1.90;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="nop_1_90ConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Nop_ACL" Member="Nop190_ACLs">
     <Type Name="Nop190_ACL">
       <Column Name="ACLID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -821,7 +821,7 @@
       <Column Name="OrderDiscountInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Column Name="CustomerCurrencyCode" Type="System.String" DbType="NVarChar(5) NOT NULL" CanBeNull="false" />
       <Column Name="CheckoutAttributeDescription" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
-      <Column Name="CheckoutAttributesXML" Type="System.Xml.Linq.XElement" DbType="Xml NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="CheckoutAttributesXML" Type="System.String" DbType="Xml NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="OrderWeight" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
       <Column Name="AffiliateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="OrderStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />

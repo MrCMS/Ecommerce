@@ -7,6 +7,7 @@ using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Events;
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using NHibernate;
 using PaymentStatus = MrCMS.Web.Apps.Ecommerce.Models.PaymentStatus;
 using ShippingStatus = MrCMS.Web.Apps.Ecommerce.Models.ShippingStatus;
@@ -38,12 +39,53 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                             continue;
 
                         var billingAddress = nopImportContext.FindNew<Address>(data.BillingAddressId);
+                        Entities.Orders.AddressData billingAddressData = null;
+                        if (billingAddress != null) billingAddressData = billingAddress.ToAddressData();
+                        else if (data.BillingAddress != null)
+                        {
+                            var country = nopImportContext.FindNew<Country>(data.BillingAddress.Country.GetValueOrDefault());
+                            billingAddressData = new Entities.Orders.AddressData
+                            {
+                                Address1 = data.BillingAddress.Address1,
+                                Address2 = data.BillingAddress.Address2,
+                                City = data.BillingAddress.City,
+                                Company = data.BillingAddress.Company,
+                                CountryCode = country == null ? string.Empty : country.ISOTwoLetterCode,
+                                FirstName = data.BillingAddress.FirstName,
+                                LastName = data.BillingAddress.LastName,
+                                PhoneNumber = data.BillingAddress.PhoneNumber,
+                                PostalCode = data.BillingAddress.PostalCode,
+                                StateProvince = data.BillingAddress.StateProvince 
+                            };
+                        }
+
+
                         var shippingAddress =
                             nopImportContext.FindNew<Address>(data.ShippingAddressId.GetValueOrDefault());
+                        Entities.Orders.AddressData shippingAddressData = null;
+                        if (shippingAddress != null) shippingAddressData = shippingAddress.ToAddressData();
+                        else if (data.ShippingAddress != null)
+                        {
+                            var country = nopImportContext.FindNew<Country>(data.ShippingAddress.Country.GetValueOrDefault());
+                            shippingAddressData = new Entities.Orders.AddressData
+                            {
+                                Address1 = data.ShippingAddress.Address1,
+                                Address2 = data.ShippingAddress.Address2,
+                                City = data.ShippingAddress.City,
+                                Company = data.ShippingAddress.Company,
+                                CountryCode = country == null ? string.Empty : country.ISOTwoLetterCode,
+                                FirstName = data.ShippingAddress.FirstName,
+                                LastName = data.ShippingAddress.LastName,
+                                PhoneNumber = data.ShippingAddress.PhoneNumber,
+                                PostalCode = data.ShippingAddress.PostalCode,
+                                StateProvince = data.ShippingAddress.StateProvince 
+                            };
+                        }
+
                         var order = new Order
                         {
-                            BillingAddress = billingAddress.ToAddressData(),
-                            ShippingAddress = shippingAddress != null ? shippingAddress.ToAddressData() : null,
+                            BillingAddress = billingAddressData,
+                            ShippingAddress = shippingAddressData,
                             CustomerIP = data.CustomerIp,
                             DiscountAmount = data.OrderDiscount,
                             Id = data.Id,

@@ -54,10 +54,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                 Product = product,
                 PreviousPrice = variantData.PreviousPrice,
                 ManufacturerPartNumber = variantData.PartNumber,
-                TaxRate = nopImportContext.FindNew<TaxRate>(variantData.TaxRate)
+                TaxRate = nopImportContext.FindNew<TaxRate>(variantData.TaxRate),
+                PriceBreaks = variantData.PriceBreaks.Select(price => new PriceBreak
+                                    {
+                                        Price = price.Price,
+                                        Quantity = price.Quantity
+                                    }).ToList()
             };
-
-            product.Variants.Add(variant);
+            if (variantData.PriceBreaks.Count > 0)
+            {
+                product.Variants.Add(variant);
+            }
+            else
+            {
+                product.Variants.Add(variant);
+            }
             nopImportContext.AddEntry(variantData.Id, variant);
         }
 

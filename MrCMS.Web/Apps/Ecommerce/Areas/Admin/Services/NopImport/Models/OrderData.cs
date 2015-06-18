@@ -50,5 +50,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models
         public string ShippingMethodName { get; set; }
 
         public string PaymentMethod { get; set; }
+
+        public AddressData BillingAddress { get; set; }
+        public AddressData ShippingAddress { get; set; }
     }
 }
