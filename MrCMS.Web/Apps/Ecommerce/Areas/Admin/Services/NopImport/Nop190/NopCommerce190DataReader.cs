@@ -107,6 +107,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
                     ParentId = category.ParentCategoryID == 0 ? (int?)null : category.ParentCategoryID,
                     Abstract = category.Description,
                     Published = category.Published,
+                    Url = MrCMS.Web.Apps.Ecommerce.Helpers.NopImport.SeoHelper.GetSeoUrl("Category", category.CategoryID, category.SEName, category.Name),
                     //Url = urlRecords.ContainsKey(category.Id) ? urlRecords[category.Id].Slug : null, // GM: UrlRecords is new table
                     PictureId = category.PictureID
                 }).ToHashSet();
@@ -305,6 +306,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
                         Pictures =
                             product.Nop190_ProductPictures.Select(mapping => mapping.PictureID).ToHashSet(),
                         Published = product.Published,
+                        Url = MrCMS.Web.Apps.Ecommerce.Helpers.NopImport.SeoHelper.GetSeoUrl("Product", product.ProductId, product.SEName, product.Name),
                         //Url = urlRecords.ContainsKey(product.Id) ? urlRecords[product.Id].Slug : null // GM: UrlRecord is new table
                     };
                     productData.ProductVariants =

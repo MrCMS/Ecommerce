@@ -1099,6 +1099,7 @@
     <Compile Include="Apps\Ecommerce\Helpers\INewsletterUrlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\MrCMSEcommerceHtmlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\NewsletterUrlHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\NopImport\SeoHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\PersistenceHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\PolymorphicMappingHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\Pricing\ProductPricingExtensions.cs" />
