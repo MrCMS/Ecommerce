@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MrCMS.Web", "MrCMS.Web\MrCMS.Web.csproj", "{E64F6811-8373-4310-9CCE-3FBCA0D87826}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0F690EEC-BB1B-4916-BA16-682D9D7A7A19}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MrCMS.Tests", "MrCMS.Tests\MrCMS.Tests.csproj", "{A0C47EBA-BAF0-43B8-A40A-D8D406E44525}"
@@ -14,8 +16,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sites", "Sites", "{EB0C74A8-186F-40DE-96DF-E825DCFD7581}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{B7896D36-E008-46A6-877E-939F00D09DD1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MrCMS.Web", "MrCMS.Web\MrCMS.Web.csproj", "{E64F6811-8373-4310-9CCE-3FBCA0D87826}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MrCMS.AmazonApp.Tests", "MrCMS.AmazonApp.Tests\MrCMS.AmazonApp.Tests.csproj", "{119C4D4B-B7D3-4E7F-AACF-E1AAF2EB39F0}"
 EndProject

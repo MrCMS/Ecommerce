@@ -1,39 +1,46 @@
+using System.Collections.Generic;
 using System.Linq;
+using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using NHibernate.Criterion;
-using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
 {
     public class ImportBrands : IImportBrands
     {
-        private readonly ISession _session;
         private readonly IGetNewBrandPage _getNewBrandPage;
+        private readonly Site _site;
+        private readonly IStatelessSession _session;
 
-        public ImportBrands(ISession session,IGetNewBrandPage getNewBrandPage)
+        public ImportBrands(IStatelessSession session, IGetNewBrandPage getNewBrandPage, Site site)
         {
             _session = session;
             _getNewBrandPage = getNewBrandPage;
+            _site = site;
         }
 
         public string ProcessBrands(NopCommerceDataReader dataReader, NopImportContext nopImportContext)
         {
-            var brandDatas = dataReader.GetBrands();
+            HashSet<BrandData> brandDatas = dataReader.GetBrands();
+            var brands = _session.QueryOver<Brand>().List().ToDictionary(x => x.Name);
+            var site = _session.Get<Site>(_site.Id);
             foreach (BrandData brandData in brandDatas)
             {
                 string name = brandData.Name.Trim();
-                Brand brand =
-                    _session.QueryOver<Brand>()
-                        .Where(b => b.Name.IsInsensitiveLike(name, MatchMode.Exact))
-                        .List().FirstOrDefault();
-                if (brand == null)
+                Brand brand;
+                if (!brands.ContainsKey(name))
                 {
                     brand = _getNewBrandPage.Get(name);
-                    _session.Transact(session => session.Save(brand));
+                    brand.AssignBaseProperties(site);
+                    _session.Transact(session => session.Insert(brand));
+                }
+                else
+                {
+                    brand = brands[name];
                 }
                 nopImportContext.AddEntry(brandData.Id, brand);
             }

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Services.Notifications;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors;
+using StackExchange.Profiling;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport
 {
@@ -60,25 +62,38 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport
         public ImportResult Execute(NopCommerceDataReader dataReader)
         {
             using (new NotificationDisabler())
+            using (EventContext.Instance.DisableAll())
             {
                 var nopImportContext = new NopImportContext();
-                var messages = new List<string>
-                {
-                    _importPictureData.ImportPictures(dataReader,nopImportContext),
-                    _importCountryData.ProcessCountries(dataReader, nopImportContext),
-                    _importRegionData.ProcessRegions(dataReader, nopImportContext),
-                    _importAddresses.ProcessAddresses(dataReader, nopImportContext),
-                    _importUsers.ProcessUsers(dataReader, nopImportContext),
-                    _importTaxRates.ProcessTaxRates(dataReader, nopImportContext),
-                    _importBrands.ProcessBrands(dataReader, nopImportContext),
-                    _importSpecifications.ProcessSpecifications(dataReader, nopImportContext),
-                    _importSpecificationAttributeOptions.ProcessSpecificationAttributeOptions(dataReader, nopImportContext),
-                    _importOptions.ProcessOptions(dataReader, nopImportContext),
-                    _importTags.ProcessTags(dataReader, nopImportContext),
-                    _importCategories.ProcessCategories(dataReader, nopImportContext),
-                    _importProducts.ProcessProducts(dataReader, nopImportContext),
-                    _importOrders.ProcessOrders(dataReader,nopImportContext)
-                };
+                var messages = new List<string>();
+                using (MiniProfiler.Current.Step("Import Pictures"))
+                    messages.Add(_importPictureData.ImportPictures(dataReader, nopImportContext));
+                using (MiniProfiler.Current.Step("Import Countries"))
+                    messages.Add(_importCountryData.ProcessCountries(dataReader, nopImportContext));
+                using (MiniProfiler.Current.Step("Import Regions"))
+                    messages.Add(_importRegionData.ProcessRegions(dataReader, nopImportContext));
+                using (MiniProfiler.Current.Step("Import Addresses"))
+                    messages.Add(_importAddresses.ProcessAddresses(dataReader, nopImportContext));
+                using (MiniProfiler.Current.Step("Import Users"))
+                    messages.Add(_importUsers.ProcessUsers(dataReader, nopImportContext));
+                using (MiniProfiler.Current.Step("Import Tax Rates"))
+                    messages.Add(_importTaxRates.ProcessTaxRates(dataReader, nopImportContext));
+                using (MiniProfiler.Current.Step("Import Brands"))
+                    messages.Add(_importBrands.ProcessBrands(dataReader, nopImportContext));
+                using (MiniProfiler.Current.Step("Import Specifications"))
+                    messages.Add(_importSpecifications.ProcessSpecifications(dataReader, nopImportContext));
+                using (MiniProfiler.Current.Step("Import Specification Options"))
+                    messages.Add(_importSpecificationAttributeOptions.ProcessSpecificationAttributeOptions(dataReader, nopImportContext));
+                using (MiniProfiler.Current.Step("Import Options"))
+                    messages.Add(_importOptions.ProcessOptions(dataReader, nopImportContext));
+                using (MiniProfiler.Current.Step("Import Tags"))
+                    messages.Add(_importTags.ProcessTags(dataReader, nopImportContext));
+                using (MiniProfiler.Current.Step("Import Categories"))
+                    messages.Add(_importCategories.ProcessCategories(dataReader, nopImportContext));
+                using (MiniProfiler.Current.Step("Import Products"))
+                    messages.Add(_importProducts.ProcessProducts(dataReader, nopImportContext));
+                using (MiniProfiler.Current.Step("Import Orders"))
+                    messages.Add(_importOrders.ProcessOrders(dataReader, nopImportContext));
 
                 _indexService.InitializeAllIndices();
                 return new ImportResult

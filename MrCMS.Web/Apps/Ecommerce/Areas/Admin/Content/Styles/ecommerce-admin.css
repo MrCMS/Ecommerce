@@ -11,7 +11,7 @@ span.peter-river { background-color: #3498db; color: #ffffff !important; text-sh
 
 tr.error { color: initial; }
 
-.select2-container .select2-choice { height: 55px; }
+.select2-container .select2-choice { height: 55px !important; }
 
 /*Reports*/
 legend { border: none !important; margin: 0 0 10px 0 !important; }

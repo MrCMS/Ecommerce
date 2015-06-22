@@ -4,9 +4,11 @@ using System.Linq;
 using Iesi.Collections.Generic;
 using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Media;
+using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using MrCMS.Models;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -19,15 +21,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
     public class ImportProducts : IImportProducts
     {
         private readonly IImportProductVariants _importProductVariants;
-        private readonly ISession _session;
+        private readonly IStatelessSession _session;
+        private readonly Site _site;
         private readonly IUniquePageService _uniquePageService;
         private readonly IWebpageUrlService _webpageUrlService;
 
-        public ImportProducts(IUniquePageService uniquePageService, ISession session,
+        public ImportProducts(IUniquePageService uniquePageService, IStatelessSession session, Site site,
             IWebpageUrlService webpageUrlService, IImportProductVariants importProductVariants)
         {
             _uniquePageService = uniquePageService;
             _session = session;
+            _site = site;
             _webpageUrlService = webpageUrlService;
             _importProductVariants = importProductVariants;
         }
@@ -39,7 +43,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
             HashSet<ProductOptionValueData> optionValues = dataReader.GetProductOptionValues();
             HashSet<ProductSpecificationValueData> specificationValues = dataReader.GetProductSpecificationValues();
 
-            var productContainer = _uniquePageService.GetUniquePage<ProductContainer>();
+            var productContainer =
+                _session.Get<ProductContainer>(_uniquePageService.GetUniquePage<ProductContainer>().Id);
+            var site = _session.Get<Site>(_site.Id);
+
+            var topLevelGallery = GetTopLevelGallery();
+
             _session.Transact(session =>
             {
                 foreach (ProductData productData in productDatas)
@@ -66,15 +75,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                                 : null,
                         Categories = productData.Categories.Select(nopImportContext.FindNew<Category>).ToList(),
                         Tags = new HashSet<Tag>(productData.Tags.Select(nopImportContext.FindNew<Tag>).ToList()),
-                        PublishOn = productData.Published ? CurrentRequestData.Now.Date : (DateTime?) null
+                        PublishOn = productData.Published ? CurrentRequestData.Now.Date : (DateTime?)null
                     };
+                    product.AssignBaseProperties(site);
 
-                    SetSpecificationValues(nopImportContext,
-                        specificationValues.FindAll(data => data.ProductId == productData.Id), product);
+                    var productGallery = GetProductGallery(product, topLevelGallery);
+                    productGallery.AssignBaseProperties(site);
+                    session.Insert(productGallery);
 
-                    _importProductVariants.CreateProductVariants(nopImportContext, productData.ProductVariants,
+                    product.Gallery = productGallery;
+                    session.Insert(product);
+
+                    var productSpecificationValues = SetSpecificationValues(nopImportContext,
+                        specificationValues.FindAll(data => data.ProductId == productData.Id), product, site);
+                    foreach (var value in productSpecificationValues)
+                        session.Insert(value);
+
+                    var variants = _importProductVariants.CreateProductVariants(nopImportContext, productData.ProductVariants,
                         optionValues, product);
-                    session.Save(product);
+                    foreach (var variant in variants)
+                    {
+                        product.Variants.Add(variant);
+                        variant.AssignBaseProperties(site);
+                        session.Insert(variant);
+                        session.Update(product);
+                    }
                     var pictureIds = productData.Pictures;
                     foreach (var pictureId in pictureIds)
                     {
@@ -90,8 +115,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
             return string.Format("{0} products processed.", productDatas.Count);
         }
 
-        private static void SetSpecificationValues(NopImportContext nopImportContext,
-            HashSet<ProductSpecificationValueData> specificationValues, Product product)
+        private MediaCategory GetTopLevelGallery()
+        {
+            return _session.QueryOver<MediaCategory>().Where(x => x.UrlSegment == "product-galleries").SingleOrDefault();
+        }
+
+        private MediaCategory GetProductGallery(Product product, MediaCategory mediaCategory)
+        {
+            return new MediaCategory
+            {
+                Name = product.Name,
+                UrlSegment = "product-galleries/" + product.UrlSegment,
+                IsGallery = true,
+                Parent = mediaCategory,
+                HideInAdminNav = true
+            };
+        }
+
+        private static IEnumerable<ProductSpecificationValue> SetSpecificationValues(NopImportContext nopImportContext,
+            HashSet<ProductSpecificationValueData> specificationValues, Product product, Site site)
         {
             foreach (
                 ProductSpecificationValueData valueData in
@@ -104,8 +146,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                     Product = product,
                     DisplayOrder = valueData.DisplayOrder
                 };
-                product.SpecificationValues.Add(specificationValue);
+                specificationValue.AssignBaseProperties(site);
                 nopImportContext.AddEntry(valueData.Id, specificationValue);
+                yield return specificationValue;
             }
         }
     }

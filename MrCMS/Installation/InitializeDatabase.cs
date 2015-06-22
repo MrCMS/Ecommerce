@@ -33,7 +33,8 @@ namespace MrCMS.Installation
                 UICulture = model.UiCulture,
                 EnableInlineEditing = true,
                 SiteIsLive = true,
-                FormRendererType = FormRenderingType.Bootstrap3
+                FormRendererType = FormRenderingType.Bootstrap3,
+
             };
             var mediaSettings = new MediaSettings
             {
@@ -53,7 +54,7 @@ namespace MrCMS.Installation
             };
             var fileSystemSettings = new FileSystemSettings
             {
-                StorageType = typeof (FileSystem).FullName
+                StorageType = typeof(FileSystem).FullName
             };
 
             _configurationProvider.SaveSettings(siteSettings);
