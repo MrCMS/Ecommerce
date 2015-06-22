@@ -16,7 +16,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models
 
         public string PhoneNumber { get; set; }
 
-        public int? Country { get; set; }
+        //public int? Country { get; set; }
+        public string CountryCode { get; set; }
 
         public string Email { get; set; }
     }

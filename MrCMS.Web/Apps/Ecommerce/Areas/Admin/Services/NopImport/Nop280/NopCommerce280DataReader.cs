@@ -104,7 +104,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                 {
                     Id = category.Id,
                     Name = category.Name,
-                    ParentId = category.ParentCategoryId == 0 ? (int?) null : category.ParentCategoryId,
+                    ParentId = category.ParentCategoryId == 0 ? (int?)null : category.ParentCategoryId,
                     Abstract = category.Description,
                     Published = category.Published,
                     Url = urlRecords.ContainsKey(category.Id) ? urlRecords[category.Id].Slug : null,
@@ -234,7 +234,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                         Name = taxCategory.Name,
                         Rate = nop280TaxRate == null ? 0m : nop280TaxRate.Percentage,
                         Id = taxCategory.Id,
-                        RegionId = nop280TaxRate == null ? (int?) null : nop280TaxRate.StateProvinceId
+                        RegionId = nop280TaxRate == null ? (int?)null : nop280TaxRate.StateProvinceId
                     };
                 }).ToHashSet();
             }
@@ -285,7 +285,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                 return products.Select(product =>
                 {
                     int? brandId =
-                        product.Nop280_Product_Manufacturer_Mappings.Select(mapping => (int?) mapping.ManufacturerId)
+                        product.Nop280_Product_Manufacturer_Mappings.Select(mapping => (int?)mapping.ManufacturerId)
                             .FirstOrDefault();
                     var productData = new ProductData
                     {
@@ -361,19 +361,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                 Dictionary<int, Nop280_Address> addresses = context.Nop280_Addresses.ToDictionary(
                     address => address.Id, address => address);
 
+                var stateProvinces = GetStateProvinces(context);
+                var countries = GetCountries(context);
 
                 return orders.Select(order => new OrderData
                 {
                     Id = order.Id,
                     Guid = order.OrderGuid,
                     OrderDate = order.CreatedOnUtc,
-                    BillingAddressId = order.BillingAddressId,
-                    ShippingAddressId = order.ShippingAddressId,
+                    BillingAddress = GetAddressDataObject(addresses[order.BillingAddressId], stateProvinces, countries),
+                    ShippingAddress = order.ShippingAddressId.HasValue ? GetAddressDataObject(addresses[order.ShippingAddressId.Value], stateProvinces, countries) : null,
                     CustomerId = order.CustomerId,
                     Email = addresses[order.BillingAddressId].Email,
-                    OrderStatus = (OrderStatus) order.OrderStatusId,
-                    PaymentStatus = (PaymentStatus) order.PaymentStatusId,
-                    ShippingStatus = (ShippingStatus) order.ShippingStatusId,
+                    OrderStatus = (OrderStatus)order.OrderStatusId,
+                    PaymentStatus = (PaymentStatus)order.PaymentStatusId,
+                    ShippingStatus = (ShippingStatus)order.ShippingStatusId,
                     OrderSubtotalInclTax = order.OrderSubtotalInclTax,
                     OrderSubtotalExclTax = order.OrderSubtotalExclTax,
                     OrderSubTotalDiscountInclTax = order.OrderSubTotalDiscountInclTax,
@@ -398,6 +400,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                     PaymentMethod = order.PaymentMethodSystemName
                 }).ToHashSet();
             }
+        }
+
+        private Dictionary<int, Nop280_Country> GetCountries(Nop280DataContext context)
+        {
+            return context.Nop280_Countries.ToHashSet().ToDictionary(x => x.Id);
         }
 
         public override HashSet<OrderLineData> GetOrderLineData()
@@ -436,7 +443,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
             using (Nop280DataContext context = GetContext())
             {
                 HashSet<Nop280_Address> addresses = context.Nop280_Addresses.ToHashSet();
-                return addresses.Select(GetAddressDataObject).ToHashSet();
+                Dictionary<int, Nop280_StateProvince> stateProvinces = GetStateProvinces(context);
+                var countries = GetCountries(context);
+                return addresses.Select(address => GetAddressDataObject(address, stateProvinces, countries)).ToHashSet();
             }
         }
 
@@ -452,6 +461,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                     x => x.EntityId)
                     .ToDictionary(grouping => grouping.Key, grouping => grouping.ToHashSet());
                 HashSet<Nop280_CustomerAddress> addresses = context.Nop280_CustomerAddresses.ToHashSet();
+                var stateProvinces = GetStateProvinces(context);
+                var countries = GetCountries(context);
 
                 var userDatas = new HashSet<UserData>();
                 foreach (Nop280_Customer customer in customers)
@@ -483,15 +494,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                                 : string.Empty,
                         LastName =
                             customerAttributes.ContainsKey(LastNameKey) ? customerAttributes[LastNameKey] : string.Empty,
-                        AddressData = customerAddresses.Select(GetAddressDataObject).ToHashSet()
+                        AddressData = customerAddresses.Select(address => GetAddressDataObject(address, stateProvinces, countries)).ToHashSet()
                     });
                 }
                 return userDatas;
             }
         }
 
-        private static AddressData GetAddressDataObject(Nop280_Address address)
+        private Dictionary<int, Nop280_StateProvince> GetStateProvinces(Nop280DataContext context)
         {
+            return context.Nop280_StateProvinces.ToList().ToDictionary(x => x.Id);
+        }
+
+        private static AddressData GetAddressDataObject(Nop280_Address address, Dictionary<int, Nop280_StateProvince> stateProvinces,
+            Dictionary<int, Nop280_Country> countries)
+        {
+            var state =
+                stateProvinces.ContainsKey(address.StateProvinceId.GetValueOrDefault())
+                    ? stateProvinces[address.StateProvinceId.GetValueOrDefault()]
+                    : null;
+            var country = countries.ContainsKey(address.CountryId.GetValueOrDefault())
+                ? countries[address.CountryId.GetValueOrDefault()]
+                : null;
+
             return new AddressData
             {
                 Id = address.Id,
@@ -501,10 +526,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                 Address2 = address.Address2,
                 Company = address.Company,
                 City = address.City,
-                StateProvince = address.Nop280_StateProvince != null ? address.Nop280_StateProvince.Name : string.Empty,
+                StateProvince = state != null ? state.Name : string.Empty,
                 PostalCode = address.ZipPostalCode,
                 PhoneNumber = address.PhoneNumber,
-                Country = address.CountryId,
+                CountryCode = country != null ? country.TwoLetterIsoCode : string.Empty,
                 Email = address.Email
             };
         }

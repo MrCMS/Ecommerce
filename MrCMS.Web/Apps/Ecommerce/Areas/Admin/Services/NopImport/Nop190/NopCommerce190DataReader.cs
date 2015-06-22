@@ -7,6 +7,7 @@ using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using StackExchange.Profiling;
 using PaymentStatus = MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models.PaymentStatus;
 using ShippingStatus = MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models.ShippingStatus;
 
@@ -27,6 +28,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
             using (Nop190DataContext context = GetContext())
             {
                 HashSet<Nop190_Picture> pictures = context.Nop190_Pictures.ToHashSet();
+
+                var usedPictureList = context.Nop190_ProductPictures.Select(x => x.PictureID).ToHashSet();
+
+                pictures = pictures.FindAll(x => usedPictureList.Contains(x.PictureID));
 
                 return pictures.Select(picture => new PictureData
                 {
@@ -229,7 +234,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
 
                 return taxCategories.Select(taxCategory =>
                 {
-                    Nop190_TaxRate nop190TaxRate = taxCategory.Nop190_TaxRates.FirstOrDefault(x => x.TaxCategoryID == taxCategory.TaxCategoryID); 
+                    Nop190_TaxRate nop190TaxRate = taxCategory.Nop190_TaxRates.FirstOrDefault(x => x.TaxCategoryID == taxCategory.TaxCategoryID);
                     return new TaxData
                     {
                         Name = taxCategory.Name,
@@ -283,38 +288,52 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
                 //        .ToHashSet().GroupBy(x => x.EntityId)
                 //        .ToDictionary(x => x.Key, x => x.First());
 
-                HashSet<Nop190_ProductVariant> productVariants =
-                    context.Nop190_ProductVariants.Where(x => !x.Deleted).ToHashSet();
+                Dictionary<int, HashSet<Nop190_ProductVariant>> productVariants =
+                    context.Nop190_ProductVariants.Where(x => !x.Deleted).ToHashSet()
+                        .GroupBy(x => x.ProductID)
+                        .ToDictionary(x => x.Key, x => x.ToHashSet());
+
+                var brandIds =
+                    context.Nop190_Product_Manufacturer_Mappings.GroupBy(x => x.ProductID)
+                        .ToDictionary(x => x.Key, x => x.First().ProductManufacturerID);
+
+                var productTags = context.Nop190_ProductTag_Product_Mappings.GroupBy(x => x.ProductID)
+                    .ToDictionary(x => x.Key, x => x.Select(y => y.ProductTagID).ToHashSet());
+                var productCategories = context.Nop190_Product_Category_Mappings.GroupBy(x => x.ProductID)
+                    .ToDictionary(x => x.Key, x => x.Select(y => y.ProductCategoryID).ToHashSet());
+
+                var productPictures = context.Nop190_ProductPictures.GroupBy(x => x.ProductID)
+                    .ToDictionary(x => x.Key, x => x.Select(y => y.PictureID).ToHashSet());
+
+                var tierPriceDictionary = context.Nop190_TierPrices.ToHashSet().GroupBy(x => x.ProductVariantID)
+                    .ToDictionary(x => x.Key, x => x.ToHashSet());
 
                 return products.Select(product =>
                 {
-                    int? brandId =
-                        product.Nop190_Product_Manufacturer_Mappings.Select(mapping => (int?)mapping.ManufacturerID)
-                            .FirstOrDefault();
+                    var id = product.ProductId;
+                    int? brandId = brandIds.ContainsKey(id) ? brandIds[id] : (int?)null;
                     var productData = new ProductData
                     {
                         Name = product.Name,
-                        Id = product.ProductId,
+                        Id = id,
                         Abstract = product.ShortDescription,
                         Description = product.FullDescription,
                         BrandId = brandId,
-                        Tags =
-                            product.Nop190_ProductTag_Product_Mappings.Select(mapping => mapping.ProductTagID)
-                                .ToHashSet(),
-                        Categories =
-                            product.Nop190_Product_Category_Mappings.Select(mapping => mapping.CategoryID).ToHashSet(),
-                        Pictures =
-                            product.Nop190_ProductPictures.Select(mapping => mapping.PictureID).ToHashSet(),
+                        Tags = productTags.ContainsKey(id) ? productTags[id] : new HashSet<int>(),
+                        Categories = productCategories.ContainsKey(id) ? productCategories[id] : new HashSet<int>(),
+                        Pictures = productPictures.ContainsKey(id) ? productPictures[id] : new HashSet<int>(),
                         Published = product.Published,
-                        Url = MrCMS.Web.Apps.Ecommerce.Helpers.NopImport.SeoHelper.GetSeoUrl("Product", product.ProductId, product.SEName, product.Name),
-                        //Url = urlRecords.ContainsKey(product.Id) ? urlRecords[product.Id].Slug : null // GM: UrlRecord is new table
+                        Url = Ecommerce.Helpers.NopImport.SeoHelper.GetSeoUrl("Product", id, product.SEName, product.Name),
                     };
+                    var variants = productVariants.ContainsKey(id) ? productVariants[id] : new HashSet<Nop190_ProductVariant>();
                     productData.ProductVariants =
-                        productVariants
-                            .Where(variant => variant.ProductID == product.ProductId)
+                        variants
                             .Select(variant =>
                             {
                                 Nop190_Download download = context.Nop190_Downloads.FirstOrDefault(x => x.DownloadID == variant.DownloadID);
+                                var tierPrices = tierPriceDictionary.ContainsKey(variant.ProductVariantId)
+                                    ? tierPriceDictionary[variant.ProductVariantId]
+                                    : new HashSet<Nop190_TierPrice>();
                                 var productVariantData = new ProductVariantData
                                 {
                                     Name = variant.Name,
@@ -340,7 +359,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
                                     DownloadDays = variant.DownloadExpirationDays,
                                     DownloadUrl =
                                         download == null ? null : download.DownloadURL,
-                                    PriceBreaks = variant.Nop190_TierPrices.Select(price => new PriceBreakInfo
+                                    PriceBreaks = tierPrices.Select(price => new PriceBreakInfo
                                     {
                                         Price = price.Price,
                                         Quantity = price.Quantity
@@ -356,6 +375,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
 
         public override HashSet<OrderData> GetOrderData()
         {
+            using (MiniProfiler.Current.Step("Read order data from old system"))
             using (Nop190DataContext context = GetContext())
             {
                 HashSet<Nop190_Order> orders =
@@ -364,9 +384,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
                     context.Nop190_OrderNotes.ToHashSet()
                         .GroupBy(note => note.OrderID)
                         .ToDictionary(notes => notes.Key, notes => notes.ToHashSet());
-                Dictionary<int, Nop190_Address> addresses = context.Nop190_Addresses.ToDictionary(
-                    address => address.AddressId, address => address);
 
+                var countries = GetCountries(context);
 
                 return orders.Select(order => new OrderData
                 {
@@ -408,13 +427,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
                         Address2 = order.BillingAddress2,
                         City = order.BillingCity,
                         Company = order.BillingCompany,
-                        Country = order.BillingCountryID,
+                        CountryCode = GetCountryCode(order.BillingCountryID, countries),
                         Email = order.BillingEmail,
                         FirstName = order.BillingFirstName,
-                        LastName= order.BillingLastName,
+                        LastName = order.BillingLastName,
                         PhoneNumber = order.BillingPhoneNumber,
                         PostalCode = order.BillingZipPostalCode,
-                        StateProvince = order.BillingStateProvince 
+                        StateProvince = order.BillingStateProvince
                     },
                     ShippingAddress = new AddressData
                     {
@@ -422,13 +441,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
                         Address2 = order.ShippingAddress2,
                         City = order.ShippingCity,
                         Company = order.ShippingCompany,
-                        Country = order.ShippingCountryID,
+                        CountryCode = GetCountryCode(order.ShippingCountryID, countries),
                         Email = order.ShippingEmail,
                         FirstName = order.ShippingFirstName,
                         LastName = order.ShippingLastName,
                         PhoneNumber = order.ShippingPhoneNumber,
                         PostalCode = order.ShippingZipPostalCode,
-                        StateProvince = order.ShippingStateProvince 
+                        StateProvince = order.ShippingStateProvince
                     }
                 }).ToHashSet();
             }
@@ -436,31 +455,45 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
 
         public override HashSet<OrderLineData> GetOrderLineData()
         {
+            using (MiniProfiler.Current.Step("Read order line data from old system"))
             using (Nop190DataContext context = GetContext())
             {
                 HashSet<Nop190_OrderProductVariant> orderProductVariants =
                     context.Nop190_OrderProductVariants.ToHashSet();
-                return orderProductVariants.Select(line => new OrderLineData
+                var productVariants = context.Nop190_ProductVariants.ToHashSet()
+                    .ToDictionary(x => x.ProductVariantId);
+                var products = context.Nop190_Products.ToHashSet()
+                    .ToDictionary(x => x.ProductId);
+                return orderProductVariants.Select(line =>
                 {
-                    Id = line.OrderProductVariantID,
-                    OrderId = line.OrderID,
-                    Quantity = line.Quantity,
-                    UnitPriceInclTax = line.UnitPriceInclTax,
-                    UnitPriceExclTax = line.UnitPriceExclTax,
-                    PriceInclTax = line.PriceInclTax,
-                    PriceExclTax = line.PriceExclTax,
-                    DiscountAmountInclTax = line.DiscountAmountInclTax,
-                    DiscountAmountExclTax = line.DiscountAmountExclTax,
-                    DownloadCount = line.DownloadCount,
-                    // ItemWeight = line.ItemWeight, // GM: ItemWeight is new field
-                    RequiresShipping = line.Nop190_ProductVariant.IsShipEnabled,
-                    SKU =
-                        string.IsNullOrWhiteSpace(line.Nop190_ProductVariant.SKU)
-                            ? line.Nop190_ProductVariant.ProductVariantId.ToString()
-                            : line.Nop190_ProductVariant.SKU,
-                    ProductName =
-                        string.Format("{0} - {1}", line.Nop190_ProductVariant.Nop190_Product.Name,
-                            line.AttributeDescription)
+                    var variant = productVariants.ContainsKey(line.ProductVariantID)
+                        ? productVariants[line.ProductVariantID]
+                        : null;
+                    var product = variant == null ? null : products.ContainsKey(variant.ProductID)
+                        ? products[variant.ProductID]
+                        : null;
+                    return new OrderLineData
+                    {
+                        Id = line.OrderProductVariantID,
+                        OrderId = line.OrderID,
+                        Quantity = line.Quantity,
+                        UnitPriceInclTax = line.UnitPriceInclTax,
+                        UnitPriceExclTax = line.UnitPriceExclTax,
+                        PriceInclTax = line.PriceInclTax,
+                        PriceExclTax = line.PriceExclTax,
+                        DiscountAmountInclTax = line.DiscountAmountInclTax,
+                        DiscountAmountExclTax = line.DiscountAmountExclTax,
+                        DownloadCount = line.DownloadCount,
+                        // ItemWeight = line.ItemWeight, // GM: ItemWeight is new field
+                        RequiresShipping = variant != null && variant.IsShipEnabled,
+                        SKU = variant == null ? string.Empty :
+                            string.IsNullOrWhiteSpace(variant.SKU)
+                                ? variant.ProductVariantId.ToString()
+                                : variant.SKU,
+                        ProductName = variant == null ? null :
+                            string.Format("{0} - {1}", product == null ? variant.Name : product.Name,
+                                line.AttributeDescription)
+                    };
                 }).ToHashSet();
             }
         }
@@ -470,8 +503,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
             using (Nop190DataContext context = GetContext())
             {
                 HashSet<Nop190_Address> addresses = context.Nop190_Addresses.ToHashSet();
-                return addresses.Select(GetAddressDataObject).ToHashSet();
+                var stateProvinces = GetStateProvinces(context);
+                var countries = GetCountries(context);
+                return addresses.Select(address => GetAddressDataObject(address, stateProvinces, countries)).ToHashSet();
             }
+        }
+
+        private Dictionary<int, Nop190_Country> GetCountries(Nop190DataContext context)
+        {
+            return context.Nop190_Countries.ToList().ToDictionary(x => x.CountryID);
+        }
+
+        private static Dictionary<int, Nop190_StateProvince> GetStateProvinces(Nop190DataContext context)
+        {
+            return context.Nop190_StateProvinces.ToList().ToDictionary(x => x.StateProvinceID);
         }
 
         public override HashSet<UserData> GetUserData()
@@ -479,7 +524,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
             using (Nop190DataContext context = GetContext())
             {
                 HashSet<Nop190_Customer> customers =
-                    context.Nop190_Customers.Where(x => !x.Deleted && x.Email != null && x.PasswordHash != null).ToHashSet();
+                    context.Nop190_Customers.Where(x => !x.Deleted && x.Email != null && x.PasswordHash != null && !x.IsGuest).ToHashSet();
 
                 HashSet<Nop190_CustomerAttribute> attributes =
                     context.Nop190_CustomerAttributes.ToHashSet();
@@ -487,6 +532,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
                     x => x.CustomerId)
                     .ToDictionary(grouping => grouping.Key, grouping => grouping.ToHashSet());
                 HashSet<Nop190_Address> addresses = context.Nop190_Addresses.ToHashSet();
+                var stateProvinces = GetStateProvinces(context);
+                var countries = GetCountries(context);
 
                 var userDatas = new HashSet<UserData>();
                 foreach (Nop190_Customer customer in customers)
@@ -499,7 +546,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
                                 .ToDictionary(grouping => grouping.Key, attribute => attribute.First().Value)
                             : new Dictionary<string, string>();
                     HashSet<Nop190_Address> customerAddresses =
-                        addresses.FindAll(x => x.CustomerID == thisCustomer.CustomerID) 
+                        addresses.FindAll(x => x.CustomerID == thisCustomer.CustomerID)
                             .ToHashSet();
 
                     userDatas.Add(new UserData
@@ -509,7 +556,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
                         Salt = thisCustomer.SaltKey,
                         Hash = thisCustomer.PasswordHash,
                         Active = thisCustomer.Active,
-                        Format = "NopSHA1", 
+                        Format = "NopSHA1",
                         Guid = thisCustomer.CustomerGUID,
                         FirstName =
                             customerAttributes.ContainsKey(FirstNameKey)
@@ -517,34 +564,38 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop190
                                 : string.Empty,
                         LastName =
                             customerAttributes.ContainsKey(LastNameKey) ? customerAttributes[LastNameKey] : string.Empty,
-                        AddressData = customerAddresses.Select(GetAddressDataObject).ToHashSet()
+                        AddressData = customerAddresses.Select(address => GetAddressDataObject(address, stateProvinces, countries)).ToHashSet()
                     });
                 }
                 return userDatas;
             }
         }
 
-        private AddressData GetAddressDataObject(Nop190_Address address)
+        private AddressData GetAddressDataObject(Nop190_Address address, Dictionary<int, Nop190_StateProvince> stateProvinces, Dictionary<int, Nop190_Country> countries)
         {
-            using (Nop190DataContext context = GetContext())
+            Nop190_StateProvince state =
+                stateProvinces.ContainsKey(address.StateProvinceID) ? stateProvinces[address.StateProvinceID] : null;
+            return new AddressData
             {
-                Nop190_StateProvince state = context.Nop190_StateProvinces.FirstOrDefault(x => x.StateProvinceID == address.StateProvinceID);
-                return new AddressData
-                {
-                    Id = address.AddressId,
-                    FirstName = address.FirstName,
-                    LastName = address.LastName,
-                    Address1 = address.Address1,
-                    Address2 = address.Address2,
-                    Company = address.Company,
-                    City = address.City,
-                    StateProvince = state != null ? state.Name : string.Empty,
-                    PostalCode = address.ZipPostalCode,
-                    PhoneNumber = address.PhoneNumber,
-                    Country = address.CountryID,
-                    Email = address.Email
-                };
-            }
+                Id = address.AddressId,
+                FirstName = address.FirstName,
+                LastName = address.LastName,
+                Address1 = address.Address1,
+                Address2 = address.Address2,
+                Company = address.Company,
+                City = address.City,
+                StateProvince = state != null ? state.Name : string.Empty,
+                PostalCode = address.ZipPostalCode,
+                PhoneNumber = address.PhoneNumber,
+                CountryCode = GetCountryCode(address.CountryID, countries),
+                Email = address.Email
+            };
+        }
+
+        private string GetCountryCode(int countryId, Dictionary<int, Nop190_Country> countries)
+        {
+            var country = countries.ContainsKey(countryId) ? countries[countryId] : null;
+            return country == null ? null : country.TwoLetterISOCode;
         }
 
 

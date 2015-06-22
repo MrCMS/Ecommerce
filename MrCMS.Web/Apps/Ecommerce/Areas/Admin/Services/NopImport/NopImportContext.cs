@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using MrCMS.Entities;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport
@@ -8,26 +8,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport
     {
         public NopImportContext()
         {
-            Entries = new HashSet<NopImportContextEntry>();
+            Entries = new Dictionary<Type, Dictionary<int, object>>();
         }
 
-        public HashSet<NopImportContextEntry> Entries { get; private set; }
+        public Dictionary<Type, Dictionary<int, object>> Entries { get; private set; }
+
 
         public void AddEntry<T>(int id, T newEntity) where T : SystemEntity
         {
-            Entries.Add(new NopImportContextEntry
-            {
-                Id = id,
-                Type = typeof(T),
-                NewEntity = newEntity
-            });
+            Type type = typeof (T);
+            if (!Entries.ContainsKey(type))
+                Entries[type] = new Dictionary<int, object>();
+
+            Entries[type][id] = newEntity;
         }
 
         public T FindNew<T>(int id) where T : SystemEntity
         {
-            NopImportContextEntry entry = Entries.FirstOrDefault(x => typeof(T).IsAssignableFrom(x.Type) && x.Id == id);
-            if (entry != null) return entry.NewEntity as T;
-            return null;
+            Type type = typeof (T);
+            if (!Entries.ContainsKey(type) || !Entries[type].ContainsKey(id))
+                return default(T);
+            return Entries[type][id] as T;
         }
     }
 }
