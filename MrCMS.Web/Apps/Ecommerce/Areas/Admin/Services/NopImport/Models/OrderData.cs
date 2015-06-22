@@ -12,8 +12,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models
         public decimal OrderTotal { get; set; }
         public DateTime OrderDate { get; set; }
 
-        public int BillingAddressId { get; set; }
-        public int? ShippingAddressId { get; set; }
+        public AddressData BillingAddress { get; set; }
+        public AddressData ShippingAddress { get; set; }
+
         public int CustomerId { get; set; }
 
         public OrderStatus OrderStatus { get; set; }
@@ -50,8 +51,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models
         public string ShippingMethodName { get; set; }
 
         public string PaymentMethod { get; set; }
-
-        public AddressData BillingAddress { get; set; }
-        public AddressData ShippingAddress { get; set; }
     }
 }

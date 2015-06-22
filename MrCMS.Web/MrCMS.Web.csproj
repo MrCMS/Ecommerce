@@ -588,12 +588,14 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Bundles\EcommerceAdminStylesheetBundle.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListTemplateDataController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Helpers\EntityExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Nop190\Nop1901.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Nop190.dbml</DependentUpon>
     </Compile>
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Nop190\NopCommerce190DataReader.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Processors\ImportProductVariants.cs" />
     <Compile Include="Apps\Ecommerce\Bundles\CheckoutLibScriptBundle.cs" />
     <Compile Include="Apps\Ecommerce\Bundles\CheckoutStylesheetBundle.cs" />
     <Compile Include="Apps\Ecommerce\Bundles\EcommerceLibScriptBundle.cs" />
