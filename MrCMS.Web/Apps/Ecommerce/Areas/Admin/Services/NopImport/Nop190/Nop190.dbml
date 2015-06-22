@@ -1,0 +1,1670 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="nop-1.90" Class="Nop190DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=localhost;Initial Catalog=nop-1.90;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="nop_1_90ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Nop_ACL" Member="Nop190_ACLs">
+    <Type Name="Nop190_ACL">
+      <Column Name="ACLID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerActionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerRoleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Allow" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_CustomerAction_Nop190_ACL" Member="Nop190_CustomerAction" ThisKey="CustomerActionID" OtherKey="CustomerActionID" Type="Nop190_CustomerAction" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_CustomerRole_Nop190_ACL" Member="Nop190_CustomerRole" ThisKey="CustomerRoleID" OtherKey="CustomerRoleID" Type="Nop190_CustomerRole" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Warehouse" Member="Nop190_Warehouses">
+    <Type Name="Nop190_Warehouse">
+      <Column Name="WarehouseID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FaxNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Address1" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Address2" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="StateProvince" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ZipPostalCode" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="CountryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ACLPerObject" Member="Nop190_ACLPerObjects">
+    <Type Name="Nop190_ACLPerObject">
+      <Column Name="ACLPerObjectId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ObjectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ObjectTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerRoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[Deny]" Member="Deny" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_CustomerRole_Nop190_ACLPerObject" Member="Nop190_CustomerRole" ThisKey="CustomerRoleId" OtherKey="CustomerRoleID" Type="Nop190_CustomerRole" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ActivityLog" Member="Nop190_ActivityLogs">
+    <Type Name="Nop190_ActivityLog">
+      <Column Name="ActivityLogID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ActivityLogTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ActivityLogType_Nop190_ActivityLog" Member="Nop190_ActivityLogType" ThisKey="ActivityLogTypeID" OtherKey="ActivityLogTypeID" Type="Nop190_ActivityLogType" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Customer_Nop190_ActivityLog" Member="Nop190_Customer" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_Customer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ActivityLogType" Member="Nop190_ActivityLogTypes">
+    <Type Name="Nop190_ActivityLogType">
+      <Column Name="ActivityLogTypeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SystemKeyword" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Enabled" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ActivityLogType_Nop190_ActivityLog" Member="Nop190_ActivityLogs" ThisKey="ActivityLogTypeID" OtherKey="ActivityLogTypeID" Type="Nop190_ActivityLog" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Address" Member="Nop190_Addresses">
+    <Type Name="Nop190_Address">
+      <Column Name="AddressId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsBillingAddress" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FaxNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Company" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Address1" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Address2" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="StateProvinceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ZipPostalCode" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="CountryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Customer_Nop190_Address" Member="Nop190_Customer" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_Customer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Affiliate" Member="Nop190_Affiliates">
+    <Type Name="Nop190_Affiliate">
+      <Column Name="AffiliateID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MiddleName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FaxNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Company" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Address1" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Address2" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="StateProvince" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ZipPostalCode" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="CountryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_BannedIpAddress" Member="Nop190_BannedIpAddresses">
+    <Type Name="Nop190_BannedIpAddress">
+      <Column Name="BannedIpAddressID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_BannedIpNetwork" Member="Nop190_BannedIpNetworks">
+    <Type Name="Nop190_BannedIpNetwork">
+      <Column Name="BannedIpNetworkID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StartAddress" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="EndAddress" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="IpException" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_BlogComment" Member="Nop190_BlogComments">
+    <Type Name="Nop190_BlogComment">
+      <Column Name="BlogCommentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BlogPostID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IPAddress" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CommentText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_BlogPost_Nop190_BlogComment" Member="Nop190_BlogPost" ThisKey="BlogPostID" OtherKey="BlogPostID" Type="Nop190_BlogPost" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_BlogPost" Member="Nop190_BlogPosts">
+    <Type Name="Nop190_BlogPost">
+      <Column Name="BlogPostID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BlogPostTitle" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="BlogPostBody" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="BlogPostAllowComments" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Tags" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_BlogPost_Nop190_BlogComment" Member="Nop190_BlogComments" ThisKey="BlogPostID" OtherKey="BlogPostID" Type="Nop190_BlogComment" />
+      <Association Name="Nop190_Customer_Nop190_BlogPost" Member="Nop190_Customer" ThisKey="CreatedByID" OtherKey="CustomerID" Type="Nop190_Customer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Language_Nop190_BlogPost" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Campaign" Member="Nop190_Campaigns">
+    <Type Name="Nop190_Campaign">
+      <Column Name="CampaignID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Subject" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Body" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Category" Member="Nop190_Categories">
+    <Type Name="Nop190_Category">
+      <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="TemplateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MetaKeywords" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaDescription" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaTitle" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="SEName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentCategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PictureID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PageSize" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PriceRanges" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="ShowOnHomePage" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Published" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Category_Nop190_Category_Discount_Mapping" Member="Nop190_Category_Discount_Mappings" ThisKey="CategoryID" OtherKey="CategoryID" Type="Nop190_Category_Discount_Mapping" />
+      <Association Name="Nop190_Category_Nop190_CategoryLocalized" Member="Nop190_CategoryLocalizeds" ThisKey="CategoryID" OtherKey="CategoryID" Type="Nop190_CategoryLocalized" />
+      <Association Name="Nop190_Category_Nop190_Product_Category_Mapping" Member="Nop190_Product_Category_Mappings" ThisKey="CategoryID" OtherKey="CategoryID" Type="Nop190_Product_Category_Mapping" />
+      <Association Name="Nop190_CategoryTemplate_Nop190_Category" Member="Nop190_CategoryTemplate" ThisKey="TemplateID" OtherKey="CategoryTemplateId" Type="Nop190_CategoryTemplate" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Category_Discount_Mapping" Member="Nop190_Category_Discount_Mappings">
+    <Type Name="Nop190_Category_Discount_Mapping">
+      <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DiscountID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Nop190_Category_Nop190_Category_Discount_Mapping" Member="Nop190_Category" ThisKey="CategoryID" OtherKey="CategoryID" Type="Nop190_Category" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Discount_Nop190_Category_Discount_Mapping" Member="Nop190_Discount" ThisKey="DiscountID" OtherKey="DiscountID" Type="Nop190_Discount" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_CategoryLocalized" Member="Nop190_CategoryLocalizeds">
+    <Type Name="Nop190_CategoryLocalized">
+      <Column Name="CategoryLocalizedID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaKeywords" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaDescription" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaTitle" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="SEName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Category_Nop190_CategoryLocalized" Member="Nop190_Category" ThisKey="CategoryID" OtherKey="CategoryID" Type="Nop190_Category" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Language_Nop190_CategoryLocalized" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_CategoryTemplate" Member="Nop190_CategoryTemplates">
+    <Type Name="Nop190_CategoryTemplate">
+      <Column Name="CategoryTemplateId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="TemplatePath" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_CategoryTemplate_Nop190_Category" Member="Nop190_Categories" ThisKey="CategoryTemplateId" OtherKey="TemplateID" Type="Nop190_Category" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_CheckoutAttribute" Member="Nop190_CheckoutAttributes">
+    <Type Name="Nop190_CheckoutAttribute">
+      <Column Name="CheckoutAttributeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="TextPrompt" Type="System.String" DbType="NVarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="IsRequired" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShippableProductRequired" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsTaxExempt" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="TaxCategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AttributeControlTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_CheckoutAttribute_Nop190_CheckoutAttributeLocalized" Member="Nop190_CheckoutAttributeLocalizeds" ThisKey="CheckoutAttributeID" OtherKey="CheckoutAttributeID" Type="Nop190_CheckoutAttributeLocalized" />
+      <Association Name="Nop190_CheckoutAttribute_Nop190_CheckoutAttributeValue" Member="Nop190_CheckoutAttributeValues" ThisKey="CheckoutAttributeID" OtherKey="CheckoutAttributeID" Type="Nop190_CheckoutAttributeValue" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_CheckoutAttributeLocalized" Member="Nop190_CheckoutAttributeLocalizeds">
+    <Type Name="Nop190_CheckoutAttributeLocalized">
+      <Column Name="CheckoutAttributeLocalizedID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CheckoutAttributeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="TextPrompt" Type="System.String" DbType="NVarChar(300) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_CheckoutAttribute_Nop190_CheckoutAttributeLocalized" Member="Nop190_CheckoutAttribute" ThisKey="CheckoutAttributeID" OtherKey="CheckoutAttributeID" Type="Nop190_CheckoutAttribute" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Language_Nop190_CheckoutAttributeLocalized" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_CheckoutAttributeValue" Member="Nop190_CheckoutAttributeValues">
+    <Type Name="Nop190_CheckoutAttributeValue">
+      <Column Name="CheckoutAttributeValueID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CheckoutAttributeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PriceAdjustment" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="WeightAdjustment" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="IsPreSelected" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_CheckoutAttributeValue_Nop190_CheckoutAttributeValueLocalized" Member="Nop190_CheckoutAttributeValueLocalizeds" ThisKey="CheckoutAttributeValueID" OtherKey="CheckoutAttributeValueID" Type="Nop190_CheckoutAttributeValueLocalized" />
+      <Association Name="Nop190_CheckoutAttribute_Nop190_CheckoutAttributeValue" Member="Nop190_CheckoutAttribute" ThisKey="CheckoutAttributeID" OtherKey="CheckoutAttributeID" Type="Nop190_CheckoutAttribute" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_CheckoutAttributeValueLocalized" Member="Nop190_CheckoutAttributeValueLocalizeds">
+    <Type Name="Nop190_CheckoutAttributeValueLocalized">
+      <Column Name="CheckoutAttributeValueLocalizedID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CheckoutAttributeValueID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_CheckoutAttributeValue_Nop190_CheckoutAttributeValueLocalized" Member="Nop190_CheckoutAttributeValue" ThisKey="CheckoutAttributeValueID" OtherKey="CheckoutAttributeValueID" Type="Nop190_CheckoutAttributeValue" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Language_Nop190_CheckoutAttributeValueLocalized" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Country" Member="Nop190_Countries">
+    <Type Name="Nop190_Country">
+      <Column Name="CountryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="AllowsRegistration" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AllowsBilling" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AllowsShipping" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="TwoLetterISOCode" Type="System.String" DbType="NVarChar(2) NOT NULL" CanBeNull="false" />
+      <Column Name="ThreeLetterISOCode" Type="System.String" DbType="NVarChar(3) NOT NULL" CanBeNull="false" />
+      <Column Name="NumericISOCode" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectToVAT" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Published" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Country_Nop190_PaymentMethod_RestrictedCountry" Member="Nop190_PaymentMethod_RestrictedCountries" ThisKey="CountryID" OtherKey="CountryID" Type="Nop190_PaymentMethod_RestrictedCountry" />
+      <Association Name="Nop190_Country_Nop190_ShippingByWeightAndCountry" Member="Nop190_ShippingByWeightAndCountries" ThisKey="CountryID" OtherKey="CountryID" Type="Nop190_ShippingByWeightAndCountry" />
+      <Association Name="Nop190_Country_Nop190_ShippingMethod_RestrictedCountry" Member="Nop190_ShippingMethod_RestrictedCountries" ThisKey="CountryID" OtherKey="CountryID" Type="Nop190_ShippingMethod_RestrictedCountry" />
+      <Association Name="Nop190_Country_Nop190_StateProvince" Member="Nop190_StateProvinces" ThisKey="CountryID" OtherKey="CountryID" Type="Nop190_StateProvince" />
+      <Association Name="Nop190_Country_Nop190_TaxRate" Member="Nop190_TaxRates" ThisKey="CountryID" OtherKey="CountryID" Type="Nop190_TaxRate" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_CreditCardType" Member="Nop190_CreditCardTypes">
+    <Type Name="Nop190_CreditCardType">
+      <Column Name="CreditCardTypeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="SystemKeyword" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_CrossSellProduct" Member="Nop190_CrossSellProducts">
+    <Type Name="Nop190_CrossSellProduct">
+      <Column Name="CrossSellProductId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductId1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId2" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Product_Nop190_CrossSellProduct" Member="Nop190_Product" ThisKey="ProductId1" OtherKey="ProductId" Type="Nop190_Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Currency" Member="Nop190_Currencies">
+    <Type Name="Nop190_Currency">
+      <Column Name="CurrencyID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CurrencyCode" Type="System.String" DbType="NVarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayLocale" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Rate" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="CustomFormatting" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Published" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Customer" Member="Nop190_Customers">
+    <Type Name="Nop190_Customer">
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerGUID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordHash" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SaltKey" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="AffiliateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BillingAddressID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingAddressID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastPaymentMethodID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastAppliedCouponCode" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="GiftCardCouponCodes" Type="System.String" DbType="Xml NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="CheckoutAttributes" Type="System.String" DbType="Xml NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CurrencyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TaxDisplayTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsTaxExempt" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsAdmin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsGuest" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsForumModerator" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="TotalForumPosts" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Signature" Type="System.String" DbType="NVarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="AdminComment" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RegistrationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TimeZoneID" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="AvatarID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DateOfBirth" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Nop190_Customer_Nop190_ActivityLog" Member="Nop190_ActivityLogs" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_ActivityLog" />
+      <Association Name="Nop190_Customer_Nop190_Address" Member="Nop190_Addresses" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_Address" />
+      <Association Name="Nop190_Customer_Nop190_BlogPost" Member="Nop190_BlogPosts" ThisKey="CustomerID" OtherKey="CreatedByID" Type="Nop190_BlogPost" />
+      <Association Name="Nop190_Customer_Nop190_Customer_CustomerRole_Mapping" Member="Nop190_Customer_CustomerRole_Mappings" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_Customer_CustomerRole_Mapping" />
+      <Association Name="Nop190_Customer_Nop190_CustomerAttribute" Member="Nop190_CustomerAttributes" ThisKey="CustomerID" OtherKey="CustomerId" Type="Nop190_CustomerAttribute" />
+      <Association Name="Nop190_Customer_Nop190_DiscountUsageHistory" Member="Nop190_DiscountUsageHistories" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_DiscountUsageHistory" />
+      <Association Name="Nop190_Customer_Nop190_GiftCardUsageHistory" Member="Nop190_GiftCardUsageHistories" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_GiftCardUsageHistory" />
+      <Association Name="Nop190_Customer_Nop190_PollVotingRecord" Member="Nop190_PollVotingRecords" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_PollVotingRecord" />
+      <Association Name="Nop190_Customer_Nop190_ProductRating" Member="Nop190_ProductRatings" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_ProductRating" />
+      <Association Name="Nop190_Customer_Nop190_ProductReview" Member="Nop190_ProductReviews" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_ProductReview" />
+      <Association Name="Nop190_Customer_Nop190_ReturnRequest" Member="Nop190_ReturnRequests" ThisKey="CustomerID" OtherKey="CustomerId" Type="Nop190_ReturnRequest" />
+      <Association Name="Nop190_Customer_Nop190_RewardPointsHistory" Member="Nop190_RewardPointsHistories" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_RewardPointsHistory" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Customer_CustomerRole_Mapping" Member="Nop190_Customer_CustomerRole_Mappings">
+    <Type Name="Nop190_Customer_CustomerRole_Mapping">
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CustomerRoleID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Nop190_Customer_Nop190_Customer_CustomerRole_Mapping" Member="Nop190_Customer" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_Customer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_CustomerRole_Nop190_Customer_CustomerRole_Mapping" Member="Nop190_CustomerRole" ThisKey="CustomerRoleID" OtherKey="CustomerRoleID" Type="Nop190_CustomerRole" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_CustomerAction" Member="Nop190_CustomerActions">
+    <Type Name="Nop190_CustomerAction">
+      <Column Name="CustomerActionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="SystemKeyword" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_CustomerAction_Nop190_ACL" Member="Nop190_ACLs" ThisKey="CustomerActionID" OtherKey="CustomerActionID" Type="Nop190_ACL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_CustomerAttribute" Member="Nop190_CustomerAttributes">
+    <Type Name="Nop190_CustomerAttribute">
+      <Column Name="CustomerAttributeId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[Key]" Member="Key" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Customer_Nop190_CustomerAttribute" Member="Nop190_Customer" ThisKey="CustomerId" OtherKey="CustomerID" Type="Nop190_Customer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_CustomerRole" Member="Nop190_CustomerRoles">
+    <Type Name="Nop190_CustomerRole">
+      <Column Name="CustomerRoleID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FreeShipping" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="TaxExempt" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_CustomerRole_Nop190_ACL" Member="Nop190_ACLs" ThisKey="CustomerRoleID" OtherKey="CustomerRoleID" Type="Nop190_ACL" />
+      <Association Name="Nop190_CustomerRole_Nop190_ACLPerObject" Member="Nop190_ACLPerObjects" ThisKey="CustomerRoleID" OtherKey="CustomerRoleId" Type="Nop190_ACLPerObject" />
+      <Association Name="Nop190_CustomerRole_Nop190_Customer_CustomerRole_Mapping" Member="Nop190_Customer_CustomerRole_Mappings" ThisKey="CustomerRoleID" OtherKey="CustomerRoleID" Type="Nop190_Customer_CustomerRole_Mapping" />
+      <Association Name="Nop190_CustomerRole_Nop190_CustomerRole_Discount_Mapping" Member="Nop190_CustomerRole_Discount_Mappings" ThisKey="CustomerRoleID" OtherKey="CustomerRoleID" Type="Nop190_CustomerRole_Discount_Mapping" />
+      <Association Name="Nop190_CustomerRole_Nop190_CustomerRole_ProductPrice" Member="Nop190_CustomerRole_ProductPrices" ThisKey="CustomerRoleID" OtherKey="CustomerRoleID" Type="Nop190_CustomerRole_ProductPrice" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_CustomerRole_Discount_Mapping" Member="Nop190_CustomerRole_Discount_Mappings">
+    <Type Name="Nop190_CustomerRole_Discount_Mapping">
+      <Column Name="CustomerRoleID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DiscountID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Nop190_CustomerRole_Nop190_CustomerRole_Discount_Mapping" Member="Nop190_CustomerRole" ThisKey="CustomerRoleID" OtherKey="CustomerRoleID" Type="Nop190_CustomerRole" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Discount_Nop190_CustomerRole_Discount_Mapping" Member="Nop190_Discount" ThisKey="DiscountID" OtherKey="DiscountID" Type="Nop190_Discount" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_CustomerRole_ProductPrice" Member="Nop190_CustomerRole_ProductPrices">
+    <Type Name="Nop190_CustomerRole_ProductPrice">
+      <Column Name="CustomerRoleProductPriceID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerRoleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductVariantID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_CustomerRole_Nop190_CustomerRole_ProductPrice" Member="Nop190_CustomerRole" ThisKey="CustomerRoleID" OtherKey="CustomerRoleID" Type="Nop190_CustomerRole" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_ProductVariant_Nop190_CustomerRole_ProductPrice" Member="Nop190_ProductVariant" ThisKey="ProductVariantID" OtherKey="ProductVariantId" Type="Nop190_ProductVariant" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_CustomerSession" Member="Nop190_CustomerSessions">
+    <Type Name="Nop190_CustomerSession">
+      <Column Name="CustomerSessionGUID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastAccessed" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="IsExpired" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_CustomerSession_Nop190_ShoppingCartItem" Member="Nop190_ShoppingCartItems" ThisKey="CustomerSessionGUID" OtherKey="CustomerSessionGUID" Type="Nop190_ShoppingCartItem" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Discount" Member="Nop190_Discounts">
+    <Type Name="Nop190_Discount">
+      <Column Name="DiscountID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DiscountTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DiscountRequirementID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RequirementSpentAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="RequirementBillingCountryIs" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RequirementShippingCountryIs" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DiscountLimitationID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LimitationTimes" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="UsePercentage" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DiscountPercentage" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="DiscountAmount" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="RequiresCouponCode" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CouponCode" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Discount_Nop190_Category_Discount_Mapping" Member="Nop190_Category_Discount_Mappings" ThisKey="DiscountID" OtherKey="DiscountID" Type="Nop190_Category_Discount_Mapping" />
+      <Association Name="Nop190_Discount_Nop190_CustomerRole_Discount_Mapping" Member="Nop190_CustomerRole_Discount_Mappings" ThisKey="DiscountID" OtherKey="DiscountID" Type="Nop190_CustomerRole_Discount_Mapping" />
+      <Association Name="Nop190_Discount_Nop190_DiscountRestriction" Member="Nop190_DiscountRestrictions" ThisKey="DiscountID" OtherKey="DiscountID" Type="Nop190_DiscountRestriction" />
+      <Association Name="Nop190_Discount_Nop190_DiscountUsageHistory" Member="Nop190_DiscountUsageHistories" ThisKey="DiscountID" OtherKey="DiscountID" Type="Nop190_DiscountUsageHistory" />
+      <Association Name="Nop190_Discount_Nop190_ProductVariant_Discount_Mapping" Member="Nop190_ProductVariant_Discount_Mappings" ThisKey="DiscountID" OtherKey="DiscountID" Type="Nop190_ProductVariant_Discount_Mapping" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_DiscountRestriction" Member="Nop190_DiscountRestrictions">
+    <Type Name="Nop190_DiscountRestriction">
+      <Column Name="ProductVariantID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DiscountID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Nop190_Discount_Nop190_DiscountRestriction" Member="Nop190_Discount" ThisKey="DiscountID" OtherKey="DiscountID" Type="Nop190_Discount" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_ProductVariant_Nop190_DiscountRestriction" Member="Nop190_ProductVariant" ThisKey="ProductVariantID" OtherKey="ProductVariantId" Type="Nop190_ProductVariant" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_DiscountUsageHistory" Member="Nop190_DiscountUsageHistories">
+    <Type Name="Nop190_DiscountUsageHistory">
+      <Column Name="DiscountUsageHistoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DiscountID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Customer_Nop190_DiscountUsageHistory" Member="Nop190_Customer" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_Customer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Discount_Nop190_DiscountUsageHistory" Member="Nop190_Discount" ThisKey="DiscountID" OtherKey="DiscountID" Type="Nop190_Discount" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Order_Nop190_DiscountUsageHistory" Member="Nop190_Order" ThisKey="OrderID" OtherKey="OrderID" Type="Nop190_Order" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Download" Member="Nop190_Downloads">
+    <Type Name="Nop190_Download">
+      <Column Name="DownloadID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UseDownloadURL" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DownloadURL" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="DownloadBinary" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="ContentType" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Filename" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Extension" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="IsNew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_EmailAccount" Member="Nop190_EmailAccounts">
+    <Type Name="Nop190_EmailAccount">
+      <Column Name="EmailAccountId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Host" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Port" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="EnableSSL" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UseDefaultCredentials" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Forums_Forum" Member="Nop190_Forums_Forums">
+    <Type Name="Nop190_Forums_Forum">
+      <Column Name="ForumID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ForumGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="NumTopics" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumPosts" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastTopicID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastPostID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastPostUserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastPostTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Forums_Forum_Nop190_Forums_Topic" Member="Nop190_Forums_Topics" ThisKey="ForumID" OtherKey="ForumID" Type="Nop190_Forums_Topic" />
+      <Association Name="Nop190_Forums_Group_Nop190_Forums_Forum" Member="Nop190_Forums_Group" ThisKey="ForumGroupID" OtherKey="ForumGroupID" Type="Nop190_Forums_Group" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Forums_Group" Member="Nop190_Forums_Groups">
+    <Type Name="Nop190_Forums_Group">
+      <Column Name="ForumGroupID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Forums_Group_Nop190_Forums_Forum" Member="Nop190_Forums_Forums" ThisKey="ForumGroupID" OtherKey="ForumGroupID" Type="Nop190_Forums_Forum" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Forums_Post" Member="Nop190_Forums_Posts">
+    <Type Name="Nop190_Forums_Post">
+      <Column Name="PostID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TopicID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="IPAddress" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Forums_Topic_Nop190_Forums_Post" Member="Nop190_Forums_Topic" ThisKey="TopicID" OtherKey="TopicID" Type="Nop190_Forums_Topic" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Forums_PrivateMessage" Member="Nop190_Forums_PrivateMessages">
+    <Type Name="Nop190_Forums_PrivateMessage">
+      <Column Name="PrivateMessageID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FromUserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ToUserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Subject" Type="System.String" DbType="NVarChar(450) NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="IsRead" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsDeletedByAuthor" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsDeletedByRecipient" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Forums_Subscription" Member="Nop190_Forums_Subscriptions">
+    <Type Name="Nop190_Forums_Subscription">
+      <Column Name="SubscriptionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SubscriptionGUID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ForumID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TopicID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Forums_Topic" Member="Nop190_Forums_Topics">
+    <Type Name="Nop190_Forums_Topic">
+      <Column Name="TopicID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ForumID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TopicTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Subject" Type="System.String" DbType="NVarChar(450) NOT NULL" CanBeNull="false" />
+      <Column Name="NumPosts" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Views" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastPostID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastPostUserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastPostTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Forums_Topic_Nop190_Forums_Post" Member="Nop190_Forums_Posts" ThisKey="TopicID" OtherKey="TopicID" Type="Nop190_Forums_Post" />
+      <Association Name="Nop190_Forums_Forum_Nop190_Forums_Topic" Member="Nop190_Forums_Forum" ThisKey="ForumID" OtherKey="ForumID" Type="Nop190_Forums_Forum" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_GiftCard" Member="Nop190_GiftCards">
+    <Type Name="Nop190_GiftCard">
+      <Column Name="GiftCardID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PurchasedOrderProductVariantID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="IsGiftCardActivated" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="GiftCardCouponCode" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="RecipientName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="RecipientEmail" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="SenderName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="SenderEmail" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="IsRecipientNotified" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_GiftCard_Nop190_GiftCardUsageHistory" Member="Nop190_GiftCardUsageHistories" ThisKey="GiftCardID" OtherKey="GiftCardID" Type="Nop190_GiftCardUsageHistory" />
+      <Association Name="Nop190_OrderProductVariant_Nop190_GiftCard" Member="Nop190_OrderProductVariant" ThisKey="PurchasedOrderProductVariantID" OtherKey="OrderProductVariantID" Type="Nop190_OrderProductVariant" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_GiftCardUsageHistory" Member="Nop190_GiftCardUsageHistories">
+    <Type Name="Nop190_GiftCardUsageHistory">
+      <Column Name="GiftCardUsageHistoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GiftCardID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UsedValue" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="UsedValueInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Customer_Nop190_GiftCardUsageHistory" Member="Nop190_Customer" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_Customer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_GiftCard_Nop190_GiftCardUsageHistory" Member="Nop190_GiftCard" ThisKey="GiftCardID" OtherKey="GiftCardID" Type="Nop190_GiftCard" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Language" Member="Nop190_Languages">
+    <Type Name="Nop190_Language">
+      <Column Name="LanguageId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageCulture" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="FlagImageFileName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Published" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Language_Nop190_BlogPost" Member="Nop190_BlogPosts" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_BlogPost" />
+      <Association Name="Nop190_Language_Nop190_CategoryLocalized" Member="Nop190_CategoryLocalizeds" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_CategoryLocalized" />
+      <Association Name="Nop190_Language_Nop190_CheckoutAttributeLocalized" Member="Nop190_CheckoutAttributeLocalizeds" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_CheckoutAttributeLocalized" />
+      <Association Name="Nop190_Language_Nop190_CheckoutAttributeValueLocalized" Member="Nop190_CheckoutAttributeValueLocalizeds" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_CheckoutAttributeValueLocalized" />
+      <Association Name="Nop190_Language_Nop190_LocaleStringResource" Member="Nop190_LocaleStringResources" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_LocaleStringResource" />
+      <Association Name="Nop190_Language_Nop190_ManufacturerLocalized" Member="Nop190_ManufacturerLocalizeds" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_ManufacturerLocalized" />
+      <Association Name="Nop190_Language_Nop190_MessageTemplateLocalized" Member="Nop190_MessageTemplateLocalizeds" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_MessageTemplateLocalized" />
+      <Association Name="Nop190_Language_Nop190_New" Member="Nop190_News" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_New" />
+      <Association Name="Nop190_Language_Nop190_Poll" Member="Nop190_Polls" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_Poll" />
+      <Association Name="Nop190_Language_Nop190_ProductAttributeLocalized" Member="Nop190_ProductAttributeLocalizeds" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_ProductAttributeLocalized" />
+      <Association Name="Nop190_Language_Nop190_ProductLocalized" Member="Nop190_ProductLocalizeds" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_ProductLocalized" />
+      <Association Name="Nop190_Language_Nop190_ProductVariantAttributeValueLocalized" Member="Nop190_ProductVariantAttributeValueLocalizeds" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_ProductVariantAttributeValueLocalized" />
+      <Association Name="Nop190_Language_Nop190_ProductVariantLocalized" Member="Nop190_ProductVariantLocalizeds" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_ProductVariantLocalized" />
+      <Association Name="Nop190_Language_Nop190_SpecificationAttributeLocalized" Member="Nop190_SpecificationAttributeLocalizeds" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_SpecificationAttributeLocalized" />
+      <Association Name="Nop190_Language_Nop190_SpecificationAttributeOptionLocalized" Member="Nop190_SpecificationAttributeOptionLocalizeds" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_SpecificationAttributeOptionLocalized" />
+      <Association Name="Nop190_Language_Nop190_TopicLocalized" Member="Nop190_TopicLocalizeds" ThisKey="LanguageId" OtherKey="LanguageID" Type="Nop190_TopicLocalized" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_LocaleStringResource" Member="Nop190_LocaleStringResources">
+    <Type Name="Nop190_LocaleStringResource">
+      <Column Name="LocaleStringResourceID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ResourceName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ResourceValue" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Language_Nop190_LocaleStringResource" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Log" Member="Nop190_Logs">
+    <Type Name="Nop190_Log">
+      <Column Name="LogID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LogTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Severity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="Exception" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="IPAddress" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PageURL" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ReferrerURL" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Manufacturer" Member="Nop190_Manufacturers">
+    <Type Name="Nop190_Manufacturer">
+      <Column Name="ManufacturerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="TemplateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MetaKeywords" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaDescription" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaTitle" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="SEName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PictureID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PageSize" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PriceRanges" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="Published" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Manufacturer_Nop190_ManufacturerLocalized" Member="Nop190_ManufacturerLocalizeds" ThisKey="ManufacturerID" OtherKey="ManufacturerID" Type="Nop190_ManufacturerLocalized" />
+      <Association Name="Nop190_Manufacturer_Nop190_Product_Manufacturer_Mapping" Member="Nop190_Product_Manufacturer_Mappings" ThisKey="ManufacturerID" OtherKey="ManufacturerID" Type="Nop190_Product_Manufacturer_Mapping" />
+      <Association Name="Nop190_ManufacturerTemplate_Nop190_Manufacturer" Member="Nop190_ManufacturerTemplate" ThisKey="TemplateID" OtherKey="ManufacturerTemplateId" Type="Nop190_ManufacturerTemplate" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ManufacturerLocalized" Member="Nop190_ManufacturerLocalizeds">
+    <Type Name="Nop190_ManufacturerLocalized">
+      <Column Name="ManufacturerLocalizedID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ManufacturerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaKeywords" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaDescription" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaTitle" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="SEName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Language_Nop190_ManufacturerLocalized" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Manufacturer_Nop190_ManufacturerLocalized" Member="Nop190_Manufacturer" ThisKey="ManufacturerID" OtherKey="ManufacturerID" Type="Nop190_Manufacturer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ManufacturerTemplate" Member="Nop190_ManufacturerTemplates">
+    <Type Name="Nop190_ManufacturerTemplate">
+      <Column Name="ManufacturerTemplateId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="TemplatePath" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ManufacturerTemplate_Nop190_Manufacturer" Member="Nop190_Manufacturers" ThisKey="ManufacturerTemplateId" OtherKey="TemplateID" Type="Nop190_Manufacturer" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_MeasureDimension" Member="Nop190_MeasureDimensions">
+    <Type Name="Nop190_MeasureDimension">
+      <Column Name="MeasureDimensionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="SystemKeyword" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Ratio" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_MeasureWeight" Member="Nop190_MeasureWeights">
+    <Type Name="Nop190_MeasureWeight">
+      <Column Name="MeasureWeightID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="SystemKeyword" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Ratio" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_MessageTemplate" Member="Nop190_MessageTemplates">
+    <Type Name="Nop190_MessageTemplate">
+      <Column Name="MessageTemplateID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_MessageTemplate_Nop190_MessageTemplateLocalized" Member="Nop190_MessageTemplateLocalizeds" ThisKey="MessageTemplateID" OtherKey="MessageTemplateID" Type="Nop190_MessageTemplateLocalized" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_MessageTemplateLocalized" Member="Nop190_MessageTemplateLocalizeds">
+    <Type Name="Nop190_MessageTemplateLocalized">
+      <Column Name="MessageTemplateLocalizedID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MessageTemplateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BCCEmailAddresses" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Subject" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Body" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="EmailAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Language_Nop190_MessageTemplateLocalized" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_MessageTemplate_Nop190_MessageTemplateLocalized" Member="Nop190_MessageTemplate" ThisKey="MessageTemplateID" OtherKey="MessageTemplateID" Type="Nop190_MessageTemplate" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_News" Member="Nop190_News">
+    <Type Name="Nop190_New">
+      <Column Name="NewsID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="Short" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="[Full]" Member="Full" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Published" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AllowComments" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_New_Nop190_NewsComment" Member="Nop190_NewsComments" ThisKey="NewsID" OtherKey="NewsID" Type="Nop190_NewsComment" />
+      <Association Name="Nop190_Language_Nop190_New" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_NewsComment" Member="Nop190_NewsComments">
+    <Type Name="Nop190_NewsComment">
+      <Column Name="NewsCommentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NewsID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IPAddress" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_New_Nop190_NewsComment" Member="Nop190_New" ThisKey="NewsID" OtherKey="NewsID" Type="Nop190_New" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_NewsLetterSubscription" Member="Nop190_NewsLetterSubscriptions">
+    <Type Name="Nop190_NewsLetterSubscription">
+      <Column Name="NewsLetterSubscriptionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NewsLetterSubscriptionGuid" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Order" Member="Nop190_Orders">
+    <Type Name="Nop190_Order">
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrderGUID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerLanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerTaxDisplayTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerIP" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="OrderSubtotalInclTax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderSubtotalExclTax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderSubTotalDiscountInclTax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderSubTotalDiscountExclTax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderShippingInclTax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderShippingExclTax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentMethodAdditionalFeeInclTax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentMethodAdditionalFeeExclTax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="TaxRates" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="OrderTax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderTotal" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="RefundedAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderDiscount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderSubtotalInclTaxInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderSubtotalExclTaxInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderSubTotalDiscountInclTaxInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderSubTotalDiscountExclTaxInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderShippingInclTaxInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderShippingExclTaxInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentMethodAdditionalFeeInclTaxInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentMethodAdditionalFeeExclTaxInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="TaxRatesInCustomerCurrency" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="OrderTaxInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderTotalInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OrderDiscountInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerCurrencyCode" Type="System.String" DbType="NVarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="CheckoutAttributeDescription" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="CheckoutAttributesXML" Type="System.String" DbType="Xml NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="OrderWeight" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="AffiliateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OrderStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AllowStoringCreditCardNumber" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CardType" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CardName" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="CardNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MaskedCreditCardNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CardCVV2" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CardExpirationMonth" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CardExpirationYear" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentMethodID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentMethodName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="AuthorizationTransactionID" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="AuthorizationTransactionCode" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="AuthorizationTransactionResult" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="CaptureTransactionID" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="CaptureTransactionResult" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="SubscriptionTransactionID" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="PurchaseOrderNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PaidDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="BillingFirstName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BillingLastName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BillingPhoneNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="BillingEmail" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="BillingFaxNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="BillingCompany" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BillingAddress1" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BillingAddress2" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BillingCity" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BillingStateProvince" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BillingStateProvinceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BillingZipPostalCode" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="BillingCountry" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BillingCountryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingFirstName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingLastName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingPhoneNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingEmail" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingFaxNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingCompany" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingAddress1" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingAddress2" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingCity" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingStateProvince" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingStateProvinceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingZipPostalCode" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingCountry" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingCountryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingMethod" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingRateComputationMethodID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShippedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TrackingNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="DeliveryDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="VatNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Order_Nop190_DiscountUsageHistory" Member="Nop190_DiscountUsageHistories" ThisKey="OrderID" OtherKey="OrderID" Type="Nop190_DiscountUsageHistory" />
+      <Association Name="Nop190_Order_Nop190_OrderNote" Member="Nop190_OrderNotes" ThisKey="OrderID" OtherKey="OrderID" Type="Nop190_OrderNote" />
+      <Association Name="Nop190_Order_Nop190_OrderProductVariant" Member="Nop190_OrderProductVariants" ThisKey="OrderID" OtherKey="OrderID" Type="Nop190_OrderProductVariant" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_OrderNote" Member="Nop190_OrderNotes">
+    <Type Name="Nop190_OrderNote">
+      <Column Name="OrderNoteID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Note" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayToCustomer" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Order_Nop190_OrderNote" Member="Nop190_Order" ThisKey="OrderID" OtherKey="OrderID" Type="Nop190_Order" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_OrderProductVariant" Member="Nop190_OrderProductVariants">
+    <Type Name="Nop190_OrderProductVariant">
+      <Column Name="OrderProductVariantID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductVariantID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPriceInclTax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPriceExclTax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="PriceInclTax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="PriceExclTax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPriceInclTaxInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPriceExclTaxInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="PriceInclTaxInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="PriceExclTaxInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="AttributeDescription" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="AttributesXML" Type="System.String" DbType="Xml NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DiscountAmountInclTax" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="DiscountAmountExclTax" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="DownloadCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OrderProductVariantGUID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="IsDownloadActivated" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LicenseDownloadID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_OrderProductVariant_Nop190_GiftCard" Member="Nop190_GiftCards" ThisKey="OrderProductVariantID" OtherKey="PurchasedOrderProductVariantID" Type="Nop190_GiftCard" />
+      <Association Name="Nop190_OrderProductVariant_Nop190_ReturnRequest" Member="Nop190_ReturnRequests" ThisKey="OrderProductVariantID" OtherKey="OrderProductVariantId" Type="Nop190_ReturnRequest" />
+      <Association Name="Nop190_Order_Nop190_OrderProductVariant" Member="Nop190_Order" ThisKey="OrderID" OtherKey="OrderID" Type="Nop190_Order" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_ProductVariant_Nop190_OrderProductVariant" Member="Nop190_ProductVariant" ThisKey="ProductVariantID" OtherKey="ProductVariantId" Type="Nop190_ProductVariant" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_PaymentMethod" Member="Nop190_PaymentMethods">
+    <Type Name="Nop190_PaymentMethod">
+      <Column Name="PaymentMethodID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="VisibleName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="ConfigureTemplatePath" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="UserTemplatePath" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="ClassName" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="SystemKeyword" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_PaymentMethod_Nop190_PaymentMethod_RestrictedCountry" Member="Nop190_PaymentMethod_RestrictedCountries" ThisKey="PaymentMethodID" OtherKey="PaymentMethodID" Type="Nop190_PaymentMethod_RestrictedCountry" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_PaymentMethod_RestrictedCountries" Member="Nop190_PaymentMethod_RestrictedCountries">
+    <Type Name="Nop190_PaymentMethod_RestrictedCountry">
+      <Column Name="PaymentMethodID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CountryID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Nop190_Country_Nop190_PaymentMethod_RestrictedCountry" Member="Nop190_Country" ThisKey="CountryID" OtherKey="CountryID" Type="Nop190_Country" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_PaymentMethod_Nop190_PaymentMethod_RestrictedCountry" Member="Nop190_PaymentMethod" ThisKey="PaymentMethodID" OtherKey="PaymentMethodID" Type="Nop190_PaymentMethod" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Picture" Member="Nop190_Pictures">
+    <Type Name="Nop190_Picture">
+      <Column Name="PictureID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PictureBinary" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="IsNew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MimeType" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Picture_Nop190_ProductPicture" Member="Nop190_ProductPictures" ThisKey="PictureID" OtherKey="PictureID" Type="Nop190_ProductPicture" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Poll" Member="Nop190_Polls">
+    <Type Name="Nop190_Poll">
+      <Column Name="PollID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="SystemKeyword" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="Published" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShowOnHomePage" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Nop190_Poll_Nop190_PollAnswer" Member="Nop190_PollAnswers" ThisKey="PollID" OtherKey="PollID" Type="Nop190_PollAnswer" />
+      <Association Name="Nop190_Language_Nop190_Poll" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_PollAnswer" Member="Nop190_PollAnswers">
+    <Type Name="Nop190_PollAnswer">
+      <Column Name="PollAnswerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PollID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="Count" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_PollAnswer_Nop190_PollVotingRecord" Member="Nop190_PollVotingRecords" ThisKey="PollAnswerID" OtherKey="PollAnswerID" Type="Nop190_PollVotingRecord" />
+      <Association Name="Nop190_Poll_Nop190_PollAnswer" Member="Nop190_Poll" ThisKey="PollID" OtherKey="PollID" Type="Nop190_Poll" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_PollVotingRecord" Member="Nop190_PollVotingRecords">
+    <Type Name="Nop190_PollVotingRecord">
+      <Column Name="PollVotingRecordID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PollAnswerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Customer_Nop190_PollVotingRecord" Member="Nop190_Customer" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_Customer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_PollAnswer_Nop190_PollVotingRecord" Member="Nop190_PollAnswer" ThisKey="PollAnswerID" OtherKey="PollAnswerID" Type="Nop190_PollAnswer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Pricelist" Member="Nop190_Pricelists">
+    <Type Name="Nop190_Pricelist">
+      <Column Name="PricelistID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ExportModeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ExportTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AffiliateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="PricelistGuid" Type="System.String" DbType="NVarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="CacheTime" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FormatLocalization" Type="System.String" DbType="NVarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="AdminNotes" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Header" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Body" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Footer" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="PriceAdjustmentTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PriceAdjustment" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OverrideIndivAdjustment" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Pricelist_Nop190_ProductVariant_Pricelist_Mapping" Member="Nop190_ProductVariant_Pricelist_Mappings" ThisKey="PricelistID" OtherKey="PricelistID" Type="Nop190_ProductVariant_Pricelist_Mapping" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Product" Member="Nop190_Products">
+    <Type Name="Nop190_Product">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortDescription" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="FullDescription" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="AdminComment" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="TemplateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShowOnHomePage" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MetaKeywords" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaDescription" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaTitle" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="SEName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="AllowCustomerReviews" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AllowCustomerRatings" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RatingSum" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TotalRatingVotes" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Published" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Product_Nop190_CrossSellProduct" Member="Nop190_CrossSellProducts" ThisKey="ProductId" OtherKey="ProductId1" Type="Nop190_CrossSellProduct" />
+      <Association Name="Nop190_Product_Nop190_Product_Category_Mapping" Member="Nop190_Product_Category_Mappings" ThisKey="ProductId" OtherKey="ProductID" Type="Nop190_Product_Category_Mapping" />
+      <Association Name="Nop190_Product_Nop190_Product_Manufacturer_Mapping" Member="Nop190_Product_Manufacturer_Mappings" ThisKey="ProductId" OtherKey="ProductID" Type="Nop190_Product_Manufacturer_Mapping" />
+      <Association Name="Nop190_Product_Nop190_Product_SpecificationAttribute_Mapping" Member="Nop190_Product_SpecificationAttribute_Mappings" ThisKey="ProductId" OtherKey="ProductID" Type="Nop190_Product_SpecificationAttribute_Mapping" />
+      <Association Name="Nop190_Product_Nop190_ProductLocalized" Member="Nop190_ProductLocalizeds" ThisKey="ProductId" OtherKey="ProductID" Type="Nop190_ProductLocalized" />
+      <Association Name="Nop190_Product_Nop190_ProductPicture" Member="Nop190_ProductPictures" ThisKey="ProductId" OtherKey="ProductID" Type="Nop190_ProductPicture" />
+      <Association Name="Nop190_Product_Nop190_ProductRating" Member="Nop190_ProductRatings" ThisKey="ProductId" OtherKey="ProductID" Type="Nop190_ProductRating" />
+      <Association Name="Nop190_Product_Nop190_ProductReview" Member="Nop190_ProductReviews" ThisKey="ProductId" OtherKey="ProductID" Type="Nop190_ProductReview" />
+      <Association Name="Nop190_Product_Nop190_ProductTag_Product_Mapping" Member="Nop190_ProductTag_Product_Mappings" ThisKey="ProductId" OtherKey="ProductID" Type="Nop190_ProductTag_Product_Mapping" />
+      <Association Name="Nop190_Product_Nop190_ProductVariant" Member="Nop190_ProductVariants" ThisKey="ProductId" OtherKey="ProductID" Type="Nop190_ProductVariant" />
+      <Association Name="Nop190_Product_Nop190_RelatedProduct" Member="Nop190_RelatedProducts" ThisKey="ProductId" OtherKey="ProductID1" Type="Nop190_RelatedProduct" />
+      <Association Name="Nop190_ProductTemplate_Nop190_Product" Member="Nop190_ProductTemplate" ThisKey="TemplateID" OtherKey="ProductTemplateId" Type="Nop190_ProductTemplate" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Product_Category_Mapping" Member="Nop190_Product_Category_Mappings">
+    <Type Name="Nop190_Product_Category_Mapping">
+      <Column Name="ProductCategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsFeaturedProduct" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Category_Nop190_Product_Category_Mapping" Member="Nop190_Category" ThisKey="CategoryID" OtherKey="CategoryID" Type="Nop190_Category" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Product_Nop190_Product_Category_Mapping" Member="Nop190_Product" ThisKey="ProductID" OtherKey="ProductId" Type="Nop190_Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Product_Manufacturer_Mapping" Member="Nop190_Product_Manufacturer_Mappings">
+    <Type Name="Nop190_Product_Manufacturer_Mapping">
+      <Column Name="ProductManufacturerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ManufacturerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsFeaturedProduct" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Manufacturer_Nop190_Product_Manufacturer_Mapping" Member="Nop190_Manufacturer" ThisKey="ManufacturerID" OtherKey="ManufacturerID" Type="Nop190_Manufacturer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Product_Nop190_Product_Manufacturer_Mapping" Member="Nop190_Product" ThisKey="ProductID" OtherKey="ProductId" Type="Nop190_Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Product_SpecificationAttribute_Mapping" Member="Nop190_Product_SpecificationAttribute_Mappings">
+    <Type Name="Nop190_Product_SpecificationAttribute_Mapping">
+      <Column Name="ProductSpecificationAttributeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SpecificationAttributeOptionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AllowFiltering" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShowOnProductPage" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Product_Nop190_Product_SpecificationAttribute_Mapping" Member="Nop190_Product" ThisKey="ProductID" OtherKey="ProductId" Type="Nop190_Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_SpecificationAttributeOption_Nop190_Product_SpecificationAttribute_Mapping" Member="Nop190_SpecificationAttributeOption" ThisKey="SpecificationAttributeOptionID" OtherKey="SpecificationAttributeOptionID" Type="Nop190_SpecificationAttributeOption" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductAttribute" Member="Nop190_ProductAttributes">
+    <Type Name="Nop190_ProductAttribute">
+      <Column Name="ProductAttributeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ProductAttribute_Nop190_ProductAttributeLocalized" Member="Nop190_ProductAttributeLocalizeds" ThisKey="ProductAttributeID" OtherKey="ProductAttributeID" Type="Nop190_ProductAttributeLocalized" />
+      <Association Name="Nop190_ProductAttribute_Nop190_ProductVariant_ProductAttribute_Mapping" Member="Nop190_ProductVariant_ProductAttribute_Mappings" ThisKey="ProductAttributeID" OtherKey="ProductAttributeID" Type="Nop190_ProductVariant_ProductAttribute_Mapping" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductAttributeLocalized" Member="Nop190_ProductAttributeLocalizeds">
+    <Type Name="Nop190_ProductAttributeLocalized">
+      <Column Name="ProductAttributeLocalizedID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductAttributeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Language_Nop190_ProductAttributeLocalized" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_ProductAttribute_Nop190_ProductAttributeLocalized" Member="Nop190_ProductAttribute" ThisKey="ProductAttributeID" OtherKey="ProductAttributeID" Type="Nop190_ProductAttribute" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductLocalized" Member="Nop190_ProductLocalizeds">
+    <Type Name="Nop190_ProductLocalized">
+      <Column Name="ProductLocalizedID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortDescription" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="FullDescription" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaKeywords" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaDescription" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaTitle" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="SEName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Language_Nop190_ProductLocalized" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Product_Nop190_ProductLocalized" Member="Nop190_Product" ThisKey="ProductID" OtherKey="ProductId" Type="Nop190_Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductPicture" Member="Nop190_ProductPictures">
+    <Type Name="Nop190_ProductPicture">
+      <Column Name="ProductPictureID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PictureID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Picture_Nop190_ProductPicture" Member="Nop190_Picture" ThisKey="PictureID" OtherKey="PictureID" Type="Nop190_Picture" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Product_Nop190_ProductPicture" Member="Nop190_Product" ThisKey="ProductID" OtherKey="ProductId" Type="Nop190_Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductRating" Member="Nop190_ProductRatings">
+    <Type Name="Nop190_ProductRating">
+      <Column Name="ProductRatingID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Rating" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Customer_Nop190_ProductRating" Member="Nop190_Customer" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_Customer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Product_Nop190_ProductRating" Member="Nop190_Product" ThisKey="ProductID" OtherKey="ProductId" Type="Nop190_Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductReview" Member="Nop190_ProductReviews">
+    <Type Name="Nop190_ProductReview">
+      <Column Name="ProductReviewID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IPAddress" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="ReviewText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Rating" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HelpfulYesTotal" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HelpfulNoTotal" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsApproved" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ProductReview_Nop190_ProductReviewHelpfulness" Member="Nop190_ProductReviewHelpfulnesses" ThisKey="ProductReviewID" OtherKey="ProductReviewID" Type="Nop190_ProductReviewHelpfulness" />
+      <Association Name="Nop190_Customer_Nop190_ProductReview" Member="Nop190_Customer" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_Customer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Product_Nop190_ProductReview" Member="Nop190_Product" ThisKey="ProductID" OtherKey="ProductId" Type="Nop190_Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductReviewHelpfulness" Member="Nop190_ProductReviewHelpfulnesses">
+    <Type Name="Nop190_ProductReviewHelpfulness">
+      <Column Name="ProductReviewHelpfulnessID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductReviewID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="WasHelpful" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ProductReview_Nop190_ProductReviewHelpfulness" Member="Nop190_ProductReview" ThisKey="ProductReviewID" OtherKey="ProductReviewID" Type="Nop190_ProductReview" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductTag" Member="Nop190_ProductTags">
+    <Type Name="Nop190_ProductTag">
+      <Column Name="ProductTagID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ProductTag_Nop190_ProductTag_Product_Mapping" Member="Nop190_ProductTag_Product_Mappings" ThisKey="ProductTagID" OtherKey="ProductTagID" Type="Nop190_ProductTag_Product_Mapping" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductTag_Product_Mapping" Member="Nop190_ProductTag_Product_Mappings">
+    <Type Name="Nop190_ProductTag_Product_Mapping">
+      <Column Name="ProductTagID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Nop190_Product_Nop190_ProductTag_Product_Mapping" Member="Nop190_Product" ThisKey="ProductID" OtherKey="ProductId" Type="Nop190_Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_ProductTag_Nop190_ProductTag_Product_Mapping" Member="Nop190_ProductTag" ThisKey="ProductTagID" OtherKey="ProductTagID" Type="Nop190_ProductTag" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductTemplate" Member="Nop190_ProductTemplates">
+    <Type Name="Nop190_ProductTemplate">
+      <Column Name="ProductTemplateId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="TemplatePath" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ProductTemplate_Nop190_Product" Member="Nop190_Products" ThisKey="ProductTemplateId" OtherKey="TemplateID" Type="Nop190_Product" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductVariant" Member="Nop190_ProductVariants">
+    <Type Name="Nop190_ProductVariant">
+      <Column Name="ProductVariantId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="SKU" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="AdminComment" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="ManufacturerPartNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="IsGiftCard" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="GiftCardType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsDownload" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DownloadID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UnlimitedDownloads" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MaxNumberOfDownloads" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DownloadExpirationDays" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DownloadActivationType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HasSampleDownload" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SampleDownloadID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HasUserAgreement" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UserAgreementText" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="IsRecurring" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CycleLength" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CyclePeriod" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TotalCycles" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsShipEnabled" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsFreeShipping" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AdditionalShippingCharge" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="IsTaxExempt" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="TaxCategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ManageInventory" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StockQuantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayStockAvailability" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayStockQuantity" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MinStockQuantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LowStockActivityID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NotifyAdminForQuantityBelow" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Backorders" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OrderMinimumQuantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OrderMaximumQuantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="WarehouseID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DisableBuyButton" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CallForPrice" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="OldPrice" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="ProductCost" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerEntersPrice" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MinimumCustomerEnteredPrice" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="MaximumCustomerEnteredPrice" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Weight" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="Length" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="Width" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="Height" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="PictureID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AvailableStartDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AvailableEndDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Published" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ProductVariant_Nop190_CustomerRole_ProductPrice" Member="Nop190_CustomerRole_ProductPrices" ThisKey="ProductVariantId" OtherKey="ProductVariantID" Type="Nop190_CustomerRole_ProductPrice" />
+      <Association Name="Nop190_ProductVariant_Nop190_DiscountRestriction" Member="Nop190_DiscountRestrictions" ThisKey="ProductVariantId" OtherKey="ProductVariantID" Type="Nop190_DiscountRestriction" />
+      <Association Name="Nop190_ProductVariant_Nop190_OrderProductVariant" Member="Nop190_OrderProductVariants" ThisKey="ProductVariantId" OtherKey="ProductVariantID" Type="Nop190_OrderProductVariant" />
+      <Association Name="Nop190_ProductVariant_Nop190_ProductVariant_Discount_Mapping" Member="Nop190_ProductVariant_Discount_Mappings" ThisKey="ProductVariantId" OtherKey="ProductVariantID" Type="Nop190_ProductVariant_Discount_Mapping" />
+      <Association Name="Nop190_ProductVariant_Nop190_ProductVariant_Pricelist_Mapping" Member="Nop190_ProductVariant_Pricelist_Mappings" ThisKey="ProductVariantId" OtherKey="ProductVariantID" Type="Nop190_ProductVariant_Pricelist_Mapping" />
+      <Association Name="Nop190_ProductVariant_Nop190_ProductVariant_ProductAttribute_Mapping" Member="Nop190_ProductVariant_ProductAttribute_Mappings" ThisKey="ProductVariantId" OtherKey="ProductVariantID" Type="Nop190_ProductVariant_ProductAttribute_Mapping" />
+      <Association Name="Nop190_ProductVariant_Nop190_ProductVariantAttributeCombination" Member="Nop190_ProductVariantAttributeCombinations" ThisKey="ProductVariantId" OtherKey="ProductVariantID" Type="Nop190_ProductVariantAttributeCombination" />
+      <Association Name="Nop190_ProductVariant_Nop190_ProductVariantLocalized" Member="Nop190_ProductVariantLocalizeds" ThisKey="ProductVariantId" OtherKey="ProductVariantID" Type="Nop190_ProductVariantLocalized" />
+      <Association Name="Nop190_ProductVariant_Nop190_ShoppingCartItem" Member="Nop190_ShoppingCartItems" ThisKey="ProductVariantId" OtherKey="ProductVariantID" Type="Nop190_ShoppingCartItem" />
+      <Association Name="Nop190_ProductVariant_Nop190_TierPrice" Member="Nop190_TierPrices" ThisKey="ProductVariantId" OtherKey="ProductVariantID" Type="Nop190_TierPrice" />
+      <Association Name="Nop190_Product_Nop190_ProductVariant" Member="Nop190_Product" ThisKey="ProductID" OtherKey="ProductId" Type="Nop190_Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductVariant_Discount_Mapping" Member="Nop190_ProductVariant_Discount_Mappings">
+    <Type Name="Nop190_ProductVariant_Discount_Mapping">
+      <Column Name="ProductVariantID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DiscountID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Nop190_Discount_Nop190_ProductVariant_Discount_Mapping" Member="Nop190_Discount" ThisKey="DiscountID" OtherKey="DiscountID" Type="Nop190_Discount" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_ProductVariant_Nop190_ProductVariant_Discount_Mapping" Member="Nop190_ProductVariant" ThisKey="ProductVariantID" OtherKey="ProductVariantId" Type="Nop190_ProductVariant" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductVariant_Pricelist_Mapping" Member="Nop190_ProductVariant_Pricelist_Mappings">
+    <Type Name="Nop190_ProductVariant_Pricelist_Mapping">
+      <Column Name="ProductVariantPricelistID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductVariantID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PricelistID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PriceAdjustmentTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PriceAdjustment" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Pricelist_Nop190_ProductVariant_Pricelist_Mapping" Member="Nop190_Pricelist" ThisKey="PricelistID" OtherKey="PricelistID" Type="Nop190_Pricelist" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_ProductVariant_Nop190_ProductVariant_Pricelist_Mapping" Member="Nop190_ProductVariant" ThisKey="ProductVariantID" OtherKey="ProductVariantId" Type="Nop190_ProductVariant" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductVariant_ProductAttribute_Mapping" Member="Nop190_ProductVariant_ProductAttribute_Mappings">
+    <Type Name="Nop190_ProductVariant_ProductAttribute_Mapping">
+      <Column Name="ProductVariantAttributeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductVariantID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductAttributeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TextPrompt" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="IsRequired" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AttributeControlTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ProductVariant_ProductAttribute_Mapping_Nop190_ProductVariantAttributeValue" Member="Nop190_ProductVariantAttributeValues" ThisKey="ProductVariantAttributeID" OtherKey="ProductVariantAttributeID" Type="Nop190_ProductVariantAttributeValue" />
+      <Association Name="Nop190_ProductAttribute_Nop190_ProductVariant_ProductAttribute_Mapping" Member="Nop190_ProductAttribute" ThisKey="ProductAttributeID" OtherKey="ProductAttributeID" Type="Nop190_ProductAttribute" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_ProductVariant_Nop190_ProductVariant_ProductAttribute_Mapping" Member="Nop190_ProductVariant" ThisKey="ProductVariantID" OtherKey="ProductVariantId" Type="Nop190_ProductVariant" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductVariantAttributeCombination" Member="Nop190_ProductVariantAttributeCombinations">
+    <Type Name="Nop190_ProductVariantAttributeCombination">
+      <Column Name="ProductVariantAttributeCombinationID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductVariantID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AttributesXML" Type="System.Xml.Linq.XElement" DbType="Xml NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="StockQuantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AllowOutOfStockOrders" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ProductVariant_Nop190_ProductVariantAttributeCombination" Member="Nop190_ProductVariant" ThisKey="ProductVariantID" OtherKey="ProductVariantId" Type="Nop190_ProductVariant" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductVariantAttributeValue" Member="Nop190_ProductVariantAttributeValues">
+    <Type Name="Nop190_ProductVariantAttributeValue">
+      <Column Name="ProductVariantAttributeValueID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductVariantAttributeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PriceAdjustment" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="WeightAdjustment" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="IsPreSelected" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ProductVariantAttributeValue_Nop190_ProductVariantAttributeValueLocalized" Member="Nop190_ProductVariantAttributeValueLocalizeds" ThisKey="ProductVariantAttributeValueID" OtherKey="ProductVariantAttributeValueID" Type="Nop190_ProductVariantAttributeValueLocalized" />
+      <Association Name="Nop190_ProductVariant_ProductAttribute_Mapping_Nop190_ProductVariantAttributeValue" Member="Nop190_ProductVariant_ProductAttribute_Mapping" ThisKey="ProductVariantAttributeID" OtherKey="ProductVariantAttributeID" Type="Nop190_ProductVariant_ProductAttribute_Mapping" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductVariantAttributeValueLocalized" Member="Nop190_ProductVariantAttributeValueLocalizeds">
+    <Type Name="Nop190_ProductVariantAttributeValueLocalized">
+      <Column Name="ProductVariantAttributeValueLocalizedID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductVariantAttributeValueID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Language_Nop190_ProductVariantAttributeValueLocalized" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_ProductVariantAttributeValue_Nop190_ProductVariantAttributeValueLocalized" Member="Nop190_ProductVariantAttributeValue" ThisKey="ProductVariantAttributeValueID" OtherKey="ProductVariantAttributeValueID" Type="Nop190_ProductVariantAttributeValue" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ProductVariantLocalized" Member="Nop190_ProductVariantLocalizeds">
+    <Type Name="Nop190_ProductVariantLocalized">
+      <Column Name="ProductVariantLocalizedID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductVariantID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Language_Nop190_ProductVariantLocalized" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_ProductVariant_Nop190_ProductVariantLocalized" Member="Nop190_ProductVariant" ThisKey="ProductVariantID" OtherKey="ProductVariantId" Type="Nop190_ProductVariant" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_QBEntity" Member="Nop190_QBEntities">
+    <Type Name="Nop190_QBEntity">
+      <Column Name="EntityId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="QBEntityId" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="EntityTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NopEntityId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SynStateId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SeqNum" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_QueuedEmail" Member="Nop190_QueuedEmails">
+    <Type Name="Nop190_QueuedEmail">
+      <Column Name="QueuedEmailID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[From]" Member="From" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="FromName" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="[To]" Member="To" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="ToName" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Cc" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Bcc" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Subject" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Body" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="SendTries" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SentOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EmailAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_RecurringPayment" Member="Nop190_RecurringPayments">
+    <Type Name="Nop190_RecurringPayment">
+      <Column Name="RecurringPaymentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="InitialOrderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CycleLength" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CyclePeriod" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TotalCycles" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_RecurringPayment_Nop190_RecurringPaymentHistory" Member="Nop190_RecurringPaymentHistories" ThisKey="RecurringPaymentID" OtherKey="RecurringPaymentID" Type="Nop190_RecurringPaymentHistory" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_RecurringPaymentHistory" Member="Nop190_RecurringPaymentHistories">
+    <Type Name="Nop190_RecurringPaymentHistory">
+      <Column Name="RecurringPaymentHistoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RecurringPaymentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_RecurringPayment_Nop190_RecurringPaymentHistory" Member="Nop190_RecurringPayment" ThisKey="RecurringPaymentID" OtherKey="RecurringPaymentID" Type="Nop190_RecurringPayment" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_RelatedProduct" Member="Nop190_RelatedProducts">
+    <Type Name="Nop190_RelatedProduct">
+      <Column Name="RelatedProductID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductID2" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Product_Nop190_RelatedProduct" Member="Nop190_Product" ThisKey="ProductID1" OtherKey="ProductId" Type="Nop190_Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ReturnRequest" Member="Nop190_ReturnRequests">
+    <Type Name="Nop190_ReturnRequest">
+      <Column Name="ReturnRequestId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrderProductVariantId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ReasonForReturn" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="RequestedAction" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerComments" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="StaffNotes" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ReturnStatusId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Customer_Nop190_ReturnRequest" Member="Nop190_Customer" ThisKey="CustomerId" OtherKey="CustomerID" Type="Nop190_Customer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_OrderProductVariant_Nop190_ReturnRequest" Member="Nop190_OrderProductVariant" ThisKey="OrderProductVariantId" OtherKey="OrderProductVariantID" Type="Nop190_OrderProductVariant" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_RewardPointsHistory" Member="Nop190_RewardPointsHistories">
+    <Type Name="Nop190_RewardPointsHistory">
+      <Column Name="RewardPointsHistoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Points" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PointsBalance" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UsedAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="UsedAmountInCustomerCurrency" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerCurrencyCode" Type="System.String" DbType="NVarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Customer_Nop190_RewardPointsHistory" Member="Nop190_Customer" ThisKey="CustomerID" OtherKey="CustomerID" Type="Nop190_Customer" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_SearchLog" Member="Nop190_SearchLogs">
+    <Type Name="Nop190_SearchLog">
+      <Column Name="SearchLogID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SearchTerm" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Setting" Member="Nop190_Settings">
+    <Type Name="Nop190_Setting">
+      <Column Name="SettingID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(2000) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ShippingByTotal" Member="Nop190_ShippingByTotals">
+    <Type Name="Nop190_ShippingByTotal">
+      <Column Name="ShippingByTotalID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ShippingMethodID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[From]" Member="From" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="[To]" Member="To" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="UsePercentage" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingChargePercentage" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingChargeAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ShippingMethod_Nop190_ShippingByTotal" Member="Nop190_ShippingMethod" ThisKey="ShippingMethodID" OtherKey="ShippingMethodID" Type="Nop190_ShippingMethod" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ShippingByWeight" Member="Nop190_ShippingByWeights">
+    <Type Name="Nop190_ShippingByWeight">
+      <Column Name="ShippingByWeightID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ShippingMethodID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[From]" Member="From" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="[To]" Member="To" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="UsePercentage" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingChargePercentage" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingChargeAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ShippingMethod_Nop190_ShippingByWeight" Member="Nop190_ShippingMethod" ThisKey="ShippingMethodID" OtherKey="ShippingMethodID" Type="Nop190_ShippingMethod" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ShippingByWeightAndCountry" Member="Nop190_ShippingByWeightAndCountries">
+    <Type Name="Nop190_ShippingByWeightAndCountry">
+      <Column Name="ShippingByWeightAndCountryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ShippingMethodID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CountryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[From]" Member="From" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="[To]" Member="To" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="UsePercentage" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingChargePercentage" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="ShippingChargeAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Country_Nop190_ShippingByWeightAndCountry" Member="Nop190_Country" ThisKey="CountryID" OtherKey="CountryID" Type="Nop190_Country" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_ShippingMethod_Nop190_ShippingByWeightAndCountry" Member="Nop190_ShippingMethod" ThisKey="ShippingMethodID" OtherKey="ShippingMethodID" Type="Nop190_ShippingMethod" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ShippingMethod" Member="Nop190_ShippingMethods">
+    <Type Name="Nop190_ShippingMethod">
+      <Column Name="ShippingMethodID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(2000) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ShippingMethod_Nop190_ShippingByTotal" Member="Nop190_ShippingByTotals" ThisKey="ShippingMethodID" OtherKey="ShippingMethodID" Type="Nop190_ShippingByTotal" />
+      <Association Name="Nop190_ShippingMethod_Nop190_ShippingByWeight" Member="Nop190_ShippingByWeights" ThisKey="ShippingMethodID" OtherKey="ShippingMethodID" Type="Nop190_ShippingByWeight" />
+      <Association Name="Nop190_ShippingMethod_Nop190_ShippingByWeightAndCountry" Member="Nop190_ShippingByWeightAndCountries" ThisKey="ShippingMethodID" OtherKey="ShippingMethodID" Type="Nop190_ShippingByWeightAndCountry" />
+      <Association Name="Nop190_ShippingMethod_Nop190_ShippingMethod_RestrictedCountry" Member="Nop190_ShippingMethod_RestrictedCountries" ThisKey="ShippingMethodID" OtherKey="ShippingMethodID" Type="Nop190_ShippingMethod_RestrictedCountry" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ShippingMethod_RestrictedCountries" Member="Nop190_ShippingMethod_RestrictedCountries">
+    <Type Name="Nop190_ShippingMethod_RestrictedCountry">
+      <Column Name="ShippingMethodID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CountryID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Nop190_Country_Nop190_ShippingMethod_RestrictedCountry" Member="Nop190_Country" ThisKey="CountryID" OtherKey="CountryID" Type="Nop190_Country" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_ShippingMethod_Nop190_ShippingMethod_RestrictedCountry" Member="Nop190_ShippingMethod" ThisKey="ShippingMethodID" OtherKey="ShippingMethodID" Type="Nop190_ShippingMethod" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ShippingRateComputationMethod" Member="Nop190_ShippingRateComputationMethods">
+    <Type Name="Nop190_ShippingRateComputationMethod">
+      <Column Name="ShippingRateComputationMethodID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="ConfigureTemplatePath" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="ClassName" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_ShoppingCartItem" Member="Nop190_ShoppingCartItems">
+    <Type Name="Nop190_ShoppingCartItem">
+      <Column Name="ShoppingCartItemID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ShoppingCartTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerSessionGUID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ProductVariantID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AttributesXML" Type="System.Xml.Linq.XElement" DbType="Xml NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="CustomerEnteredPrice" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_CustomerSession_Nop190_ShoppingCartItem" Member="Nop190_CustomerSession" ThisKey="CustomerSessionGUID" OtherKey="CustomerSessionGUID" Type="Nop190_CustomerSession" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_ProductVariant_Nop190_ShoppingCartItem" Member="Nop190_ProductVariant" ThisKey="ProductVariantID" OtherKey="ProductVariantId" Type="Nop190_ProductVariant" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_SMSProvider" Member="Nop190_SMSProviders">
+    <Type Name="Nop190_SMSProvider">
+      <Column Name="SMSProviderId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ClassName" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="SystemKeyword" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_SpecificationAttribute" Member="Nop190_SpecificationAttributes">
+    <Type Name="Nop190_SpecificationAttribute">
+      <Column Name="SpecificationAttributeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_SpecificationAttribute_Nop190_SpecificationAttributeLocalized" Member="Nop190_SpecificationAttributeLocalizeds" ThisKey="SpecificationAttributeID" OtherKey="SpecificationAttributeID" Type="Nop190_SpecificationAttributeLocalized" />
+      <Association Name="Nop190_SpecificationAttribute_Nop190_SpecificationAttributeOption" Member="Nop190_SpecificationAttributeOptions" ThisKey="SpecificationAttributeID" OtherKey="SpecificationAttributeID" Type="Nop190_SpecificationAttributeOption" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_SpecificationAttributeLocalized" Member="Nop190_SpecificationAttributeLocalizeds">
+    <Type Name="Nop190_SpecificationAttributeLocalized">
+      <Column Name="SpecificationAttributeLocalizedID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SpecificationAttributeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Language_Nop190_SpecificationAttributeLocalized" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_SpecificationAttribute_Nop190_SpecificationAttributeLocalized" Member="Nop190_SpecificationAttribute" ThisKey="SpecificationAttributeID" OtherKey="SpecificationAttributeID" Type="Nop190_SpecificationAttribute" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_SpecificationAttributeOption" Member="Nop190_SpecificationAttributeOptions">
+    <Type Name="Nop190_SpecificationAttributeOption">
+      <Column Name="SpecificationAttributeOptionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SpecificationAttributeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_SpecificationAttributeOption_Nop190_Product_SpecificationAttribute_Mapping" Member="Nop190_Product_SpecificationAttribute_Mappings" ThisKey="SpecificationAttributeOptionID" OtherKey="SpecificationAttributeOptionID" Type="Nop190_Product_SpecificationAttribute_Mapping" />
+      <Association Name="Nop190_SpecificationAttributeOption_Nop190_SpecificationAttributeOptionLocalized" Member="Nop190_SpecificationAttributeOptionLocalizeds" ThisKey="SpecificationAttributeOptionID" OtherKey="SpecificationAttributeOptionID" Type="Nop190_SpecificationAttributeOptionLocalized" />
+      <Association Name="Nop190_SpecificationAttribute_Nop190_SpecificationAttributeOption" Member="Nop190_SpecificationAttribute" ThisKey="SpecificationAttributeID" OtherKey="SpecificationAttributeID" Type="Nop190_SpecificationAttribute" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_SpecificationAttributeOptionLocalized" Member="Nop190_SpecificationAttributeOptionLocalizeds">
+    <Type Name="Nop190_SpecificationAttributeOptionLocalized">
+      <Column Name="SpecificationAttributeOptionLocalizedID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SpecificationAttributeOptionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Language_Nop190_SpecificationAttributeOptionLocalized" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_SpecificationAttributeOption_Nop190_SpecificationAttributeOptionLocalized" Member="Nop190_SpecificationAttributeOption" ThisKey="SpecificationAttributeOptionID" OtherKey="SpecificationAttributeOptionID" Type="Nop190_SpecificationAttributeOption" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_StateProvince" Member="Nop190_StateProvinces">
+    <Type Name="Nop190_StateProvince">
+      <Column Name="StateProvinceID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CountryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Abbreviation" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Country_Nop190_StateProvince" Member="Nop190_Country" ThisKey="CountryID" OtherKey="CountryID" Type="Nop190_Country" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_TaxCategory" Member="Nop190_TaxCategories">
+    <Type Name="Nop190_TaxCategory">
+      <Column Name="TaxCategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_TaxCategory_Nop190_TaxRate" Member="Nop190_TaxRates" ThisKey="TaxCategoryID" OtherKey="TaxCategoryID" Type="Nop190_TaxRate" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_TaxProvider" Member="Nop190_TaxProviders">
+    <Type Name="Nop190_TaxProvider">
+      <Column Name="TaxProviderID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Column Name="ConfigureTemplatePath" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="ClassName" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_TaxRate" Member="Nop190_TaxRates">
+    <Type Name="Nop190_TaxRate">
+      <Column Name="TaxRateID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TaxCategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CountryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StateProvinceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Zip" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Percentage" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Country_Nop190_TaxRate" Member="Nop190_Country" ThisKey="CountryID" OtherKey="CountryID" Type="Nop190_Country" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_TaxCategory_Nop190_TaxRate" Member="Nop190_TaxCategory" ThisKey="TaxCategoryID" OtherKey="TaxCategoryID" Type="Nop190_TaxCategory" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_TierPrice" Member="Nop190_TierPrices">
+    <Type Name="Nop190_TierPrice">
+      <Column Name="TierPriceID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductVariantID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_ProductVariant_Nop190_TierPrice" Member="Nop190_ProductVariant" ThisKey="ProductVariantID" OtherKey="ProductVariantId" Type="Nop190_ProductVariant" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_Topic" Member="Nop190_Topics">
+    <Type Name="Nop190_Topic">
+      <Column Name="TopicID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="IsPasswordProtected" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="IncludeInSitemap" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Topic_Nop190_TopicLocalized" Member="Nop190_TopicLocalizeds" ThisKey="TopicID" OtherKey="TopicID" Type="Nop190_TopicLocalized" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Nop_TopicLocalized" Member="Nop190_TopicLocalizeds">
+    <Type Name="Nop190_TopicLocalized">
+      <Column Name="TopicLocalizedID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TopicID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Body" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="MetaTitle" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaKeywords" Type="System.String" DbType="NVarChar(400) NOT NULL" CanBeNull="false" />
+      <Column Name="MetaDescription" Type="System.String" DbType="NVarChar(4000) NOT NULL" CanBeNull="false" />
+      <Association Name="Nop190_Language_Nop190_TopicLocalized" Member="Nop190_Language" ThisKey="LanguageID" OtherKey="LanguageId" Type="Nop190_Language" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Nop190_Topic_Nop190_TopicLocalized" Member="Nop190_Topic" ThisKey="TopicID" OtherKey="TopicID" Type="Nop190_Topic" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+</Database>

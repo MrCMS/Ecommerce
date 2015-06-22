@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using MrCMS.Entities.Multisite;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Events;
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using NHibernate;
 using PaymentStatus = MrCMS.Web.Apps.Ecommerce.Models.PaymentStatus;
 using ShippingStatus = MrCMS.Web.Apps.Ecommerce.Models.ShippingStatus;
@@ -15,17 +19,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
 {
     public class ImportOrders : IImportOrders
     {
-        private readonly ISession _session;
+        private readonly IStatelessSession _session;
+        private readonly Site _site;
 
-        public ImportOrders(ISession session)
+        public ImportOrders(IStatelessSession session, Site site)
         {
             _session = session;
+            _site = site;
         }
 
         public string ProcessOrders(NopCommerceDataReader dataReader, NopImportContext nopImportContext)
         {
             HashSet<OrderData> orders = dataReader.GetOrderData();
-            HashSet<OrderLineData> orderLines = dataReader.GetOrderLineData();
+            var orderLines = dataReader.GetOrderLineData().GroupBy(x => x.OrderId)
+                .ToDictionary(x => x.Key, x => x.ToHashSet());
+            var site = _session.Get<Site>(_site.Id);
+            var guids = _session.QueryOver<Order>().Select(o => o.Guid).List<Guid>();
 
             using (EventContext.Instance.Disable<GenerateGiftCards>())
             {
@@ -34,16 +43,50 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                     foreach (OrderData data in orders)
                     {
                         Guid guid = data.Guid;
-                        if (session.QueryOver<Order>().Where(o => o.Guid == guid).Any())
+                        if (guids.Contains(guid))
                             continue;
 
-                        var billingAddress = nopImportContext.FindNew<Address>(data.BillingAddressId);
-                        var shippingAddress =
-                            nopImportContext.FindNew<Address>(data.ShippingAddressId.GetValueOrDefault());
+                        Entities.Orders.AddressData billingAddressData = null;
+                        if (data.BillingAddress != null)
+                        {
+                            billingAddressData = new Entities.Orders.AddressData
+                            {
+                                Address1 = data.BillingAddress.Address1,
+                                Address2 = data.BillingAddress.Address2,
+                                City = data.BillingAddress.City,
+                                Company = data.BillingAddress.Company,
+                                CountryCode = data.BillingAddress.CountryCode,
+                                FirstName = data.BillingAddress.FirstName,
+                                LastName = data.BillingAddress.LastName,
+                                PhoneNumber = data.BillingAddress.PhoneNumber,
+                                PostalCode = data.BillingAddress.PostalCode,
+                                StateProvince = data.BillingAddress.StateProvince
+                            };
+                        }
+
+
+                        Entities.Orders.AddressData shippingAddressData = null;
+                        if (data.ShippingAddress != null)
+                        {
+                            shippingAddressData = new Entities.Orders.AddressData
+                            {
+                                Address1 = data.ShippingAddress.Address1,
+                                Address2 = data.ShippingAddress.Address2,
+                                City = data.ShippingAddress.City,
+                                Company = data.ShippingAddress.Company,
+                                CountryCode = data.ShippingAddress.CountryCode,
+                                FirstName = data.ShippingAddress.FirstName,
+                                LastName = data.ShippingAddress.LastName,
+                                PhoneNumber = data.ShippingAddress.PhoneNumber,
+                                PostalCode = data.ShippingAddress.PostalCode,
+                                StateProvince = data.ShippingAddress.StateProvince
+                            };
+                        }
+
                         var order = new Order
                         {
-                            BillingAddress = billingAddress.ToAddressData(),
-                            ShippingAddress = shippingAddress != null ? shippingAddress.ToAddressData() : null,
+                            BillingAddress = billingAddressData,
+                            ShippingAddress = shippingAddressData,
                             CustomerIP = data.CustomerIp,
                             DiscountAmount = data.OrderDiscount,
                             Id = data.Id,
@@ -65,7 +108,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                             OrderDate = data.OrderDate
                         };
                         order.SetGuid(data.Guid);
-                        session.Save(order);
+                        order.AssignBaseProperties(site);
+                        session.Insert(order);
 
                         if (order.OrderNotes == null)
                             order.OrderNotes = new List<OrderNote>();
@@ -85,10 +129,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                             if (note.Date.HasValue)
                                 orderNote.CreatedOn = note.Date.Value;
                             order.OrderNotes.Add(orderNote);
-                            session.Save(orderNote);
+                            orderNote.AssignBaseProperties(site);
+                            session.Insert(orderNote);
                         }
                         int orderId = data.Id;
-                        HashSet<OrderLineData> lineDatas = orderLines.FindAll(x => x.OrderId == orderId);
+                        HashSet<OrderLineData> lineDatas = orderLines.ContainsKey(orderId)
+                            ? orderLines[orderId]
+                            : new HashSet<OrderLineData>();
                         foreach (OrderLineData lineData in lineDatas)
                         {
                             var orderLine = new OrderLine
@@ -108,7 +155,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                                 RequiresShipping = lineData.RequiresShipping
                             };
                             order.OrderLines.Add(orderLine);
-                            session.Save(orderLine);
+                            orderLine.AssignBaseProperties(site);
+                            session.Insert(orderLine);
                         }
                         nopImportContext.AddEntry(data.Id, order);
                     }
