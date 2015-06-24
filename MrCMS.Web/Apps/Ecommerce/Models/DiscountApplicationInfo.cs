@@ -22,8 +22,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             {
                 return OrderTotalDiscount > decimal.Zero
                        || ShippingDiscount > decimal.Zero
-                       || ItemDiscounts.Keys.Any(x => ItemDiscounts[x] > decimal.Zero)
-                       || ItemsFree.Keys.Any(x => ItemsFree[x] > 0);
+                       || ItemDiscounts.Values.Any(x => x > decimal.Zero)
+                       || ItemsFree.Values.Any(x => x > 0);
             }
         }
 
