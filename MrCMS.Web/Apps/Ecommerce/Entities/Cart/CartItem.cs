@@ -8,30 +8,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
     public class CartItem : SiteEntity
     {
         private decimal _discountAmount = decimal.Zero;
+        private int _freeItems;
         public virtual ProductVariant Item { get; set; }
         public virtual Guid UserGuid { get; set; }
         public virtual int Quantity { get; set; }
         public virtual string Data { get; set; }
         public virtual CanBuyStatus CanBuyStatus { get; set; }
 
+        public virtual int PricedQuantity
+        {
+            get { return Quantity - _freeItems; }
+        }
+
         public virtual decimal Price
         {
-            get { return PricePreDiscount - DiscountAmount; }
+            get { return UnitPrice * PricedQuantity; }
         }
 
         public virtual decimal PricePreDiscount
         {
-            get { return Item.GetPrice(Quantity); }
-        }
-
-        public virtual decimal Saving
-        {
-            get { return Item.GetSaving(Quantity); }
+            get { return UnitPricePreDiscount * Quantity; }
         }
 
         public virtual decimal Tax
         {
-            get { return Item.GetTax(Quantity); }
+            get { return UnitTax * PricedQuantity; }
         }
 
         public virtual decimal PricePreTax
@@ -46,7 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 
         public virtual decimal Weight
         {
-            get { return Item.Weight*Quantity; }
+            get { return Item.Weight * Quantity; }
         }
 
         public virtual string Name
@@ -56,17 +57,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 
         public virtual decimal UnitPrice
         {
+            get
+            {
+                var unitPrice = UnitPricePreDiscount - _discountAmount;
+                // Ensure that it is at least free, not negative price
+                return Math.Max(unitPrice, decimal.Zero);
+            }
+        }
+
+        private decimal UnitPricePreDiscount
+        {
             get { return Item.GetUnitPrice(Quantity); }
         }
 
         public virtual decimal UnitPricePreTax
         {
-            get { return Item.GetUnitPricePreTax(Quantity); }
+            get { return UnitPrice - UnitTax; }
         }
 
         public virtual decimal UnitTax
         {
-            get { return Item.GetUnitTax(Quantity); }
+            get
+            {
+                return Math.Round(UnitPrice * (TaxRatePercentage / (TaxRatePercentage + 100)), 2,
+                    MidpointRounding.AwayFromZero);
+            }
         }
 
         public virtual bool RequiresShipping
@@ -81,7 +96,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 
         public virtual decimal DiscountAmount
         {
-            get { return _discountAmount >= PricePreDiscount ? PricePreDiscount : _discountAmount; }
+            get { return PricePreDiscount - Price; }
         }
 
         public virtual int? AllowedNumberOfDownloads
@@ -101,7 +116,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 
         public virtual bool HasDiscount
         {
-            get { return DiscountAmount > 0; }
+            get { return _discountAmount > 0 || _freeItems > 0; }
         }
 
         public virtual bool CanBuy
@@ -114,9 +129,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
             get { return CanBuyStatus.Message; }
         }
 
-        public virtual void SetDiscountInfo(decimal discountAmount)
+        public virtual void SetDiscountAmount(decimal discountAmount)
         {
             _discountAmount += discountAmount;
+        }
+
+        public virtual void SetFreeItems(int freeItems)
+        {
+            _freeItems = freeItems;
         }
     }
 }

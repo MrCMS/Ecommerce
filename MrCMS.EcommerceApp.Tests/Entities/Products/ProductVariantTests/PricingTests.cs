@@ -228,23 +228,5 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
 
             variant.GetUnitPrice(3).Should().Be(8);
         }
-
-        [Fact]
-        public void ProductVariant_GetPrice_ShouldGetHighestQuantityMatchingPriceBreak()
-        {
-            Kernel.SetTaxSettings(true, true);
-            var variant = new ProductVariant
-            {
-                BasePrice = 10,
-                PriceBreaks = new List<PriceBreak>
-                {
-                    new PriceBreak {Quantity = 2, Price = 9},
-                    new PriceBreak {Quantity = 3, Price = 8},
-                    new PriceBreak {Quantity = 4, Price = 7}
-                }
-            };
-
-            variant.GetPrice(3).Should().Be(24);
-        }
     }
 }

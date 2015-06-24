@@ -302,15 +302,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                 : null;
         }
 
-        public virtual decimal GetPrice(int quantity)
-        {
-            return GetUnitPrice(quantity)*quantity;
-        }
+        //public virtual decimal GetPrice(int quantity)
+        //{
+        //    return GetUnitPrice(quantity)*quantity;
+        //}
 
-        public virtual decimal GetTax(int quantity)
-        {
-            return GetUnitTax(quantity)*quantity;
-        }
+        //public virtual decimal GetTax(int quantity)
+        //{
+        //    return GetUnitTax(quantity)*quantity;
+        //}
 
         public virtual decimal GetUnitPrice(int quantity)
         {
@@ -320,25 +320,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                 : Price;
         }
 
-        public virtual decimal GetUnitTax(int quantity)
-        {
-            PriceBreak priceBreak = GetPriceBreak(quantity);
-            return priceBreak != null
-                ? priceBreak.Tax
-                : Tax;
-        }
+        //public virtual decimal GetUnitTax(int quantity)
+        //{
+        //    PriceBreak priceBreak = GetPriceBreak(quantity);
+        //    return priceBreak != null
+        //        ? priceBreak.Tax
+        //        : Tax;
+        //}
 
-        public virtual decimal GetUnitPricePreTax(int quantity)
-        {
-            return GetUnitPrice(quantity) - GetUnitTax(quantity);
-        }
+        //public virtual decimal GetUnitPricePreTax(int quantity)
+        //{
+        //    return GetUnitPrice(quantity) - GetUnitTax(quantity);
+        //}
 
-        public virtual decimal GetSaving(int quantity)
-        {
-            return PreviousPriceIncludingTax.GetValueOrDefault() != 0
-                ? ((PreviousPriceIncludingTax*quantity) - GetPrice(quantity)).Value
-                : (Price*quantity) - GetPrice(quantity);
-        }
+        //public virtual decimal GetSaving(int quantity)
+        //{
+        //    return PreviousPriceIncludingTax.GetValueOrDefault() != 0
+        //        ? ((PreviousPriceIncludingTax*quantity) - GetPrice(quantity)).Value
+        //        : (Price*quantity) - GetPrice(quantity);
+        //}
 
         public virtual string GetSelectOptionName(bool showName = true, bool showOptionValues = true)
         {

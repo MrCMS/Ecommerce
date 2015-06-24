@@ -439,7 +439,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             {
                 var cartItem = Items.FirstOrDefault(x => x.Id == key);
                 if (cartItem != null)
-                    cartItem.SetDiscountInfo(discountApplicationInfo.ItemDiscounts[key]);
+                    cartItem.SetDiscountAmount(discountApplicationInfo.ItemDiscounts[key]);
+            }
+            foreach (var key in discountApplicationInfo.ItemsFree.Keys)
+            {
+                var item = Items.FirstOrDefault(x => x.Id == key);
+                if (item != null)
+                    item.SetFreeItems(discountApplicationInfo.ItemsFree[key]);
             }
         }
     }

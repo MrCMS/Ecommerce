@@ -586,6 +586,7 @@
     <Compile Include="Apps\Ecommerce\ACL\WorldPaySettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ActionFilters\ReturnJsonTrueIfAjaxPostAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Bundles\EcommerceAdminStylesheetBundle.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AmountPerUnitController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListTemplateDataController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Helpers\EntityExtensions.cs" />
@@ -998,6 +999,7 @@
     <Compile Include="Apps\Ecommerce\Entities\BackInStockNotification\BackInStockProductVariant.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Cart\CartItem.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Currencies\Currency.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\AmountPerUnit.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\BuyXGetY.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\CartItemBasedDiscountApplication.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\FreeShipping.cs" />
@@ -1422,6 +1424,7 @@
     <Compile Include="Apps\Ecommerce\Services\Brands\EnableMiniProfilerForBrandSearch.cs" />
     <Compile Include="Apps\Ecommerce\Services\CartItemAvailablityService.cs" />
     <Compile Include="Apps\Ecommerce\Services\CartValidationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\AmountPerUnitApplier.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\AssignBasicCartInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\AssignCartDiscountInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\AssignGiftCardInfo.cs" />
@@ -4428,6 +4431,7 @@
       <LastGenOutput>Nop1901.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\AmountPerUnit\Fields.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />

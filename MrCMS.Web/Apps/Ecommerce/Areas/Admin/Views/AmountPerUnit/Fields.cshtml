@@ -1,0 +1,8 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications.AmountPerUnit
+<div class="form-group">
+    @Html.LabelFor(x => x.DiscountAmount)
+    @Html.TextBoxFor(x => x.DiscountAmount, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.DiscountAmount)
+
+    @{ Html.RenderAction("Fields", "CartItemBasedDiscountApplication", new { application = Model }); }
+</div>

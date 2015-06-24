@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
             return new DiscountApplicationInfo
             {
-                ItemDiscounts = itemPrices.GroupBy(x => x.Id).ToDictionary(cartItem => cartItem.Key, item => item.Sum(x => x.UnitPrice))
+                ItemsFree = itemPrices.GroupBy(x => x.Id).ToDictionary(cartItem => cartItem.Key, item => item.Count())
             };
         }
     }

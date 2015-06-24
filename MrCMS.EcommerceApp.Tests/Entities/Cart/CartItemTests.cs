@@ -17,50 +17,50 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         }
 
 
-        [Fact]
-        public void CartItem_Price_ShouldBeTheResultOfGetPrice()
-        {
-            A.CallTo(() => _productVariant.GetPrice(2)).Returns(20);
-            var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
+        //[Fact]
+        //public void CartItem_Price_ShouldBeTheResultOfGetPrice()
+        //{
+        //    A.CallTo(() => _productVariant.GetPrice(2)).Returns(20);
+        //    var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
 
-            var price = cartItem.Price;
+        //    var price = cartItem.Price;
 
-            price.Should().Be(20);
-        }
+        //    price.Should().Be(20);
+        //}
 
-        [Fact]
-        public void CartItem_Tax_ShouldBeResultOfGetTax()
-        {
-            A.CallTo(() => _productVariant.GetTax(2)).Returns(4);
-            var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
+        //[Fact]
+        //public void CartItem_Tax_ShouldBeResultOfGetTax()
+        //{
+        //    A.CallTo(() => _productVariant.GetTax(2)).Returns(4);
+        //    var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
 
-            var tax = cartItem.Tax;
+        //    var tax = cartItem.Tax;
 
-            tax.Should().Be(4);
-        }
+        //    tax.Should().Be(4);
+        //}
 
-        [Fact]
-        public void CartItem_PricePreTax_ShouldBePriceMinusTax()
-        {
-            A.CallTo(() => _productVariant.GetPrice(2)).Returns(24);
-            A.CallTo(() => _productVariant.GetTax(2)).Returns(4);
-            var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
+        //[Fact]
+        //public void CartItem_PricePreTax_ShouldBePriceMinusTax()
+        //{
+        //    A.CallTo(() => _productVariant.GetPrice(2)).Returns(24);
+        //    A.CallTo(() => _productVariant.GetTax(2)).Returns(4);
+        //    var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
 
-            var pricePreTax = cartItem.PricePreTax;
+        //    var pricePreTax = cartItem.PricePreTax;
 
-            pricePreTax.Should().Be(20);
-        }
+        //    pricePreTax.Should().Be(20);
+        //}
 
-        [Fact]
-        public void CartItem_Saving_ShouldBeTheResultOfGetSaving()
-        {
-            A.CallTo(() => _productVariant.GetSaving(2)).Returns(20);
-            var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
+        //[Fact]
+        //public void CartItem_Saving_ShouldBeTheResultOfGetSaving()
+        //{
+        //    A.CallTo(() => _productVariant.GetSaving(2)).Returns(20);
+        //    var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
 
-            var saving = cartItem.Saving;
+        //    var saving = cartItem.Saving;
 
-            saving.Should().Be(20);
-        }
+        //    saving.Should().Be(20);
+        //}
 
         //[Fact]
         //public void CartItem_CurrentlyAvailable_ShouldBeFalseIfStockLevelsAreTooLow()
@@ -122,7 +122,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         public void CartItem_GetDiscountAmount_IfNullDiscountIsPassedShouldBeZero()
         {
             var cartItem = new CartItem { Item = _productVariant, Quantity = 3 };
-            cartItem.SetDiscountInfo(0m);
+            cartItem.SetDiscountAmount(0m);
 
             var discountAmount = cartItem.DiscountAmount;
 
