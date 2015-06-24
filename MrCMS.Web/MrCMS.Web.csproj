@@ -1009,6 +1009,7 @@
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\CartTotalGreaterThanX.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemHasSKU.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemIsInCategory.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OnlyByItself.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderHasXOrMoreItems.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderTotalGreaterThanX.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ShippingCountryIs.cs" />
@@ -1486,6 +1487,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\ItemHasSKUChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ItemIsInCategoryChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ITermsAndConditionsUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\OnlyByItselfChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\OrderTotalFixedAmountApplier.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\SetShippingDateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ShippingCountryIsChecker.cs" />

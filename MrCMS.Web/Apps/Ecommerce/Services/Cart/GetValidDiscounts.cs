@@ -57,7 +57,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
             var checkLimitationsResults = discounts.Select(
                 discount =>
-                    _cartDiscountApplicationService.CheckLimitations(discount, cart)).ToList();
+                    _cartDiscountApplicationService.CheckLimitations(discount, cart, discounts)).ToList();
             if (checkLimitationsResults.All(result => result.Status == CheckLimitationsResultStatus.NeverValid))
             {
                 return new CheckCodeResult

@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Services.Resources;
 using MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations;
+using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
@@ -16,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _getCartItemsBySKUList = getCartItemsBySKUList;
         }
 
-        public override CheckLimitationsResult CheckLimitations(ItemHasSKU limitation, CartModel cart)
+        public override CheckLimitationsResult CheckLimitations(ItemHasSKU limitation, CartModel cart, IList<Discount> allDiscounts)
         {
             var cartItems = _getCartItemsBySKUList.GetCartItems(cart, limitation.SKUs);
 

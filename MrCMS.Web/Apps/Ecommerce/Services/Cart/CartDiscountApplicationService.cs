@@ -58,7 +58,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _session = session;
         }
 
-        public CheckLimitationsResult CheckLimitations(Discount discount, CartModel cart)
+        public CheckLimitationsResult CheckLimitations(Discount discount, CartModel cart, IList<Discount> allDiscounts)
         {
             var limitations = _session.QueryOver<DiscountLimitation>()
                 .Where(limitation => limitation.Discount.Id == discount.Id)
@@ -75,7 +75,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                     var checker = _kernel.Get(LimitationCheckerTypes[fullName]) as DiscountLimitationChecker;
                     if (checker != null)
                     {
-                        results[i] = checker.CheckLimitations(limitation, cart);
+                        results[i] = checker.CheckLimitations(limitation, cart, allDiscounts);
                         continue;
                     }
                 }

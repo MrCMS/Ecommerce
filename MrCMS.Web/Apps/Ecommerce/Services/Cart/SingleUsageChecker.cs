@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Services.Resources;
@@ -20,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _stringResourceProvider = stringResourceProvider;
         }
 
-        public override CheckLimitationsResult CheckLimitations(SingleUsage limitation, CartModel cart)
+        public override CheckLimitationsResult CheckLimitations(SingleUsage limitation, CartModel cart, IList<Discount> allDiscounts)
         {
             var discountId = limitation.Discount.Id;
             var anyUsages =

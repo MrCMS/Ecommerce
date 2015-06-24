@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Services;
 using MrCMS.Services.Resources;
@@ -23,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _getCurrentUser = getCurrentUser;
         }
 
-        public override CheckLimitationsResult CheckLimitations(SingleUsagePerCustomer limitation, CartModel cart)
+        public override CheckLimitationsResult CheckLimitations(SingleUsagePerCustomer limitation, CartModel cart, IList<Discount> allDiscounts)
         {
             var user = _getCurrentUser.Get();
             if (user == null)
