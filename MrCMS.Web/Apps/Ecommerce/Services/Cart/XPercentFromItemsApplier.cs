@@ -18,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             {
                 ItemDiscounts =
                     cartItems.ToDictionary(cartItem => cartItem.Id,
-                        item => item.PricePreDiscount*(application.DiscountPercent/100m))
+                        item => item.UnitPricePreDiscount*(application.DiscountPercent/100m))
             };
         }
     }

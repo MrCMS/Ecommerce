@@ -65,7 +65,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
             }
         }
 
-        private decimal UnitPricePreDiscount
+        public virtual decimal UnitPricePreDiscount
         {
             get { return Item.GetUnitPrice(Quantity); }
         }
