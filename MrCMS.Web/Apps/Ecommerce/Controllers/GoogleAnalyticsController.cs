@@ -32,7 +32,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (page is OrderPlaced)
             {
                 var order = TempData["Order"] as Order;
-                if (order != null)
+                if (order != null && order.CreatedOn > CurrentRequestData.Now.AddSeconds(-15))
                 {
                     trackingScript = _googleAnalyticsService.GetAnalayticsCode(order, trackingScript);
                 }
