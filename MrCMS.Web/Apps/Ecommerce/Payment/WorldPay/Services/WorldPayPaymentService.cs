@@ -175,7 +175,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
                 o.CaptureTransactionId = transId;
             });
 
-            return new ViewResult {ViewName = "RedirectToComplete", ViewData = new ViewDataDictionary(order)};
+            return new ContentResult()
+            {
+                Content = "OK"
+            };
         }
 
         private CartModel GetCart(string orderId)
