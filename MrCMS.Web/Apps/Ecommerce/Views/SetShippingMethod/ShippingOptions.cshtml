@@ -19,7 +19,7 @@
                     @if (shippingMethods.Any())
                     {
                         @Html.DropDownList("ShippingMethod", shippingMethods, new { @class = "form-control margin-bottom-10" })
-                        <div id="to-payment-details" style="display: none">
+                        <div id="to-payment-details" style="display: @(Model.ShippingMethod != null ? "block" : "hide")">
                             <a class="btn btn-primary btn-block" href="@(UniquePageHelper.GetUrl<PaymentDetails>())">
                                 @Resource("Continue to Payment")
                             </a>
