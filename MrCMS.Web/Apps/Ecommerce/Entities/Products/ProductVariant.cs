@@ -338,13 +338,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get { return this.ETag != null && !string.IsNullOrWhiteSpace(this.ETag.Image); }
         }
-
-        public virtual decimal GetSaving(int quantity)
-        {
-            return PreviousPriceIncludingTax.GetValueOrDefault() != 0
-                ? ((PreviousPriceIncludingTax * quantity) - GetPrice(quantity)).Value
-                : (Price * quantity) - GetPrice(quantity);
-        }
-
     }
 }
