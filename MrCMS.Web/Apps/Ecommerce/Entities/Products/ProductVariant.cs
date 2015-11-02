@@ -338,6 +338,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get { return this.ETag != null && !string.IsNullOrWhiteSpace(this.ETag.Image); }
         }
-
     }
 }

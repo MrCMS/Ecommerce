@@ -51,6 +51,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpPost]
         public async Task<RedirectResult> RegisterAndAssociateOrder(RegisterModel model, [IoCModelBinder(typeof(OrderByGuidModelBinder))]Order order)
         {
+            model.ConfirmPassword = model.Password; // RegisterationService RegisterUser requires ConfirmPassword which our form doesn't contain;
             var result = await _orderPlacedService.RegisterAndAssociateOrder(model, order);
             if (!result.Success)
                 TempData["register-error"] = result.Error;
