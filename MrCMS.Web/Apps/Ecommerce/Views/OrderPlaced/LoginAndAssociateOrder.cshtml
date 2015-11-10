@@ -2,13 +2,19 @@
 @model MrCMS.Web.Apps.Core.Models.RegisterAndLogin.LoginModel
 @{
     var order = ViewData["order"] as Order;
-    var errorMessage = TempData["register-error"] as string;
+    var errorMessage = TempData["login-error"] as string;
 }
 <div class="border-all margin-bottom-20">
     <div class="sub-header grey-background">
         @Resource("Order Placed - Login to remember your order", "Login to remember your order")
     </div>
     <div class="padding-20">
+        @if (!string.IsNullOrWhiteSpace(errorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                @errorMessage
+            </div>
+        }
         @using (Html.BeginForm("LoginAndAssociateOrder", "OrderPlaced", null, FormMethod.Post, new { @class = "" }))
         {
             @Html.HiddenFor(model => model.Email)
