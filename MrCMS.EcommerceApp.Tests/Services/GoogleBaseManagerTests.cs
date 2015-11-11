@@ -8,22 +8,24 @@ using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Services.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
+using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 
 namespace MrCMS.EcommerceApp.Tests.Services
 {
-    public class GoogleBaseManagerTests :InMemoryDatabaseTest
+    public class GoogleBaseManagerTests : InMemoryDatabaseTest
     {
         private readonly GoogleBaseManager _googleBaseManager;
         private readonly IProductVariantService _productVariantService;
         private IGoogleBaseShippingService _googleBaseShippingService;
         private IGetStockRemainingQuantity _getStockRemainingQuantity;
+        private readonly IProductPricingMethod _productPricingMethod = A.Fake<IProductPricingMethod>();
 
         public GoogleBaseManagerTests()
         {
             _productVariantService = A.Fake<IProductVariantService>();
             _googleBaseShippingService = A.Fake<IGoogleBaseShippingService>();
             _getStockRemainingQuantity = A.Fake<IGetStockRemainingQuantity>();
-            _googleBaseManager = new GoogleBaseManager(Session, _productVariantService, _googleBaseShippingService,_getStockRemainingQuantity);
+            _googleBaseManager = new GoogleBaseManager(Session, _productVariantService, _googleBaseShippingService, _getStockRemainingQuantity, _productPricingMethod);
         }
 
         [Fact]

@@ -28,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 return CheckLimitationsResult.CurrentlyInvalid(
                     _stringResourceProvider.GetValue("This discount cannot be combined."));
 
-            return CheckLimitationsResult.Successful(Enumerable.Empty<CartItem>());
+            return CheckLimitationsResult.Successful(Enumerable.Empty<CartItemData>());
         }
 
     }

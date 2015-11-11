@@ -31,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                     .ToHashSet();
             var postcode = cart.ShippingAddress.FormattedPostcode();
             return postcodes.Any(postcode.StartsWith)
-                ? CheckLimitationsResult.Successful(Enumerable.Empty<CartItem>())
+                ? CheckLimitationsResult.Successful(Enumerable.Empty<CartItemData>())
                 : CheckLimitationsResult.CurrentlyInvalid(
                     _stringResourceProvider.GetValue("Shipping postcode is not valid for this discount"));
 

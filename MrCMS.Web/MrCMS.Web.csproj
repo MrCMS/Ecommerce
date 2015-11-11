@@ -34,6 +34,7 @@
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
     <AutoParameterizationWebConfigConnectionStrings>false</AutoParameterizationWebConfigConnectionStrings>
     <NuGetPackageImportStamp>2223f3cd</NuGetPackageImportStamp>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -589,6 +590,8 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AmountPerUnitController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListTemplateDataController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetPricingMethodOptions.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetPricingMethodOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Helpers\EntityExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Nop190\Nop1901.designer.cs">
       <AutoGen>True</AutoGen>
@@ -1102,6 +1105,7 @@
     <Compile Include="Apps\Ecommerce\Helpers\GeneralHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\GiftCardExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\INewsletterUrlHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\MathsHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\MrCMSEcommerceHtmlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\NewsletterUrlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\NopImport\SeoHelper.cs" />
@@ -1232,6 +1236,7 @@
     <Compile Include="Apps\Ecommerce\Models\AgeGroup.cs" />
     <Compile Include="Apps\Ecommerce\Models\CanAddQuantityValidationResult.cs" />
     <Compile Include="Apps\Ecommerce\Models\CanOrderQuantityResult.cs" />
+    <Compile Include="Apps\Ecommerce\Models\CartItemData.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartShippingStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartUpdateValue.cs" />
@@ -1441,6 +1446,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\CartHasAtLeastXItemsChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartItemBasedDiscountApplicationApplier.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartItemManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\CartItemMapper.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartRewardPointsUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartSessionManager.cs" />
@@ -1455,6 +1461,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartItemBasedApplicationProducts.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartItemsByCategoryIdList.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartItemsBySKUList.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\GetExistingCartItem.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetGiftCardDataFromContext.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetShippingAddress.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetValidDiscounts.cs" />
@@ -1480,6 +1487,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetCartItemBasedApplicationProducts.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetCartItemsByCategoryIdList.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetCartItemsBySKUList.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\IGetExistingCartItem.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetGiftCardDataFromContext.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetShippingAddress.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetValidDiscounts.cs" />
@@ -1680,8 +1688,12 @@
     <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointResponseLogger.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\ThreeDSecureException.cs" />
     <Compile Include="Apps\Ecommerce\Services\PeopleWhoBoughtThisService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Pricing\B2BPricingMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Pricing\ProductPricingMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Pricing\IProductPricingMethod.cs" />
     <Compile Include="Apps\Ecommerce\Services\Pricing\IProductPricingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Pricing\IShippingPricingService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Pricing\ProductPricingHelper.cs" />
     <Compile Include="Apps\Ecommerce\Services\Pricing\ProductPricingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Pricing\ShippingPricingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductAddedToCartUIService.cs" />
@@ -1709,6 +1721,7 @@
     <Compile Include="Apps\Ecommerce\Services\Products\IGetProductSearchLuceneQuery.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IGetProductSearchQueryObjects.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IGetProductSearchSortByValue.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\IGetProductVariantTaxRatePercentage.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductOptionManagementService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductOptionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductSearchIndexService.cs" />

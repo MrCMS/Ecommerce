@@ -60,57 +60,57 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [UIHint("Currency")]
         public virtual decimal? PreviousPrice { get; set; }
 
-        public virtual decimal? PreviousPriceIncludingTax
-        {
-            get { return PreviousPrice.ProductPriceIncludingTax(TaxRatePercentage); }
-        }
+        //public virtual decimal? PreviousPriceIncludingTax
+        //{
+        //    get { return PreviousPrice.ProductPriceIncludingTax(TaxRatePercentage); }
+        //}
 
-        public virtual decimal? PreviousPriceExcludingTax
-        {
-            get { return PreviousPrice.ProductPriceExcludingTax(TaxRatePercentage); }
-        }
+        //public virtual decimal? PreviousPriceExcludingTax
+        //{
+        //    get { return PreviousPrice.ProductPriceExcludingTax(TaxRatePercentage); }
+        //}
 
-        public virtual decimal ReducedBy
-        {
-            get
-            {
-                return PreviousPrice != null
-                    ? PreviousPrice.Value > PricePreTax
-                        ? PreviousPrice.Value - PricePreTax
-                        : 0
-                    : 0;
-            }
-        }
+        //public virtual decimal ReducedBy
+        //{
+        //    get
+        //    {
+        //        return PreviousPrice != null
+        //            ? PreviousPrice.Value > PricePreTax
+        //                ? PreviousPrice.Value - PricePreTax
+        //                : 0
+        //            : 0;
+        //    }
+        //}
 
-        public virtual decimal ReducedByPercentage
-        {
-            get
-            {
-                return PreviousPrice != null && PreviousPrice != 0
-                    ? ReducedBy/PreviousPrice.Value
-                    : 0;
-            }
-        }
+        //public virtual decimal ReducedByPercentage
+        //{
+        //    get
+        //    {
+        //        return PreviousPrice != null && PreviousPrice != 0
+        //            ? ReducedBy/PreviousPrice.Value
+        //            : 0;
+        //    }
+        //}
 
-        public virtual decimal Price
-        {
-            get { return BasePrice.ProductPriceIncludingTax(TaxRatePercentage); }
-        }
+        //public virtual decimal Price
+        //{
+        //    get { return BasePrice.ProductPriceIncludingTax(TaxRatePercentage); }
+        //}
 
-        [DisplayName("Price Pre Tax")]
-        public virtual decimal PricePreTax
-        {
-            get { return BasePrice.ProductPriceExcludingTax(TaxRatePercentage); }
-        }
+        //[DisplayName("Price Pre Tax")]
+        //public virtual decimal PricePreTax
+        //{
+        //    get { return BasePrice.ProductPriceExcludingTax(TaxRatePercentage); }
+        //}
 
         [Required]
         [Remote("IsUniqueSKU", "ProductVariant", AdditionalFields = "Id")]
         public virtual string SKU { get; set; }
 
-        public virtual decimal Tax
-        {
-            get { return BasePrice.ProductTax(TaxRatePercentage); }
-        }
+        //public virtual decimal Tax
+        //{
+        //    get { return BasePrice.ProductTax(TaxRatePercentage); }
+        //}
 
         public virtual ProductAvailability Availability
         {
@@ -153,18 +153,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [StringLength(250)]
         public virtual string ManufacturerPartNumber { get; set; }
 
-        public virtual decimal TaxRatePercentage
-        {
-            get
-            {
-                TaxRate taxRate = MrCMSApplication.Get<IGetDefaultTaxRate>().Get();
-                return MrCMSApplication.Get<TaxSettings>().TaxesEnabled
-                    ? TaxRate == null
-                    ? taxRate != null ? taxRate.Percentage : decimal.Zero
-                        : TaxRate.Percentage
-                    : decimal.Zero;
-            }
-        }
+        //public virtual decimal TaxRatePercentage
+        //{
+        //    get
+        //    {
+        //        TaxRate taxRate = MrCMSApplication.Get<IGetDefaultTaxRate>().Get();
+        //        return MrCMSApplication.Get<TaxSettings>().TaxesEnabled
+        //            ? TaxRate == null
+        //            ? taxRate != null ? taxRate.Percentage : decimal.Zero
+        //                : TaxRate.Percentage
+        //            : decimal.Zero;
+        //    }
+        //}
 
         public virtual string DisplayName
         {
@@ -195,10 +195,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             }
         }
 
-        public virtual bool ShowPreviousPrice
-        {
-            get { return PreviousPrice.HasValue & PreviousPrice > Price; }
-        }
+        //public virtual bool ShowPreviousPrice
+        //{
+        //    get { return PreviousPrice.HasValue & PreviousPrice > Price; }
+        //}
 
         public virtual IList<GoogleBaseProduct> GoogleBaseProducts { get; set; }
 
@@ -295,36 +295,43 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [DisplayName("Custom Out Of Stock Message")]
         public virtual string CustomStockOutOfStockMessage { get; set; }
 
-        private PriceBreak GetPriceBreak(int quantity)
-        {
-            return PriceBreaks != null
-                ? PriceBreaks.OrderBy(x => x.Price).FirstOrDefault(x => x.Quantity <= quantity)
-                : null;
-        }
+        //private PriceBreak GetPriceBreak(int quantity)
+        //{
+        //    return PriceBreaks != null
+        //        ? PriceBreaks.OrderBy(x => x.Price).FirstOrDefault(x => x.Quantity <= quantity)
+        //        : null;
+        //}
 
-        public virtual decimal GetUnitPrice(int quantity)
-        {
-            PriceBreak priceBreak = GetPriceBreak(quantity);
-            return priceBreak != null
-                ? priceBreak.PriceIncludingTax
-                : Price;
-        }
+        //public virtual decimal GetUnitPrice(int quantity)
+        //{
+        //    PriceBreak priceBreak = GetPriceBreak(quantity);
+        //    return priceBreak != null
+        //        ? priceBreak.PriceIncludingTax
+        //        : Price;
+        //}
+        //public virtual decimal GetUnitPricePreTax(int quantity)
+        //{
+        //    PriceBreak priceBreak = GetPriceBreak(quantity);
+        //    return priceBreak != null
+        //        ? priceBreak.PriceExcludingTax
+        //        : PricePreTax;
+        //}
 
-        public virtual string GetSelectOptionName(bool showName = true, bool showOptionValues = true)
-        {
-            string title = string.Empty;
-            if (!string.IsNullOrWhiteSpace(Name) && showName)
-                title = Name + " - ";
+        //public virtual string GetSelectOptionName(bool showName = true, bool showOptionValues = true)
+        //{
+        //    string title = string.Empty;
+        //    if (!string.IsNullOrWhiteSpace(Name) && showName)
+        //        title = Name + " - ";
 
-            if (OptionValues.Any() && showOptionValues)
-            {
-                title += string.Join(", ", AttributeValuesOrdered.Select(value => value.Value)) + " - ";
-            }
+        //    if (OptionValues.Any() && showOptionValues)
+        //    {
+        //        title += string.Join(", ", AttributeValuesOrdered.Select(value => value.Value)) + " - ";
+        //    }
 
-            title += Price.ToCurrencyFormat();
+        //    title += Price.ToCurrencyFormat();
 
-            return title;
-        }
+        //    return title;
+        //}
 
         public virtual decimal Rating { get; set; }
 

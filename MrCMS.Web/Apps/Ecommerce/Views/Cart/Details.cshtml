@@ -72,7 +72,7 @@
                         <strong>Total</strong>
                     </div>
                 </div>
-                foreach (CartItem item in Model.Items)
+                foreach (var item in Model.Items)
                 {
                     Html.RenderPartial("CartItem", item);
                 }

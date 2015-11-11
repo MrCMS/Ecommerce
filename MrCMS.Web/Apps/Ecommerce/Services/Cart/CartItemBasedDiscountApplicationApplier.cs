@@ -16,7 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _getCartItemBasedApplicationProducts = getCartItemBasedApplicationProducts;
         }
 
-        protected IEnumerable<CartItem> GetItems(T application, CheckLimitationsResult checkLimitationsResult, CartModel cart)
+        protected HashSet<CartItemData> GetItems(T application, CheckLimitationsResult checkLimitationsResult, CartModel cart)
         {
             if (application.CartItemsFromLimitations)
             {

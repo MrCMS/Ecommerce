@@ -65,6 +65,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 .Cacheable()
                 .List();
 
+            // if there are no limitations, the discount is valid, and for all items
+            if (!limitations.Any())
+                return CheckLimitationsResult.Successful(cart.Items);
+
             var results = new CheckLimitationsResult[limitations.Count];
             for (var i = 0; i < limitations.Count; i++)
             {
@@ -81,6 +85,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 }
                 results[i] = CheckLimitationsResult.CurrentlyInvalid("Limitation cannot be checked");
             }
+
             return CheckLimitationsResult.Combine(results);
         }
 

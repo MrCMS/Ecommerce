@@ -5,6 +5,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.TemplateData;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.NewsletterBuilder;
+using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 using MrCMS.Web.Apps.NewsletterBuilder.Services;
 
 namespace MrCMS.Web.Apps.Ecommerce.Parsing
@@ -18,13 +19,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Parsing
         private static readonly Regex OldPriceRegex = new Regex(@"\[(?i)ProductOldPrice\]");
         private readonly IFileService _fileService;
         private readonly IImageProcessor _imageProcessor;
+        private readonly IProductPricingMethod _productPricingMethod;
         private readonly IUrlHelper _urlHelper;
 
-        public ProductParser(IUrlHelper urlHelper, IFileService fileService, IImageProcessor imageProcessor)
+        public ProductParser(IUrlHelper urlHelper, IFileService fileService, IImageProcessor imageProcessor,IProductPricingMethod productPricingMethod)
         {
             _urlHelper = urlHelper;
             _fileService = fileService;
             _imageProcessor = imageProcessor;
+            _productPricingMethod = productPricingMethod;
         }
 
         public string Parse(ProductListTemplateData template, Product item)
@@ -41,8 +44,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Parsing
                 _urlHelper.ToAbsolute(_fileService.GetFileLocation(image, new Size { Width = 150, Height = 150 })));
             output = NameRegex.Replace(output, item.Name ?? string.Empty);
             output = LinkRegex.Replace(output, item.AbsoluteUrl);
-            output = PriceRegex.Replace(output, GetPrice(item.DisplayPrice));
-            output = OldPriceRegex.Replace(output, GetPrice(item.DisplayPreviousPrice));
+            output = PriceRegex.Replace(output, GetPrice(_productPricingMethod.GetDisplayPrice(item)));
+            output = OldPriceRegex.Replace(output, GetPrice(_productPricingMethod.GetDisplayPreviousPrice(item)));
             return output;
         }
 

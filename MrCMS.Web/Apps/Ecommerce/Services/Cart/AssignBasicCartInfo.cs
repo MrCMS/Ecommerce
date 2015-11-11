@@ -4,9 +4,11 @@ using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using NHibernate;
+using Ninject;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
@@ -14,29 +16,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
     {
         private readonly ICartGuidResetter _cartGuidResetter;
         private readonly IGetBillingAddressSameAsShippingAddress _billingAddressSameAsShippingAddress;
-        private readonly ICartItemAvailablityService _cartItemAvailablityService;
+        private readonly ICartItemAvailablityService _cartItemAvailabilityService;
         private readonly EcommerceSettings _ecommerceSettings;
+        private readonly IProductPricingMethod _productPricingMethod;
         private readonly ICartSessionManager _cartSessionManager;
         private readonly ISession _session;
 
         public AssignBasicCartInfo(ISession session, ICartSessionManager cartSessionManager,
             ICartGuidResetter cartGuidResetter,
             IGetBillingAddressSameAsShippingAddress billingAddressSameAsShippingAddress,
-            ICartItemAvailablityService cartItemAvailablityService, EcommerceSettings ecommerceSettings)
+            ICartItemAvailablityService cartItemAvailabilityService, EcommerceSettings ecommerceSettings,
+            IProductPricingMethod productPricingMethod)
         {
             _session = session;
             _cartSessionManager = cartSessionManager;
             _cartGuidResetter = cartGuidResetter;
             _billingAddressSameAsShippingAddress = billingAddressSameAsShippingAddress;
-            _cartItemAvailablityService = cartItemAvailablityService;
+            _cartItemAvailabilityService = cartItemAvailabilityService;
             _ecommerceSettings = ecommerceSettings;
+            _productPricingMethod = productPricingMethod;
         }
 
         public CartModel Assign(CartModel cart, Guid userGuid)
         {
-            List<CartItem> cartItems = GetItems(userGuid);
+            List<CartItemData> cartItems = GetItems(userGuid);
+            AssignPricingMethod(cartItems);
             DeleteNullProducts(cartItems);
-            AssignAvailablity(cartItems);
+            AssignAvailability(cartItems);
             cart.CartGuid = GetCartGuid(userGuid);
             cart.User = CurrentRequestData.CurrentUser;
             cart.UserGuid = userGuid;
@@ -49,17 +55,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             return cart;
         }
 
+        private void AssignPricingMethod(List<CartItemData> cartItems)
+        {
+            foreach (var item in cartItems)
+            {
+                item.Pricing = _productPricingMethod;
+            }
+        }
+
         private bool GetTermsAndConditionsAccepted(Guid userGuid)
         {
             return _cartSessionManager.GetSessionValue<bool>(CartManager.TermsAndConditionsAcceptedKey, userGuid);
         }
 
-        private void AssignAvailablity(List<CartItem> cartItems)
+        private void AssignAvailability(List<CartItemData> cartItems)
         {
-            foreach (CartItem cartItem in cartItems)
+            foreach (var cartItem in cartItems)
             {
-                CartItem item = cartItem;
-                item.CanBuyStatus = _cartItemAvailablityService.CanBuy(item);
+                var item = cartItem;
+                item.CanBuyStatus = _cartItemAvailabilityService.CanBuy(item);
             }
         }
 
@@ -74,13 +88,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             return _cartSessionManager.GetSessionValue<string>(CartManager.CurrentOrderEmailKey, userGuid);
         }
 
-        private List<CartItem> GetItems(Guid userGuid)
+        private List<CartItemData> GetItems(Guid userGuid)
         {
-            return
-                _session.QueryOver<CartItem>()
-                    .Where(item => item.UserGuid == userGuid)
-                    .Cacheable()
-                    .List().ToList();
+            var cartItems = _session.QueryOver<CartItem>()
+                .Where(item => item.UserGuid == userGuid)
+                .Cacheable()
+                .List().ToList();
+            return cartItems.Select(item => item.GetCartItemData()).ToList();
         }
 
         private Guid GetCartGuid(Guid userGuid)
@@ -94,11 +108,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         }
 
 
-        private void DeleteNullProducts(IEnumerable<CartItem> items)
+        private void DeleteNullProducts(IEnumerable<CartItemData> items)
         {
-            foreach (CartItem cartItem in items.Where(x => x.Item == null || x.Item.Product == null))
+            foreach (CartItemData cartItem in items.Where(x => x.Item == null || x.Item.Product == null))
             {
-                CartItem item = cartItem;
+                CartItem item = _session.Get<CartItem>(cartItem.Id);
                 _session.Transact(session => _session.Delete(item));
             }
         }

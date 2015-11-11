@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public CartModel()
         {
-            Items = new List<CartItem>();
+            Items = new List<CartItemData>();
             AvailablePaymentMethods = new List<BasePaymentMethod>();
             AppliedGiftCards = new List<GiftCard>();
             PotentiallyAvailableShippingMethods = new HashSet<IShippingMethod>();
@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         // user & items
         public Guid CartGuid { get; set; }
-        public List<CartItem> Items { get; set; }
+        public List<CartItemData> Items { get; set; }
         public User User { get; set; }
         public Guid UserGuid { get; set; }
         public bool TermsAndConditionsRequired { get; set; }
@@ -389,7 +389,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             {
                 if (!Items.Any())
                     yield return "You have nothing in your cart";
-                foreach (CartItem item in Items.Where(item => !item.CanBuy))
+                foreach (CartItemData item in Items.Where(item => !item.CanBuy))
                 {
                     yield return item.Error;
                 }
@@ -433,6 +433,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public void SetDiscountApplication(DiscountApplicationInfo discountApplicationInfo)
         {
+            Items.ForEach(item => item.ResetDiscountInfo());
+
             OrderTotalDiscount = discountApplicationInfo.OrderTotalDiscount;
             ShippingDiscount = discountApplicationInfo.ShippingDiscount;
             foreach (var key in discountApplicationInfo.ItemDiscounts.Keys)
@@ -440,6 +442,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                 var cartItem = Items.FirstOrDefault(x => x.Id == key);
                 if (cartItem != null)
                     cartItem.SetDiscountAmount(discountApplicationInfo.ItemDiscounts[key]);
+            }
+            foreach (var key in discountApplicationInfo.ItemPercentages.Keys)
+            {
+                var cartItem = Items.FirstOrDefault(x => x.Id == key);
+                if (cartItem != null)
+                    cartItem.SetDiscountPercentage(discountApplicationInfo.ItemPercentages[key]);
             }
             foreach (var key in discountApplicationInfo.ItemsFree.Keys)
             {

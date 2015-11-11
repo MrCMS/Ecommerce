@@ -3,24 +3,27 @@
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Pages
+@using MrCMS.Web.Apps.Ecommerce.Services.Pricing
 @using MrCMS.Website
-@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant 
-           @{
-               var cart = ViewData["cart"] as CartModel;
-               
-           }
+@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
+@{
+    var cart = ViewData["cart"] as CartModel;
+    var pricingMethod = MrCMSApplication.Get<IProductPricingMethod>();
+}
 @if (Model != null)
 {
     <div class="col-sm-6">
         <div class="row">
             <div class="col-sm-2">
                 <a href="/@Model.Product.UrlSegment" title="@Model.DisplayName">
-                    @RenderImage(Model.Product.DisplayImageUrl, new Size{Width = 100}, attributes: new { @class = "img-responsive" })
+                    @RenderImage(Model.Product.DisplayImageUrl, new Size {Width = 100}, attributes: new {@class = "img-responsive"})
                 </a>
             </div>
             <div class="col-sm-10">
-                <h4><a href="/@Model.Product.UrlSegment">@Model.DisplayName</a></h4>
-                <div class="product-price">@Model.Price.ToCurrencyFormat()</div>
+                <h4>
+                    <a href="/@Model.Product.UrlSegment">@Model.DisplayName</a>
+                </h4>
+                <div class="product-price">@pricingMethod.GetUnitPrice(Model).ToCurrencyFormat()</div>
             </div>
         </div>
     </div>
@@ -28,7 +31,7 @@
         <div class="alert alert-info">
             <div class="row">
                 <div class="col-sm-12">
-                    @{ Html.RenderAction("CartDetails", "ProductAddedToCart");}
+                    @{ Html.RenderAction("CartDetails", "ProductAddedToCart"); }
                 </div>
             </div>
             <div class="row">
@@ -40,14 +43,14 @@
                         <div class="visible-xs" style="padding-top: 5px;"></div>
                         <div class="col-sm-6">
                             <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())" class="btn btn-primary btn-block">@Resource("Proceed to Checkout")</a>
-                            
+
                             @if (cart.CanUsePayPalExpress)
                             {
                                 using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
                                 {
                                     <div class="text-center">
                                         <p>Or</p>
-                                        <input type="image" src="https://www.paypal-marketing.com/paypal/html/partner/na/portal-v2/img/logos/checkout_logo_medium_170x32.png" />
+                                        <input type="image" src="https://www.paypal-marketing.com/paypal/html/partner/na/portal-v2/img/logos/checkout_logo_medium_170x32.png"/>
                                     </div>
                                 }
                             }

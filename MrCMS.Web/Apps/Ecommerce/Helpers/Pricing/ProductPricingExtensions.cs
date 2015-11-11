@@ -3,7 +3,7 @@ using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Helpers.Pricing
 {
-    public static class ProductPricingExtensions
+    /*public static class ProductPricingExtensions
     {
         public static decimal ProductPriceIncludingTax(this decimal amount, decimal taxRatePercentage)
         {
@@ -39,5 +39,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Pricing
         {
             return MrCMSApplication.Get<IProductPricingService>();
         }
-    }
+    }*/
 }

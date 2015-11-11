@@ -30,7 +30,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void Empty_RemovesItemsFromModel()
         {
-            var cartItem = new CartItem { Item = _productVariant, Quantity = 1 };
+            var cartItem = new CartItemData { Item = _productVariant, Quantity = 1 };
             _cartModel.Items.Add(cartItem);
 
             _emptyBasket.Empty();
@@ -41,7 +41,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void Empty_RemovesItemsFromDB()
         {
-            var cartItem = new CartItem { Item = _productVariant, Quantity = 1 };
+            var cartItem = new CartItemData { Item = _productVariant, Quantity = 1 };
             _cartModel.Items.Add(cartItem);
 
             _emptyBasket.Empty();

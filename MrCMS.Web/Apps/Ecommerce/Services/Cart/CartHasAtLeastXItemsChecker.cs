@@ -19,7 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public override CheckLimitationsResult CheckLimitations(CartHasAtLeastXItems limitation, CartModel cart, IList<Discount> allDiscounts)
         {
             return cart.ItemQuantity >= limitation.NumberOfItems
-                ? CheckLimitationsResult.Successful(Enumerable.Empty<CartItem>())
+                ? CheckLimitationsResult.Successful(Enumerable.Empty<CartItemData>())
                 : CheckLimitationsResult.CurrentlyInvalid(
                     string.Format(
                         _stringResourceProvider.GetValue("You need at least {0} items to apply this discount"),

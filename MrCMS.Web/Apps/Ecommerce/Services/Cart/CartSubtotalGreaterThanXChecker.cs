@@ -21,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public override CheckLimitationsResult CheckLimitations(CartSubtotalGreaterThanX limitation, CartModel cart, IList<Discount> allDiscounts)
         {
             return cart.Subtotal >= limitation.CartSubtotalGreaterThanValue
-                ? CheckLimitationsResult.Successful(Enumerable.Empty<CartItem>())
+                ? CheckLimitationsResult.Successful(Enumerable.Empty<CartItemData>())
                 : CheckLimitationsResult.CurrentlyInvalid(
                     _stringResourceProvider.GetValue("Order total does not reach the threshold of " +
                                                      limitation.CartSubtotalGreaterThanValue.ToCurrencyFormat()));

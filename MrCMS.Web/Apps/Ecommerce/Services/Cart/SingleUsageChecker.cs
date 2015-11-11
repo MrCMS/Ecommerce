@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
             return anyUsages
                 ? CheckLimitationsResult.NeverValid(_stringResourceProvider.GetValue("This discount has already been used."))
-                : CheckLimitationsResult.Successful(Enumerable.Empty<CartItem>());
+                : CheckLimitationsResult.Successful(Enumerable.Empty<CartItemData>());
         }
     }
 }

@@ -23,7 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 return
                     CheckLimitationsResult.CurrentlyInvalid(_stringResourceProvider.GetValue("Shipping address is not yet set"));
             return cart.ShippingAddress.CountryCode == limitation.ShippingCountryCode
-                ? CheckLimitationsResult.Successful(Enumerable.Empty<CartItem>())
+                ? CheckLimitationsResult.Successful(Enumerable.Empty<CartItemData>())
                 : CheckLimitationsResult.CurrentlyInvalid(
                     _stringResourceProvider.GetValue("Shipping country is not valid for this discount"));
         }

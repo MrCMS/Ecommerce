@@ -43,6 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         {
             ViewData["cart"] = _cart;
             ViewData["can-buy-status"] = _productVariantUIService.CanBuyAny(productVariant);
+            ViewData["product-variant-options"] = _productVariantUIService.GetProductVariantOptions(productVariant);
             return PartialView(productVariant);
         }
 

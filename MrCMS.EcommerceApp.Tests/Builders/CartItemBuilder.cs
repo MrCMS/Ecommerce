@@ -12,14 +12,17 @@ namespace MrCMS.EcommerceApp.Tests.Builders
         private ProductVariant _variant = new ProductVariant();
         private decimal? _pricePreTax = null;
         private decimal? _tax = null;
+        private decimal _discountAmount = 0m;
 
-        public CartItem Build()
+        public CartItemData Build()
         {
-            return new TestableCartItem(_canBuy, _pricePreTax, _tax)
-                       {
-                           Quantity = _quantity,
-                           Item = _variant
-                       };
+            var testableCartItem = new TestableCartItem(_canBuy, _pricePreTax, _tax)
+            {
+                Quantity = _quantity,
+                Item = _variant
+            };
+            testableCartItem.SetDiscountAmount(_discountAmount);
+            return testableCartItem;
         }
 
         public CartItemBuilder WithItem(ProductVariant variant)
@@ -57,10 +60,16 @@ namespace MrCMS.EcommerceApp.Tests.Builders
             _canBuy = false;
             return this;
         }
+
+        public CartItemBuilder WithDiscountAmount(decimal discountAmount)
+        {
+            _discountAmount = discountAmount;
+            return this;
+        }
     }
 
     [DoNotMap]
-    public class TestableCartItem : CartItem
+    public class TestableCartItem : CartItemData
     {
         private readonly bool? _canBuy;
         private readonly decimal? _pricePreTax;

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using MrCMS.Helpers;
@@ -13,10 +12,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
             if (discount.ValidFrom == null && discount.ValidUntil == null)
                 return "Forever";
             if (discount.ValidFrom != null && discount.ValidUntil == null)
-                return String.Format("From {0}", discount.ValidFrom);
+                return string.Format("From {0}", discount.ValidFrom);
             if (discount.ValidFrom == null && discount.ValidUntil != null)
-                return String.Format("Until {0}", discount.ValidUntil);
-            return String.Format("{0} - {1}", discount.ValidFrom, discount.ValidUntil);
+                return string.Format("Until {0}", discount.ValidUntil);
+            return string.Format("{0} - {1}", discount.ValidFrom, discount.ValidUntil);
         }
 
         public static List<SelectListItem> GetLimitationOptions(this Discount discount)

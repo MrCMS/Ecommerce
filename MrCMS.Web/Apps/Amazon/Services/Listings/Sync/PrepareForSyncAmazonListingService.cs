@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
@@ -20,6 +21,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
         private readonly AmazonSellerSettings _amazonSellerSettings;
         private readonly IProductVariantService _productVariantService;
         private readonly IGetStockRemainingQuantity _getStockRemainingQuantity;
+        private readonly IProductPricingMethod _productPricingMethod;
 
         public PrepareForSyncAmazonListingService(
             IAmazonListingService amazonListingService,
@@ -27,7 +29,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             EcommerceSettings ecommerceSettings,
             AmazonSellerSettings amazonSellerSettings,
             IProductVariantService productVariantService,
-            IGetStockRemainingQuantity getStockRemainingQuantity)
+            IGetStockRemainingQuantity getStockRemainingQuantity, 
+            IProductPricingMethod productPricingMethod)
         {
             _amazonListingService = amazonListingService;
             _amazonListingGroupService = amazonListingGroupService;
@@ -35,6 +38,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             _amazonSellerSettings = amazonSellerSettings;
             _productVariantService = productVariantService;
             _getStockRemainingQuantity = getStockRemainingQuantity;
+            _productPricingMethod = productPricingMethod;
         }
 
         public void UpdateAmazonListings(AmazonListingGroup amazonListingGroup)
@@ -59,7 +63,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             amazonListing.Quantity = productVariant.TrackingPolicy == TrackingPolicy.Track
                                           ? _getStockRemainingQuantity.Get(productVariant)
                                           : 1000;
-            amazonListing.Price = productVariant.Price;
+            amazonListing.Price = _productPricingMethod.GetUnitPrice(productVariant);
             amazonListing.SellerSKU = productVariant.SKU;
             amazonListing.Title = productVariant.DisplayName;
             amazonListing.StandardProductIDType = _amazonSellerSettings.BarcodeIsOfType;
@@ -112,7 +116,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             amazonListing.Quantity = productVariant.TrackingPolicy == TrackingPolicy.Track
                                           ? _getStockRemainingQuantity.Get(productVariant)
                                           : 1000;
-            amazonListing.Price = productVariant.Price;
+            amazonListing.Price = _productPricingMethod.GetUnitPrice(productVariant);
             amazonListing.SellerSKU = productVariant.SKU;
             amazonListing.Title = productVariant.DisplayName;
             amazonListing.StandardProductIDType = _amazonSellerSettings.BarcodeIsOfType;

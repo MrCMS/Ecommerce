@@ -7,7 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Cart
 {
     public static class CartItemExtensions
     {
-        public static bool IsAbleToUseShippingMethod(this CartItem item, IShippingMethod shippingMethod)
+        public static bool IsAbleToUseShippingMethod(this CartItemData item, IShippingMethod shippingMethod)
         {
             var productVariant = item.Item;
             if (!productVariant.RequiresShipping)
@@ -16,7 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Cart
                    productVariant.RestrictedTo.Contains(shippingMethod.TypeName);
         }
 
-        public static string GiftCardRecipient(this CartItem item)
+        public static string GiftCardRecipient(this CartItemData item)
         {
             if (item == null || item.Item == null || !item.Item.IsGiftCard)
                 return null;

@@ -10,7 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
         public void Override(AutoMapping<CartItem> mapping)
         {
             mapping.Map(item => item.Data).MakeVarCharMax();
-            mapping.IgnoreProperty(item => item.CanBuyStatus);
+            //mapping.IgnoreProperty(item => item.CanBuyStatus);
         }
     }
 }

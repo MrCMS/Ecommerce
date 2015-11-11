@@ -9,6 +9,7 @@ using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Models.StockAvailability;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using NHibernate;
 using NHibernate.Criterion;
@@ -23,15 +24,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         private readonly IStringResourceProvider _stringResourceProvider;
         private readonly EcommerceSettings _ecommerceSettings;
         private readonly ProductReviewSettings _productReviewSettings;
+        private readonly IProductPricingMethod _productPricingMethod;
 
         public GetProductCardModel(ISession session, IProductVariantAvailabilityService productVariantAvailabilityService, IStringResourceProvider stringResourceProvider, 
-            EcommerceSettings ecommerceSettings, ProductReviewSettings productReviewSettings)
+            EcommerceSettings ecommerceSettings, ProductReviewSettings productReviewSettings, IProductPricingMethod productPricingMethod)
         {
             _session = session;
             _productVariantAvailabilityService = productVariantAvailabilityService;
             _stringResourceProvider = stringResourceProvider;
             _ecommerceSettings = ecommerceSettings;
             _productReviewSettings = productReviewSettings;
+            _productPricingMethod = productPricingMethod;
         }
 
         public ProductCardModel Get(Product product)
@@ -76,8 +79,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 if (productVariants.Count == 1)
                 {
                     var variant = productVariants.FirstOrDefault();
-                    productCardModel.PreviousPrice = product.ShowPreviousPrice ? variant.PreviousPrice : null;
-                    productCardModel.Price = variant.Price;
+                    productCardModel.PreviousPrice = _productPricingMethod.GetPreviousPrice(variant);
+                    productCardModel.Price = _productPricingMethod.GetUnitPrice(variant);
                     productCardModel.VariantId = variant.Id;
                     CanBuyStatus canBuyStatus = _productVariantAvailabilityService.CanBuy(variant, 1);
                     productCardModel.CanBuyStatus = canBuyStatus;
@@ -96,8 +99,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 }
                 else
                 {
-                    ProductVariant variant = productVariants.OrderBy(x => x.Price).FirstOrDefault();
-                    productCardModel.Price = variant != null ? variant.Price : (decimal?)null;
+                    ProductVariant variant = productVariants.OrderBy(x => _productPricingMethod.GetUnitPrice(x)).FirstOrDefault();
+                    productCardModel.Price = variant != null ? _productPricingMethod.GetUnitPrice(variant) : (decimal?)null;
                     productCardModel.Rating = variant.Rating;
                     productCardModel.NumberOfReviews = variant.NumberOfReviews;
                     if (variant.ETag != null)

@@ -7,7 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Shipping
 {
     public static class CartModelShippingExtensions
     {
-        public static IEnumerable<CartItem> ShippableItems(this CartModel cartModel)
+        public static IEnumerable<CartItemData> ShippableItems(this CartModel cartModel)
         {
             return cartModel.Items.Where(item => item.RequiresShipping);
         }

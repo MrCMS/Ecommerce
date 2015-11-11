@@ -12,6 +12,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Website;
 using NHibernate;
@@ -22,16 +23,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
     {
         private readonly IGoogleBaseShippingService _googleBaseShippingService;
         private readonly IGetStockRemainingQuantity _getStockRemainingQuantity;
+        private readonly IProductPricingMethod _productPricingMethod;
         private readonly IProductVariantService _productVariantService;
         private readonly ISession _session;
 
         public GoogleBaseManager(ISession session, IProductVariantService productVariantService,
-            IGoogleBaseShippingService googleBaseShippingService,IGetStockRemainingQuantity getStockRemainingQuantity)
+            IGoogleBaseShippingService googleBaseShippingService, IGetStockRemainingQuantity getStockRemainingQuantity,
+            IProductPricingMethod productPricingMethod)
         {
             _session = session;
             _productVariantService = productVariantService;
             _googleBaseShippingService = googleBaseShippingService;
             _getStockRemainingQuantity = getStockRemainingQuantity;
+            _productPricingMethod = productPricingMethod;
         }
 
 
@@ -159,7 +163,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
                     : ProductCondition.New.ToString());
 
             //PRICE
-            xml.WriteElementString("g", "price", ns, productVariant.Price.ToCurrencyFormat());
+            xml.WriteElementString("g", "price", ns, _productPricingMethod.GetUnitPrice(productVariant).ToCurrencyFormat());
 
             //AVAILABILITY
             string availability = "In Stock";
@@ -273,9 +277,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
         {
             var cart = new CartModel
             {
-                Items = new List<CartItem>
+                Items = new List<CartItemData>
                 {
-                    new CartItem
+                    new CartItemData
                     {
                         Quantity = 1,
                         Item = pv

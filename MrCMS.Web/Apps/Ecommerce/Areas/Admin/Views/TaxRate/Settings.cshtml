@@ -1,8 +1,16 @@
 ﻿@using MrCMS.Helpers
+@{
+    var pricingMethodOptions = ViewData["pricing-method-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
 @model MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings
 <div class="form-group">
-    @Html.InlineCheckboxFor(settings => settings.LoadedPricesIncludeTax)
+    @Html.LabelFor(settings => settings.PricingMethod)
+    @Html.DropDownListFor(settings => settings.PricingMethod, pricingMethodOptions, new { @class = "form-control" })
 </div>
+
+@*<div class="form-group">
+    @Html.InlineCheckboxFor(settings => settings.LoadedPricesIncludeTax)
+</div>*@
 <div class="form-group">
     @Html.InlineCheckboxFor(settings => settings.ShippingRateTaxesEnabled)
 </div>

@@ -11,6 +11,8 @@ using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
+using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using Ninject;
 using Ninject.Web.Common;
 

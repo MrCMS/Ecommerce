@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
@@ -16,7 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             _fileService = fileService;
         }
 
-        public OrderLine GetOrderLine(CartItem item)
+        public OrderLine GetOrderLine(CartItemData item)
         {
             var options = string.Join(", ", item.Item.OptionValues.Select(value => value.FormattedValue));
 
@@ -47,7 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                         ? CurrentRequestData.Now.AddDays(
                             item.AllowedNumberOfDaysForDownload
                                 .GetValueOrDefault())
-                        : (DateTime?)null;
+                        : (DateTime?) null;
                 orderLine.NumberOfDownloads = 0;
                 var fileByUrl = _fileService.GetFileByUrl(item.DownloadFileUrl);
                 if (fileByUrl != null)
