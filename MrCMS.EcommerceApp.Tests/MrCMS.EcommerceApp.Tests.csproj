@@ -251,6 +251,7 @@
     <Compile Include="Services\OrderRefundServiceTests.cs" />
     <Compile Include="Services\OrderServiceTests.cs" />
     <Compile Include="Services\Pricing\ProductPricingMethodIndividuallyPricedDiscountTests.cs" />
+    <Compile Include="Services\Pricing\ProductPricingMethodRowPricedDiscountMultipleItemTests.cs" />
     <Compile Include="Services\Pricing\ProductPricingMethodRowPricedDiscountTests.cs" />
     <Compile Include="Services\Pricing\ProductPricingMethodTests.cs" />
     <Compile Include="Services\ProductShippingCheckerTest\CanShipTests.cs" />
