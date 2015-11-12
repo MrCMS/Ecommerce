@@ -80,7 +80,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 {
                     var variant = productVariants.FirstOrDefault();
                     productCardModel.PreviousPrice = _productPricingMethod.GetDisplayPreviousPrice(variant);
-                    productCardModel.Price = _productPricingMethod.GetUnitPrice(variant, 0m, 0m);
+                    productCardModel.Price = _productPricingMethod.GetUnitPrice(variant);
+                    productCardModel.PricePreTax = _productPricingMethod.GetUnitPricePreTax(variant);
+                    productCardModel.Tax = _productPricingMethod.GetUnitTax(variant);
                     productCardModel.VariantId = variant.Id;
                     CanBuyStatus canBuyStatus = _productVariantAvailabilityService.CanBuy(variant, 1);
                     productCardModel.CanBuyStatus = canBuyStatus;

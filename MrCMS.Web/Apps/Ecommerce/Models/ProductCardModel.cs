@@ -9,6 +9,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public string Url { get; set; }
         public string Abstract { get; set; }
         public decimal? Price { get; set; }
+        public decimal? Tax { get; set; }
+        public decimal? PricePreTax { get; set; }
         public decimal? PreviousPrice { get; set; }
         public string Image { get; set; }
         public int? VariantId { get; set; }
