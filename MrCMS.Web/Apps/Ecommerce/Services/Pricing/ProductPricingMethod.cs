@@ -69,7 +69,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Pricing
                 ? GetUnitPricePreTax(cartItemData.Item, cartItemData.UnitDiscountAmount, cartItemData.DiscountPercentage)
                 : Math.Round(GetPricePreTax(cartItemData) / cartItemData.PricedQuantity, 2, MidpointRounding.AwayFromZero);
         }
-        
+
 
         public decimal GetPricePreDiscount(CartItemData cartItemData)
         {
@@ -181,6 +181,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Pricing
                 return GetPricePreTax(totalAmount, taxRatePercentage, discount, cartItemData.DiscountPercentage);
             }
             return GetPrice(cartItemData) - GetTax(cartItemData);
+        }
+
+        public decimal GetPricePreTax(PriceBreak priceBreak)
+        {
+            return GetPricePreTax(priceBreak.Price, GetTaxRatePercentage(priceBreak.ProductVariant), 0m, 0m);
         }
 
         private class DisplayPriceInfo

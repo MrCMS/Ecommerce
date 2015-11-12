@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Ajax.Utilities;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Helpers;
 using MrCMS.Services.Resources;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Models.StockAvailability;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -13,7 +11,6 @@ using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using NHibernate;
 using NHibernate.Criterion;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services
 {
@@ -26,8 +23,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         private readonly ProductReviewSettings _productReviewSettings;
         private readonly IProductPricingMethod _productPricingMethod;
 
-        public GetProductCardModel(ISession session, IProductVariantAvailabilityService productVariantAvailabilityService, IStringResourceProvider stringResourceProvider, 
-            EcommerceSettings ecommerceSettings, ProductReviewSettings productReviewSettings, IProductPricingMethod productPricingMethod)
+        public GetProductCardModel(ISession session,
+            IProductVariantAvailabilityService productVariantAvailabilityService,
+            IStringResourceProvider stringResourceProvider,
+            EcommerceSettings ecommerceSettings, ProductReviewSettings productReviewSettings,
+            IProductPricingMethod productPricingMethod)
         {
             _session = session;
             _productVariantAvailabilityService = productVariantAvailabilityService;
@@ -39,7 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 
         public ProductCardModel Get(Product product)
         {
-            return Get(new List<Product> { product }).First();
+            return Get(new List<Product> {product}).First();
         }
 
         public List<ProductCardModel> Get(List<Product> products)
@@ -47,10 +47,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             var galleryIds = products.Select(product => product.Gallery.Id).ToList();
             var productIds = products.Select(product => product.Id).ToList();
             List<MediaFile> mediaFiles = _session.QueryOver<MediaFile>()
-               .Where(file => file.MediaCategory.Id.IsIn(galleryIds))
-               .OrderBy(file => file.DisplayOrder)
-               .Asc.Cacheable()
-               .List().ToList();
+                .Where(file => file.MediaCategory.Id.IsIn(galleryIds))
+                .OrderBy(file => file.DisplayOrder)
+                .Asc.Cacheable()
+                .List().ToList();
             List<ProductVariant> variants = _session.QueryOver<ProductVariant>()
                 .Where(productVariant => productVariant.Product.Id.IsIn(productIds))
                 .Cacheable()
@@ -59,13 +59,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             var productCardModels = new List<ProductCardModel>();
             foreach (var product in products)
             {
-                MediaFile image = mediaFiles.FirstOrDefault(file => file.IsImage() && file.MediaCategory.Id == product.Gallery.Id);
+                MediaFile image =
+                    mediaFiles.FirstOrDefault(file => file.IsImage() && file.MediaCategory.Id == product.Gallery.Id);
                 var productVariants = variants.FindAll(productVariant => productVariant.Product.Id == product.Id);
-                if(!productVariants.Any())
+                if (!productVariants.Any())
                 {
                     continue;
                 }
-                    
+
                 var productCardModel = new ProductCardModel
                 {
                     Name = product.Name,
@@ -101,8 +102,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 }
                 else
                 {
-                    ProductVariant variant = productVariants.OrderBy(x => _productPricingMethod.GetUnitPrice(x, 0m, 0m)).FirstOrDefault();
-                    productCardModel.Price = variant != null ? _productPricingMethod.GetUnitPrice(variant, 0m, 0m) : (decimal?)null;
+                    ProductVariant variant =
+                        productVariants.OrderBy(x => _productPricingMethod.GetUnitPrice(x, 0m, 0m)).FirstOrDefault();
+                    productCardModel.Price = variant != null
+                        ? _productPricingMethod.GetUnitPrice(variant, 0m, 0m)
+                        : (decimal?) null;
                     productCardModel.Rating = variant.Rating;
                     productCardModel.NumberOfReviews = variant.NumberOfReviews;
                     if (variant.ETag != null)
@@ -115,7 +119,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 
         public List<ProductCardModel> Get(List<int> productIds)
         {
-            var products = _session.QueryOver<Product>().Where(product => product.Id.IsIn(productIds)).Cacheable().List();
+            var products =
+                _session.QueryOver<Product>().Where(product => product.Id.IsIn(productIds)).Cacheable().List();
 
             return Get(products.OrderBy(product => productIds.IndexOf(product.Id)).ToList());
         }
