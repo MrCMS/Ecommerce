@@ -125,6 +125,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Pricing
             return pricePreTax + tax;
         }
 
+        public decimal GetPrice(ProductVariant productVariant)
+        {
+            return GetPrice(productVariant.BasePrice, GetTaxRatePercentage(productVariant), 0, 0);
+        }
+
         public decimal GetUnitPrice(ProductVariant productVariant, decimal discountAmount, decimal discountPercentage)
         {
             return GetPrice(productVariant.BasePrice, GetTaxRatePercentage(productVariant), discountAmount,

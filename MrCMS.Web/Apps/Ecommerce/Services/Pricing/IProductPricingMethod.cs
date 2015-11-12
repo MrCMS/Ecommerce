@@ -17,6 +17,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Pricing
         decimal GetPricePreDiscount(CartItemData cartItemData);
         decimal GetTax(CartItemData cartItemData);
         decimal GetPrice(CartItemData cartItemData);
+        decimal GetPrice(ProductVariant productVariant);
         decimal GetPrice(decimal basePrice, decimal taxRatePercentage, decimal discountAmount = 0m, decimal discountPercentage = 0m);
         decimal GetPrice(PriceBreak priceBreak);
         decimal GetPricePreTax(CartItemData cartItemData);
