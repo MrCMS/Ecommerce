@@ -1,16 +1,35 @@
 ﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Settings
 @{
-    var pricingMethodOptions = ViewData["pricing-method-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    var pricingMethodOptions = EnumHelper<PriceLoadingMethod>.GetOptions();
+    var taxCalculationMethodOptions = EnumHelper<TaxCalculationMethod>.GetOptions();
+    var applyCustomerTaxOptions = EnumHelper<ApplyCustomerTax>.GetOptions();
+    var discountOnPricesOptions = EnumHelper<DiscountOnPrices>.GetOptions();
 }
 @model MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings
 <div class="form-group">
-    @Html.LabelFor(settings => settings.PricingMethod)
-    @Html.DropDownListFor(settings => settings.PricingMethod, pricingMethodOptions, new { @class = "form-control" })
+    @Html.LabelFor(settings => settings.PriceLoadingMethod)
+    @Html.DropDownListFor(settings => settings.PriceLoadingMethod, pricingMethodOptions, new { @class = "form-control" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(settings => settings.TaxCalculationMethod)
+    @Html.DropDownListFor(settings => settings.TaxCalculationMethod, taxCalculationMethodOptions, new { @class = "form-control" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(settings => settings.ApplyCustomerTax)
+    @Html.DropDownListFor(settings => settings.ApplyCustomerTax, applyCustomerTaxOptions, new { @class = "form-control" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(settings => settings.DiscountOnPrices)
+    @Html.DropDownListFor(settings => settings.DiscountOnPrices, discountOnPricesOptions, new { @class = "form-control" })
 </div>
 
 @*<div class="form-group">
-    @Html.InlineCheckboxFor(settings => settings.LoadedPricesIncludeTax)
-</div>*@
+        @Html.InlineCheckboxFor(settings => settings.LoadedPricesIncludeTax)
+    </div>*@
 <div class="form-group">
     @Html.InlineCheckboxFor(settings => settings.ShippingRateTaxesEnabled)
 </div>

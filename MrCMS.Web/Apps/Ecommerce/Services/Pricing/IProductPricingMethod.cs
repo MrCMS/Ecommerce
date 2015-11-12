@@ -9,19 +9,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Pricing
     {
         decimal GetUnitPricePreDiscount(CartItemData cartItemData);
         decimal GetUnitTax(CartItemData cartItemData);
-        decimal GetUnitTax(ProductVariant productVariant, decimal discountAmount = decimal.Zero);
+        decimal GetUnitTax(ProductVariant productVariant, decimal discountAmount = 0m, decimal discountPercentage = 0m);
         decimal GetUnitPrice(CartItemData cartItemData);
+        decimal GetUnitPrice(ProductVariant productVariant, decimal discountAmount = 0m, decimal discountPercentage = 0m);
         decimal GetUnitPricePreTax(CartItemData cartItemData);
 
         decimal GetPricePreDiscount(CartItemData cartItemData);
         decimal GetTax(CartItemData cartItemData);
         decimal GetPrice(CartItemData cartItemData);
-        decimal GetUnitPrice(ProductVariant productVariant, decimal discountAmount = decimal.Zero);
-        decimal GetPrice(decimal basePrice, decimal taxRatePercentage, decimal discountAmount = decimal.Zero);
+        decimal GetPrice(decimal basePrice, decimal taxRatePercentage, decimal discountAmount = 0m, decimal discountPercentage = 0m);
         decimal GetPrice(PriceBreak priceBreak);
         decimal GetPricePreTax(CartItemData cartItemData);
-
-        decimal? GetPreviousPrice(ProductVariant productVariant);
 
         decimal? GetDisplayPrice(Product product);
         decimal? GetDisplayPreviousPrice(Product product);

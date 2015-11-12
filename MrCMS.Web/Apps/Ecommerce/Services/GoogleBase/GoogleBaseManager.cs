@@ -163,7 +163,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
                     : ProductCondition.New.ToString());
 
             //PRICE
-            xml.WriteElementString("g", "price", ns, _productPricingMethod.GetUnitPrice(productVariant).ToCurrencyFormat());
+            xml.WriteElementString("g", "price", ns, _productPricingMethod.GetUnitPrice(productVariant, 0m, 0m).ToCurrencyFormat());
 
             //AVAILABILITY
             string availability = "In Stock";

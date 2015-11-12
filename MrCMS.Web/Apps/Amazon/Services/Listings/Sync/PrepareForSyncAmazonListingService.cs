@@ -63,7 +63,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             amazonListing.Quantity = productVariant.TrackingPolicy == TrackingPolicy.Track
                                           ? _getStockRemainingQuantity.Get(productVariant)
                                           : 1000;
-            amazonListing.Price = _productPricingMethod.GetUnitPrice(productVariant);
+            amazonListing.Price = _productPricingMethod.GetUnitPrice(productVariant, 0m, 0m);
             amazonListing.SellerSKU = productVariant.SKU;
             amazonListing.Title = productVariant.DisplayName;
             amazonListing.StandardProductIDType = _amazonSellerSettings.BarcodeIsOfType;
@@ -116,7 +116,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             amazonListing.Quantity = productVariant.TrackingPolicy == TrackingPolicy.Track
                                           ? _getStockRemainingQuantity.Get(productVariant)
                                           : 1000;
-            amazonListing.Price = _productPricingMethod.GetUnitPrice(productVariant);
+            amazonListing.Price = _productPricingMethod.GetUnitPrice(productVariant, 0m, 0m);
             amazonListing.SellerSKU = productVariant.SKU;
             amazonListing.Title = productVariant.DisplayName;
             amazonListing.StandardProductIDType = _amazonSellerSettings.BarcodeIsOfType;

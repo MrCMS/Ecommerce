@@ -42,7 +42,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 if (productVariant == null)
                     continue;
 
-                var tax = _productPricingMethod.GetUnitTax(productVariant);
+                var tax = _productPricingMethod.GetUnitTax(productVariant, 0m, 0m);
 
                                                                        //new TaxSettings
                                                                        //    {

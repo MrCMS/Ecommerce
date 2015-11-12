@@ -72,16 +72,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                 .TransformUsing(Transformers.AliasToBean<PriceList>())
                 .List<PriceList>();
 
-            foreach (var priceList in priceLists)
-            {
-            }
-
             var taxRates = _session.QueryOver<TaxRate>().Cacheable().List();
 
             foreach (var priceList in priceLists)
             {
                 priceList.SetTaxRate(taxRates);
-                priceList.Price = _productPricingMethod.GetPrice(priceList.BasePrice, priceList.TaxRatePercentage);
+                priceList.Price = _productPricingMethod.GetPrice(priceList.BasePrice, priceList.TaxRatePercentage,0m,0m);
             }
 
 
@@ -94,7 +90,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 
         public IEnumerable<decimal> GetPrices(Product entity)
         {
-            return entity.Variants.Select(pv => _productPricingMethod.GetUnitPrice(pv));
+            return entity.Variants.Select(pv => _productPricingMethod.GetUnitPrice(pv, 0m, 0m));
         }
 
         public override Dictionary<Type, Func<SystemEntity, IEnumerable<LuceneAction>>> GetRelatedEntities()

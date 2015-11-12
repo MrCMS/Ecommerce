@@ -79,8 +79,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 if (productVariants.Count == 1)
                 {
                     var variant = productVariants.FirstOrDefault();
-                    productCardModel.PreviousPrice = _productPricingMethod.GetPreviousPrice(variant);
-                    productCardModel.Price = _productPricingMethod.GetUnitPrice(variant);
+                    productCardModel.PreviousPrice = _productPricingMethod.GetDisplayPreviousPrice(variant);
+                    productCardModel.Price = _productPricingMethod.GetUnitPrice(variant, 0m, 0m);
                     productCardModel.VariantId = variant.Id;
                     CanBuyStatus canBuyStatus = _productVariantAvailabilityService.CanBuy(variant, 1);
                     productCardModel.CanBuyStatus = canBuyStatus;
@@ -99,8 +99,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 }
                 else
                 {
-                    ProductVariant variant = productVariants.OrderBy(x => _productPricingMethod.GetUnitPrice(x)).FirstOrDefault();
-                    productCardModel.Price = variant != null ? _productPricingMethod.GetUnitPrice(variant) : (decimal?)null;
+                    ProductVariant variant = productVariants.OrderBy(x => _productPricingMethod.GetUnitPrice(x, 0m, 0m)).FirstOrDefault();
+                    productCardModel.Price = variant != null ? _productPricingMethod.GetUnitPrice(variant, 0m, 0m) : (decimal?)null;
                     productCardModel.Rating = variant.Rating;
                     productCardModel.NumberOfReviews = variant.NumberOfReviews;
                     if (variant.ETag != null)

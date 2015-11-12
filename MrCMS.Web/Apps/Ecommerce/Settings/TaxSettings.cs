@@ -45,8 +45,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 
     public enum ApplyCustomerTax
     {
-        BeforeDiscount,
-        AfterDiscount
+        AfterDiscount,
+        BeforeDiscount
     }
 
     public enum TaxCalculationMethod

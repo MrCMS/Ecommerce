@@ -43,7 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 title += string.Join(", ", variant.AttributeValuesOrdered.Select(value => value.Value)) + " - ";
             }
 
-            title += _productPricingMethod.GetUnitPrice(variant).ToCurrencyFormat();
+            title += _productPricingMethod.GetUnitPrice(variant, 0m, 0m).ToCurrencyFormat();
 
             return title;
         }

@@ -33,11 +33,17 @@ namespace MrCMS.Helpers
         {
             var fieldInfo = typeof(T).GetField(value.ToString());
 
-            var descriptionAttributes = fieldInfo.GetCustomAttributes(
+            var displayAttributes = fieldInfo.GetCustomAttributes(
                 typeof(DisplayAttribute), false) as DisplayAttribute[];
 
-            if (descriptionAttributes == null) return string.Empty;
-            return (descriptionAttributes.Length > 0) ? descriptionAttributes[0].Name : value.ToString();
+            var defaultValue = value.ToString().BreakUpString();
+
+            if (displayAttributes == null)
+                return defaultValue;
+
+            return (displayAttributes.Length > 0)
+                ? displayAttributes[0].Name
+                : defaultValue;
         }
 
         public static List<SelectListItem> GetOptions(SelectListItem emptyItem = null)

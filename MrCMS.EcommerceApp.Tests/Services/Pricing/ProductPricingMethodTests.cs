@@ -16,7 +16,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.Pricing
             var pricingMethod = new ProductPricingMethodBuilder().TaxesDisabled().Build();
             var productVariant = new ProductVariantBuilder().WithBasePrice(1.00m).Build();
 
-            pricingMethod.GetUnitPrice(productVariant).Should().Be(1.00m);
+            pricingMethod.GetUnitPrice(productVariant, 0m, 0m).Should().Be(1.00m);
         }
 
         [Fact]
@@ -25,7 +25,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.Pricing
             var pricingMethod = new ProductPricingMethodBuilder().LoadedPricesIncludeTax().Build();
             var productVariant = new ProductVariantBuilder().WithBasePrice(1.00m).Build();
 
-            pricingMethod.GetUnitPrice(productVariant).Should().Be(1.00m);
+            pricingMethod.GetUnitPrice(productVariant, 0m, 0m).Should().Be(1.00m);
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.Pricing
             var pricingMethod = new ProductPricingMethodBuilder().LoadedPricesExcludeTax().Build();
             var productVariant = new ProductVariantBuilder().WithBasePrice(1.00m).WithTaxPercentage(20m).Build();
 
-            pricingMethod.GetUnitPrice(productVariant).Should().Be(1.20m);
+            pricingMethod.GetUnitPrice(productVariant, 0m, 0m).Should().Be(1.20m);
         }
 
         [Theory]
