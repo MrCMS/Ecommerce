@@ -42,9 +42,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Logs
                               AmazonListingGroup = amazonListingGroup,
                               Message = !String.IsNullOrWhiteSpace(message) ? message : null,
                               Detail = !String.IsNullOrWhiteSpace(details) ? details : null,
+                              Guid = Guid.NewGuid(),
                               Site = CurrentRequestData.CurrentSite
                           };
-            log.SetGuid(Guid.NewGuid());
             if (elmahError != null)
             {
                 log.Message = elmahError.Message;
