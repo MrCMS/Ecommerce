@@ -17,6 +17,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Shipping
                     return string.Format("Cart weight: {0}", GetCartWeightValue(calculation));
                 case ShippingCriteria.ByCartTotal:
                     return string.Format("Cart total: {0}", GetCartTotalValue(calculation));
+                case ShippingCriteria.ByCartSubTotal:
+                    return string.Format("Cart subtotal: {0}", GetCartTotalValue(calculation));
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -30,6 +32,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Shipping
                     return IsValid(calculation, cart.Weight);
                 case ShippingCriteria.ByCartTotal:
                     return IsValid(calculation, cart.ShippableCalculationTotal());
+                case ShippingCriteria.ByCartSubTotal:
+                    return IsValid(calculation, cart.ShippableCalculationSubTotal());
                 default:
                     throw new ArgumentOutOfRangeException();
             }
