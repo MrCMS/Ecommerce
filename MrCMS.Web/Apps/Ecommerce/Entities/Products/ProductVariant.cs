@@ -39,11 +39,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [StringLength(400)]
         public virtual string Name { get; set; }
 
-        public virtual string EditUrl
-        {
-            get { return Product.EditUrl; }
-        }
-
         [Required]
         [DisplayName("Price")]
         [CurrencyValidator]
@@ -63,7 +58,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get
             {
-                if (AvailableOn.HasValue && AvailableOn <= DateTime.UtcNow)
+                if (AvailableOn.HasValue && AvailableOn <= CurrentRequestData.Now)
                     return ProductAvailability.Available;
                 return ProductAvailability.PreOrder;
             }

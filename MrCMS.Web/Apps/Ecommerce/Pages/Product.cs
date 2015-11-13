@@ -69,11 +69,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             }
         }
 
-        public virtual string EditUrl
-        {
-            get { return "/Admin/Webpage/Edit/" + Id; }
-        }
-
         public virtual IList<Product> RelatedProducts { get; set; }
 
 

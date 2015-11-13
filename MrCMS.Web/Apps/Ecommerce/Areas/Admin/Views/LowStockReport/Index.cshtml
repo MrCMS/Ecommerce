@@ -3,6 +3,7 @@
 @using MrCMS.Web.Apps.Ecommerce.Entities.Products
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Services
+@using MrCMS.Web.Apps.Ecommerce.Services.Pricing
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.LowStockReportSearchModel
@@ -10,6 +11,7 @@
     var results = ViewData["results"] as IPagedList<ProductVariant> ?? PagedList<ProductVariant>.Empty;
     var updated = ViewData["updated"] is int ? (int)ViewData["updated"] : 0;
     ViewBag.Title = "Low Stock Report";
+    IProductPricingMethod method = MrCMSApplication.Get<IProductPricingMethod>();
 }
 
 <fieldset>
@@ -64,13 +66,13 @@
                 {
                     <div class="row">
                         <div class="col-lg-3">
-                            <a href="@item.EditUrl">@(!String.IsNullOrWhiteSpace(item.Name) ? item.Name : item.Product.Name)</a>
+                            <a href="@(Url.Action("Edit","Webpage",new {id=item.Product.Id}))">@(!string.IsNullOrWhiteSpace(item.Name) ? item.Name : item.Product.Name)</a>
                         </div>
                         <div class="col-lg-2">
                             @item.SKU
                         </div>
                         <div class="col-lg-1">
-                            @item.Price
+                            @method.GetPrice(item)
                         </div>
                         <div class="col-lg-2">
                             @Html.CheckBox("Published", item.Product.Published, new { disabled = "disabled" })
@@ -89,13 +91,13 @@
                     {
                         <div class="row">
                             <div class="col-lg-3">
-                                <a href="@item.EditUrl">@(!String.IsNullOrWhiteSpace(item.Name) ? item.Name : item.Product.Name)</a>
+                                <a href="@(Url.Action("Edit","Webpage",new {id=item.Product.Id}))">@(!string.IsNullOrWhiteSpace(item.Name) ? item.Name : item.Product.Name)</a>
                             </div>
                             <div class="col-lg-2">
                                 @item.SKU
                             </div>
                             <div class="col-lg-1">
-                                @item.Price
+                                @method.GetPrice(item)
                             </div>
                             <div class="col-lg-2">
                                 @Html.CheckBox("Published", item.Product.Published, new { disabled = "disabled" })
