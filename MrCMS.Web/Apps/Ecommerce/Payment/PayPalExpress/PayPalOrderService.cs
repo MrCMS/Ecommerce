@@ -28,7 +28,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                 PaymentAction = _payPalExpressCheckoutSettings.PaymentAction,
                 OrderTotal = cart.GetCartTotalForPayPal().GetAmountType(),
                 TaxTotal = cart.GetCartTaxForPayPal().GetAmountType(),
-                ShippingTotal = cart.GetShippingTotalForPayPal().GetAmountType()
+                ShippingTotal = cart.GetShippingTotalForPayPal().GetAmountType(),
+                ButtonSource = "Thought_Cart_MrCMS"
             };
 
 
@@ -48,31 +49,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                 Quantity = item.Quantity,
                 Tax = item.UnitTax.GetAmountType(),
             }).ToList();
-            var applications = (from discountInfo in cart.Discounts
-                                let info = _cartDiscountApplicationService.ApplyDiscount(discountInfo, cart)
-                                select new { info, discountInfo }).ToHashSet();
-            paymentDetailsItemTypes.AddRange(from application in applications
+           
+            if (cart.OrderTotalDiscount > 0)
+            {
+                paymentDetailsItemTypes.Add(new PaymentDetailsItemType
+                {
+                    Name = "Order Discount",
+                    Amount = (-cart.OrderTotalDiscount).GetAmountType(),
+                    ItemCategory = ItemCategoryType.PHYSICAL,
+                    Quantity = 1,
+                    Tax = 0m.GetAmountType()
+                });
+            }
 
-                                             where application.info.OrderTotalDiscount > 0
-                                             select new PaymentDetailsItemType
-                                             {
-                                                 Name = "Order Total Discount - " + application.discountInfo.Discount.Name,
-                                                 Amount = (-application.info.OrderTotalDiscount).GetAmountType(),
-                                                 ItemCategory = ItemCategoryType.PHYSICAL,
-                                                 Quantity = 1,
-                                                 Tax = 0m.GetAmountType()
-                                             });
-
-            paymentDetailsItemTypes.AddRange(from application in applications
-                                             where application.info.ShippingDiscount > 0
-                                             select new PaymentDetailsItemType
-                                             {
-                                                 Name = "Shipping Discount - " + application.discountInfo.Discount.Name,
-                                                 Amount = (-application.info.ShippingDiscount).GetAmountType(),
-                                                 ItemCategory = ItemCategoryType.PHYSICAL,
-                                                 Quantity = 1,
-                                                 Tax = 0m.GetAmountType()
-                                             });
+            if (cart.ShippingDiscount > 0)
+            {
+                paymentDetailsItemTypes.Add(new PaymentDetailsItemType
+                {
+                    Name = "Shipping Discount",
+                    Amount = (-cart.ShippingDiscount).GetAmountType(),
+                    ItemCategory = ItemCategoryType.PHYSICAL,
+                    Quantity = 1,
+                    Tax = 0m.GetAmountType()
+                });
+            }
 
             paymentDetailsItemTypes.AddRange(from giftCard in cart.AppliedGiftCards
                                              where giftCard.AvailableAmount > 0
