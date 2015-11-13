@@ -3,6 +3,7 @@ using FluentAssertions;
 using MrCMS.EcommerceApp.Tests.Builders;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using Xunit;
+using Xunit.Extensions;
 
 namespace MrCMS.EcommerceApp.Tests.Services.Pricing
 {
