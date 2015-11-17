@@ -56,8 +56,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _productReviewUIService.Add(productReview);
 
             TempData["review-submitted"] = true;
-            
-            return Redirect(Referrer.ToString());
+
+            var url = Referrer.ToString();
+            if (!url.Contains("#product-review"))
+            {
+                url += "#product-reviews";
+            }
+            return Redirect(url);
         }
 
         public ActionResult HelpfulnessVotes(ProductReview productReview)
