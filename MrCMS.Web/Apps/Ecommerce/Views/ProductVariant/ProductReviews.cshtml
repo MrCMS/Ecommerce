@@ -60,7 +60,7 @@
                     <div class="collapse" id="add-a-review">
                         @{ Html.RenderAction("Add", "ProductReview", new { productVariant = Model }); }
                     </div>
-                            }
+                }
 
                 @foreach (ProductReview item in reviews)
                 {
@@ -96,6 +96,11 @@
                     {
                         <hr />
                     }
+                }
+
+                @if (!reviews.Any())
+                {
+                    @Resource("Product Reviews - No current reviews", "No reviews for this product - be the first by clicking the add a review button.")
                 }
             </div>
 

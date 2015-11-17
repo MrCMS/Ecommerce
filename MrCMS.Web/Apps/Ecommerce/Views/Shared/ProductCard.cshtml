@@ -32,10 +32,22 @@
             <div class="product-name">
                 <a href="/@Model.Url">@Model.Name</a>
             </div>
-            @if (Model.ProductReviewsEnabled && Model.NumberOfReviews > 0)
+            @if (Model.ProductReviewsEnabled)
             {
+
                 <div class="product-rating">
-                    @{Html.RenderPartial("ShowStarRating", Model.Rating);} (<a href="/@Model.Url#product-reviews">@Model.NumberOfReviews</a>)
+                    @if (Model.NumberOfReviews > 0)
+                    {
+                        Html.RenderPartial("ShowStarRating", Model.Rating);
+                        @:(<a href="/@Model.Url#product-reviews"> @Model.NumberOfReviews </a>)
+                    }
+                    else
+                    {
+                        Html.RenderPartial("ShowStarRating", 0.00m);
+
+                        @:(<a href="/@Model.Url#product-reviews"> 0 </a>)
+                        @:<a href="/@Model.Url#product-reviews" class="first-to-review">@Resource("Product Reviews - Be the first","Be the first to review") </a>
+                    }
                 </div>
             }
             <div class="product-price">
