@@ -1079,6 +1079,7 @@
     <Compile Include="Apps\Ecommerce\Events\RemoveDiscountCodeIfCodeIsNotRequired.cs" />
     <Compile Include="Apps\Ecommerce\Events\RemoveFieldsFromApplicationIfIsInheritedFromLimitations.cs" />
     <Compile Include="Apps\Ecommerce\Events\RemoveWarehouseIfSwitchedToDontTrack.cs" />
+    <Compile Include="Apps\Ecommerce\Events\ProductReviewNotification.cs" />
     <Compile Include="Apps\Ecommerce\Events\SpendUsedRewardPoints.cs" />
     <Compile Include="Apps\Ecommerce\Events\TriggerOnOrderCancelled.cs" />
     <Compile Include="Apps\Ecommerce\Events\UndoRewardPointUsage.cs" />
@@ -1184,8 +1185,10 @@
     <Compile Include="Apps\Ecommerce\MessageTemplates\GetDefaultSendOrderPlacedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\GetDefaultSendOrderPlacedEmailToStoreOwnerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\GetDefaultSendOrderShippedEmailToCustomerMessageTemplate.cs" />
+    <Compile Include="Apps\Ecommerce\MessageTemplates\GetDefaultSendStoreOwnerProductReviewMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\GiftCardCreatedMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\ProductBackInStockMessageTemplate.cs" />
+    <Compile Include="Apps\Ecommerce\MessageTemplates\ProductReviewMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderCancelledEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderFullyRefundedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPartiallyRefundedEmailToCustomerMessageTemplate.cs" />
@@ -1194,6 +1197,7 @@
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderShippedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\BackInStockTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\OrderTokenProvider.cs" />
+    <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\ProductReviewTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\ProductVariantTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\BrandListingMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\BrandMetadata.cs" />
