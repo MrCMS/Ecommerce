@@ -9,6 +9,9 @@
     var brands = ViewData["product-brands"] as List<SelectListItem> ?? new List<SelectListItem>();
     double maxPrice = ViewData["max-price"] is double ? (double)ViewData["max-price"] : 0;
 }
+@{
+    var searchterm = Model.SearchTerm != null ? "?searchTerm=" + Model.SearchTerm : "";
+}
 <div id="product-query-container">
     <div class="margin-bottom-10">
         <h3 class="hidden-xs">
@@ -30,21 +33,21 @@
                     @if (categories.Hierarchy.Any())
                     {
                         <div class="option">
-                            <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="@(UniquePageHelper.GetUrl<ProductSearch>())">@Resource("Products")</a>
+                            <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="@(UniquePageHelper.GetUrl<ProductSearch>())@searchterm">@Resource("Products")</a>
                         </div>
                         depth++;
                     }
                     @foreach (Category parent in categories.Hierarchy)
                     {
                         <div class="option">
-                            <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="/@parent.LiveUrlSegment">@string.Format("{0} {1}", new string('-', depth), parent.Name)</a>
+                            <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="/@parent.LiveUrlSegment@searchterm">@string.Format("{0} {1}", new string('-', depth), parent.Name)</a>
                         </div>
                         depth++;
                     }
                     @foreach (Category item in categories.Children)
                     {
                         <div class="option">
-                            <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="/@item.LiveUrlSegment">@string.Format("{0} {1}", new string('-', depth), item.Name)</a>
+                            <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="/@item.LiveUrlSegment@searchterm">@string.Format("{0} {1}", new string('-', depth), item.Name)</a>
                         </div>
                     }
                 </div>

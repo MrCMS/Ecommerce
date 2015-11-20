@@ -1581,9 +1581,11 @@
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductUrlHistoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductVariantPriceBreaksService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductVariantsService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\IProductImportDataTransferObjectValidationRule.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\IProductImportValidationRule.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\IProductVariantImportValidationRule.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductCategoriesExist.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductHasDuplicateSkuInList.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductImagesHaveValidUrl.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductMaxAbstractLengthIs500.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductMaxBrandLengthIs255.cs" />
