@@ -28,7 +28,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Pricing
         {
             if (_taxSettings.TaxCalculationMethod == TaxCalculationMethod.Individual)
             {
-                return GetUnitTax(cartItemData.Item, cartItemData.UnitDiscountAmount, cartItemData.DiscountPercentage);
+                //return GetUnitTax(cartItemData.Item, cartItemData.UnitDiscountAmount, cartItemData.DiscountPercentage);
+                var unitPriceDiscountAmount = cartItemData.UnitDiscountAmount;
+                var discountPercentage = cartItemData.DiscountPercentage;
+
+                var priceBreak = GetPriceBreak(cartItemData);
+                return priceBreak != null
+                    ? GetUnitTax(priceBreak, unitPriceDiscountAmount, discountPercentage)
+                    : GetUnitTax(cartItemData.Item, unitPriceDiscountAmount, discountPercentage);
             }
             return Math.Round(GetTax(cartItemData) / cartItemData.PricedQuantity, 2, MidpointRounding.AwayFromZero);
         }
@@ -51,23 +58,62 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Pricing
                 MidpointRounding.AwayFromZero);
         }
 
+        public decimal GetUnitTax(PriceBreak priceBreak, decimal discountAmount, decimal discountPercentage)
+        {
+            if (!_taxSettings.TaxesEnabled)
+                return decimal.Zero;
+
+            var taxRatePercentage = GetTaxRatePercentage(priceBreak.ProductVariant);
+
+            var price = GetUnitPrice(priceBreak,
+                _taxSettings.ApplyCustomerTax == ApplyCustomerTax.BeforeDiscount ? decimal.Zero : discountAmount,
+                _taxSettings.ApplyCustomerTax == ApplyCustomerTax.BeforeDiscount ? decimal.Zero : discountPercentage
+                );
+
+            return Math.Round(
+                price *
+                (taxRatePercentage / (taxRatePercentage + 100)), 2,
+                MidpointRounding.AwayFromZero);
+        }
+
         public decimal GetUnitPrice(CartItemData cartItemData)
         {
             if (_taxSettings.TaxCalculationMethod == TaxCalculationMethod.Individual)
             {
                 var unitPriceDiscountAmount = cartItemData.UnitDiscountAmount;
-                var unitPrice = GetUnitPrice(cartItemData.Item, unitPriceDiscountAmount, cartItemData.DiscountPercentage);
+                var discountPercentage = cartItemData.DiscountPercentage;
 
-                return unitPrice;
+                var priceBreak = GetPriceBreak(cartItemData);
+                return priceBreak != null
+                    ? GetUnitPrice(priceBreak, unitPriceDiscountAmount, discountPercentage)
+                    : GetUnitPrice(cartItemData.Item, unitPriceDiscountAmount, discountPercentage);
+
+                //return unitPrice;
             }
             return Math.Round(GetPrice(cartItemData) / cartItemData.PricedQuantity, 2, MidpointRounding.AwayFromZero);
         }
 
+        private PriceBreak GetPriceBreak(CartItemData cartItemData)
+        {
+            return
+                cartItemData.Item.PriceBreaks.OrderBy(x => x.Price)
+                    .FirstOrDefault(x => x.Quantity <= cartItemData.Quantity);
+        }
+
         public decimal GetUnitPricePreTax(CartItemData cartItemData)
         {
-            return _taxSettings.TaxCalculationMethod == TaxCalculationMethod.Individual
-                ? GetUnitPricePreTax(cartItemData.Item, cartItemData.UnitDiscountAmount, cartItemData.DiscountPercentage)
-                : Math.Round(GetPricePreTax(cartItemData) / cartItemData.PricedQuantity, 2, MidpointRounding.AwayFromZero);
+            if (_taxSettings.TaxCalculationMethod == TaxCalculationMethod.Individual)
+            {
+                var priceBreak = GetPriceBreak(cartItemData);
+                return priceBreak != null
+                    ? GetUnitPricePreTax(priceBreak, cartItemData.UnitDiscountAmount,
+                        cartItemData.DiscountPercentage)
+                    : GetUnitPricePreTax(cartItemData.Item, cartItemData.UnitDiscountAmount,
+                        cartItemData.DiscountPercentage);
+            }
+            else
+                return Math.Round(GetPricePreTax(cartItemData) / cartItemData.PricedQuantity, 2,
+                    MidpointRounding.AwayFromZero);
         }
 
 
@@ -86,8 +132,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Pricing
         {
             // just multiply up if we're calculating individually
             if (_taxSettings.TaxCalculationMethod == TaxCalculationMethod.Individual)
-                return cartItemData.PricedQuantity *
-                       GetUnitTax(cartItemData.Item, cartItemData.UnitDiscountAmount, cartItemData.DiscountPercentage);
+                return cartItemData.PricedQuantity * GetUnitTax(cartItemData);
 
             //otherwise we start the logic based on the total here
             if (!_taxSettings.TaxesEnabled)
@@ -95,7 +140,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Pricing
 
 
             var productVariant = cartItemData.Item;
-            var basePrice = productVariant.BasePrice;
+            var priceBreak = GetPriceBreak(cartItemData);
+            var basePrice = priceBreak?.Price ?? productVariant.BasePrice;
             var quantity = cartItemData.PricedQuantity;
             var totalAmount = basePrice * quantity;
             var taxRatePercentage = GetTaxRatePercentage(productVariant);
@@ -111,7 +157,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Pricing
 
             var productVariant = cartItemData.Item;
             var quantity = cartItemData.PricedQuantity;
-            var basePrice = productVariant.BasePrice;
+            var priceBreak = GetPriceBreak(cartItemData);
+            var basePrice = priceBreak?.Price ?? productVariant.BasePrice;
             var totalAmount = basePrice * quantity;
             var taxRatePercentage = GetTaxRatePercentage(productVariant);
             var discount = cartItemData.UnitDiscountAmount * quantity;
@@ -134,6 +181,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Pricing
         public decimal GetUnitPrice(ProductVariant productVariant, decimal discountAmount, decimal discountPercentage)
         {
             return GetPrice(productVariant.BasePrice, GetTaxRatePercentage(productVariant), discountAmount,
+                discountPercentage);
+        }
+
+        public decimal GetUnitPrice(PriceBreak priceBreak, decimal discountAmount, decimal discountPercentage)
+        {
+            return GetPrice(priceBreak.Price, GetTaxRatePercentage(priceBreak.ProductVariant), discountAmount,
                 discountPercentage);
         }
 
@@ -171,7 +224,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Pricing
 
             var productVariant = cartItemData.Item;
             var quantity = cartItemData.PricedQuantity;
-            var basePrice = productVariant.BasePrice;
+            var priceBreak = GetPriceBreak(cartItemData);
+            var basePrice = priceBreak?.Price ?? productVariant.BasePrice;
             var totalAmount = basePrice * quantity;
             var taxRatePercentage = GetTaxRatePercentage(productVariant);
             var discount = cartItemData.UnitDiscountAmount * quantity;
@@ -253,6 +307,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Pricing
         {
             return GetUnitPrice(item, discountAmount, discountPercentage) -
                    GetUnitTax(item, discountAmount, discountPercentage);
+        }
+        public decimal GetUnitPricePreTax(PriceBreak priceBreak, decimal discountAmount, decimal discountPercentage)
+        {
+            return GetUnitPrice(priceBreak, discountAmount, discountPercentage) -
+                   GetUnitTax(priceBreak, discountAmount, discountPercentage);
         }
 
         public decimal GetTax(decimal basePrice, decimal taxRatePercentage, decimal discountAmount,

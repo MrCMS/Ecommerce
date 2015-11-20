@@ -16,7 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
                 Bcc = String.Empty,
                 Cc = String.Empty,
                 Subject = String.Format("{0} - Product Review", CurrentRequestData.CurrentSite.Name),
-                Body = "<p>The product {Name} got a new review.</p><p>{ProductUrl}</p><p>Review Title: {Title}</p><p>Message: {Text}</p>",
+                Body = "<p>The product {Name} just received a new review.</p><p>{ProductUrl}</p><p>Review Title: {Title}</p><p>Message: {Text}</p>",
                 IsHtml = true
             };
         }
