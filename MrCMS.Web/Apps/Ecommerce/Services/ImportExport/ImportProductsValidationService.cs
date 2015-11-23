@@ -52,7 +52,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                         else
                             errors[product.UrlSegment].AddRange(productVariantErrors);
                     }
-
                 }
             }
 
