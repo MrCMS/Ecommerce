@@ -3,7 +3,7 @@
 @using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Settings.GoogleBaseSettings
 
-<div class="tab-pane" id="settings">   
+<div class="tab-pane" id="settings">
     @using (Html.BeginForm("GoogleBaseSettings", "GoogleBase", FormMethod.Post, new { id = "Settings" }))
     {
         <div class="form-group">
@@ -12,12 +12,15 @@
         </div>
         <div class="form-group">
             @Html.LabelFor(x => x.DefaultCategory)<br />
-            @Html.HiddenFor(x => x.DefaultCategory, new { @class = "select2 " })
+            @Html.HiddenFor(x => x.DefaultCategory, new { @class = "select2 col-md-6" })
+            <br />
+            @Model.DefaultCategory
+            <br />
         </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.DefaultCondition)
-        @Html.DropDownListFor(x => x.DefaultCondition, ViewData["product-conditions"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.DefaultCondition)
+            @Html.DropDownListFor(x => x.DefaultCondition, ViewData["product-conditions"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+        </div>
         <button type="submit" class="btn btn-default">@Resource("Save")</button>
     }
     <br />
