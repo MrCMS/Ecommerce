@@ -7,38 +7,85 @@
     var discountOnPricesOptions = EnumHelper<DiscountOnPrices>.GetOptions();
 }
 @model MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings
-<div class="form-group">
-    @Html.LabelFor(settings => settings.PriceLoadingMethod)
-    @Html.DropDownListFor(settings => settings.PriceLoadingMethod, pricingMethodOptions, new { @class = "form-control" })
-</div>
 
-<div class="form-group">
-    @Html.LabelFor(settings => settings.TaxCalculationMethod)
-    @Html.DropDownListFor(settings => settings.TaxCalculationMethod, taxCalculationMethodOptions, new { @class = "form-control" })
-</div>
+<div class="row">
+    <div class="col-md-6">
 
-<div class="form-group">
-    @Html.LabelFor(settings => settings.ApplyCustomerTax)
-    @Html.DropDownListFor(settings => settings.ApplyCustomerTax, applyCustomerTaxOptions, new { @class = "form-control" })
-</div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.PriceLoadingMethod)
+            @Html.DropDownListFor(settings => settings.PriceLoadingMethod, pricingMethodOptions, new { @class = "form-control" })
+        </div>
 
-<div class="form-group">
-    @Html.LabelFor(settings => settings.DiscountOnPrices)
-    @Html.DropDownListFor(settings => settings.DiscountOnPrices, discountOnPricesOptions, new { @class = "form-control" })
-</div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.TaxCalculationMethod)
+            @Html.DropDownListFor(settings => settings.TaxCalculationMethod, taxCalculationMethodOptions, new { @class = "form-control" })
+        </div>
 
-@*<div class="form-group">
-        @Html.InlineCheckboxFor(settings => settings.LoadedPricesIncludeTax)
-    </div>*@
-<div class="form-group">
-    @Html.InlineCheckboxFor(settings => settings.ShippingRateTaxesEnabled)
-</div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.ApplyCustomerTax)
+            @Html.DropDownListFor(settings => settings.ApplyCustomerTax, applyCustomerTaxOptions, new { @class = "form-control" })
+        </div>
 
-@if (Model.ShippingRateTaxesEnabled)
-{
-    <div class="form-group">
-        @Html.InlineCheckboxFor(settings => settings.ShippingRateIncludesTax)
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.DiscountOnPrices)
+            @Html.DropDownListFor(settings => settings.DiscountOnPrices, discountOnPricesOptions, new { @class = "form-control" })
+        </div>
+
+        @*<div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.LoadedPricesIncludeTax)
+        </div>*@
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.ShippingRateTaxesEnabled)
+        </div>
+
+        @if (Model.ShippingRateTaxesEnabled)
+        {
+            <div class="form-group">
+                @Html.InlineCheckboxFor(settings => settings.ShippingRateIncludesTax)
+            </div>
+        }
+        <br />
+        <input type="submit" value="Save Settings" id="save-settings" class="btn btn-primary btn-xs" />
+
     </div>
-}
-<br />
-<input type="submit" value="Save Settings" id="save-settings" class="btn btn-primary btn-xs" />
+    <div class="col-md-6">
+
+        <h3>Suggested set up for business to consumer</h3>
+        <ul>
+            <li>Input your prices including tax</li>
+            <li>Set tax calculation method to individual</li>
+            <li>Apply customer tax after discount</li>
+            <li>Discount on prices should be including tax</li>
+        </ul>
+        <h3>Suggested set up for business to business</h3>
+        <ul>
+            <li>Input your prices excluding tax</li>
+            <li>Set tax calculation method to row</li>
+            <li>Apply customer tax after discount</li>
+            <li>Discount on prices should be excluding tax</li>
+        </ul>
+        <hr/>
+
+        <h4>Tax Caluclation Method</h4>
+
+        <ul>
+            <li>Individual - tax calculated on item level and multiplied up by quantity. </li>
+            <li>Row - If prices loaded in to the system exclude tax then tax is calculated afer the has been multiplied by the qunaitity. E.G £0.21 x 1000 = £210.00 (£252.00 inc TAX)</li>
+            <li>Row - If prices loaded into the system include tax then tax is calculated after the item has been multipled. E.G £0.21 * 1000 = £210 (£175.00 ex TAX)</li>
+        </ul>
+
+        <h4>Apply customer tax</h4>
+        <ul>
+            <li>After Discount - The tax is calculated based on discounted price</li>
+            <li>Before Discount - The tax is calculated on the pre-discounted price</li>
+        </ul>
+
+        <h4>Discount on prices</h4>
+        <ul>
+            <li>Including tax - if an item is £5 including tax and you give £1 off the total is £4.00</li>
+            <li>Excluded tax - if an item is £5 including tax and you give £1 off the total is £3.80 (as the discount is £1.00 + 20% tax)</li>
+        </ul>
+
+    </div>
+
+</div>
