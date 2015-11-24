@@ -121,6 +121,15 @@ Version 0.4 (May 2015)
 	* Newsletter build made into app
 	* Braintree support
 
+Version 0.4.1 (November 2015)
+-----------
+	* Rewrite tax configuration and pricing to be more flexible
+	* When a review is added to the site allow an email to be sent (Product Review Message Template)
+	* When adding a review always allow a user to specify their name and email even if logged in
+	* Google Base performance enhancements
+	* Fix worldpay callback
+
+
 Version 0.5 (Future)
 	* Feedback app
 	* nopCommerce 1.9 import
