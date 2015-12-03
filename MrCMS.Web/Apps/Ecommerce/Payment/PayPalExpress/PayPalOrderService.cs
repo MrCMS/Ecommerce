@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Services.Cart;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using PayPal.PayPalAPIInterfaceService.Model;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
@@ -11,12 +12,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
     public class PayPalOrderService : IPayPalOrderService
     {
         private readonly PayPalExpressCheckoutSettings _payPalExpressCheckoutSettings;
-        private readonly ICartDiscountApplicationService _cartDiscountApplicationService;
+        private readonly TaxSettings _taxSettings;
 
-        public PayPalOrderService(PayPalExpressCheckoutSettings payPalExpressCheckoutSettings, ICartDiscountApplicationService cartDiscountApplicationService)
+        public PayPalOrderService(PayPalExpressCheckoutSettings payPalExpressCheckoutSettings, TaxSettings taxSettings)
         {
             _payPalExpressCheckoutSettings = payPalExpressCheckoutSettings;
-            _cartDiscountApplicationService = cartDiscountApplicationService;
+            _taxSettings = taxSettings;
         }
 
         public List<PaymentDetailsType> GetPaymentDetails(CartModel cart)
@@ -41,15 +42,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public List<PaymentDetailsItemType> GetPaymentDetailsItems(CartModel cart)
         {
-            var paymentDetailsItemTypes = cart.Items.Select(item => new PaymentDetailsItemType
-            {
-                Name = item.Name,
-                Amount = item.UnitPricePreTax.GetAmountType(),
-                ItemCategory = item.RequiresShipping ? ItemCategoryType.PHYSICAL : ItemCategoryType.DIGITAL,
-                Quantity = item.Quantity,
-                Tax = item.UnitTax.GetAmountType(),
-            }).ToList();
-           
+            var paymentDetailsItemTypes = GetCartItemPaymentDetailsItemTypes(cart);
+
             if (cart.OrderTotalDiscount > 0)
             {
                 paymentDetailsItemTypes.Add(new PaymentDetailsItemType
@@ -95,6 +89,37 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                     Tax = 0m.GetAmountType()
                 });
 
+            return paymentDetailsItemTypes;
+        }
+
+        private List<PaymentDetailsItemType> GetCartItemPaymentDetailsItemTypes(CartModel cart)
+        {
+            List<PaymentDetailsItemType> paymentDetailsItemTypes = new List<PaymentDetailsItemType>();
+            switch (_taxSettings.TaxCalculationMethod)
+            {
+                case TaxCalculationMethod.Individual:
+                    paymentDetailsItemTypes.AddRange(cart.Items.Select(item => new PaymentDetailsItemType
+                    {
+                        Name = item.Name,
+                        Amount = item.UnitPricePreTax.GetAmountType(),
+                        ItemCategory = item.RequiresShipping ? ItemCategoryType.PHYSICAL : ItemCategoryType.DIGITAL,
+                        Quantity = item.Quantity,
+                        Tax = item.UnitTax.GetAmountType(),
+                    }));
+                    break;
+                case TaxCalculationMethod.Row:
+                    paymentDetailsItemTypes.AddRange(cart.Items.Select(item => new PaymentDetailsItemType
+                    {
+                        Name = item.Name + " x" + item.Quantity,
+                        Amount = item.PricePreTax.GetAmountType(),
+                        ItemCategory = item.RequiresShipping ? ItemCategoryType.PHYSICAL : ItemCategoryType.DIGITAL,
+                        Quantity = 1,
+                        Tax = item.Tax.GetAmountType(),
+                    }));
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             return paymentDetailsItemTypes;
         }
 
