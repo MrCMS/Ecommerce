@@ -35,7 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             var errors = new Dictionary<string, List<string>>();
             var productRules = MrCMSApplication.GetAll<IProductImportValidationRule>();
             var productVariantRules = MrCMSApplication.GetAll<IProductVariantImportValidationRule>();
-
+            var skus = new List<string>();
             foreach (var product in productsToImport)
             {
                 var productErrors = productRules.SelectMany(rule => rule.GetErrors(product)).ToList();
@@ -44,6 +44,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 foreach (var variant in product.ProductVariants)
                 {
+                    if (skus.Contains(variant.SKU)) // duplicate sku check
+                    {
+                        var value = new List<string> { "Duplicate Global SKU: " + variant.SKU };
+
+                        if (errors.All(x => x.Key != product.UrlSegment))
+                            errors.Add(product.UrlSegment, value);
+                        else
+                            errors[product.UrlSegment].AddRange(value);
+                    }
                     var productVariantErrors = productVariantRules.SelectMany(rule => rule.GetErrors(variant)).ToList();
                     if (productVariantErrors.Any())
                     {
@@ -52,6 +61,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                         else
                             errors[product.UrlSegment].AddRange(productVariantErrors);
                     }
+                    skus.Add(variant.SKU);
 
                 }
             }

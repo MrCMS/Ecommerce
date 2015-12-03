@@ -47,7 +47,7 @@
             initSelection: function(element, callback) {
                 var id = $(element).val();
                 if (id !== "") {
-                    callback({ Name: id });
+                    callback({ Name: $(element).data('category-name') });
                 }
             },
             formatResult: formatResult,
