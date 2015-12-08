@@ -315,6 +315,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Apps\Amazon\ACL\AmazonAdminMenuACL.cs" />
     <Compile Include="Apps\Amazon\AmazonApp.cs" />
     <Compile Include="Apps\Amazon\AmazonAppInstallation.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\AppController.cs" />
@@ -562,7 +563,6 @@
     <Compile Include="Apps\Ecommerce\ACL\GoogleBaseACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\ImportExportACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\LowStockReportACL.cs" />
-    <Compile Include="Apps\Ecommerce\ACL\NewsletterTemplateACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\OrderACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\OrdersByShippingTypeACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\PaymentSettingsACL.cs" />
@@ -1869,6 +1869,7 @@
     <Compile Include="Apps\MobileFriendlyNavigation\Services\ProcessRootNodes.cs" />
     <Compile Include="Apps\MobileFriendlyNavigation\Widgets\MobileFriendlyNavigation.cs" />
     <Compile Include="Apps\NewsletterBuilder\ACL\NewsletterACL.cs" />
+    <Compile Include="Apps\NewsletterBuilder\ACL\NewsletterBuilderAdminMenuACL.cs" />
     <Compile Include="Apps\NewsletterBuilder\ACL\NewsletterTemplateACL.cs" />
     <Compile Include="Apps\NewsletterBuilder\ActionResults\NewsletterActionResult.cs" />
     <Compile Include="Apps\NewsletterBuilder\Areas\Admin\ActionFilters\AddSuccessMessageAttribute.cs" />
