@@ -12,11 +12,21 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
         private IDictionary<string, Func<ProductReview, string>> GetTokens()
         {
             return new Dictionary<string, Func<ProductReview, string>>
+            {
                 {
-                    {"ProductUrl", request => request.ProductVariant.Product != null ? request.ProductVariant.Product.AbsoluteUrl  : null},
-                    {"Name", request => request.ProductVariant.Product.Name},
-                    {"UserName",request=>request.User.Name}
-                };
+                    "ProductUrl",
+                    request =>
+                        request.ProductVariant.Product != null
+                            ? request.ProductVariant.Product.AbsoluteUrl
+                            : string.Empty
+                },
+                {
+                    "Name", request => request.ProductVariant.Product.Name
+                },
+                {
+                    "UserName", request => request.User != null ? request.User.Name : string.Empty
+                }
+            };
         }
     }
 }
