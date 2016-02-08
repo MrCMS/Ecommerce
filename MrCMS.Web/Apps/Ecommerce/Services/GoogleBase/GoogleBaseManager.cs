@@ -239,12 +239,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             //DESCRIPTION
             xml.WriteStartElement("description");
             string description = String.Empty;
-            if (product != null && !String.IsNullOrWhiteSpace(displayName))
-                description = product.BodyContent.StripHtml();
-            if (product != null && String.IsNullOrEmpty(description))
-                description = product.ProductAbstract.StripHtml();
-            if (product != null && String.IsNullOrEmpty(description))
-                description = displayName.StripHtml();
+            if (product != null)
+            {
+                if (!String.IsNullOrWhiteSpace(displayName))
+                    description = product.BodyContent.StripHtml().TruncateString(480);
+                if (String.IsNullOrEmpty(description))
+                    description = product.ProductAbstract.StripHtml().TruncateString(480);
+                if (String.IsNullOrEmpty(description))
+                    description = displayName.StripHtml().TruncateString(480);
+            }
+            
             description = XmlCharacterWhitelist(description);
             byte[] descriptionBytes = Encoding.Default.GetBytes(description.StripHtml());
             description = Encoding.UTF8.GetString(descriptionBytes);
