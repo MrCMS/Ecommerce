@@ -316,6 +316,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 else
                     product.PublishDate = worksheet.GetValue<DateTime>(rowId, 32);
             }
+            product.SearchResultAbstract = worksheet.GetValue<string>(rowId, 34);
         }
 
         private static void GetUrlHistory(Dictionary<string, List<string>> parseErrors, ExcelWorksheet worksheet, int rowId,
@@ -325,12 +326,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             try
             {
                 var value = worksheet.GetValue<string>(rowId, 31);
-                if (!String.IsNullOrWhiteSpace(value))
+                if (!string.IsNullOrWhiteSpace(value))
                 {
                     var urlHistory = value.Split(',');
                     foreach (var item in urlHistory)
                     {
-                        if (!String.IsNullOrWhiteSpace(item))
+                        if (!string.IsNullOrWhiteSpace(item))
                         {
                             product.UrlHistory.Add(item);
                         }

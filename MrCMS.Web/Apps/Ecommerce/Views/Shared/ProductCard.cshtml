@@ -1,5 +1,4 @@
 ﻿@using System.Drawing
-@using FluentNHibernate.Conventions
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Settings
@@ -32,6 +31,12 @@
             <div class="product-name">
                 <a href="/@Model.Url">@Model.Name</a>
             </div>
+            @if (!string.IsNullOrWhiteSpace(Model.SearchResultAbstract))
+            {
+                <div class="product-abstract">
+                    <p>@Model.SearchResultAbstract</p>
+                </div>
+            }
             @if (Model.ProductReviewsEnabled)
             {
 

@@ -9,7 +9,7 @@
     var perPageOptions = ViewData["per-page-options"] as List<SelectListItem> ?? new List<SelectListItem>();
 }
 <div id="product-results-container">
-    <div id="loading-message" style="display: none; position: fixed; top: 50%; left: 50%;">
+    <div id="loading-message" style="display: none; position: fixed; top: 50%; left: 50%; z-index: 1;">
         <img src="/Apps/Ecommerce/Content/Images/ajax-loader.gif" alt="Loading" />
     </div>
     <div id="products-operations" class="grey-border-bottom">

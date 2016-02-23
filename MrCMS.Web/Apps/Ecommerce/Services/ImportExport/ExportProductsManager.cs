@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using MrCMS.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
@@ -50,7 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             wsItems.Cells["A:B"].AutoFitColumns();
             wsItems.Cells["D:D"].AutoFitColumns();
             wsItems.Cells["F:F"].AutoFitColumns();
-            wsItems.Cells["I:AF"].AutoFitColumns();
+            wsItems.Cells["I:AH"].AutoFitColumns();
         }
 
         private void AddVariant(int i, ExcelWorksheet wsItems, IList<ProductVariant> productVariants)
@@ -213,12 +211,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             wsItems.Cells["F" + rowId].Value = productVariants[i].Product.MetaKeywords;
             wsItems.Cells["G" + rowId].Value = productVariants[i].Product.ProductAbstract;
             wsItems.Cells["G" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
+            wsItems.Cells["AH" + rowId].Value = productVariants[i].Product.SearchResultAbstract;
+            wsItems.Cells["AH" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
         }
 
         private static void AddHeader(ExcelWorksheet wsItems)
         {
-            wsItems.Cells["A1:AG1"].Style.Font.Bold = true;
-            wsItems.Cells["A:AG"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            wsItems.Cells["A1:AH1"].Style.Font.Bold = true;
+            wsItems.Cells["A:AH"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             wsItems.Cells["A1"].Value = "Url (Must not be changed!)";
             wsItems.Cells["B1"].Value = "Product Name";
             wsItems.Cells["C1"].Value = "Description";
@@ -252,6 +252,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             wsItems.Cells["AE1"].Value = "Url History";
             wsItems.Cells["AF1"].Value = "Publish Date";
             wsItems.Cells["AG1"].Value = "E-Tag";
+            wsItems.Cells["AH1"].Value = "Search Result Abstract";
         }
 
         private static void CreateInfo(ExcelPackage excelFile)

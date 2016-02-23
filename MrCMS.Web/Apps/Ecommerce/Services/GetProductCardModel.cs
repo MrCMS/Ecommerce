@@ -72,6 +72,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                     Name = product.Name,
                     Url = product.LiveUrlSegment,
                     Abstract = product.ProductAbstract,
+                    SearchResultAbstract = product.SearchResultAbstract,
                     Image = image == null ? null : image.FileUrl,
                     PreviousPriceText = _ecommerceSettings.PreviousPriceText,
                     ProductReviewsEnabled = _productReviewSettings.EnableProductReviews,

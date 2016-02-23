@@ -27,10 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual MediaCategory Gallery { get; set; }
 
-        public virtual bool IsMultiVariant
-        {
-            get { return Variants.Count > 1; }
-        }
+        public virtual bool IsMultiVariant => Variants.Count > 1;
 
         public virtual IList<ProductVariant> Variants { get; set; }
 
@@ -47,6 +44,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         [DisplayName("Abstract")]
         [StringLength(500, ErrorMessage = "Abstract cannot be longer than 500 characters.")]
         public virtual string ProductAbstract { get; set; }
+
+        [DisplayName("Search Result Abstract"), StringLength(500, ErrorMessage = "Abstract cannot be longer than 500 characters.")]
+        public virtual string SearchResultAbstract { get; set; }
 
         public virtual IEnumerable<MediaFile> Images
         {
