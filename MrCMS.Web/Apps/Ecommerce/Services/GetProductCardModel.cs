@@ -73,11 +73,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                     Url = product.LiveUrlSegment,
                     Abstract = product.ProductAbstract,
                     SearchResultAbstract = product.SearchResultAbstract,
-                    Image = image == null ? null : image.FileUrl,
+                    Image = image?.FileUrl,
+                    BrandImage = product.BrandPage?.FeatureImage,
                     PreviousPriceText = _ecommerceSettings.PreviousPriceText,
                     ProductReviewsEnabled = _productReviewSettings.EnableProductReviews,
                     IsMultiVariant = productVariants.Count > 1
                 };
+                
+
                 if (productVariants.Count == 1)
                 {
                     var variant = productVariants.FirstOrDefault();

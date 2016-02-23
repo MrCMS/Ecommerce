@@ -22,6 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public bool ProductReviewsEnabled { get; set; }
         public decimal Rating { get; set; }
         public int NumberOfReviews { get; set; }
+        public string BrandImage { get; set; }
 
         public ETag ETag { get; set; }
     }
