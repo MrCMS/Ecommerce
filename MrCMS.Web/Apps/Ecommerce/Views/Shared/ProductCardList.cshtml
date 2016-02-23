@@ -1,0 +1,81 @@
+﻿@using System.Drawing
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Web.Apps.Ecommerce.Settings
+@model ProductCardModel
+
+<div class="row product-con">
+    <div class="col-sm-3">
+        <div class="product-image">
+            @if (Model.ETag != null && !string.IsNullOrEmpty(Model.ETag.Image))
+            {
+                <a href="/@Model.Url" class="e-tag-image">
+                    @RenderImage(Model.ETag.Image, attributes: new { @class = "img-responsive" })
+                </a>
+            }
+            <a href="/@Model.Url">
+                @RenderImage(Model.Image ?? SiteSettings<EcommerceSettings>().DefaultNoProductImage, new Size { Width = 150, Height = 150 }, attributes: new { @class = "img-responsive" })
+            </a>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="product-name">
+            <a href="/@Model.Url">@Model.Name</a>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.SearchResultAbstract))
+            {
+            <div class="product-abstract">
+                <p>@Model.SearchResultAbstract</p>
+            </div>
+        }
+        @if (Model.ProductReviewsEnabled)
+            {
+
+            <div class="product-rating">
+                @if (Model.NumberOfReviews > 0)
+                {
+                    Html.RenderPartial("ShowStarRating", Model.Rating);
+                    @:(<a href="/@Model.Url#product-reviews"> @Model.NumberOfReviews </a>)
+                    }
+                else
+                {
+                    Html.RenderPartial("ShowStarRating", 0.00m);
+
+                    @:(<a href="/@Model.Url#product-reviews"> 0 </a>)
+                    @:<a href="/@Model.Url#product-reviews" class="first-to-review">@Resource("Product Reviews - Be the first", "Be the first to review") </a>
+                    }
+            </div>
+        }
+    </div>
+    <div class="col-sm-3 text-right">
+        <div class="product-price">
+            <span class="current-price">
+                @if (Model.IsMultiVariant)
+                {
+                    @Resource("From: ")
+                }
+                @Model.Price.ToCurrencyFormat()
+            </span>
+            @if (Model.PreviousPrice.HasValue)
+            {
+                <span class="old-price">
+                    <span class="inner">
+                        @(SiteSettings<EcommerceSettings>().PreviousPriceText) : @Model.PreviousPrice.ToCurrencyFormat()
+                    </span>
+                </span>
+            }
+        </div>
+
+        @if (Model.CanBuyStatus != null && Model.CanBuyStatus.OK)
+        {
+            <div class="padding-bottom-10">
+                @using (Html.BeginForm("Add", "AddToCart", FormMethod.Post))
+                {
+                    @Html.Hidden("ProductVariant.Id", Model.VariantId)
+                    @Html.Hidden("quantity", 1)
+                    <button class="btn btn-primary" style="margin-left: 0;">Add to basket</button>
+                }
+            </div>
+        }
+    </div>
+</div>

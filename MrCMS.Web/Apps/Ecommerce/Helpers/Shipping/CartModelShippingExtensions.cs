@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Helpers.Shipping

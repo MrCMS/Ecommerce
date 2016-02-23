@@ -1301,6 +1301,7 @@
     <Compile Include="Apps\Ecommerce\Models\ProductReviewResponseType.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductSearchQuery.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductSearchSort.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ProductSearchView.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductValueModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\RedirectDetails.cs" />
     <Compile Include="Apps\Ecommerce\Models\RegisterAndAssociateOrderResult.cs" />
@@ -1770,6 +1771,8 @@
     <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionRegistrationBuilder.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionRegistrationResponse.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Search\GetProductSearchView.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Search\IGetProductSearchView.cs" />
     <Compile Include="Apps\Ecommerce\Services\SetShippingAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\SetShippingDetailsUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\SetShippingMethodService.cs" />
@@ -3953,7 +3956,7 @@
     <Content Include="Apps\Ecommerce\Views\Shared\AnalyticsCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\BackInStockForm.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\CategoryCard.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\ProductCard.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\ProductCardGrid.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductCardFeatured.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductImages.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductPricebreaks.cshtml" />
@@ -4453,6 +4456,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\AmountPerUnit\Fields.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\GridView.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\ListView.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\ProductCardList.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
@@ -4471,7 +4477,6 @@
     <Folder Include="Apps\Ecommerce\Entities\Search\" />
     <Folder Include="Apps\Ecommerce\Models\Shipping\" />
     <Folder Include="Apps\Ecommerce\Services\Inventory\StockReport\" />
-    <Folder Include="Apps\Ecommerce\Services\Search\" />
     <Folder Include="Apps\Ecommerce\Views\PaymentMethod\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Controllers\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Views\Widget\" />

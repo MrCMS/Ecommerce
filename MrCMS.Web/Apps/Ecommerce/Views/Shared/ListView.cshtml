@@ -1,0 +1,7 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Ecommerce.Pages.Product>
+
+@foreach (var productCardModel in Model.GetCardModels())
+{
+    Html.RenderPartial("ProductCardList", productCardModel);
+}

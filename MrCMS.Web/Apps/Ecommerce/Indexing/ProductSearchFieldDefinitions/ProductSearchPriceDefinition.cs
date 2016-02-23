@@ -10,7 +10,6 @@ using MrCMS.Tasks;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Helpers.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -35,8 +34,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 
         protected override IEnumerable<decimal> GetValues(Product obj)
         {
-            return GetPrices(obj);
+            yield return GetPrices(obj).Min();
         }
+
         public class PriceList
         {
             public decimal BasePrice { get; set; }
@@ -60,6 +60,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                 }
             }
         }
+
         protected override Dictionary<Product, IEnumerable<decimal>> GetValues(List<Product> objs)
         {
             PriceList list = null;
@@ -77,12 +78,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
             foreach (var priceList in priceLists)
             {
                 priceList.SetTaxRate(taxRates);
-                priceList.Price = _productPricingMethod.GetPrice(priceList.BasePrice, priceList.TaxRatePercentage,0m,0m);
+                priceList.Price = _productPricingMethod.GetPrice(priceList.BasePrice, priceList.TaxRatePercentage, 0m, 0m);
             }
 
-
             var groupedPrices = priceLists.GroupBy(skuList => skuList.ProductId)
-                .ToDictionary(lists => lists.Key, lists => lists.Select(skuList => skuList.Price));
+                .ToDictionary(lists => lists.Key, lists => lists.Select(skuList => skuList.Price).OrderBy(x => x).Take(1));
 
             return objs.ToDictionary(product => product,
                 product => groupedPrices.ContainsKey(product.Id) ? groupedPrices[product.Id] : Enumerable.Empty<decimal>());
