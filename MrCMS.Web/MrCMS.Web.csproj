@@ -21,7 +21,6 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <OldToolsVersion>4.0</OldToolsVersion>
     <IISExpressSSLPort>
     </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>
@@ -2548,6 +2547,31 @@
     <Content Include="Apps\NewsletterBuilder\Areas\Admin\Content\Scripts\lib\zero-clipboard\ZeroClipboard.swf" />
     <Content Include="Apps\NewsletterBuilder\Areas\Admin\Content\Scripts\newsletter-ck.js" />
     <Content Include="Apps\NewsletterBuilder\Areas\Admin\Content\Scripts\newsletter-config.js" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\BannerTemplateData\Edit.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Banner\Add.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Banner\Edit.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ContentItem\Delete.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\FreeTextTemplateData\Edit.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\FreeText\Add.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\FreeText\Edit.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageLeftAndTextRightTemplateData\Edit.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageLeftAndTextRight\Add.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageLeftAndTextRight\Edit.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageRightAndTextLeftTemplateData\Edit.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageRightAndTextLeft\Add.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageRightAndTextLeft\Edit.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\NewsletterTemplate\Add.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\NewsletterTemplate\Delete.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\NewsletterTemplate\Edit.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\NewsletterTemplate\Index.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\Add.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\Delete.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\Edit.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\Index.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\SortContentItems.cshtml" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\razorgenerator.directives" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Stats\Content\Scripts\analytics.js" />
     <Content Include="Apps\Stats\Content\Scripts\jquery.cookie.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\adapters\jquery.js" />
@@ -4103,25 +4127,6 @@
     <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\FontAwesome.otf" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\Migrate.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\ForProduct.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\BannerTemplateData\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Banner\Add.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Banner\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ContentItem\Delete.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\FreeTextTemplateData\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\FreeText\Add.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\FreeText\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageLeftAndTextRightTemplateData\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageLeftAndTextRight\Add.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageLeftAndTextRight\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageRightAndTextLeftTemplateData\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageRightAndTextLeft\Add.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageRightAndTextLeft\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\NewsletterTemplate\Add.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\NewsletterTemplate\Delete.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\NewsletterTemplate\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\NewsletterTemplate\Index.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\Add.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_UserAccountLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\UserAccountInfo.cshtml" />
     <Content Include="Apps\Ecommerce\Views\UserAccountInfo\Form.cshtml" />
@@ -4141,12 +4146,6 @@
     <Content Include="Apps\Ecommerce\Views\UserAccountChangePassword\UpdatePassword.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_LayoutPopup.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\UserOrder.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\Index.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\SortContentItems.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\razorgenerator.directives" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Web.config" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\BrandListing.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\BrandListing.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Brand.cshtml" />
@@ -4211,31 +4210,6 @@
     <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\fontawesome-webfont.woff" />
     <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\FontAwesome.otf" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\BannerTemplateData\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Banner\Add.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Banner\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ContentItem\Delete.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\FreeTextTemplateData\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\FreeText\Add.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\FreeText\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageLeftAndTextRightTemplateData\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageLeftAndTextRight\Add.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageLeftAndTextRight\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageRightAndTextLeftTemplateData\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageRightAndTextLeft\Add.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\ImageRightAndTextLeft\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\NewsletterTemplate\Add.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\NewsletterTemplate\Delete.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\NewsletterTemplate\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\NewsletterTemplate\Index.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\Add.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\Delete.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\Edit.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\Index.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Newsletter\SortContentItems.cshtml" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\razorgenerator.directives" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Web.config" />
-    <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BraintreeSettings\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Braintree\Form.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductListTemplateData\Edit.cshtml" />
