@@ -27,6 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs
         public string SEODescription { get; set; }
         public string SEOKeywords { get; set; }
         public string Abstract { get; set; }
+        public string SearchResultAbstract { get; set; }
         public string Brand { get; set; }
         public List<string> Categories { get; set; }
         public Dictionary<string, string> Specifications { get; set; }

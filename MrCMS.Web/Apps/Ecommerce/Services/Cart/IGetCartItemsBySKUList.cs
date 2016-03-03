@@ -6,6 +6,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
     public interface IGetCartItemsBySKUList
     {
-        List<CartItem> GetCartItems(CartModel cart, string skuList);
+        List<CartItemData> GetCartItems(CartModel cart, string skuList);
     }
 }

@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using FakeItEasy;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 using FluentAssertions;
+using MrCMS.Services.Resources;
 
 namespace MrCMS.EcommerceApp.Tests.Services
 {
@@ -15,7 +17,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
 
         public OptionServiceTests()
         {
-            _optionService = new OptionService(Session);
+            _optionService = new OptionService(Session, A.Fake<IStringResourceProvider>());
         }
 
         [Fact]

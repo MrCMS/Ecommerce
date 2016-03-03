@@ -12,11 +12,33 @@
         </div>
     </div>*@
     <div class="col-lg-9">
-        @Html.LabelFor(product => product.ProductAbstract)
-        @Html.TextAreaFor(product => product.ProductAbstract, new { rows = 4, @class = "form-control", data_characters = "500" })
-        <span id="abstract-character-count">
-            <span>@((500 - (Model.ProductAbstract ?? string.Empty).Length) + " characters remaining")</span>
-        </span>
+        <div class="abstract-tabs">
+            <ul class="nav nav-tabs" role="tablist" data-stickytabs="product-abstracts">
+                <li role="presentation" class="active">
+                    <a href="#productAbstract" aria-controls="productAbstract" role="tab" data-toggle="tab">@Resource("Admin Product Abstract", "Product Abstract")</a>
+                </li>
+                <li role="presentation">
+                    <a href="#searchResultAbstract" aria-controls="searchResultAbstract" role="tab" data-toggle="tab">@Resource("Admin Search Result Abstract", "Search Result Abstract")</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="productAbstract">
+                    <div class="form-group">
+                        @Html.LabelFor(product => product.ProductAbstract)
+                        @Html.TextAreaFor(product => product.ProductAbstract, new { rows = 4, @class = "form-control", data_characters = "500" })
+                        <span id="abstract-character-count">
+                            <span>@((500 - (Model.ProductAbstract ?? string.Empty).Length) + " characters remaining")</span>
+                        </span>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="searchResultAbstract">
+                    <div class="form-group">
+                        @Html.LabelFor(product => product.SearchResultAbstract)
+                        @Html.TextAreaFor(product => product.SearchResultAbstract, new { rows = 4, @class = "form-control", data_characters = "500" })
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <hr />

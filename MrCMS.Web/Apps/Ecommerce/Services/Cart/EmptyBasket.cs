@@ -7,8 +7,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
     public class EmptyBasket : IEmptyBasket
     {
         private readonly ICartBuilder _cartBuilder;
-        private readonly ISession _session;
         private readonly IClearCartSessionKeys _clearCartSessionKeys;
+        private readonly ISession _session;
 
         public EmptyBasket(ICartBuilder cartBuilder, ISession session, IClearCartSessionKeys clearCartSessionKeys)
         {
@@ -20,10 +20,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public void Empty()
         {
             var cart = _cartBuilder.BuildCart();
-            foreach (CartItem item in cart.Items)
+            foreach (var item in cart.Items)
             {
-                CartItem item1 = item;
-                _session.Transact(session => session.Delete(item1));
+                var item1 = _session.Get<CartItem>(item.Id);
+                if (item1 != null)
+                    _session.Transact(session => session.Delete(item1));
             }
             cart.Items.Clear();
             _clearCartSessionKeys.Clear();

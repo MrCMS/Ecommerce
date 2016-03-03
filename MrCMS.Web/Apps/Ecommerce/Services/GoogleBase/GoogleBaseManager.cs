@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using MrCMS.Entities.Documents.Media;
 using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
@@ -12,9 +13,12 @@ using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 using MrCMS.Website;
 using NHibernate;
+using NHibernate.SqlCommand;
+using NHibernate.Transform;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
 {
@@ -22,16 +26,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
     {
         private readonly IGoogleBaseShippingService _googleBaseShippingService;
         private readonly IGetStockRemainingQuantity _getStockRemainingQuantity;
-        private readonly IProductVariantService _productVariantService;
         private readonly ISession _session;
+        private IProductPricingMethod _productPricingMethod;
 
-        public GoogleBaseManager(ISession session, IProductVariantService productVariantService,
-            IGoogleBaseShippingService googleBaseShippingService,IGetStockRemainingQuantity getStockRemainingQuantity)
+        public GoogleBaseManager(ISession session,
+            IGoogleBaseShippingService googleBaseShippingService, 
+            IGetStockRemainingQuantity getStockRemainingQuantity, IProductPricingMethod productPricingMethod)
         {
             _session = session;
-            _productVariantService = productVariantService;
             _googleBaseShippingService = googleBaseShippingService;
             _getStockRemainingQuantity = getStockRemainingQuantity;
+            _productPricingMethod = productPricingMethod;
         }
 
 
@@ -42,7 +47,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
                 item.ProductVariant.GoogleBaseProducts.Clear();
                 item.ProductVariant.GoogleBaseProducts.Add(item);
             }
-            _session.Transact(session => session.SaveOrUpdate(item));
+            using (var transaction = _session.BeginTransaction())
+            {
+                if (item.Id == 0)
+                    _session.Save(item);
+                else
+                    _session.Update(item);
+                transaction.Commit();
+            }
         }
 
         public IPagedList<GoogleBaseCategory> SearchGoogleBaseCategories(string queryTerm = null, int page = 1,
@@ -56,6 +68,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
                 : categories.Paged(page, pageSize);
         }
 
+        public class ProductCategoryMap
+        {
+            public int ProductId { get; set; }
+            public int CategoryId { get; set; }
+        }
         /// <summary>
         ///     Export Products To Google Base
         /// </summary>
@@ -78,11 +95,80 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             xml.WriteElementString("description",
                 " Products from " + CurrentRequestData.CurrentSite.Name + " online store");
 
-            IList<ProductVariant> productVariants = _productVariantService.GetAllVariantsForGoogleBase();
+            var productVariants = _session.QueryOver<ProductVariant>()
+                .Fetch(x => x.Product).Eager
+                .Fetch(x => x.TaxRate).Eager
+                .Fetch(x => x.Product.BrandPage).Eager
+                .Cacheable()
+                .List().Where(x => x.Product != null && x.Product.Published).ToHashSet();
+            var googleBaseProducts = _session.QueryOver<GoogleBaseProduct>().Cacheable().List()
+                .GroupBy(x => x.ProductVariant.Id)
+                .ToDictionary(x => x.Key, x => x.First());
+            var optionValues = _session.QueryOver<ProductOptionValue>()
+                .Fetch(x => x.ProductOption)
+                .Eager.Cacheable()
+                .List()
+                .GroupBy(x => x.ProductVariant.Id)
+                .ToDictionary(x => x.Key,
+                    x => x.ToList());
+            var categoryDictionary = _session.QueryOver<Category>().Cacheable().List().ToDictionary(x => x.Id);
+            Product productAlias = null;
+            ProductCategoryMap map = null;
+            var productCategoryMaps = _session.QueryOver<Category>()
+                .JoinAlias(x => x.Products, () => productAlias)
+                .SelectList(builder =>
+                {
+                    builder.Select(x => x.Id).WithAlias(() => map.CategoryId);
+                    builder.Select(() => productAlias.Id).WithAlias(() => map.ProductId);
+                    return builder;
+                }).TransformUsing(Transformers.AliasToBean<ProductCategoryMap>())
+                .List<ProductCategoryMap>().GroupBy(x => x.ProductId)
+                .ToDictionary(x => x.Key,
+                    x =>
+                        x.Where(y => categoryDictionary.ContainsKey(y.CategoryId))
+                            .Select(y => categoryDictionary[y.CategoryId])
+                            .ToList());
+
+            var files =
+                _session.QueryOver<MediaFile>()
+                    .Where(x => x.MediaCategory != null)
+                    .List()
+                    .Where(x => x.IsImage())
+                    .GroupBy(x => x.MediaCategory.Id)
+                    .ToDictionary(x => x.Key, x => x.OrderBy(mediaFile => mediaFile.DisplayOrder).ToList());
+            var mediaCategoryFiles = _session.QueryOver<MediaCategory>().List().ToDictionary(x => x.Id, category =>
+            {
+                if (files.ContainsKey(category.Id))
+                    return files[category.Id];
+                return new List<MediaFile>();
+            });
+            var productImages =
+                productVariants.Select(x => x.Product).Where(x => x != null).Distinct().ToDictionary(x => x.Id,
+                    product =>
+                    {
+                        if (product.Gallery != null && mediaCategoryFiles.ContainsKey(product.Gallery.Id))
+                        {
+                            return mediaCategoryFiles[product.Gallery.Id];
+                        }
+                        return new List<MediaFile>();
+                    });
+
 
             foreach (ProductVariant pv in productVariants)
             {
-                ExportGoogleBaseProduct(ref xml, pv, ns);
+                var googleBaseProduct = googleBaseProducts.ContainsKey(pv.Id) ? googleBaseProducts[pv.Id] : null;
+                var product = pv.Product;
+                var mediaFiles = product == null ? new List<MediaFile>() : productImages[product.Id];
+                if (!mediaFiles.Any())
+                    continue;
+                var options = optionValues.ContainsKey(pv.Id)
+                    ? optionValues[pv.Id]
+                    : new List<ProductOptionValue>();
+                var categories = product == null || !productCategoryMaps.ContainsKey(product.Id)
+                    ? new List<Category>()
+                    : productCategoryMaps[product.Id];
+                var brand = product == null ? null : product.BrandPage;
+                ExportGoogleBaseProduct(ref xml, pv, ns, googleBaseProduct, options, categories, product, brand, mediaFiles);
             }
 
             xml.WriteEndElement();
@@ -100,15 +186,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
         {
             if (inString == null) return null;
 
-            var sbOutput = new StringBuilder();
+            StringBuilder sbOutput = new StringBuilder();
+            char ch;
 
-            foreach (var ch in inString.Where(ch => (ch >= 0x0020 && ch <= 0xD7FF) ||
-                                                     (ch >= 0xE000 && ch <= 0xFFFD) ||
-                                                     ch == 0x0009 ||
-                                                     ch == 0x000A ||
-                                                     ch == 0x000D))
+            for (int i = 0; i < inString.Length; i++)
             {
-                sbOutput.Append(ch);
+                ch = inString[i];
+                if ((ch >= 0x0020 && ch <= 0xD7FF) ||
+                    (ch >= 0xE000 && ch <= 0xFFFD) ||
+                    ch == 0x0009 ||
+                    ch == 0x000A ||
+                    ch == 0x000D)
+                {
+                    sbOutput.Append(ch);
+                }
             }
             return sbOutput.ToString();
         }
@@ -119,38 +210,50 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
         /// <param name="xml"></param>
         /// <param name="productVariant"></param>
         /// <param name="ns"></param>
-        private void ExportGoogleBaseProduct(ref XmlTextWriter xml, ProductVariant productVariant, string ns)
+        /// <param name="googleBaseProduct"></param>
+        /// <param name="options"></param>
+        /// <param name="categories"></param>
+        /// <param name="product"></param>
+        /// <param name="brand"></param>
+        /// <param name="images"></param>
+        private void ExportGoogleBaseProduct(ref XmlTextWriter xml, ProductVariant productVariant, string ns, GoogleBaseProduct googleBaseProduct, List<ProductOptionValue> options, List<Category> categories, Product product, Brand brand, List<MediaFile> images)
         {
             xml.WriteStartElement("item");
 
+            var optionValues = options.GroupBy(y => y.ProductOption.Name).ToDictionary(y => y.Key, y => y.First().Value,
+                StringComparer.OrdinalIgnoreCase);
+
             //TITLE
             string title = String.Empty;
-            if (!String.IsNullOrWhiteSpace(productVariant.DisplayName))
-                title = productVariant.DisplayName;
+            var displayName = GetFullName(productVariant, options);
+            if (!String.IsNullOrWhiteSpace(displayName))
+                title = displayName;
             if (title.Length > 70)
                 title = title.Substring(0, 70);
             xml.WriteElementString("title", title);
 
             //LINK
-            if (productVariant.Product != null && !String.IsNullOrWhiteSpace(productVariant.DisplayName))
+            if (product != null && !String.IsNullOrWhiteSpace(displayName))
                 xml.WriteElementString("link", GeneralHelper.GetValidProductVariantUrl(productVariant));
 
             //DESCRIPTION
             xml.WriteStartElement("description");
             string description = String.Empty;
-            if (productVariant.Product != null && !String.IsNullOrWhiteSpace(productVariant.DisplayName))
-                description = productVariant.Product.BodyContent.StripHtml();
-            if (productVariant.Product != null && String.IsNullOrEmpty(description))
-                description = productVariant.Product.ProductAbstract.StripHtml();
-            if (productVariant.Product != null && String.IsNullOrEmpty(description))
-                description = productVariant.DisplayName.StripHtml();
+            if (product != null)
+            {
+                if (!String.IsNullOrWhiteSpace(displayName))
+                    description = product.BodyContent.StripHtml().TruncateString(480);
+                if (String.IsNullOrEmpty(description))
+                    description = product.ProductAbstract.StripHtml().TruncateString(480);
+                if (String.IsNullOrEmpty(description))
+                    description = displayName.StripHtml().TruncateString(480);
+            }
+            
             description = XmlCharacterWhitelist(description);
-            byte[] descriptionBytes = Encoding.Default.GetBytes(description);
+            byte[] descriptionBytes = Encoding.Default.GetBytes(description.StripHtml());
             description = Encoding.UTF8.GetString(descriptionBytes);
             xml.WriteCData(description);
             xml.WriteEndElement();
-
-            GoogleBaseProduct googleBaseProduct = productVariant.GoogleBaseProducts.FirstOrDefault();
 
             //CONDITION
             xml.WriteElementString("g", "condition", ns,
@@ -159,11 +262,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
                     : ProductCondition.New.ToString());
 
             //PRICE
-            xml.WriteElementString("g", "price", ns, productVariant.Price.ToCurrencyFormat());
+            xml.WriteElementString("g", "price", ns, _productPricingMethod.GetPrice(productVariant).ToCurrencyFormat());
 
             //AVAILABILITY
             string availability = "In Stock";
-            if (productVariant.TrackingPolicy == TrackingPolicy.Track && _getStockRemainingQuantity.Get(productVariant) <= 0)
+            if (productVariant.TrackingPolicy == TrackingPolicy.Track &&
+                _getStockRemainingQuantity.Get(productVariant) <= 0)
                 availability = "Out of Stock";
             xml.WriteElementString("g", "availability", ns, availability);
 
@@ -172,32 +276,34 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
                 xml.WriteElementString("g", "google_product_category", ns, googleBaseProduct.Category);
 
             //PRODUCT CATEGORY
-            if (productVariant.Product != null && productVariant.Product.Categories.Any() &&
-                !String.IsNullOrWhiteSpace(productVariant.Product.Categories.First().Name))
-                xml.WriteElementString("g", "product_type", ns, productVariant.Product.Categories.First().Name);
+            if (product != null && categories.Any() &&
+                !String.IsNullOrWhiteSpace(categories.First().Name))
+                xml.WriteElementString("g", "product_type", ns, categories.First().Name);
             else if (googleBaseProduct != null)
                 xml.WriteElementString("g", "product_type", ns, googleBaseProduct.Category);
 
             //IMAGES
-            if (productVariant.Product != null && productVariant.Product.Images.Any() &&
-                !String.IsNullOrWhiteSpace(productVariant.Product.Images.First().FileUrl))
+            if (product != null && images.Any() &&
+                !String.IsNullOrWhiteSpace(images.First().FileUrl))
             {
                 xml.WriteElementString("g", "image_link", ns,
-                    GeneralHelper.GetValidImageUrl(productVariant.Product.Images.First().FileUrl));
+                    GeneralHelper.GetValidImageUrl(images.First().FileUrl));
             }
-            if (productVariant.Product != null && productVariant.Product.Images.Count() > 1 &&
-                !String.IsNullOrWhiteSpace(productVariant.Product.Images.ToList()[1].FileUrl))
+            if (product != null && images.Count() > 1 &&
+                !String.IsNullOrWhiteSpace(images.ToList()[1].FileUrl))
             {
                 xml.WriteElementString("g", "additional_image_link", ns,
-                    GeneralHelper.GetValidImageUrl(productVariant.Product.Images.ToList()[1].FileUrl));
+                    GeneralHelper.GetValidImageUrl(images.ToList()[1].FileUrl));
             }
 
             //BRAND
-            if (productVariant.Product != null && productVariant.Product.BrandPage != null && !String.IsNullOrWhiteSpace(productVariant.Product.BrandPage.Name))
-                xml.WriteElementString("g", "brand", ns, productVariant.Product.BrandPage.Name);
+            if (brand != null &&
+                !String.IsNullOrWhiteSpace(brand.Name))
+                xml.WriteElementString("g", "brand", ns, brand.Name);
 
             //ID
-            xml.WriteElementString("g", "id", ns, productVariant.Id.ToString(new CultureInfo("en-GB", false).NumberFormat));
+            xml.WriteElementString("g", "id", ns,
+                productVariant.Id.ToString(new CultureInfo("en-GB", false).NumberFormat));
 
             //GTIN
             if (!String.IsNullOrWhiteSpace(productVariant.Barcode))
@@ -217,28 +323,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             }
 
             //ITEM GROUP ID
-            if (productVariant.Product != null)
+            if (product != null)
                 xml.WriteElementString("g", "item_group_id", ns,
-                    productVariant.Product.Id.ToString(new CultureInfo("en-GB", false).NumberFormat));
+                    product.Id.ToString(new CultureInfo("en-GB", false).NumberFormat));
+            //COLOR
+            if (optionValues.ContainsKey("color"))
+                xml.WriteElementString("g", "color", ns, optionValues["color"]);
+            else if (optionValues.ContainsKey("colour"))
+                xml.WriteElementString("g", "color", ns, optionValues["colour"]);
 
-            if (googleBaseProduct != null)
-            {
-                //COLOR
-                if (!String.IsNullOrWhiteSpace(googleBaseProduct.Color))
-                    xml.WriteElementString("g", "color", ns, googleBaseProduct.Color);
+            //SIZE
+            if (optionValues.ContainsKey("size"))
+                xml.WriteElementString("g", "color", ns, optionValues["size"]);
 
-                //SIZE
-                if (!String.IsNullOrWhiteSpace(googleBaseProduct.Size))
-                    xml.WriteElementString("g", "size", ns, googleBaseProduct.Size);
+            //PATTERN
+            if (optionValues.ContainsKey("pattern"))
+                xml.WriteElementString("g", "color", ns, optionValues["pattern"]);
 
-                //PATTERN
-                if (!String.IsNullOrWhiteSpace(googleBaseProduct.Pattern))
-                    xml.WriteElementString("g", "pattern", ns, googleBaseProduct.Pattern);
-
-                //MATERIAL
-                if (!String.IsNullOrWhiteSpace(googleBaseProduct.Material))
-                    xml.WriteElementString("g", "material", ns, googleBaseProduct.Material);
-            }
+            //MATERIAL
+            if (optionValues.ContainsKey("material"))
+                xml.WriteElementString("g", "color", ns, optionValues["material"]);
 
             //SHIPPING
             SetGoogleBaseShipping(ref xml, productVariant, ns);
@@ -263,6 +367,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             xml.WriteEndElement();
         }
 
+        private string GetFullName(ProductVariant productVariant, List<ProductOptionValue> options)
+        {
+            var list = new List<string>();
+            var product = productVariant.Product;
+            if (product != null && !string.IsNullOrWhiteSpace(product.Name))
+            {
+                list.Add(product.Name);
+            }
+            var name = productVariant.Name;
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                if (product != null && product.Name != name)
+                {
+                    list.Add(name);
+                }
+            }
+            if (options.Any())
+            {
+                list.AddRange(options.Select(option => option.FormattedValue));
+            }
+            return string.Join(" - ", list);
+        }
+
         /// <summary>
         ///     Set Google Base Shipping
         /// </summary>
@@ -273,12 +400,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
         {
             var cart = new CartModel
             {
-                Items = new List<CartItem>
+                Items = new List<CartItemData>
                 {
-                    new CartItem
+                    new CartItemData
                     {
                         Quantity = 1,
-                        Item = pv
+                        Item = pv,
+                        Pricing = _productPricingMethod,
                     }
                 }
             };

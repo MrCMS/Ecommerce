@@ -58,12 +58,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _session = session;
         }
 
-        public CheckLimitationsResult CheckLimitations(Discount discount, CartModel cart)
+        public CheckLimitationsResult CheckLimitations(Discount discount, CartModel cart, IList<Discount> allDiscounts)
         {
             var limitations = _session.QueryOver<DiscountLimitation>()
                 .Where(limitation => limitation.Discount.Id == discount.Id)
                 .Cacheable()
                 .List();
+
+            // if there are no limitations, the discount is valid, and for all items
+            if (!limitations.Any())
+                return CheckLimitationsResult.Successful(cart.Items);
 
             var results = new CheckLimitationsResult[limitations.Count];
             for (var i = 0; i < limitations.Count; i++)
@@ -75,12 +79,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                     var checker = _kernel.Get(LimitationCheckerTypes[fullName]) as DiscountLimitationChecker;
                     if (checker != null)
                     {
-                        results[i] = checker.CheckLimitations(limitation, cart);
+                        results[i] = checker.CheckLimitations(limitation, cart, allDiscounts);
                         continue;
                     }
                 }
                 results[i] = CheckLimitationsResult.CurrentlyInvalid("Limitation cannot be checked");
             }
+
             return CheckLimitationsResult.Combine(results);
         }
 

@@ -290,7 +290,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 SalesChannel = AmazonApp.SalesChannel,
                 PaymentStatus = PaymentStatus.Paid,
                 CreatedOn =
-                    amazonOrder.PurchaseDate.HasValue ? (DateTime)amazonOrder.PurchaseDate : CurrentRequestData.Now
+                    amazonOrder.PurchaseDate.HasValue ? (DateTime) amazonOrder.PurchaseDate : CurrentRequestData.Now
             };
         }
 
@@ -303,7 +303,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     Order = order,
                     UnitPrice =
                         amazonOrderItem.QuantityOrdered > 0
-                            ? (amazonOrderItem.ItemPriceAmount / amazonOrderItem.QuantityOrdered)
+                            ? (amazonOrderItem.ItemPriceAmount/amazonOrderItem.QuantityOrdered)
                             : 0,
                     Price = amazonOrderItem.ItemPriceAmount,
                     Name = amazonOrderItem.Title,

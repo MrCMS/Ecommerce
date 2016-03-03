@@ -10,8 +10,8 @@ using MrCMS.Tasks;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Helpers.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using NHibernate;
 using NHibernate.Transform;
@@ -22,22 +22,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
     {
         private readonly TaxSettings _taxSettings;
         private readonly ISession _session;
+        private readonly IProductPricingMethod _productPricingMethod;
 
-        public ProductSearchPriceDefinition(ILuceneSettingsService luceneSettingsService, TaxSettings taxSettings, ISession session)
+        public ProductSearchPriceDefinition(ILuceneSettingsService luceneSettingsService, TaxSettings taxSettings, ISession session, IProductPricingMethod productPricingMethod)
             : base(luceneSettingsService, "price", index: Field.Index.NOT_ANALYZED)
         {
             _taxSettings = taxSettings;
             _session = session;
+            _productPricingMethod = productPricingMethod;
         }
 
         protected override IEnumerable<decimal> GetValues(Product obj)
         {
-            return GetPrices(obj);
+            yield return GetPrices(obj).Min();
         }
+
         public class PriceList
         {
             public decimal BasePrice { get; set; }
-            public decimal Price { get { return BasePrice.ProductPriceIncludingTax(TaxRatePercentage); } }
+            public decimal Price { get; set; }
             public int ProductId { get; set; }
             public int? TaxRateId { get; set; }
 
@@ -50,9 +53,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 
             public decimal TaxRatePercentage
             {
-                get { return TaxRate.GetTaxRatePercentage(); }
+                get
+                {
+                    if (TaxRate != null) return TaxRate.GetTaxRatePercentage();
+                    return 0m;
+                }
             }
         }
+
         protected override Dictionary<Product, IEnumerable<decimal>> GetValues(List<Product> objs)
         {
             PriceList list = null;
@@ -68,11 +76,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
             var taxRates = _session.QueryOver<TaxRate>().Cacheable().List();
 
             foreach (var priceList in priceLists)
+            {
                 priceList.SetTaxRate(taxRates);
-
+                priceList.Price = _productPricingMethod.GetPrice(priceList.BasePrice, priceList.TaxRatePercentage, 0m, 0m);
+            }
 
             var groupedPrices = priceLists.GroupBy(skuList => skuList.ProductId)
-                .ToDictionary(lists => lists.Key, lists => lists.Select(skuList => skuList.Price));
+                .ToDictionary(lists => lists.Key, lists => lists.Select(skuList => skuList.Price).OrderBy(x => x).Take(1));
 
             return objs.ToDictionary(product => product,
                 product => groupedPrices.ContainsKey(product.Id) ? groupedPrices[product.Id] : Enumerable.Empty<decimal>());
@@ -80,7 +90,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 
         public IEnumerable<decimal> GetPrices(Product entity)
         {
-            return entity.Variants.Select(pv => pv.Price);
+            return entity.Variants.Select(pv => _productPricingMethod.GetUnitPrice(pv, 0m, 0m));
         }
 
         public override Dictionary<Type, Func<SystemEntity, IEnumerable<LuceneAction>>> GetRelatedEntities()
@@ -94,7 +104,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 
         private IEnumerable<LuceneAction> GetTaxRateActions(SystemEntity entity)
         {
-            if (!_taxSettings.TaxesEnabled || _taxSettings.LoadedPricesIncludeTax)
+            if (!_taxSettings.TaxesEnabled || _taxSettings.PriceLoadingMethod == PriceLoadingMethod.IncludingTax)
                 yield break;
 
             var rate = entity as TaxRate;

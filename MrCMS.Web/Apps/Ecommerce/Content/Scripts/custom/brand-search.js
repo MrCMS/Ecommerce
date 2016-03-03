@@ -4,15 +4,25 @@
     $(function () {
         $(document).on('change', '#brand-search-container input, #brand-search-container select', onElementChange);
         $(document).on('click', '#brand-results-container .pagination a', changePage);
-
         $(document).on('click', '#brand-query-container a[data-action=remove-specification]', removeSpecification);
         $(document).on('click', '#brand-query-container a[data-action=remove-option]', removeOption);
+        $(document).on('click', '[data-view]', changeView);
 
         // Bind to StateChange Event
         history.Adapter.bind(window, 'statechange', updatePage);
 
         initializeSlider();
     });
+
+    function changeView(event) {
+        event.preventDefault();
+        var item = $(event.currentTarget);
+        var data = getData(1);
+        var view = item.data('value');
+        data.ProductSearchView = view;
+        $.cookie("mrcms-product-search-view", view);
+        History.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
+    }
 
     function onElementChange() {
         var data = getData(1);
@@ -63,8 +73,10 @@
         var categoryId = $('#CategoryId').val();
         var brandId = $('#Id').val();
         var searchTerm = $('#searchTerm').val();
+        var productSearchView = $('#ProductSearchView').val();
 
         return {
+            ProductSearchView: productSearchView,
             Specifications: specifications.join('|'),
             Options: options.join('|'),
             SortBy: sortBy,

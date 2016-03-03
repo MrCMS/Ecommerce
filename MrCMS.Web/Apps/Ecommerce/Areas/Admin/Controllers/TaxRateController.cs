@@ -1,41 +1,44 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.ACL;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
-using System.Linq;
 using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class TaxRateController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly ITaxRateManager _taxRateManager;
         private readonly IConfigurationProvider _configurationProvider;
+        private readonly ITaxRateManager _taxRateManager;
         private readonly TaxSettings _taxSettings;
+        private readonly IGetPricingMethodOptions _getPricingMethodOptions;
 
-        public TaxRateController(ITaxRateManager taxRateManager, IConfigurationProvider configurationProvider,TaxSettings taxSettings)
+        public TaxRateController(ITaxRateManager taxRateManager, IConfigurationProvider configurationProvider,
+            TaxSettings taxSettings, IGetPricingMethodOptions getPricingMethodOptions)
         {
             _taxRateManager = taxRateManager;
             _configurationProvider = configurationProvider;
             _taxSettings = taxSettings;
+            _getPricingMethodOptions = getPricingMethodOptions;
         }
 
-        [MrCMSACLRule(typeof(TaxRateACL), TaxRateACL.List)]
+        [MrCMSACLRule(typeof (TaxRateACL), TaxRateACL.List)]
         public ViewResult Index()
         {
             ViewData["settings"] = _taxSettings;
+            ViewData["pricing-method-options"] = _getPricingMethodOptions.GetOptions();
             var taxRates = _taxRateManager.GetAll();
             return View(taxRates);
         }
 
         [HttpGet]
-        [MrCMSACLRule(typeof(TaxRateACL), TaxRateACL.Add)]
-        public PartialViewResult Add(string source="")
+        [MrCMSACLRule(typeof (TaxRateACL), TaxRateACL.Add)]
+        public PartialViewResult Add(string source = "")
         {
             ViewBag.Source = source;
             return PartialView(new TaxRate());
@@ -44,22 +47,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("Add")]
         [HttpPost]
         [ForceImmediateLuceneUpdate]
-        [MrCMSACLRule(typeof(TaxRateACL), TaxRateACL.Add)]
-        public RedirectToRouteResult Add_POST(TaxRate taxRate, string source="")
+        [MrCMSACLRule(typeof (TaxRateACL), TaxRateACL.Add)]
+        public RedirectToRouteResult Add_POST(TaxRate taxRate, string source = "")
         {
             _taxRateManager.Add(taxRate);
-            if (!String.IsNullOrWhiteSpace(source) && source == "settings")
+            if (!string.IsNullOrWhiteSpace(source) && source == "settings")
             {
                 var settings = _taxSettings;
                 settings.TaxesEnabled = true;
                 _configurationProvider.SaveSettings(_taxSettings);
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Edit", new { id = taxRate.Id });
+            return RedirectToAction("Edit", new {id = taxRate.Id});
         }
 
         [HttpGet]
-        [MrCMSACLRule(typeof(TaxRateACL), TaxRateACL.Edit)]
+        [MrCMSACLRule(typeof (TaxRateACL), TaxRateACL.Edit)]
         public ViewResult Edit(TaxRate taxRate)
         {
             return View(taxRate);
@@ -68,7 +71,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("Edit")]
         [HttpPost]
         [ForceImmediateLuceneUpdate]
-        [MrCMSACLRule(typeof(TaxRateACL), TaxRateACL.Edit)]
+        [MrCMSACLRule(typeof (TaxRateACL), TaxRateACL.Edit)]
         public RedirectToRouteResult Edit_POST(TaxRate taxRate)
         {
             _taxRateManager.Update(taxRate);
@@ -76,7 +79,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [MrCMSACLRule(typeof(TaxRateACL), TaxRateACL.Delete)]
+        [MrCMSACLRule(typeof (TaxRateACL), TaxRateACL.Delete)]
         public PartialViewResult Delete(TaxRate taxRate)
         {
             return PartialView(taxRate);
@@ -85,7 +88,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("Delete")]
         [HttpPost]
         [ForceImmediateLuceneUpdate]
-        [MrCMSACLRule(typeof(TaxRateACL), TaxRateACL.Delete)]
+        [MrCMSACLRule(typeof (TaxRateACL), TaxRateACL.Delete)]
         public RedirectToRouteResult Delete_POST(TaxRate taxRate)
         {
             _taxRateManager.Delete(taxRate);
@@ -100,7 +103,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ForceImmediateLuceneUpdate]
-        [MrCMSACLRule(typeof(TaxRateACL), TaxRateACL.Settings)]
+        [MrCMSACLRule(typeof (TaxRateACL), TaxRateACL.Settings)]
         public ActionResult Settings(TaxSettings settings)
         {
             if (settings.TaxesEnabled && _taxRateManager.GetDefaultRate() == null)
@@ -108,9 +111,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 ViewBag.Status = "false";
                 ViewData["settings"] = _taxSettings;
                 var taxRates = _taxRateManager.GetAll();
-                return View("Index",taxRates);
+                return View("Index", taxRates);
             }
-             _configurationProvider.SaveSettings(settings);
+            _configurationProvider.SaveSettings(settings);
             return RedirectToAction("Index");
         }
 

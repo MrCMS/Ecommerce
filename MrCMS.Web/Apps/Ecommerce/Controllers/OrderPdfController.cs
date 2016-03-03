@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using MrCMS.Entities.People;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Website;
@@ -21,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public ActionResult ExportOrderToPdf(Order order)
         {
-            var currentUser = CurrentRequestData.CurrentUser;
+            User currentUser = CurrentRequestData.CurrentUser;
 
             if (currentUser == null)
                 return Redirect("/");
@@ -29,9 +26,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (order.User.Id != currentUser.Id)
                 return null;
 
-            var file = _orderInvoiceService.GeneratePDF(order);
-            return File(file, "application/pdf", "Order-" + order.Id + "-[" + CurrentRequestData.Now.ToString("dd-MM-yyyy hh-mm") + "].pdf");
+            byte[] file = _orderInvoiceService.GeneratePDF(order);
+            return File(file, "application/pdf",
+                "Order-" + order.Id + "-[" + CurrentRequestData.Now.ToString("dd-MM-yyyy hh-mm") + "].pdf");
         }
-
     }
 }

@@ -5,13 +5,17 @@
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Models.StockAvailability
 @using MrCMS.Web.Apps.Ecommerce.Pages
+@using MrCMS.Web.Apps.Ecommerce.Services.Pricing
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
     Product product = Model.Product;
     CanBuyStatus canBuy = ViewData["can-buy-status"] as CanBuyStatus ?? new CannotOrderQuantity(Model, 0);
+    var productVariantOptions = ViewData["product-variant-options"] as List<SelectListItem> ?? new List<SelectListItem>();
     var mainCategory = product.Categories.OrderBy(x => x.DisplayOrder).FirstOrDefault();
+    var pricingMethod = MrCMSApplication.Get<IProductPricingMethod>();
+    var previousPrice = pricingMethod.GetDisplayPreviousPrice(Model);
 }
 
 <div class="margin-bottom-30 grey-border-top" id="variant-details">
@@ -30,15 +34,15 @@
                     <div class="price margin-bottom-10">
                         <span itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">
                             <meta itemprop="priceCurrency" content="@(MrCMSApplication.Get<EcommerceSettings>().CurrencyCode())" />
-                            <span itemprop="price">@Model.Price.ToCurrencyFormat()</span>
+                            <span itemprop="price">@pricingMethod.GetUnitPrice(Model).ToCurrencyFormat()</span>
                             @if (canBuy.OK)
                             {
                                 <span class="instock" itemprop="availability" content="in_stock">@(!string.IsNullOrEmpty(Model.CustomStockInStockMessage) ? Model.CustomStockInStockMessage : Resource("In Stock"))</span>
                             }
-                            @if (Model.ShowPreviousPrice)
+                            @if (previousPrice != null)
                             {
                                 <span class="previous-price">
-                                    <span class="inner">@Model.PreviousPrice.Value.ToCurrencyFormat()</span>
+                                    <span class="inner">@previousPrice.Value.ToCurrencyFormat()</span>
                                 </span>
                             }
                         </span>
@@ -53,7 +57,7 @@
                                     <label class="line-height-30">Options :</label>
                                 </div>
                                 <div class="col-sm-9 col-xs-8 padding-right-0">
-                                    @Html.DropDownList("variant", product.GetVariantOptions(Model), new { @class = "form-control" })
+                                    @Html.DropDownList("variant", productVariantOptions, new { @class = "form-control" })
                                 </div>
                                 <div class="clearfix"></div>
                             </div>

@@ -22,9 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.UserAccount
                     .Where(review => review.User.Id == user.Id)
                     .OrderBy(review => review.CreatedOn)
                     .Desc
-                    .Cacheable()
-                    .List()
-                    .ToPagedList(page);
+                    .Paged(page);
         }
     }
 }

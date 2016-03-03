@@ -10,6 +10,12 @@
         @Resource("Order Placed - Register", "Would you like us to remember your details for next time?")  
     </div>
     <div class="padding-20">
+        @if (!string.IsNullOrWhiteSpace(errorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                @errorMessage
+            </div>
+        }
         @using (Html.BeginForm("RegisterAndAssociateOrder", "OrderPlaced", null, FormMethod.Post, new { @class = "form-horizontal" }))
         {
             @Html.HiddenFor(model => model.Email)

@@ -13,13 +13,13 @@ namespace MrCMS.EcommerceApp.Tests.Models
         [Fact]
         public void CartModel_SubTotal_ShouldBeTheSumOfPricePreTax()
         {
-            var cartItem1 = A.Fake<CartItem>();
-            var cartItem2 = A.Fake<CartItem>();
+            var cartItem1 = A.Fake<CartItemData>();
+            var cartItem2 = A.Fake<CartItemData>();
             A.CallTo(() => cartItem1.PricePreTax).Returns(10);
             A.CallTo(() => cartItem2.PricePreTax).Returns(20);
             var cartModel = new CartModel
                                 {
-                                    Items = new List<CartItem> { cartItem1, cartItem2 }
+                                    Items = new List<CartItemData> { cartItem1, cartItem2 }
                                 };
 
             var subtotal = cartModel.Subtotal;
@@ -32,7 +32,7 @@ namespace MrCMS.EcommerceApp.Tests.Models
         {
             var cartModel = new CartModel
                                 {
-                                    Items = new List<CartItem>()
+                                    Items = new List<CartItemData>()
                                 };
 
             var subtotal = cartModel.Subtotal;
@@ -43,13 +43,13 @@ namespace MrCMS.EcommerceApp.Tests.Models
         [Fact]
         public void CartModel_TotalPreDiscount_ShouldBeTheSumOfPrice()
         {
-            var cartItem1 = A.Fake<CartItem>();
-            var cartItem2 = A.Fake<CartItem>();
+            var cartItem1 = A.Fake<CartItemData>();
+            var cartItem2 = A.Fake<CartItemData>();
             A.CallTo(() => cartItem1.Price).Returns(10);
             A.CallTo(() => cartItem2.Price).Returns(20);
             var cartModel = new CartModel
             {
-                Items = new List<CartItem> { cartItem1, cartItem2 }
+                Items = new List<CartItemData> { cartItem1, cartItem2 }
             };
 
             var total = cartModel.TotalPreDiscount;
@@ -60,15 +60,15 @@ namespace MrCMS.EcommerceApp.Tests.Models
         [Fact]
         public void CartModel_TaxRates_ShouldBreakDownTotalsByTaxRatePercentage()
         {
-            var cartItem1 = A.Fake<CartItem>();
-            var cartItem2 = A.Fake<CartItem>();
+            var cartItem1 = A.Fake<CartItemData>();
+            var cartItem2 = A.Fake<CartItemData>();
             A.CallTo(() => cartItem1.TaxRatePercentage).Returns(0);
             A.CallTo(() => cartItem1.Price).Returns(10);
             A.CallTo(() => cartItem2.TaxRatePercentage).Returns(20);
             A.CallTo(() => cartItem2.Price).Returns(20);
             var cartModel = new CartModel
             {
-                Items = new List<CartItem> { cartItem1, cartItem2 }
+                Items = new List<CartItemData> { cartItem1, cartItem2 }
             };
 
             var dictionary = cartModel.TaxRates;
@@ -90,13 +90,13 @@ namespace MrCMS.EcommerceApp.Tests.Models
         [Fact]
         public void CartModel_Tax_ShouldBeTheSumOfTax()
         {
-            var cartItem1 = A.Fake<CartItem>();
-            var cartItem2 = A.Fake<CartItem>();
+            var cartItem1 = A.Fake<CartItemData>();
+            var cartItem2 = A.Fake<CartItemData>();
             A.CallTo(() => cartItem1.Tax).Returns(10);
             A.CallTo(() => cartItem2.Tax).Returns(20);
             var cartModel = new CartModel
             {
-                Items = new List<CartItem> { cartItem1, cartItem2 }
+                Items = new List<CartItemData> { cartItem1, cartItem2 }
             };
 
             var tax = cartModel.Tax;
@@ -109,7 +109,7 @@ namespace MrCMS.EcommerceApp.Tests.Models
         {
             var cartModel = new CartModel
             {
-                Items = new List<CartItem>()
+                Items = new List<CartItemData>()
             };
 
             var total = cartModel.Tax;

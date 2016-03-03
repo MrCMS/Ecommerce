@@ -9,13 +9,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
     public class GetCartItemsBySKUList : IGetCartItemsBySKUList
     {
-        public List<CartItem> GetCartItems(CartModel cart, string skuList)
+        public List<CartItemData> GetCartItems(CartModel cart, string skuList)
         {
             HashSet<string> skus = (skuList ?? string.Empty).Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim())
                 .ToHashSet();
 
-            List<CartItem> cartItems =
+            List<CartItemData> cartItems =
                 cart.Items.FindAll(x => skus.Contains(x.Item.SKU, StringComparer.InvariantCultureIgnoreCase));
             return cartItems;
         }

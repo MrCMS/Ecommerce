@@ -13,12 +13,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private readonly ICartBuilder _cartBuilder;
         private readonly ISession _session;
         private readonly IGetUserGuid _getUserGuid;
+        private readonly IGetExistingCartItem _getExistingCartItem;
 
-        public CartItemManager(ICartBuilder cartBuilder, ISession session, IGetUserGuid getUserGuid)
+        public CartItemManager(ICartBuilder cartBuilder, ISession session, IGetUserGuid getUserGuid, IGetExistingCartItem getExistingCartItem)
         {
             _cartBuilder = cartBuilder;
             _session = session;
             _getUserGuid = getUserGuid;
+            _getExistingCartItem = getExistingCartItem;
         }
 
         public void AddToCart(AddToCartModel model)
@@ -28,9 +30,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             var data = model.Data;
 
             var cart = _cartBuilder.BuildCart();
-            CartItem cartItem = GetExistingItem(cart, productVariant, data);
+            CartItem cartItem = _getExistingCartItem.GetExistingItem(cart, productVariant, data);
             if (cartItem != null)
+            {
                 cartItem.Quantity += quantity;
+                _session.Transact(session => session.Update(cartItem));
+            }
             else
             {
                 cartItem = new CartItem
@@ -40,23 +45,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                     UserGuid = _getUserGuid.UserGuid,
                     Data = data
                 };
-                cart.Items.Add(cartItem);
+                _session.Transact(session => session.Save(cartItem));
+                var cartItemData = cartItem.GetCartItemData();
+                cart.Items.Add(cartItemData);
             }
-            _session.Transact(session => session.SaveOrUpdate(cartItem));
-        }
-
-        private static CartItem GetExistingItem(CartModel cart, ProductVariant item, string data)
-        {
-            return
-                cart.Items.FirstOrDefault(
-                    cartItem => cartItem.Item.Id == item.Id && cartItem.Data == data);
         }
 
         public void Delete(CartItem item)
         {
             var cart = _cartBuilder.BuildCart();
             _session.Transact(session => session.Delete(item));
-            cart.Items.Remove(item);
+            cart.Items.RemoveAll(data => data.Id == item.Id);
         }
 
         public void UpdateQuantity(CartItem item, int quantity)
@@ -73,9 +72,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 var cart = _cartBuilder.BuildCart();
                 foreach (CartUpdateValue value in quantities)
                 {
-                    CartItem cartItem = cart.Items.FirstOrDefault(item => item.Id == value.ItemId);
+                    var cartItemData = cart.Items.FirstOrDefault(item => item.Id == value.ItemId);
 
-                    if (cartItem == null) continue;
+                    if (cartItemData == null) continue;
+
+                    var cartItem = _session.Get<CartItem>(cartItemData.Id);
 
                     if (value.Quantity <= 0)
                         session.Delete(cartItem);

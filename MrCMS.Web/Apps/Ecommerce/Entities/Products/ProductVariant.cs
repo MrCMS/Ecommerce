@@ -5,20 +5,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
 using Foolproof;
-using Iesi.Collections.Generic;
 using MrCMS.Entities;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Helpers.Validation;
-using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.ETags;
 using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
-using MrCMS.Web.Apps.Ecommerce.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Helpers.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Web.Apps.Ecommerce.Stock.Entities;
 using MrCMS.Website;
@@ -44,11 +39,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [StringLength(400)]
         public virtual string Name { get; set; }
 
-        public virtual string EditUrl
-        {
-            get { return Product.EditUrl; }
-        }
-
         [Required]
         [DisplayName("Price")]
         [CurrencyValidator]
@@ -60,63 +50,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [UIHint("Currency")]
         public virtual decimal? PreviousPrice { get; set; }
 
-        public virtual decimal? PreviousPriceIncludingTax
-        {
-            get { return PreviousPrice.ProductPriceIncludingTax(TaxRatePercentage); }
-        }
-
-        public virtual decimal? PreviousPriceExcludingTax
-        {
-            get { return PreviousPrice.ProductPriceExcludingTax(TaxRatePercentage); }
-        }
-
-        public virtual decimal ReducedBy
-        {
-            get
-            {
-                return PreviousPrice != null
-                    ? PreviousPrice.Value > PricePreTax
-                        ? PreviousPrice.Value - PricePreTax
-                        : 0
-                    : 0;
-            }
-        }
-
-        public virtual decimal ReducedByPercentage
-        {
-            get
-            {
-                return PreviousPrice != null && PreviousPrice != 0
-                    ? ReducedBy/PreviousPrice.Value
-                    : 0;
-            }
-        }
-
-        public virtual decimal Price
-        {
-            get { return BasePrice.ProductPriceIncludingTax(TaxRatePercentage); }
-        }
-
-        [DisplayName("Price Pre Tax")]
-        public virtual decimal PricePreTax
-        {
-            get { return BasePrice.ProductPriceExcludingTax(TaxRatePercentage); }
-        }
-
         [Required]
         [Remote("IsUniqueSKU", "ProductVariant", AdditionalFields = "Id")]
         public virtual string SKU { get; set; }
-
-        public virtual decimal Tax
-        {
-            get { return BasePrice.ProductTax(TaxRatePercentage); }
-        }
 
         public virtual ProductAvailability Availability
         {
             get
             {
-                if (AvailableOn.HasValue && AvailableOn <= DateTime.UtcNow)
+                if (AvailableOn.HasValue && AvailableOn <= CurrentRequestData.Now)
                     return ProductAvailability.Available;
                 return ProductAvailability.PreOrder;
             }
@@ -153,19 +95,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [StringLength(250)]
         public virtual string ManufacturerPartNumber { get; set; }
 
-        public virtual decimal TaxRatePercentage
-        {
-            get
-            {
-                TaxRate taxRate = MrCMSApplication.Get<IGetDefaultTaxRate>().Get();
-                return MrCMSApplication.Get<TaxSettings>().TaxesEnabled
-                    ? TaxRate == null
-                    ? taxRate != null ? taxRate.Percentage : decimal.Zero
-                        : TaxRate.Percentage
-                    : decimal.Zero;
-            }
-        }
-
         public virtual string DisplayName
         {
             get { return FullName; }
@@ -193,11 +122,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                 }
                 return string.Join(" - ", list);
             }
-        }
-
-        public virtual bool ShowPreviousPrice
-        {
-            get { return PreviousPrice.HasValue & PreviousPrice > Price; }
         }
 
         public virtual IList<GoogleBaseProduct> GoogleBaseProducts { get; set; }
@@ -291,70 +215,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         [DisplayName("Custom In Stock Message")]
         public virtual string CustomStockInStockMessage { get; set; }
-        
+
         [DisplayName("Custom Out Of Stock Message")]
         public virtual string CustomStockOutOfStockMessage { get; set; }
-
-        private PriceBreak GetPriceBreak(int quantity)
-        {
-            return PriceBreaks != null
-                ? PriceBreaks.OrderBy(x => x.Price).FirstOrDefault(x => x.Quantity <= quantity)
-                : null;
-        }
-
-        public virtual decimal GetPrice(int quantity)
-        {
-            return GetUnitPrice(quantity)*quantity;
-        }
-
-        public virtual decimal GetTax(int quantity)
-        {
-            return GetUnitTax(quantity)*quantity;
-        }
-
-        public virtual decimal GetUnitPrice(int quantity)
-        {
-            PriceBreak priceBreak = GetPriceBreak(quantity);
-            return priceBreak != null
-                ? priceBreak.PriceIncludingTax
-                : Price;
-        }
-
-        public virtual decimal GetUnitTax(int quantity)
-        {
-            PriceBreak priceBreak = GetPriceBreak(quantity);
-            return priceBreak != null
-                ? priceBreak.Tax
-                : Tax;
-        }
-
-        public virtual decimal GetUnitPricePreTax(int quantity)
-        {
-            return GetUnitPrice(quantity) - GetUnitTax(quantity);
-        }
-
-        public virtual decimal GetSaving(int quantity)
-        {
-            return PreviousPriceIncludingTax.GetValueOrDefault() != 0
-                ? ((PreviousPriceIncludingTax*quantity) - GetPrice(quantity)).Value
-                : (Price*quantity) - GetPrice(quantity);
-        }
-
-        public virtual string GetSelectOptionName(bool showName = true, bool showOptionValues = true)
-        {
-            string title = string.Empty;
-            if (!string.IsNullOrWhiteSpace(Name) && showName)
-                title = Name + " - ";
-
-            if (OptionValues.Any() && showOptionValues)
-            {
-                title += string.Join(", ", AttributeValuesOrdered.Select(value => value.Value)) + " - ";
-            }
-
-            title += Price.ToCurrencyFormat();
-
-            return title;
-        }
 
         public virtual decimal Rating { get; set; }
 
@@ -366,8 +229,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual bool CanShowEtag
         {
-            get { return this.ETag != null && !string.IsNullOrWhiteSpace(this.ETag.Image); }
+            get { return ETag != null && !string.IsNullOrWhiteSpace(ETag.Image); }
         }
 
+        public virtual int DisplayOrder { get; set; }
     }
 }

@@ -8,7 +8,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public string Name { get; set; }
         public string Url { get; set; }
         public string Abstract { get; set; }
+        public string SearchResultAbstract { get; set; }
         public decimal? Price { get; set; }
+        public decimal? Tax { get; set; }
+        public decimal? PricePreTax { get; set; }
         public decimal? PreviousPrice { get; set; }
         public string Image { get; set; }
         public int? VariantId { get; set; }
@@ -19,6 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public bool ProductReviewsEnabled { get; set; }
         public decimal Rating { get; set; }
         public int NumberOfReviews { get; set; }
+        public string BrandImage { get; set; }
 
         public ETag ETag { get; set; }
     }

@@ -17,9 +17,16 @@
         <p>
             <strong>Rating: </strong>@Model.Rating
         </p>
-        <p>
-            <strong>Email: </strong>@Model.Email
-        </p>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Email)
+            @Html.TextBoxFor(x => x.Email, new {@class = "form-control"})
+            @Html.ValidationMessageFor(x => x.Email)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
         <div class="form-group">
             @Html.LabelFor(x => x.Title)
             @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })

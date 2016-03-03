@@ -90,3 +90,5 @@ MrCMS.Web/Properties/PublishProfiles/demo.mrcms.com.pubxml
 *.stackdump
 *.psess
 *.vsp
+.vs/config/applicationhost.config
+*.playlist

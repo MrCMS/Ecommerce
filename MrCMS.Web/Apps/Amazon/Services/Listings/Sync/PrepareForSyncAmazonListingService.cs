@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
@@ -20,14 +21,16 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
         private readonly AmazonSellerSettings _amazonSellerSettings;
         private readonly IProductVariantService _productVariantService;
         private readonly IGetStockRemainingQuantity _getStockRemainingQuantity;
+        private readonly IProductPricingMethod _productPricingMethod;
 
         public PrepareForSyncAmazonListingService(
-            IAmazonListingService amazonListingService,
-            IAmazonListingGroupService amazonListingGroupService,
+            IAmazonListingService amazonListingService, 
+            IAmazonListingGroupService amazonListingGroupService, 
             EcommerceSettings ecommerceSettings,
-            AmazonSellerSettings amazonSellerSettings,
+            AmazonSellerSettings amazonSellerSettings, 
             IProductVariantService productVariantService,
-            IGetStockRemainingQuantity getStockRemainingQuantity)
+            IGetStockRemainingQuantity getStockRemainingQuantity, 
+            IProductPricingMethod productPricingMethod)
         {
             _amazonListingService = amazonListingService;
             _amazonListingGroupService = amazonListingGroupService;
@@ -35,6 +38,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             _amazonSellerSettings = amazonSellerSettings;
             _productVariantService = productVariantService;
             _getStockRemainingQuantity = getStockRemainingQuantity;
+            _productPricingMethod = productPricingMethod;
         }
 
         public void UpdateAmazonListings(AmazonListingGroup amazonListingGroup)
@@ -50,16 +54,16 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             var productVariant = _productVariantService.GetProductVariantBySKU(amazonListing.ProductVariant.SKU);
 
             amazonListing.ProductVariant = productVariant;
-            amazonListing.Brand = productVariant.Product.BrandPage != null ? productVariant.Product.BrandPage.Name : String.Empty;
+            amazonListing.Brand = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.Condition = ConditionType.New;
             var currency = _ecommerceSettings.Currency();
-            amazonListing.Currency = (currency != null && !String.IsNullOrWhiteSpace(currency.Code)) ? currency.Code : CurrencyCode.GBP.GetDescription();
-            amazonListing.Manafacturer = productVariant.Product.BrandPage != null ? productVariant.Product.BrandPage.Name : String.Empty;
+            amazonListing.Currency = (currency!=null && !String.IsNullOrWhiteSpace(currency.Code))?currency.Code:CurrencyCode.GBP.GetDescription();
+            amazonListing.Manafacturer = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.MfrPartNumber = productVariant.ManufacturerPartNumber;
             amazonListing.Quantity = productVariant.TrackingPolicy == TrackingPolicy.Track
                                           ? _getStockRemainingQuantity.Get(productVariant)
                                           : 1000;
-            amazonListing.Price = productVariant.Price;
+            amazonListing.Price = _productPricingMethod.GetUnitPrice(productVariant, 0m, 0m);
             amazonListing.SellerSKU = productVariant.SKU;
             amazonListing.Title = productVariant.DisplayName;
             amazonListing.StandardProductIDType = _amazonSellerSettings.BarcodeIsOfType;
@@ -103,20 +107,20 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
 
             amazonListing.AmazonListingGroup = amazonListingGroup;
             amazonListing.ProductVariant = productVariant;
-            amazonListing.Brand = productVariant.Product.BrandPage != null ? productVariant.Product.BrandPage.Name : String.Empty;
+            amazonListing.Brand = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.Condition = ConditionType.New;
             var currency = _ecommerceSettings.Currency();
             amazonListing.Currency = (currency != null && !String.IsNullOrWhiteSpace(currency.Code)) ? currency.Code : CurrencyCode.GBP.GetDescription();
-            amazonListing.Manafacturer = productVariant.Product.BrandPage != null ? productVariant.Product.BrandPage.Name : String.Empty;
+            amazonListing.Manafacturer = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.MfrPartNumber = productVariant.ManufacturerPartNumber;
             amazonListing.Quantity = productVariant.TrackingPolicy == TrackingPolicy.Track
                                           ? _getStockRemainingQuantity.Get(productVariant)
                                           : 1000;
-            amazonListing.Price = productVariant.Price;
+            amazonListing.Price = _productPricingMethod.GetUnitPrice(productVariant, 0m, 0m);
             amazonListing.SellerSKU = productVariant.SKU;
             amazonListing.Title = productVariant.DisplayName;
             amazonListing.StandardProductIDType = _amazonSellerSettings.BarcodeIsOfType;
-            amazonListing.StandardProductId = (string.IsNullOrWhiteSpace(productVariant.Barcode) ? "" : productVariant.Barcode.Trim());
+            amazonListing.StandardProductId = (string.IsNullOrWhiteSpace(productVariant.Barcode) ? "":productVariant.Barcode.Trim());
 
             amazonListing.FulfillmentChannel = amazonListing.AmazonListingGroup.FulfillmentChannel ?? AmazonFulfillmentChannel.MFN;
 

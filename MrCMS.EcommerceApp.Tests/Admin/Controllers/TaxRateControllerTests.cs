@@ -4,6 +4,7 @@ using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -17,13 +18,14 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private readonly TaxRateController _taxRateController;
         private readonly IConfigurationProvider _configurationProvider;
         private readonly TaxSettings _taxSettings;
+        private readonly IGetPricingMethodOptions _getPricingMethodOptions = A.Fake<IGetPricingMethodOptions>();
 
         public TaxRateControllerTests()
         {
             _taxRateManager = A.Fake<ITaxRateManager>();
             _configurationProvider = A.Fake<IConfigurationProvider>();
             _taxSettings = new TaxSettings();
-            _taxRateController = new TaxRateController(_taxRateManager, _configurationProvider, _taxSettings);
+            _taxRateController = new TaxRateController(_taxRateManager, _configurationProvider, _taxSettings,_getPricingMethodOptions);
         }
 
         [Fact]

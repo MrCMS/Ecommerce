@@ -1,5 +1,6 @@
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.ModelBinders;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Website.Binders;
@@ -10,10 +11,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     public class SetShippingMethodController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly ISetShippingMethodService _setShippingMethodService;
+        private readonly CartModel _cartModel;
 
-        public SetShippingMethodController(ISetShippingMethodService setShippingMethodService)
+        public SetShippingMethodController(ISetShippingMethodService setShippingMethodService, CartModel cartModel)
         {
             _setShippingMethodService = setShippingMethodService;
+            _cartModel = cartModel;
         }
 
         public PartialViewResult AwaitingAddress()
@@ -24,7 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public PartialViewResult ShippingOptions()
         {
             ViewData["shipping-methods"] = _setShippingMethodService.GetShippingMethodOptions();
-            return PartialView();
+            return PartialView(_cartModel);
         }
 
         public ActionResult SetShipping(

@@ -4,11 +4,13 @@
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Models.StockAvailability
 @using MrCMS.Web.Apps.Ecommerce.Services
+@using MrCMS.Web.Apps.Ecommerce.Services.Pricing
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
     CanBuyStatus canBuy = ViewData["can-buy-status"] as CanBuyStatus ?? new CannotOrderQuantity(Model, 0);
+    var pricingMethod = MrCMSApplication.Get<IProductPricingMethod>();
     var @abstract = Model.Product != null ? Model.Product.ProductAbstract ?? string.Empty : string.Empty;
 }
 <div class="row" data-wishlist-item="@Model.Id">
@@ -20,12 +22,16 @@
     <div class="col-xs-12 col-sm-7 col-md-8">
         <h3><a href="@Model.DirectUrl">@(!string.IsNullOrWhiteSpace(Model.Name) ? Model.Name : Model.Product.Name)</a></h3>
         <div class="price">
-            @Model.Price.ToCurrencyFormat()
+            @pricingMethod.GetPrice(Model).ToCurrencyFormat()
         </div>
-        @if (Model.ShowPreviousPrice)
+
+        @{
+            var displayPreviousPrice = pricingMethod.GetDisplayPreviousPrice(Model);
+        }
+        @if (displayPreviousPrice != null)
         {
             <div class="margin-bottom-10">
-                <span class="previous-price">@(SiteSettings<EcommerceSettings>().PreviousPriceText) <span style="text-decoration: line-through">@Model.PreviousPrice.ToCurrencyFormat()</span></span>
+                <span class="previous-price">@(SiteSettings<EcommerceSettings>().PreviousPriceText) <span style="text-decoration: line-through">@displayPreviousPrice.ToCurrencyFormat()</span></span>
             </div>
         }
         <div class="margin-bottom-10">

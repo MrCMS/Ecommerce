@@ -16,7 +16,7 @@
             <br />
             <div style="width:100%; overflow: hidden">
                 @Html.LabelFor(x => x.Category)
-                @Html.HiddenFor(x => x.Category,new {@class="select2 select2-full", style="width:100%"})
+                @Html.HiddenFor(x => x.Category,new {@class="select2 select2-full", style="width:100%", @data_category_name=Model.Category})
             </div>
             <br />
             <button type="button" class="btn btn-default update-google-base-product" data-google-base-product-id="@Model.Id" data-google-base-product-variant-id="@Model.ProductVariant.Id">

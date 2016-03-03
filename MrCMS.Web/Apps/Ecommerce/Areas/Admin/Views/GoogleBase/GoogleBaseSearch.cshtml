@@ -8,11 +8,10 @@
     {
         @Html.DropDownListFor(x => x.Category, ViewData["categories"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
         <br />
-        <div class="input-group">@Html.TextBoxFor(x => x.Name, new { @class = "form-control search-query", placeholder = "Enter search term..." })
-            <span class="input-group-btn"><button type="submit" class="btn btn-primary">Search</button>
+        <div class="input-group">@Html.TextBoxFor(x => x.Name, new { @class = "form-control search-query", placeholder = "Enter search term...", style="width:100%!important;" })
+            <span class="input-group-btn"><button type="submit" class="btn btn-primary">@Resource("Search")</button>
             </span>
         </div>
-        
     }
     <hr />
     @if (Model.Items.Count == 0)

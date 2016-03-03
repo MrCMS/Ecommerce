@@ -1,10 +1,9 @@
 ﻿@using System.Drawing
-@using FluentNHibernate.Conventions
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @model ProductCardModel
-<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 margin-bottom-30">
+<div class="margin-bottom-30">
     <div class="product-con">
         <div class="product-image">
             @if (Model.ETag != null && !string.IsNullOrEmpty(Model.ETag.Image))
@@ -32,10 +31,28 @@
             <div class="product-name">
                 <a href="/@Model.Url">@Model.Name</a>
             </div>
-            @if (Model.ProductReviewsEnabled && Model.NumberOfReviews > 0)
+            @if (!string.IsNullOrWhiteSpace(Model.SearchResultAbstract))
             {
+                <div class="product-abstract">
+                    <p>@Model.SearchResultAbstract</p>
+                </div>
+            }
+            @if (Model.ProductReviewsEnabled)
+            {
+
                 <div class="product-rating">
-                    @{Html.RenderPartial("ShowStarRating", Model.Rating);} (<a href="/@Model.Url#product-reviews">@Model.NumberOfReviews</a>)
+                    @if (Model.NumberOfReviews > 0)
+                    {
+                        Html.RenderPartial("ShowStarRating", Model.Rating);
+                        @:(<a href="/@Model.Url#product-reviews"> @Model.NumberOfReviews </a>)
+                    }
+                    else
+                    {
+                        Html.RenderPartial("ShowStarRating", 0.00m);
+
+                        @:(<a href="/@Model.Url#product-reviews"> 0 </a>)
+                        @:<a href="/@Model.Url#product-reviews" class="first-to-review">@Resource("Product Reviews - Be the first","Be the first to review") </a>
+                    }
                 </div>
             }
             <div class="product-price">

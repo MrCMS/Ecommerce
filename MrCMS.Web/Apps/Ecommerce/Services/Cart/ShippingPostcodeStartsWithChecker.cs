@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Services.Resources;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations;
+using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
@@ -18,7 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _stringResourceProvider = stringResourceProvider;
         }
 
-        public override CheckLimitationsResult CheckLimitations(ShippingPostcodeStartsWith limitation, CartModel cart)
+        public override CheckLimitationsResult CheckLimitations(ShippingPostcodeStartsWith limitation, CartModel cart, IList<Discount> allDiscounts)
         {
             if (cart.ShippingAddress == null)
                 return
@@ -29,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                     .ToHashSet();
             var postcode = cart.ShippingAddress.FormattedPostcode();
             return postcodes.Any(postcode.StartsWith)
-                ? CheckLimitationsResult.Successful(Enumerable.Empty<CartItem>())
+                ? CheckLimitationsResult.Successful(Enumerable.Empty<CartItemData>())
                 : CheckLimitationsResult.CurrentlyInvalid(
                     _stringResourceProvider.GetValue("Shipping postcode is not valid for this discount"));
 

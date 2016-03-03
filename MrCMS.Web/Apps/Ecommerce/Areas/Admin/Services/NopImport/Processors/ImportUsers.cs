@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using NHibernate;
@@ -10,9 +12,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
 {
     public class ImportUsers : IImportUsers
     {
-        private readonly ISession _session;
+        private readonly IStatelessSession _session;
 
-        public ImportUsers(ISession session)
+        public ImportUsers(IStatelessSession session)
         {
             _session = session;
         }
@@ -20,12 +22,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
         public string ProcessUsers(NopCommerceDataReader dataReader, NopImportContext nopImportContext)
         {
             HashSet<UserData> userDatas = dataReader.GetUserData();
+            var guids = _session.QueryOver<User>().Select(x=>x.Guid).List<Guid>();
             _session.Transact(session =>
             {
                 foreach (UserData userData in userDatas)
                 {
                     var guid = userData.Guid;
-                    if (session.QueryOver<User>().Where(u => u.Guid == guid).Any())
+                    if (guids.Contains(guid))
                         continue;
 
                     var user = new User
@@ -39,7 +42,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                         IsActive = userData.Active,
                     };
                     user.SetGuid(userData.Guid);
-                    session.Save(user);
+                    user.AssignBaseProperties();
+                    session.Insert(user);
                     foreach (AddressData addressData in userData.AddressData)
                     {
                         var address = nopImportContext.FindNew<Address>(addressData.Id);

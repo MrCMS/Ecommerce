@@ -27,6 +27,9 @@
                         Email
                     </th>
                     <th>
+                        Name
+                    </th>
+                    <th>
                         Title
                     </th>
                     <th>
@@ -62,17 +65,10 @@
                             @item.ProductVariant.DisplayName
                         </td>
                         <td>
-                            @*@if (item.User != null)
-                            {
-                                <a href="@Url.Action("Edit", "User", new { Id = item.User.Id })">
-                                    @item.User.Email
-                                </a>
-                            }
-                            else
-                            {
-                                @item.Email
-                            }*@
                             @item.Email
+                        </td>
+                        <td>
+                            @item.Name
                         </td>
                         <td>
                             @item.Title

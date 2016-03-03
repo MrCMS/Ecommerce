@@ -41,11 +41,24 @@
                         <td>Order Shipping (ex TAX)</td>
                         <td>@orderShipping.ToCurrencyFormat()</td>
                     </tr>
-
                     <tr>
                         <td>Order Tax</td>
                         <td>@order.Tax.ToCurrencyFormat()</td>
                     </tr>
+                    @if (order.DiscountAmount > decimal.Zero)
+                    {
+                        <tr>
+                            <td>@Resource("User Order - Discount", "Discount")</td>
+                            <td>@((-order.DiscountAmount).ToCurrencyFormat())</td>
+                        </tr>
+                    }
+                    @if (order.ShippingDiscountAmount > decimal.Zero)
+                    {
+                        <tr>
+                            <td>@Resource("User Order - Shipping Discount", "Shipping Discount")</td>
+                            <td>@((-order.ShippingDiscountAmount).ToCurrencyFormat())</td>
+                        </tr>
+                    }
                     <tr>
                         <td>Order Total</td>
                         <td>@order.Total.ToCurrencyFormat()</td>
