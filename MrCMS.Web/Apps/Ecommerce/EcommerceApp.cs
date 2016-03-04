@@ -37,6 +37,8 @@ namespace MrCMS.Web.Apps.Ecommerce
 
         protected override void RegisterServices(IKernel kernel)
         {
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12; //ensure best ssl protocol is used
+
             kernel.Rebind<CartModel>().ToMethod(context => context.Kernel.Get<ICartBuilder>().BuildCart()).InRequestScope();
             kernel.Rebind<SECVPN>().ToMethod(context =>
             {
