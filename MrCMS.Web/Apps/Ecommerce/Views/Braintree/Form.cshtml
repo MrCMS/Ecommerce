@@ -23,6 +23,7 @@
             @using (Html.BeginForm("MakePaymentCard", "Braintree", FormMethod.Post, new { id = "braintree-checkout", data_braintree_checkout_form = true }))
             {
                 @Html.Hidden("ClientToken", token)
+                @Html.Hidden("ThreeDSecureRequired", SiteSettings<BraintreeSettings>().ThreeDSecureRequired.ToString().ToLowerInvariant())
                 @Html.HiddenFor(x => x.TotalToPay)
 
                 <div class="form-group">
