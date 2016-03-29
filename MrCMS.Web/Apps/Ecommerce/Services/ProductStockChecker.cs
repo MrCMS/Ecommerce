@@ -21,8 +21,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         {
             if (productVariant.SoldOut)
                 return false;
-            //if (productVariant.TrackingPolicy == TrackingPolicy.DontTrack)
-            //    return true;
+            if (productVariant.TrackingPolicy == TrackingPolicy.DontTrack)
+                return true;
             return _getStockRemainingQuantity.Get(productVariant) > 0;
         }
 
