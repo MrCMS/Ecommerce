@@ -1,6 +1,7 @@
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.SagePay;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.SagePay;
 using MrCMS.Web.Apps.Ecommerce.Services.SagePay.Results;
 using MrCMS.Website.Controllers;
@@ -12,13 +13,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly ISagePayCartLoader _sagePayCartLoader;
         private readonly ISagePayService _sagePayService;
         private readonly SagePaySettings _sagePaySettings;
+        private readonly IOrderPlacementService _orderPlacementService;
 
         public SagePayNotificationController(SagePaySettings sagePaySettings, ISagePayService sagePayService,
-            ISagePayCartLoader sagePayCartLoader)
+            ISagePayCartLoader sagePayCartLoader, IOrderPlacementService orderPlacementService)
         {
             _sagePaySettings = sagePaySettings;
             _sagePayService = sagePayService;
             _sagePayCartLoader = sagePayCartLoader;
+            _orderPlacementService = orderPlacementService;
         }
 
         public ActionResult Notification(SagePayResponse response)
@@ -61,6 +64,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             else
             {
                 _sagePayService.SetResponse(cart.UserGuid, response);
+                _orderPlacementService.PlaceOrder(cart, o =>
+                {
+                    o.PaymentStatus = PaymentStatus.Paid;
+                    o.ShippingStatus = ShippingStatus.Unshipped;
+                    o.AuthorisationToken = response.BankAuthCode;
+                });
+
             }
             return new ValidOrderResult(vendorTxCode, response);
         }
