@@ -52,7 +52,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             model.Results = new PagedList<AmazonOrder>(null, 1, _ecommerceSettings.DefaultPageSize);
             try
             {
-                model.Results = _amazonOrderSearchService.Search(model, model.Page, _ecommerceSettings.DefaultPageSize);
+                model.Results = _amazonOrderSearchService.Search(model);
             }
             catch (Exception)
             {

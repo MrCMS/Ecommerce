@@ -56,7 +56,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 
             var result = _ordersController.Index(model);
 
-            A.CallTo(() => _amazonOrderSearchService.Search(model, model.Page, _ecommerceSettings.DefaultPageSize)).MustHaveHappened();
+            A.CallTo(() => _amazonOrderSearchService.Search(model)).MustHaveHappened();
         }
 
         [Fact]
@@ -72,7 +72,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 
             var result = _ordersController.Orders(model);
 
-            A.CallTo(() => _amazonOrderSearchService.Search(model, model.Page, _ecommerceSettings.DefaultPageSize)).MustHaveHappened();
+            A.CallTo(() => _amazonOrderSearchService.Search(model)).MustHaveHappened();
         }
 
         [Fact]
