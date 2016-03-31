@@ -1,5 +1,4 @@
 ﻿using System;
-using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -23,12 +22,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             var queryOver = _session.QueryOver<Order>();
 
             if (!String.IsNullOrWhiteSpace(model.SearchText))
-            {
-                User userAlias = null;
-                queryOver = queryOver
-                    .JoinAlias(x => x.User, () => userAlias)
-                    .Where(() => userAlias.Email.IsInsensitiveLike(model.SearchText, MatchMode.Anywhere) || userAlias.LastName.IsInsensitiveLike(model.SearchText, MatchMode.Anywhere));
-            }
+                queryOver = queryOver.Where(o => o.OrderEmail.IsInsensitiveLike(model.SearchText, MatchMode.Anywhere) 
+                    || o.BillingAddress.LastName.IsInsensitiveLike(model.SearchText, MatchMode.Anywhere));
 
             if (model.DateFrom.HasValue)
                 queryOver = queryOver.Where(o => (o.OrderDate != null && o.OrderDate > model.DateFrom) || (o.OrderDate == null && o.CreatedOn > model.DateFrom.Value));
