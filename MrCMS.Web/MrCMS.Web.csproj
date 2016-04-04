@@ -1403,8 +1403,6 @@
     <Compile Include="Apps\Ecommerce\Payment\WorldPay\WorldPayPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\WorldPay\WorldPaySettings.cs" />
     <Compile Include="Apps\Ecommerce\Services\AddToCartUIService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Analytics\GoogleAnalyticsService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Analytics\IGoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\ITrackingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupOrdersService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupRevenueService.cs" />

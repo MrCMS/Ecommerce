@@ -15,6 +15,7 @@
     @Styles.Render(CheckoutStylesheetBundle.BundleUrl)
     @{ Html.RenderCss(); }
     @Html.Raw(Model.CustomHeaderScripts)
+    @Html.Raw(SiteSettings<SEOSettings>().TrackingScripts)
 </head>
 <body>
     @RenderBody()
