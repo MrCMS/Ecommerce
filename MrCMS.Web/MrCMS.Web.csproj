@@ -917,7 +917,6 @@
     <Compile Include="Apps\Ecommerce\Controllers\EnterOrderEmailController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GiftCardController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GiftMessageController.cs" />
-    <Compile Include="Apps\Ecommerce\Controllers\GoogleAnalyticsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GoogleBaseFeedController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\NewInProductsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\OrderPdfController.cs" />
@@ -3960,7 +3959,6 @@
     <Content Include="Apps\Ecommerce\Views\SetShippingAddress\ShowShippingAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SetShippingMethod\AwaitingAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SetShippingMethod\ShippingOptions.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\AnalyticsCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\BackInStockForm.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\CategoryCard.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductCardGrid.cshtml" />
@@ -4416,6 +4414,7 @@
     <Content Include="Apps\Ecommerce\Views\Shared\GridView.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ListView.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductCardList.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\GoogleAnalyticsOrderPartial.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
