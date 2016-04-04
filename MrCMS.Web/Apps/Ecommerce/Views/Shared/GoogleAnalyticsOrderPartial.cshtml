@@ -20,15 +20,15 @@
             foreach (var item in Model.OrderLines)
             {
                 <text>
-        ga('ecommerce:addItem', {
-            'id': '@item.Id',
-            'name': '@item.Name',
-            'sku': '@item.SKU',
-            'category': '@item.Options',
-            'price': '@item.UnitPrice',
-            'quantity': '@item.Quantity'
-        });
-        </text>
+                    ga('ecommerce:addItem', {
+                        'id': '@item.Id',
+                        'name': '@item.Name',
+                        'sku': '@item.SKU',
+                        'category': '@item.Options',
+                        'price': '@item.UnitPrice',
+                        'quantity': '@item.Quantity'
+                    });
+                </text>
             }
         }
         ga('ecommerce:send');
