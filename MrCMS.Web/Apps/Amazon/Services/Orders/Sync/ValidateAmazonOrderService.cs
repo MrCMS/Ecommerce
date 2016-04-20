@@ -289,8 +289,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 IsCancelled = false,
                 SalesChannel = AmazonApp.SalesChannel,
                 PaymentStatus = PaymentStatus.Paid,
-                CreatedOn =
-                    amazonOrder.PurchaseDate.HasValue ? (DateTime) amazonOrder.PurchaseDate : CurrentRequestData.Now
+                OrderDate = amazonOrder.PurchaseDate.HasValue ? amazonOrder.PurchaseDate : CurrentRequestData.Now
             };
         }
 
