@@ -1,5 +1,4 @@
-﻿using System;
-using MrCMS.Messages;
+﻿using MrCMS.Messages;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
@@ -13,9 +12,9 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
                 FromName = CurrentRequestData.CurrentSite.Name,
                 ToAddress = "{Email}",
                 ToName = "Customer",
-                Bcc = String.Empty,
-                Cc = String.Empty,
-                Subject = String.Format("{0} - Product Back In Stock", CurrentRequestData.CurrentSite.Name),
+                Bcc = string.Empty,
+                Cc = string.Empty,
+                Subject = string.Format("{0} - Product Back In Stock", CurrentRequestData.CurrentSite.Name),
                 Body = "<p>The product {Name} is back in stock.</p><p>{ProductUrl}</p>",
                 IsHtml = true
             };
