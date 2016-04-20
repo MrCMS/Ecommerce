@@ -34,7 +34,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 
         protected override IEnumerable<decimal> GetValues(Product obj)
         {
-            yield return GetPrices(obj).Min();
+            var values = GetPrices(obj).ToList();
+            if (values.Any())
+                yield return values.Min();
         }
 
         public class PriceList
