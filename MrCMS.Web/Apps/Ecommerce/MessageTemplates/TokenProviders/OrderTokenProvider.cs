@@ -95,8 +95,8 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
                                                             sb.Append("<td>" + _stringResourceProvider.GetValue("Price (ex TAX)") + "</td>");
                                                             if (_taxSettings.TaxesEnabled)
                                                                 sb.Append("<td>" + _stringResourceProvider.GetValue("Tax Rate") + "</td>");
-                                                           
-                                                            sb.Append("<td>" + _stringResourceProvider.GetValue("Net Sub Total") + "</td>");
+
+                                                            sb.Append("<td>" + _stringResourceProvider.GetValue("Sub Total") + "</td>");
                                                             sb.Append("</tr>");
 
                                                             foreach (var item in order.OrderLines)
@@ -108,7 +108,7 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
                                                                 sb.Append("<td>" + item.UnitPricePreTax.ToCurrencyFormat() + "</td>");
                                                                 if(_taxSettings.TaxesEnabled)
                                                                     sb.Append("<td>" + item.TaxRate.ToString("0") + "%</td>");
-                                                                sb.Append("<td>" + (item.Subtotal - item.Tax).ToCurrencyFormat() + "</td>");
+                                                                sb.Append("<td>" + (item.Subtotal).ToCurrencyFormat() + "</td>");
                                                                 sb.Append("</tr>");
                                                             }
 
@@ -128,7 +128,7 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
                                                             }
                                                             sb.AppendFormat("<strong>"+ _stringResourceProvider.GetValue("Total")+": {0}</strong>", order.Total.ToCurrencyFormat());
                                                             sb.Append("</p>");
-                                                           
+
                                                            return sb.ToString();
                                                        }
                            }
