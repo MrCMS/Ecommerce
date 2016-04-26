@@ -584,6 +584,8 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AmountPerUnitController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListTemplateDataController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\Sales.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\SalesByDayViewModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetPricingMethodOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetPricingMethodOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Helpers\EntityExtensions.cs" />
