@@ -407,6 +407,7 @@
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IImportAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\ImportAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IPerformAmazonUpdates.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\ISetTaxDetails.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IShipAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IValidateAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\ScheduleAmazonOrderSync.cs" />
