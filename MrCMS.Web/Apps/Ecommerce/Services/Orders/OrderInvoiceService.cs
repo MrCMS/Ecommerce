@@ -194,16 +194,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 }
             }
 
-            p = frame1.AddParagraph();
-            p.AddText(order.BillingAddress.PhoneNumber);
-
-            if (order.ShippingAddress != null)
+            if (!string.IsNullOrWhiteSpace(order.BillingAddress?.PhoneNumber))
             {
-                if (!string.IsNullOrWhiteSpace(order.ShippingAddress.PhoneNumber))
-                {
-                    p = frame2.AddParagraph();
-                    p.AddText(order.ShippingAddress.PhoneNumber);
-                }
+                p = frame1.AddParagraph();
+                p.AddText(order.BillingAddress.PhoneNumber);
+            }
+
+            if (!string.IsNullOrWhiteSpace(order.ShippingAddress?.PhoneNumber))
+            {
+                p = frame2.AddParagraph();
+                p.AddText(order.ShippingAddress.PhoneNumber);
             }
 
             p = frame1.AddParagraph();
