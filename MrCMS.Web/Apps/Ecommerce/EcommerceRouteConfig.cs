@@ -327,6 +327,9 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Cart - Apply Discount Code", "Apps/Ecommerce/ApplyDiscountCode",
                 new { controller = "Discount", action = "Apply" });
 
+            context.MapRoute("Discount Code from Url", "Discount/{discountCode}",
+                new { controller = "Discount", action = "Code" });
+
             context.MapRoute("Cart - Remove Discount Code", "Apps/Ecommerce/RemoveDiscountCode",
                 new { controller = "Discount", action = "Remove" });
 

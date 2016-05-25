@@ -31,12 +31,25 @@
             @Html.ValidationMessageFor(x => x.ValidUntil)
         </div>
         <div class="form-group">
-            @Html.InlineCheckboxFor(discount => discount.RequiresCode,checkboxAttributes:new{@checked="checked"})
+            @Html.InlineCheckboxFor(discount => discount.RequiresCode, checkboxAttributes: new { @checked = "checked" })
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(x => x.CanBeAppliedFromUrl, checkboxAttributes: new { @checked = "checked" })
         </div>
         <div class="form-group" data-code-field>
             @Html.LabelFor(x => x.Code)
-            @Html.TextBoxFor(x => x.Code, new { @class = "form-control" })
+            @Html.TextBoxFor(x => x.Code, new {@class = "form-control"})
             @Html.ValidationMessageFor(x => x.Code)
         </div>
-    </fieldset>
+        <div class="form-group" data-code-field>
+            @Html.LabelFor(x => x.Message)
+            @Html.TextBoxFor(x => x.Message, new {@class = "form-control"})
+            @Html.ValidationMessageFor(x => x.Message)
+        </div>
+        <div class="form-group" data-code-field>
+            @Html.LabelFor(x => x.RedirectUrl)
+            @Html.TextBoxFor(x => x.RedirectUrl, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.RedirectUrl)
+        </div>
+</fieldset>
 }

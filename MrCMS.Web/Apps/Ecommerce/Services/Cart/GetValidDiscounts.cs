@@ -35,37 +35,46 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                  .Cacheable().List();
         }
 
-        public CheckCodeResult CheckCode(CartModel cart, string discountCode)
+        public CheckCodeResult CheckCode(CartModel cart, string discountCode, bool fromUrl)
         {
             DateTime now = CurrentRequestData.Now;
             var code = discountCode.Trim();
-            var discounts = _session.QueryOver<Discount>()
-                .Where(
-                    discount =>
-                        (discount.Code == code && discount.RequiresCode) &&
-                        (discount.ValidFrom == null || discount.ValidFrom <= now) &&
-                        (discount.ValidUntil == null || discount.ValidUntil >= now))
-                .Cacheable().List();
+            var query = _session.QueryOver<Discount>().Where(discount
+                => (discount.Code == code && discount.RequiresCode)
+                   && (discount.ValidFrom == null || discount.ValidFrom <= now)
+                   && (discount.ValidUntil == null || discount.ValidUntil >= now));
+
+            if (fromUrl)
+                query = query.Where(x => x.CanBeAppliedFromUrl);
+
+            var discounts = query.Cacheable().List();
+
+            var checkCodeResult = new CheckCodeResult
+            {
+                RedirectUrl = discounts.Any()
+                    ? discounts.First().RedirectUrl
+                    : "/"
+            };
 
             if (!discounts.Any())
             {
-                return new CheckCodeResult
-                {
-                    Message = _stringResourceProvider.GetValue("The code you entered is not valid.")
-                };
+                checkCodeResult.Message = _stringResourceProvider.GetValue("The code you entered is not valid.");
+                return checkCodeResult;
             }
 
-            var checkLimitationsResults = discounts.Select(
-                discount =>
-                    _cartDiscountApplicationService.CheckLimitations(discount, cart, discounts)).ToList();
+            var checkLimitationsResults = discounts.Select(discount => _cartDiscountApplicationService.CheckLimitations(discount, cart, discounts)).ToList();
             if (checkLimitationsResults.All(result => result.Status == CheckLimitationsResultStatus.NeverValid))
             {
-                return new CheckCodeResult
-                {
-                    Message = checkLimitationsResults.First().FormattedMessage
-                };
+                checkCodeResult.Message = checkLimitationsResults.First().FormattedMessage;
+                return checkCodeResult;
             }
-            return new CheckCodeResult { Success = true };
+
+            checkCodeResult.Success = !fromUrl || checkLimitationsResults.Any(result => result.Status != CheckLimitationsResultStatus.CurrentlyInvalid);
+            checkCodeResult.Message = fromUrl && checkLimitationsResults.All(result => result.Status == CheckLimitationsResultStatus.CurrentlyInvalid)
+                ? checkLimitationsResults.First().FormattedMessage
+                : discounts.First().Message; 
+            
+            return checkCodeResult;
         }
     }
 }

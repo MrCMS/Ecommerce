@@ -4420,6 +4420,7 @@
     <Content Include="Apps\Ecommerce\Views\Shared\ListView.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductCardList.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\GoogleAnalyticsOrderPartial.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\Notifications.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
