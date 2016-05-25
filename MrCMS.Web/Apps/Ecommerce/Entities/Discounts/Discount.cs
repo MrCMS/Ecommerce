@@ -30,6 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
 
         public virtual bool CanBeAppliedFromUrl { get; set; }
         public virtual string RedirectUrl { get; set; }
-        public virtual string Message { get; set; }
+        public virtual string SuccessMessage { get; set; }
+        public virtual string AppliedNotYetValidMessage { get; set; }
     }
 }

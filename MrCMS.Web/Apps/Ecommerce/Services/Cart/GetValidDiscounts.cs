@@ -71,9 +71,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
             checkCodeResult.Success = !fromUrl || checkLimitationsResults.Any(result => result.Status != CheckLimitationsResultStatus.CurrentlyInvalid);
             checkCodeResult.Message = fromUrl && checkLimitationsResults.All(result => result.Status == CheckLimitationsResultStatus.CurrentlyInvalid)
-                ? checkLimitationsResults.First().FormattedMessage
-                : discounts.First().Message; 
-            
+                ? string.Format("{0} {1}", discounts.First().AppliedNotYetValidMessage, checkLimitationsResults.First().FormattedMessage)
+                : discounts.First().SuccessMessage;
+
             return checkCodeResult;
         }
     }
