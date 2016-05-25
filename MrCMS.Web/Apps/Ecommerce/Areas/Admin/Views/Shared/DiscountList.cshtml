@@ -1,7 +1,8 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model IList<MrCMS.Web.Apps.Ecommerce.Entities.Discounts.Discount>
 @{
-    var url = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.PathAndQuery, string.Empty);
+    var requestUrl = HttpContext.Current.Request.Url;
+    var url = string.Format("{0}{1}{2}", requestUrl.Scheme, Uri.SchemeDelimiter, requestUrl.Authority);
 }
 <table class="table table-condensed table-striped">
     <thead>
