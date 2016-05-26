@@ -49,11 +49,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
             var discounts = query.Cacheable().List();
 
+            var defaultRedirectUrl = "/";
             var checkCodeResult = new CheckCodeResult
             {
                 RedirectUrl = discounts.Any()
-                    ? discounts.First().RedirectUrl
-                    : "/"
+                    ? discounts.First().RedirectUrl == string.Empty
+                        ? defaultRedirectUrl
+                        : discounts.First().RedirectUrl
+                    : defaultRedirectUrl
             };
 
             if (!discounts.Any())
