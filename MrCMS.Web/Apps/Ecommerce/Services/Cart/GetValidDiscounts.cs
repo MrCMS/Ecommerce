@@ -53,7 +53,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             var checkCodeResult = new CheckCodeResult
             {
                 RedirectUrl = discounts.Any()
-                    ? discounts.First().RedirectUrl == string.Empty
+                    ? string.IsNullOrEmpty(discounts.First().RedirectUrl)
                         ? defaultRedirectUrl
                         : discounts.First().RedirectUrl
                     : defaultRedirectUrl
