@@ -39,7 +39,7 @@
             @Html.InlineCheckboxFor(x => x.CanBeAppliedFromUrl, checkboxAttributes: new {@checked = "checked"})
         </div>
         <div class="form-group from-url-group" data-code-field>
-            @Html.Label(string.Format("This discount can be applied by navigating to {0}/Discount/{{Code}}", url))
+            <label>@string.Format("This discount can be applied by navigating to {0}/Discount/{{Code}}", url))</label>
         </div>
         <div class="form-group" data-code-field>
             @Html.LabelFor(x => x.Code)
