@@ -60,13 +60,14 @@ namespace MrCMS.Indexing.Management
 
         private IndexWriter GetNewIndexWriter(string definitionName, Analyzer analyzer, bool recreateIndex)
         {
-            return new IndexWriter(_getLuceneDirectory.Get(_site, definitionName), analyzer, recreateIndex, IndexWriter.MaxFieldLength.UNLIMITED);
+            var directory = _getLuceneDirectory.Get(_site, definitionName);
+            return new IndexWriter(directory, analyzer,  recreateIndex, IndexWriter.MaxFieldLength.UNLIMITED);
         }
 
         public void ClearCache()
         {
-            foreach (var indexSearcher in Writers.SelectMany(x => x.Value.Values))
-                indexSearcher.Dispose();
+            foreach (var writer in Writers.SelectMany(x => x.Value.Values))
+                writer.Dispose();
 
             Writers.Clear();
         }

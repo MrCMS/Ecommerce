@@ -61,7 +61,8 @@ namespace MrCMS.Indexing.Management
 
         public IndexSearcher GetInternal(string folderName)
         {
-            return new IndexSearcher(_getLuceneDirectory.Get(_site, folderName, true));
+            var directory = _getLuceneDirectory.Get(_site, folderName, true);
+            return new IndexSearcher(directory);
         }
     }
 }
