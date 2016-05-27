@@ -19,10 +19,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _cart = cart;
         }
 
-        public CheckCodeResult AddDiscountCode(string code)
+        public CheckCodeResult AddDiscountCode(string code, bool fromUrl)
         {
             HashSet<string> codes = _cartDiscountCodeService.Get();
-            CheckCodeResult codeResult = _getValidDiscounts.CheckCode(_cart, code);
+            CheckCodeResult codeResult = _getValidDiscounts.CheckCode(_cart, code, fromUrl);
             if (codeResult.Success)
             {
                 codes.Add(code);
@@ -34,8 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public void RemoveDiscountCode(string discountCode)
         {
             HashSet<string> codes = _cartDiscountCodeService.Get();
-            var matchedCode =
-                codes.FirstOrDefault(x => x.Equals(discountCode, StringComparison.InvariantCultureIgnoreCase));
+            var matchedCode = codes.FirstOrDefault(x => x.Equals(discountCode, StringComparison.InvariantCultureIgnoreCase));
             if (matchedCode != null)
                 codes.Remove(matchedCode);
             _cartDiscountCodeService.SaveDiscounts(codes);
