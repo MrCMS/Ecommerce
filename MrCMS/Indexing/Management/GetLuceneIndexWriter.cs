@@ -61,13 +61,19 @@ namespace MrCMS.Indexing.Management
         private IndexWriter GetNewIndexWriter(string definitionName, Analyzer analyzer, bool recreateIndex)
         {
             var directory = _getLuceneDirectory.Get(_site, definitionName);
-            return new IndexWriter(directory, analyzer,  recreateIndex, IndexWriter.MaxFieldLength.UNLIMITED);
+            return new IndexWriter(directory, analyzer, recreateIndex, IndexWriter.MaxFieldLength.UNLIMITED);
         }
 
         public void ClearCache()
         {
             foreach (var writer in Writers.SelectMany(x => x.Value.Values))
-                writer.Dispose();
+            {
+                try
+                {
+                    writer.Dispose();
+                }
+                catch { }
+            }
 
             Writers.Clear();
         }

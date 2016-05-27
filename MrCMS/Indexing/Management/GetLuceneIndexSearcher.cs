@@ -54,7 +54,13 @@ namespace MrCMS.Indexing.Management
         public void ClearCache()
         {
             foreach (var indexSearcher in IndexSearcherCache.SelectMany(x => x.Value.Values))
-                indexSearcher.Dispose();
+            {
+                try
+                {
+                    indexSearcher.Dispose();
+                }
+                catch { }
+            }
 
             IndexSearcherCache.Clear();
         }
