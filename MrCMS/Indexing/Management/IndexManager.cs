@@ -34,15 +34,17 @@ namespace MrCMS.Indexing.Management
         where TEntity : SystemEntity
         where TDefinition : IndexDefinition<TEntity>
     {
+        private readonly IGetLuceneIndexWriter _getLuceneIndexWriter;
+        private readonly IGetLuceneIndexSearcher _getLuceneIndexSearcher;
         private readonly Site _site;
         private readonly TDefinition _definition;
         private readonly IStatelessSession _statelessSession;
-        private readonly IGetLuceneDirectory _getLuceneDirectory;
-        private Directory _directory;
 
-        public IndexManager(IGetLuceneDirectory getLuceneDirectory, Site site, TDefinition definition, IStatelessSession statelessSession)
+        public IndexManager(IGetLuceneIndexWriter getLuceneIndexWriter, IGetLuceneIndexSearcher getLuceneIndexSearcher,
+            Site site, TDefinition definition, IStatelessSession statelessSession)
         {
-            _getLuceneDirectory = getLuceneDirectory;
+            _getLuceneIndexWriter = getLuceneIndexWriter;
+            _getLuceneIndexSearcher = getLuceneIndexSearcher;
             _site = site;
             _definition = definition;
             _statelessSession = statelessSession;
@@ -71,14 +73,19 @@ namespace MrCMS.Indexing.Management
                     return null;
 
                 long lastModified = IndexReader.LastModified(GetDirectory(_site));
+                DateTime time;
+                var sourceTimeZone = TimeZoneInfo.Utc;
                 try
                 {
-                    return new DateTime(1970, 1, 1).AddMilliseconds(lastModified);
+                    time = new DateTime(1970, 1, 1).AddMilliseconds(lastModified);
                 }
                 catch
                 {
-                    return DateTime.FromFileTime(lastModified);
+                    time = DateTime.FromFileTime(lastModified);
+                    sourceTimeZone = TimeZoneInfo.Local;
                 }
+
+                return TimeZoneInfo.ConvertTime(time, sourceTimeZone, CurrentRequestData.TimeZoneInfo);
             }
         }
 
@@ -179,7 +186,7 @@ namespace MrCMS.Indexing.Management
 
         public void ResetSearcher()
         {
-            Definition.ResetSearcher();
+            _getLuceneIndexSearcher.Reset(Definition);
         }
 
         public IndexResult Update(IEnumerable<TEntity> entities)
@@ -196,12 +203,12 @@ namespace MrCMS.Indexing.Management
         {
             return IndexResult.GetResult(() => Write(writer =>
             {
-                using (var indexSearcher = new IndexSearcher(GetDirectory(_site), true))
-                {
-                    TopDocs topDocs = indexSearcher.Search(new TermQuery(Definition.GetIndex(entity)), int.MaxValue);
-                    if (!topDocs.ScoreDocs.Any())
-                        return;
-                }
+                var indexSearcher = _getLuceneIndexSearcher.Get(Definition);
+
+                TopDocs topDocs = indexSearcher.Search(new TermQuery(Definition.GetIndex(entity)), int.MaxValue);
+                if (!topDocs.ScoreDocs.Any())
+                    return;
+
                 writer.UpdateDocument(Definition.GetIndex(entity),
                     Definition.Convert(entity));
             }));
@@ -244,13 +251,12 @@ namespace MrCMS.Indexing.Management
                 .List<TEntity>().ToList();
             return IndexResult.GetResult(() =>
             {
-                Write(writer => { }, true);
                 Write(writer =>
                 {
                     foreach (Document document in Definition.ConvertAll(entities))
                         writer.AddDocument(document);
                     writer.Optimize();
-                });
+                }, true);
             });
         }
 
@@ -266,18 +272,17 @@ namespace MrCMS.Indexing.Management
 
         private Directory GetDirectory(Site site)
         {
-            return _directory = _directory ?? _getLuceneDirectory.Get(site, IndexFolderName);
+            return _getLuceneIndexWriter.Get(Definition).Directory;
         }
 
         private void Write(Action<IndexWriter> writeFunc, bool recreateIndex)
         {
-            using (
-                var indexWriter = new IndexWriter(GetDirectory(_site), Definition.GetAnalyser(), recreateIndex,
-                    IndexWriter.MaxFieldLength.UNLIMITED))
-            {
-                writeFunc(indexWriter);
-            }
-            Definition.ResetSearcher();
+            if (recreateIndex)
+                _getLuceneIndexWriter.RecreateIndex(Definition);
+            var indexWriter = _getLuceneIndexWriter.Get(Definition);
+            writeFunc(indexWriter);
+            indexWriter.Commit();
+            _getLuceneIndexSearcher.Reset(Definition);
         }
     }
 }

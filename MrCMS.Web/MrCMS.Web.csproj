@@ -70,13 +70,13 @@
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
-    <Reference Include="EPPlus, Version=4.0.3.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EPPlus.4.0.3\lib\net20\EPPlus.dll</HintPath>
+    <Reference Include="EPPlus, Version=4.0.5.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.0.5\lib\net20\EPPlus.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="FluentNHibernate, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FluentNHibernate.2.0.1.0\lib\net40\FluentNHibernate.dll</HintPath>
+    <Reference Include="FluentNHibernate, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentNHibernate.2.0.3.0\lib\net40\FluentNHibernate.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="HibernatingRhinos.Profiler.Appender">
       <HintPath>..\packages\NHibernateProfiler.Appender.2.0.2238.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
@@ -194,24 +194,24 @@
       <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.RtfRendering.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MiniProfiler, Version=3.1.1.140, Culture=neutral, PublicKeyToken=b44f9351044011a3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MiniProfiler.3.1.1.140\lib\net40\MiniProfiler.dll</HintPath>
+    <Reference Include="MiniProfiler, Version=3.2.0.157, Culture=neutral, PublicKeyToken=b44f9351044011a3, processorArchitecture=MSIL">
+      <HintPath>..\packages\MiniProfiler.3.2.0.157\lib\net40\MiniProfiler.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="MVC Foolproof Validation">
       <HintPath>..\packages\foolproof.0.9.4517\lib\MVC Foolproof Validation.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.9.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MySql.Data.6.9.5\lib\net45\MySql.Data.dll</HintPath>
+    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+      <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NHibernate.Caches.SysCache2, Version=4.0.0.4000, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -236,9 +236,9 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Owin.Security.Providers, Version=1.14.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Owin.Security.Providers.1.14.0\lib\net45\Owin.Security.Providers.dll</HintPath>
+    <Reference Include="Owin.Security.Providers, Version=1.25.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.Security.Providers.1.26\lib\net45\Owin.Security.Providers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PayPalCoreSDK">
       <HintPath>..\packages\PayPalCoreSDK.1.4.2\lib\net45\PayPalCoreSDK.dll</HintPath>
@@ -281,6 +281,10 @@
     <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -1951,8 +1955,10 @@
     <Compile Include="Apps\Stats\Services\StatsUIScripts.cs" />
     <Compile Include="Apps\Stats\Settings\BotAgentsAndIPs.cs" />
     <Compile Include="Apps\Stats\StatsApp.cs" />
+    <Compile Include="Areas\Admin\ACL\LayoutsACL.cs" />
     <Compile Include="Areas\Admin\ACL\MediaToolsACL.cs" />
     <Compile Include="Areas\Admin\ACL\NotificationACL.cs" />
+    <Compile Include="Areas\Admin\ACL\UserSubscriptionReports\UserSubscriptionReportsACL.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Bundles\AdminAppScriptBundle.cs" />
     <Compile Include="Areas\Admin\Bundles\AdminAppStylesheetBundle.cs" />
@@ -1962,7 +1968,6 @@
     <Compile Include="Areas\Admin\Controllers\AboutController.cs" />
     <Compile Include="Areas\Admin\Controllers\ACLController.cs" />
     <Compile Include="Areas\Admin\Controllers\BatchController.cs" />
-    <Compile Include="Areas\Admin\Controllers\BatchExecutionController.cs" />
     <Compile Include="Areas\Admin\Controllers\BatchJobController.cs" />
     <Compile Include="Areas\Admin\Controllers\BatchRunController.cs" />
     <Compile Include="Areas\Admin\Controllers\BatchRunResultController.cs" />
@@ -2013,6 +2018,7 @@
     <Compile Include="Areas\Admin\Controllers\UrlHistoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserStatsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UserSubscriptionReportsController.cs" />
     <Compile Include="Areas\Admin\Controllers\VersionsController.cs" />
     <Compile Include="Areas\Admin\Controllers\WebpageController.cs" />
     <Compile Include="Areas\Admin\Controllers\WebpageParentController.cs" />
@@ -2031,6 +2037,7 @@
     <Compile Include="Areas\Admin\Helpers\ChildNodeHelper.cs" />
     <Compile Include="Areas\Admin\Helpers\DashboardRenderer.cs" />
     <Compile Include="Areas\Admin\Helpers\FileHelper.cs" />
+    <Compile Include="Areas\Admin\Helpers\LocalisedScriptHtmlHelper.cs" />
     <Compile Include="Areas\Admin\Helpers\SEOAnalysisExtensions.cs" />
     <Compile Include="Areas\Admin\Helpers\SetAdminViewDataExtensions.cs" />
     <Compile Include="Areas\Admin\Helpers\UniversalSearchHelper.cs" />
@@ -2051,6 +2058,7 @@
     <Compile Include="Areas\Admin\ModelBinders\EditWebpageModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\FileSystemSettingsModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\GetSiteCopyOptionsModelBinder.cs" />
+    <Compile Include="Areas\Admin\ModelBinders\GetTaskInfoFromTypeModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\GetUrlGeneratorOptionsTypeModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\HealthCheckProcessorModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\MessageTemplateModelBinder.cs" />
@@ -2076,9 +2084,12 @@
     <Compile Include="Areas\Admin\Models\BatchSearchModel.cs" />
     <Compile Include="Areas\Admin\Models\ChooseSiteParams.cs" />
     <Compile Include="Areas\Admin\Models\Dashboard.cs" />
+    <Compile Include="Areas\Admin\Models\DashboardArea.cs" />
+    <Compile Include="Areas\Admin\Models\DashboardAreaAction.cs" />
     <Compile Include="Areas\Admin\Models\DefaultGeneratorInfo.cs" />
     <Compile Include="Areas\Admin\Models\DocumentTypeToAdd.cs" />
     <Compile Include="Areas\Admin\Models\GetPropertyData.cs" />
+    <Compile Include="Areas\Admin\Models\LineGraphData.cs" />
     <Compile Include="Areas\Admin\Models\MediaCategorySearchModel.cs" />
     <Compile Include="Areas\Admin\Models\MediaCategorySortMethod.cs" />
     <Compile Include="Areas\Admin\Models\MediaSelectorSearchQuery.cs" />
@@ -2102,6 +2113,7 @@
     <Compile Include="Areas\Admin\Models\SEOAnalysis\SEOAnalysisStatus.cs" />
     <Compile Include="Areas\Admin\Models\SiteCloneOption.cs" />
     <Compile Include="Areas\Admin\Models\StringResourceSearchQuery.cs" />
+    <Compile Include="Areas\Admin\Models\TaskUpdateData.cs" />
     <Compile Include="Areas\Admin\Models\UniversalSearchItemQuickSearch.cs" />
     <Compile Include="Areas\Admin\Models\UpdateMediaParams.cs" />
     <Compile Include="Areas\Admin\Models\UpdatePropertyData.cs" />
@@ -2109,6 +2121,7 @@
     <Compile Include="Areas\Admin\Models\UserEdit\UserTabBase.cs" />
     <Compile Include="Areas\Admin\Models\UserEdit\UserTabGroup.cs" />
     <Compile Include="Areas\Admin\Models\UserStats.cs" />
+    <Compile Include="Areas\Admin\Models\UserSubscriptionReports\UserSubscriptionReportsSearchQuery.cs" />
     <Compile Include="Areas\Admin\Models\VersionsModel.cs" />
     <Compile Include="Areas\Admin\Models\ViewDataUploadFilesResult.cs" />
     <Compile Include="Areas\Admin\Models\WebpageEdit\FormDesignTab.cs" />
@@ -2137,11 +2150,9 @@
     <Compile Include="Areas\Admin\Services\Batching\BatchCompletionStatus.cs" />
     <Compile Include="Areas\Admin\Services\Batching\BatchRunUIService.cs" />
     <Compile Include="Areas\Admin\Services\Batching\BatchStatus.cs" />
-    <Compile Include="Areas\Admin\Services\Batching\ExecuteRequestForNextTask.cs" />
     <Compile Include="Areas\Admin\Services\Batching\GetBatchItemCount.cs" />
     <Compile Include="Areas\Admin\Services\Batching\GetBatchStatus.cs" />
     <Compile Include="Areas\Admin\Services\Batching\IBatchRunUIService.cs" />
-    <Compile Include="Areas\Admin\Services\Batching\IExecuteRequestForNextTask.cs" />
     <Compile Include="Areas\Admin\Services\Batching\IGetBatchItemCount.cs" />
     <Compile Include="Areas\Admin\Services\Batching\IGetBatchStatus.cs" />
     <Compile Include="Areas\Admin\Services\Dashboard\IHealthCheckService.cs" />
@@ -2181,6 +2192,7 @@
     <Compile Include="Areas\Admin\Services\IIndexAdminService.cs" />
     <Compile Include="Areas\Admin\Services\IInPageAdminService.cs" />
     <Compile Include="Areas\Admin\Services\ILayoutAreaAdminService.cs" />
+    <Compile Include="Areas\Admin\Services\ILocalisedScripts.cs" />
     <Compile Include="Areas\Admin\Services\ILogAdminService.cs" />
     <Compile Include="Areas\Admin\Services\IMediaSelectorService.cs" />
     <Compile Include="Areas\Admin\Services\IMessageQueueAdminService.cs" />
@@ -2215,6 +2227,7 @@
     <Compile Include="Areas\Admin\Services\IWebpageTreeNavListing.cs" />
     <Compile Include="Areas\Admin\Services\IWebpageWidgetAdminService.cs" />
     <Compile Include="Areas\Admin\Services\LayoutAreaAdminService.cs" />
+    <Compile Include="Areas\Admin\Services\LocalisedScripts.cs" />
     <Compile Include="Areas\Admin\Services\LogAdminService.cs" />
     <Compile Include="Areas\Admin\Services\MediaSelectorService.cs" />
     <Compile Include="Areas\Admin\Services\MessageQueueAdminService.cs" />
@@ -2262,6 +2275,8 @@
     <Compile Include="Areas\Admin\Services\TreeNavService.cs" />
     <Compile Include="Areas\Admin\Services\UniversalSearchIndexSearcher.cs" />
     <Compile Include="Areas\Admin\Services\UrlHistoryAdminService.cs" />
+    <Compile Include="Areas\Admin\Services\UserSubscriptionReports\IUserSubscriptionReportsService.cs" />
+    <Compile Include="Areas\Admin\Services\UserSubscriptionReports\UserSubscriptionReportsService.cs" />
     <Compile Include="Areas\Admin\Services\WebpageAdminSearchService.cs" />
     <Compile Include="Areas\Admin\Services\WebpageBaseViewDataService.cs" />
     <Compile Include="Areas\Admin\Services\WebpageParentAdminService.cs" />
@@ -2935,6 +2950,7 @@
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\appendto.html" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\assets\inlineall\logo.png" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\assets\outputxhtml\outputxhtml.css" />
+    <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\assets\posteddata.php" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\assets\sample.css" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\assets\sample.jpg" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\assets\uilanguages\languages.js" />
@@ -2961,6 +2977,7 @@
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\replacebycode.html" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\sample.css" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\sample.js" />
+    <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\sample_posteddata.php" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\tabindex.html" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\uicolor.html" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\uilanguages.html" />
@@ -3014,6 +3031,9 @@
     <Content Include="Areas\Admin\Content\plugins\sweetalert-master\lib\sweet-alert.js" />
     <Content Include="Areas\Admin\Content\plugins\sweetalert-master\lib\sweet-alert.min.js" />
     <Content Include="Areas\Admin\Content\plugins\sweetalert-master\sweetalert.gif" />
+    <Content Include="Areas\Admin\Content\Scripts\lib\d3\bootstrap-datepicker.js" />
+    <Content Include="Areas\Admin\Content\Scripts\lib\d3\d3.min.js" />
+    <Content Include="Areas\Admin\Content\Scripts\lib\d3\d3.tip.js" />
     <Content Include="Areas\Admin\Content\Scripts\lib\dropzone.js" />
     <Content Include="Areas\Admin\Content\Scripts\lib\featherlight.js" />
     <Content Include="Areas\Admin\Content\Scripts\lib\jquery-ui-1.10.4\AUTHORS.txt" />
@@ -3584,6 +3604,7 @@
     <Content Include="Areas\Admin\Content\Scripts\mrcms\front-end-editing.js" />
     <Content Include="Areas\Admin\Content\Scripts\mrcms\health-checks.js" />
     <Content Include="Areas\Admin\Content\Scripts\mrcms\layout.js" />
+    <Content Include="Areas\Admin\Content\Scripts\mrcms\line-graph.js" />
     <Content Include="Areas\Admin\Content\Scripts\mrcms\media-category.js" />
     <Content Include="Areas\Admin\Content\Scripts\mrcms\media-show-files-simple.js" />
     <Content Include="Areas\Admin\Content\Scripts\mrcms\media-uploader.js" />
@@ -3609,6 +3630,8 @@
     <Content Include="Areas\Admin\Content\Styles\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.js" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Areas\Admin\Content\Styles\d3\bootstrap-datepicker.css" />
+    <Content Include="Areas\Admin\Content\Styles\d3\d3-admin-graph.css" />
     <Content Include="Areas\Admin\Content\Styles\dropzone.css" />
     <Content Include="Areas\Admin\Content\Styles\featherlight.css" />
     <Content Include="Areas\Admin\Content\Styles\Images\contextmenu\cut.png" />
@@ -4010,95 +4033,6 @@
     <Content Include="Apps\Ecommerce\Views\WorldPay\RedirectToComplete.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_BaseCheckoutLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Stock.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Article\ForUser.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\AuthorInfo\Add.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\AuthorInfo\Edit.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\AuthorInfo\Show.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\User\Article.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\User\AuthorInfo.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Web.config" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\Article.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\ArticleAdd.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\ArticleList.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\ArticleListAdd.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleArchive.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleArchiveAdd.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleCategories.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleCategoriesAdd.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\LatestXArticles.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\LatestXArticlesAdd.cshtml" />
-    <Content Include="Apps\Articles\Views\Pages\Article.cshtml" />
-    <Content Include="Apps\Articles\Views\Pages\ArticleList.cshtml" />
-    <Content Include="Apps\Articles\Views\Web.config" />
-    <Content Include="Apps\Articles\Views\Widgets\ArticleArchive.cshtml" />
-    <Content Include="Apps\Articles\Views\Widgets\ArticleCategories.cshtml" />
-    <Content Include="Apps\Articles\Views\Widgets\LatestXArticles.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Web.config" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\ForgottenPasswordPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\LoginPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\RegisterPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\ResetPasswordPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\SearchPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\TextPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\TextPageAdd.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\UserAccountPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\CurrentPageSubNavigation.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\CurrentPageSubNavigationAdd.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\LinkedImage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\LinkedImageAdd.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\Navigation.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\NavigationAdd.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\PlainTextWidget.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\PlainTextWidgetAdd.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\Slider.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\TextWidget.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\TextWidgetAdd.cshtml" />
-    <Content Include="Apps\Core\Content\Bootstrap\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Apps\Core\Content\Bootstrap\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Apps\Core\Content\Bootstrap\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.eot" />
-    <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.ttf" />
-    <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.woff" />
-    <Content Include="Apps\Core\Views\ExternalLogin\Facebook.cshtml" />
-    <Content Include="Apps\Core\Views\ExternalLogin\Google.cshtml" />
-    <Content Include="Apps\Core\Views\ExternalLogin\LinkedIn.cshtml" />
-    <Content Include="Apps\Core\Views\ExternalLogin\Providers.cshtml" />
-    <Content Include="Apps\Core\Views\ExternalLogin\StandardProvider.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\LoginPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\RegisterPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\ResetPasswordPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\SearchPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\TextPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\UserAccountPage.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\ChangePassword.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\ForgotPasswordForm.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\LoginBox.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\PasswordReset.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\SearchForm.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\SearchQuery.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\_BaseLayout.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\_OneColumn.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\_TwoColumn.cshtml" />
-    <Content Include="Apps\Core\Views\Web.config" />
-    <Content Include="Apps\Core\Views\Widgets\CurrentPageSubNavigation.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\LinkedImage.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\Navigation.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\PlainTextWidget.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\Slider.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\TextWidget.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\UserLinks.cshtml" />
-    <Content Include="Apps\Galleries\Areas\Admin\Views\Web.config" />
-    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\Gallery.cshtml" />
-    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\GalleryAdd.cshtml" />
-    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\GalleryList.cshtml" />
-    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\GalleryListAdd.cshtml" />
-    <Content Include="Apps\Galleries\Content\blueimp-Bootstrap-Image-Gallery\README.md" />
-    <Content Include="Apps\Galleries\Views\Pages\Gallery.cshtml" />
-    <Content Include="Apps\Galleries\Views\Pages\GalleryList.cshtml" />
-    <Content Include="Apps\Galleries\Views\Web.config" />
     <Content Include="Apps\MobileFriendlyNavigation\Areas\Admin\Views\razorgenerator.directives" />
     <Content Include="Apps\MobileFriendlyNavigation\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\MobileFriendlyNavigation\Areas\Admin\Views\Widget\MobileFriendlyNavigation.cshtml" />
@@ -4207,6 +4141,105 @@
     <Content Include="Apps\Stats\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Stats\LICENSE" />
     <Content Include="Apps\Ecommerce\Views\PaymentDetails\Methods.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Nop190\Nop190.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>Nop1901.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\AmountPerUnit\Fields.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\GridView.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\ListView.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\ProductCardList.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\GoogleAnalyticsOrderPartial.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Article\ForUser.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\AuthorInfo\Add.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\AuthorInfo\Edit.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\AuthorInfo\Show.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\User\Article.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\User\AuthorInfo.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\Article.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\ArticleAdd.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\ArticleList.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\ArticleListAdd.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleArchive.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleArchiveAdd.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleCategories.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleCategoriesAdd.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\LatestXArticles.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\LatestXArticlesAdd.cshtml" />
+    <Content Include="Apps\Articles\Views\Pages\Article.cshtml" />
+    <Content Include="Apps\Articles\Views\Pages\ArticleList.cshtml" />
+    <Content Include="Apps\Articles\Views\Web.config" />
+    <Content Include="Apps\Articles\Views\Widgets\ArticleArchive.cshtml" />
+    <Content Include="Apps\Articles\Views\Widgets\ArticleCategories.cshtml" />
+    <Content Include="Apps\Articles\Views\Widgets\LatestXArticles.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\ForgottenPasswordPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\LoginPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\RegisterPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\ResetPasswordPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\SearchPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\TextPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\TextPageAdd.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\UserAccountPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\CurrentPageSubNavigation.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\CurrentPageSubNavigationAdd.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\LinkedImage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\LinkedImageAdd.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\Navigation.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\NavigationAdd.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\PlainTextWidget.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\PlainTextWidgetAdd.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\Slider.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\TextWidget.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\TextWidgetAdd.cshtml" />
+    <Content Include="Apps\Core\Content\Bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Apps\Core\Content\Bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Apps\Core\Content\Bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.eot" />
+    <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.ttf" />
+    <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.woff" />
+    <Content Include="Apps\Core\Views\ExternalLogin\Facebook.cshtml" />
+    <Content Include="Apps\Core\Views\ExternalLogin\Google.cshtml" />
+    <Content Include="Apps\Core\Views\ExternalLogin\LinkedIn.cshtml" />
+    <Content Include="Apps\Core\Views\ExternalLogin\Providers.cshtml" />
+    <Content Include="Apps\Core\Views\ExternalLogin\StandardProvider.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\LoginPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\RegisterPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\ResetPasswordPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\SearchPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\TextPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\UserAccountPage.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\ChangePassword.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\ForgotPasswordForm.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\LoginBox.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\PasswordReset.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\SearchForm.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\SearchQuery.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\_BaseLayout.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\_OneColumn.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\_TwoColumn.cshtml" />
+    <Content Include="Apps\Core\Views\Web.config" />
+    <Content Include="Apps\Core\Views\Widgets\CurrentPageSubNavigation.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\LinkedImage.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\Navigation.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\PlainTextWidget.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\Slider.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\TextWidget.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\UserLinks.cshtml" />
+    <Content Include="Apps\Galleries\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\Gallery.cshtml" />
+    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\GalleryAdd.cshtml" />
+    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\GalleryList.cshtml" />
+    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\GalleryListAdd.cshtml" />
+    <Content Include="Apps\Galleries\Content\blueimp-Bootstrap-Image-Gallery\README.md" />
+    <Content Include="Apps\Galleries\Views\Pages\Gallery.cshtml" />
+    <Content Include="Apps\Galleries\Views\Pages\GalleryList.cshtml" />
+    <Content Include="Apps\Galleries\Views\Web.config" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\CHANGES.md" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\LICENSE.md" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\plugins\scayt\LICENSE.md" />
@@ -4214,9 +4247,7 @@
     <Content Include="Areas\Admin\Content\Editors\ckeditor\plugins\wsc\LICENSE.md" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\plugins\wsc\README.md" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\README.md" />
-    <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\assets\posteddata.php" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\plugins\htmlwriter\assets\outputforflash\outputforflash.fla" />
-    <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\sample_posteddata.php" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\skins\moono\readme.md" />
     <Content Include="Areas\Admin\Content\plugins\font-awesome-4.2.0\fonts\fontawesome-webfont.eot" />
     <Content Include="Areas\Admin\Content\plugins\font-awesome-4.2.0\fonts\fontawesome-webfont.ttf" />
@@ -4232,12 +4263,23 @@
     <Content Include="Areas\Admin\Content\Scripts\lib\select2-3.4.5\release.sh" />
     <Content Include="Areas\Admin\Content\Scripts\lib\select2-3.4.5\select2.jquery.json" />
     <Content Include="Areas\Admin\Content\Scripts\lib\select2-3.4.5\select2_locale_en.js.template" />
+    <Content Include="Areas\Admin\Content\Scripts\mrcms\batch.js.bak" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\css\bootstrap-theme.css.map" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\css\bootstrap.css.map" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.min.js.map" />
+    <Content Include="Areas\Admin\Content\Styles\mrcms-admin.css.bak" />
+    <Content Include="Areas\Admin\Controllers\BatchRunController.cs.bak" />
+    <Content Include="Areas\Admin\Controllers\MediaCategoryController.cs.bak" />
+    <Content Include="Areas\Admin\Services\Batching\BatchCompletionStatus.cs.bak" />
+    <Content Include="Areas\Admin\Services\Batching\BatchRunUIService.cs.bak" />
+    <Content Include="Areas\Admin\Services\DefaultWebpageTreeNavListing.cs.bak" />
+    <Content Include="Areas\Admin\Services\ITreeNavService.cs.bak" />
+    <Content Include="Areas\Admin\Services\IWebpageTreeNavListing.cs.bak" />
+    <Content Include="Areas\Admin\Services\TreeNavService.cs.bak" />
+    <Content Include="Areas\Admin\Services\WebpageTreeNavListing.cs.bak" />
     <Content Include="Areas\Admin\Views\About\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ACL\Group.cshtml" />
     <Content Include="Areas\Admin\Views\ACL\Index.cshtml" />
@@ -4247,7 +4289,9 @@
     <Content Include="Areas\Admin\Views\BatchRun\Show.cshtml" />
     <Content Include="Areas\Admin\Views\BatchRun\ShowButton.cshtml" />
     <Content Include="Areas\Admin\Views\BatchRun\Status.cshtml" />
+    <Content Include="Areas\Admin\Views\BatchRun\Status.cshtml.bak" />
     <Content Include="Areas\Admin\Views\Batch\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Batch\Index.cshtml.bak" />
     <Content Include="Areas\Admin\Views\Batch\Show.cshtml" />
     <Content Include="Areas\Admin\Views\ClearCaches\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\Greeting.cshtml" />
@@ -4358,11 +4402,10 @@
     <Content Include="Areas\Admin\Views\Sites\CopyOptions.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Sites\Edit.cshtml.bak" />
     <Content Include="Areas\Admin\Views\Sites\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\RestrictedDomains.cshtml" />
     <Content Include="Areas\Admin\Views\SystemSettings\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Task\Add.cshtml" />
-    <Content Include="Areas\Admin\Views\Task\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Task\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Task\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Task\Reset.cshtml" />
@@ -4371,6 +4414,7 @@
     <Content Include="Areas\Admin\Views\UrlHistory\Add.cshtml" />
     <Content Include="Areas\Admin\Views\UrlHistory\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\UserStats\Summary.cshtml" />
+    <Content Include="Areas\Admin\Views\UserSubscriptionReports\Index.cshtml" />
     <Content Include="Areas\Admin\Views\User\Add.cshtml" />
     <Content Include="Areas\Admin\Views\User\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\User\Edit.cshtml" />
@@ -4410,16 +4454,6 @@
     <Content Include="Areas\Admin\Views\Widget\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Widget\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Nop190\Nop190.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>Nop1901.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\AmountPerUnit\Fields.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\GridView.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\ListView.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\ProductCardList.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\GoogleAnalyticsOrderPartial.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
@@ -4450,11 +4484,11 @@
     <Folder Include="Apps\Galleries\Views\Shared\" />
     <Folder Include="Apps\Galleries\Views\Widgets\" />
     <Folder Include="Apps\Galleries\Widgets\" />
+    <Folder Include="Areas\Admin\Content\Images\logo\" />
     <Folder Include="Themes\Ecommerce\Apps\Core\Views\Pages\" />
     <Folder Include="Themes\Ecommerce\Content\" />
     <Folder Include="Themes\Ecommerce\Shared\" />
     <Folder Include="Themes\Ecommerce\Views\Shared\" />
-    <Folder Include="Views\SearchLog\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

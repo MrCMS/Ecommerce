@@ -2,6 +2,7 @@
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Reports;
 using MrCMS.Web.Areas.Admin.Helpers;
+using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Website.Controllers;
 using MrCMS.Website.Filters;
 using NHibernate;
