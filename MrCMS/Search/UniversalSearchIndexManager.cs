@@ -24,17 +24,19 @@ namespace MrCMS.Search
         private readonly Site _site;
         private readonly IGetLuceneIndexWriter _getLuceneIndexWriter;
         private readonly IGetLuceneIndexSearcher _getLuceneIndexSearcher;
+        private readonly IGetLuceneDirectory _getLuceneDirectory;
         private readonly IUniversalSearchItemGenerator _universalSearchItemGenerator;
         protected Analyzer Analyser;
         private Directory _directory;
 
         public UniversalSearchIndexManager(IUniversalSearchItemGenerator universalSearchItemGenerator, Site site,
-            IGetLuceneIndexWriter getLuceneIndexWriter, IGetLuceneIndexSearcher getLuceneIndexSearcher)
+            IGetLuceneIndexWriter getLuceneIndexWriter, IGetLuceneIndexSearcher getLuceneIndexSearcher, IGetLuceneDirectory getLuceneDirectory)
         {
             _universalSearchItemGenerator = universalSearchItemGenerator;
             _site = site;
             _getLuceneIndexWriter = getLuceneIndexWriter;
             _getLuceneIndexSearcher = getLuceneIndexSearcher;
+            _getLuceneDirectory = getLuceneDirectory;
         }
 
         private bool IndexExists
@@ -200,7 +202,7 @@ namespace MrCMS.Search
 
         private Directory GetDirectory()
         {
-            return _getLuceneIndexWriter.Get(FolderName, GetAnalyser()).Directory;
+            return _getLuceneDirectory.Get(_site, FolderName, false);
         }
     }
 }
