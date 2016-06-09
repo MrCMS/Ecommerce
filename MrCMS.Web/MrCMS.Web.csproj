@@ -2318,10 +2318,12 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\abstract.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sku-search.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\content-item-product-list.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\country-based-shipping-calculation.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\dashboard.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\discount-application.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\category-search.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\discount-limitation.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\discount.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-category.js" />
@@ -4441,6 +4443,8 @@
     <Content Include="Areas\Admin\Views\Widget\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\Notifications.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ItemIsInCategory\SearchCategories.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ItemHasSKU\SearchSKUs.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />

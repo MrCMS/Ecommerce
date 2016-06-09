@@ -1,7 +1,15 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations.ItemHasSKU
 
 <div class="form-group">
-    @Html.LabelFor(x => x.SKUs)
-    @Html.TextBoxFor(x => x.SKUs, new { @class = "form-control" })
-    @Html.ValidationMessageFor(x => x.SKUs)
+    <input autocomplete="off" class="form-control" id="skusearchparam" name="skusearchparam" placeholder="Search for SKU" type="text"/>
+</div>
+<div class="form-group" style="display: none;">
+    @Html.HiddenFor(x => x.SKUs)
+</div>
+<div class="form-group">
+    @Html.LabelFor(x => x.SKUNames)
+    @Html.TextBoxFor(x => x.SKUNames, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.SKUNames)
+</div>
+<div class="modal-body-container">
 </div>

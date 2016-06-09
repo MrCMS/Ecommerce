@@ -8,9 +8,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations
         [DisplayName("SKUs (comma delimited list)")]
         public virtual string SKUs { get; set; }
 
+        [DisplayName("SKUs Names (comma delimited list)")]
+        public virtual string SKUNames { get; set; }
+
         public override string DisplayName
         {
-            get { return "Item has one of the following SKUs: " + SKUs; }
+            get { return "Item has one of the following SKUs: " + SKUNames; }
         }
     }
 }
