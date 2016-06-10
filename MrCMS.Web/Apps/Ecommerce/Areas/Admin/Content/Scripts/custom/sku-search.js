@@ -26,7 +26,6 @@
     $(document).on('click', '#skus .add-sku', function () {
         var button = $(this);
         var skuId = button.data('sku-id');
-        console.log(skuId);
         var skuName = button.data('sku-name');
         $("#SKUNames").tagit().tagit("createTag", skuName.replace(",", ""));
         $("#SKUs").tagit().tagit("createTag", skuId);
