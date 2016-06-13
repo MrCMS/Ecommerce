@@ -16,7 +16,6 @@ using System.Web.Mvc;
 using NHibernate.Criterion;
 using NHibernate.SqlCommand;
 using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
-using ProductSearchQuery = MrCMS.Web.Apps.Ecommerce.Models.ProductSearchQuery;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
@@ -213,7 +212,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             Product productAlias = null;
 
-            var queryOver = _session.QueryOver(()=> productAlias);
+            var queryOver = _session.QueryOver(() => productAlias);
 
             switch (query.PublishStatus)
             {
@@ -235,39 +234,38 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (!string.IsNullOrWhiteSpace(query.CategoryName))
             {
                 Product categoryProductAlias = null;
-                queryOver =
-                    queryOver.WithSubquery.WhereExists(
-                        QueryOver.Of<Category>()
+                queryOver = queryOver.WithSubquery.WhereExists(QueryOver.Of<Category>()
                             .JoinAlias(category => category.Products, () => categoryProductAlias)
-                            .Where(
-                                x =>
-                                    x.Name.IsInsensitiveLike(query.CategoryName, MatchMode.Anywhere) &&
-                                    categoryProductAlias.Id == productAlias.Id)
+                            .Where(x => x.Name.IsInsensitiveLike(query.CategoryName, MatchMode.Anywhere) 
+                                    && categoryProductAlias.Id == productAlias.Id)
                             .Select(x => x.Id));
-                //queryOver = queryOver.JoinAlias(product => product.Categories, () => categoryAlias)
-                //    .Where(() => categoryAlias.Name.IsInsensitiveLike(query.CategoryName, MatchMode.Anywhere));
             }
 
             if (!string.IsNullOrWhiteSpace(query.SKU))
             {
-                queryOver =
-                    queryOver.WithSubquery.WhereExists(
-                        QueryOver.Of<ProductVariant>()
-                            .Where(
-                                x =>
-                                    x.Product.Id == productAlias.Id &&
-                                    x.SKU.IsInsensitiveLike(query.SKU, MatchMode.Anywhere)).Select(x => x.Id));
-                //queryOver = queryOver.JoinAlias(product => product.Variants, () => productVariantAlias)
-                //    .Where(() => productVariantAlias.SKU.IsInsensitiveLike(query.SKU, MatchMode.Anywhere));
+                queryOver = queryOver.WithSubquery.WhereExists(QueryOver.Of<ProductVariant>()
+                            .Where(x => x.Product.Id == productAlias.Id 
+                                && x.SKU.IsInsensitiveLike(query.SKU, MatchMode.Anywhere))
+                            .Select(x => x.Id));
             }
+
+            if (!string.IsNullOrWhiteSpace(query.Name))
+            {
+                queryOver = queryOver.Where(x => x.Name.IsInsensitiveLike(query.Name, MatchMode.Anywhere));
+            }
+
+            var min = query.PriceFrom ?? 0;
+            var max = query.PriceTo ?? int.MaxValue;
+            queryOver = queryOver.WithSubquery.WhereExists(QueryOver.Of<ProductVariant>()
+                            .Where(x => x.Product.Id == productAlias.Id && x.BasePrice >= min && x.BasePrice <= max)
+                            .Select(x => x.Id));
 
             return queryOver.OrderBy(product => product.Name).Asc.Paged(query.Page);
         }
 
         public IList<Product> GetNewIn(int numberOfItems = 10)
         {
-            return
-                _session.QueryOver<Product>()
+            return _session.QueryOver<Product>()
                     .Where(x => x.PublishOn <= CurrentRequestData.Now)
                     .OrderBy(x => x.CreatedOn)
                     .Desc.Take(numberOfItems)
