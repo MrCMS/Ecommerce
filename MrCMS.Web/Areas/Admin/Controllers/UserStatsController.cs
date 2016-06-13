@@ -1,7 +1,8 @@
 using System.Web.Mvc;
-using MrCMS.Web.Areas.Admin.Helpers;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Web.Areas.Admin.Services;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Areas.Admin.Controllers
@@ -16,6 +17,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         }
 
         [DashboardAreaAction(DashboardArea = DashboardArea.RightColumn, Order = 101)]
+        [MrCMSACLRule(typeof(StatsAdminMenuACL), StatsAdminMenuACL.UserStats)]
         public PartialViewResult Summary()
         {
             return PartialView(_userStatsService.GetSummary());

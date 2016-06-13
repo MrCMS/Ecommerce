@@ -3,18 +3,21 @@ using MrCMS.ACL;
 
 namespace MrCMS.Web.Apps.Ecommerce.ACL
 {
-    public class ToolsAndReportsACL : ACLRule
+    public class ReportsAdminMenuACL : ACLRule
     {
-        public const string Show = "Show";
+        public const string ShowMenu = "Show Menu";
 
         public override string DisplayName
         {
-            get { return "Tools And Reports"; }
+            get { return "Reports Admin Menu"; }
         }
 
         protected override List<string> GetOperations()
         {
-            return new List<string> { Show };
+            return new List<string>
+            {
+                ShowMenu
+            };
         }
     }
 }

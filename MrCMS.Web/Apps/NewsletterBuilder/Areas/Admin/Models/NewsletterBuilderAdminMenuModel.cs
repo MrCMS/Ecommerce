@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Models
 
         public string Url => "#";
 
-        public bool CanShow => CurrentRequestData.CurrentUser.CanAccess<NewsletterBuilderAdminMenuACL>(NewsletterBuilderAdminMenuACL.Show);
+        public bool CanShow => CurrentRequestData.CurrentUser.CanAccess<NewsletterBuilderAdminMenuACL>(NewsletterBuilderAdminMenuACL.ShowMenu);
 
         public SubMenu Children
         {

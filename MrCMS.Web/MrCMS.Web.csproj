@@ -554,6 +554,7 @@
     <Compile Include="Apps\Ecommerce\ACL\CountryACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\CurrencyACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\DiscountACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\ECommerceAdminMenuACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\EcommerceSearchCacheSettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\EcommerceSettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\ETagACL.cs" />
@@ -572,15 +573,18 @@
     <Compile Include="Apps\Ecommerce\ACL\ProductReviewACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\ProductReviewSettingsAcl.cs" />
     <Compile Include="Apps\Ecommerce\ACL\ProductSpecificationAttributeACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\ReportsAdminMenuACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\RevenueACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\RewardPointACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\SagePaySettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\SalesByDayACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\SalesByPaymentTypeACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\SalesByShippingTypeACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\ShippingMethodACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\StatsAdminMenuACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\StockReportACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\TaxRateACL.cs" />
-    <Compile Include="Apps\Ecommerce\ACL\ToolsAndReportsACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\ToolsAdminMenuACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\WarehouseACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\WarehouseStockACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\WorldPaySettingsACL.cs" />
@@ -1238,6 +1242,7 @@
     <Compile Include="Apps\Ecommerce\Models\CartUpdateValue.cs" />
     <Compile Include="Apps\Ecommerce\Models\Cart\SessionDataTimeoutDefaults.cs" />
     <Compile Include="Apps\Ecommerce\Models\CashOnDeliveryConfirmModel.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\CatalogAdminMenuACL.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategoryPagedList.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategorySearchModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ChartModel.cs" />

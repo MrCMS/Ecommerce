@@ -1,11 +1,10 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Services.Reports;
-using MrCMS.Web.Areas.Admin.Helpers;
 using MrCMS.Web.Areas.Admin.Models;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using MrCMS.Website.Filters;
-using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -18,9 +17,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _reportService = reportService;
         }
 
-        
         [HttpGet]
         [DashboardAreaAction(DashboardArea = DashboardArea.Top, Order = 1)]
+        [MrCMSACLRule(typeof(DashboardRevenueACL), DashboardRevenueACL.ShowRevenue)]
         public ActionResult Revenue()
         {
             return PartialView();
