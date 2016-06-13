@@ -40,6 +40,10 @@
     }
 
     $(function () {
+        if (!$('#CanBeAppliedFromUrl').is(':checked')) {
+            $('.from-url-group').toggle();
+        }
+
         $(document).on('change', selector, showHideCodeField);
         $(document).on('change', canBeAppliedFromUrlSelector, showHideCodeFromUrlFields);
         $(document).on('reload-limitations', reloadLimitations);
