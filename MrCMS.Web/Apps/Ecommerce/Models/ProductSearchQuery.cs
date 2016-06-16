@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using MrCMS.Web.Apps.Ecommerce.Services.Search;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
@@ -11,6 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             Specifications = new List<int>();
             Page = 1;
             PageSize = 10;
+            ProductSearchView = MrCMSApplication.Get<IGetProductSearchView>().Get();
         }
 
         public List<string> Options { get; set; }
@@ -23,6 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public int PageSize { get; set; }
         public ProductSearchSort? SortBy { get; set; }
         public int? BrandId { get; set; }
+        public ProductSearchView ProductSearchView { get; set; }
 
         public object Clone()
         {

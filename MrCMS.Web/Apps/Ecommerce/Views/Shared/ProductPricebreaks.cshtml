@@ -1,6 +1,11 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Entities.Products
 @using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Services.Pricing
+@using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
+@{
+    var pricingMethod = MrCMSApplication.Get<IProductPricingMethod>();
+}
 <div id="product-variants-pricebreaks">
     @if (Model.PriceBreaks.Any())
     {
@@ -12,12 +17,12 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.PriceBreaks)
+                @foreach (var item in Model.PriceBreaks.OrderBy(x => x.Quantity))
                 {
                     <tr>
                         <td>Buy @item.Quantity&nbsp;+</td>
-                        <td>@item.Price.ToCurrencyFormat()</td>
-                    </tr> 
+                        <td>@pricingMethod.GetPrice(item).ToCurrencyFormat()</td>
+                    </tr>
                 }
             </tbody>
         </table>

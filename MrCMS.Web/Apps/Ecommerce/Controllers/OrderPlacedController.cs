@@ -30,9 +30,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (order != null)
             {
                 ViewData["order"] = order;
-                TempData["order"] = order;//required for Google Analytics
-
                 ViewData["user-can-register"] = _orderPlacedService.GetRegistrationStatus(order.OrderEmail);
+                ViewData["render-analytics"] = _orderPlacedService.UpdateAnalytics(order);
 
                 return View(page);
             }
@@ -51,6 +50,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpPost]
         public async Task<RedirectResult> RegisterAndAssociateOrder(RegisterModel model, [IoCModelBinder(typeof(OrderByGuidModelBinder))]Order order)
         {
+            model.ConfirmPassword = model.Password; // RegisterationService RegisterUser requires ConfirmPassword which our form doesn't contain;
             var result = await _orderPlacedService.RegisterAndAssociateOrder(model, order);
             if (!result.Success)
                 TempData["register-error"] = result.Error;

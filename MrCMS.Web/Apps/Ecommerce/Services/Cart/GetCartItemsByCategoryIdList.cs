@@ -20,11 +20,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _getProductCategories = getProductCategories;
         }
 
-        public List<CartItem> GetCartItems(CartModel cart, string categoryIds)
+        public List<CartItemData> GetCartItems(CartModel cart, string categoryIds)
         {
             List<int> categories = (categoryIds ?? string.Empty).GetIntList();
 
-            List<CartItem> cartItems =
+            List<CartItemData> cartItems =
                 cart.Items.FindAll(x =>
                 {
                     Query query = GetQuery(x.Item.Product.Id);

@@ -6,11 +6,14 @@ using MrCMS.Services;
 
 namespace MrCMS.Tasks
 {
-    public class UniversalSearchActionExecutor
+    public static class UniversalSearchActionExecutor
     {
         public static void PerformActions(IUniversalSearchIndexManager universalSearchIndexManager,
             ISearchConverter searchConverter, List<UniversalSearchIndexData> searchIndexDatas)
         {
+            if (!searchIndexDatas.Any())
+                return;
+
             universalSearchIndexManager.EnsureIndexExists();
             using (EventContext.Instance.Disable<UpdateUniversalSearch>())
             {
@@ -28,8 +31,6 @@ namespace MrCMS.Tasks
                         writer.UpdateDocument(GetTerm(indexData), searchConverter.Convert(indexData.UniversalSearchItem));
                     foreach (UniversalSearchIndexData indexData in toDelete)
                         writer.DeleteDocuments(GetTerm(indexData));
-
-                    //writer.Optimize();
                 });
             }
         }

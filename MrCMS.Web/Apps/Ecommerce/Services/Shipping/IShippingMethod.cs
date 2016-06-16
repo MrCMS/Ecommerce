@@ -18,12 +18,4 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         string ConfigureAction { get; }
         string ConfigureController { get; }
     }
-
-    public enum ShippingMethodAvailablity
-    {
-        UnavailableForCart,
-        UnavailableForLocation,
-        PossiblyAvailablePendingLocation,
-        Available
-    }
 }

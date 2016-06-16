@@ -1,27 +1,21 @@
 ﻿using System.Linq;
-using MrCMS.Entities.Multisite;
 using MrCMS.Services;
 using MrCMS.Tasks;
 using MrCMS.Web.Apps.Ecommerce.Entities.BackInStockNotification;
 using MrCMS.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.MessageTemplates;
-using MrCMS.Website;
 using NHibernate;
-using Ninject;
-using PayPal.OpenIdConnect;
 
 namespace MrCMS.Web.Apps.Ecommerce.Tasks
 {
     public class BackInStockNotificationTask : SchedulableTask
     {
-        private readonly Site _site;
         private readonly ISession _session;
-        private readonly IMessageParser<ProductBackInStockMessageTemplate, ProductVariant> _messageParser;
+        private readonly IMessageParser<ProductBackInStockMessageTemplate, BackInStockNotificationRequest> _messageParser;
 
-        public BackInStockNotificationTask(Site site, ISession session, IMessageParser<ProductBackInStockMessageTemplate, ProductVariant> messageParser)
+        public BackInStockNotificationTask(ISession session, 
+            IMessageParser<ProductBackInStockMessageTemplate, BackInStockNotificationRequest> messageParser)
         {
-            _site = site;
             _session = session;
             _messageParser = messageParser;
         }
@@ -30,7 +24,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Tasks
         {
             get { throw new System.NotImplementedException(); }
         }
-
 
         protected override void OnExecute()
         {
@@ -50,7 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Tasks
 
                     foreach (var notificationRequest in notificationRequests)
                     {
-                        var queuedMessage = _messageParser.GetMessage(variant.ProductVariant, toAddress: notificationRequest.Email);
+                        var queuedMessage = _messageParser.GetMessage(notificationRequest);
                         _messageParser.QueueMessage(queuedMessage);
                         notificationRequest.IsNotified = true;
                         session.Update(notificationRequest);

@@ -1,6 +1,7 @@
 using System;
 using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
+using MrCMS.Indexing;
 using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Tasks;
@@ -14,12 +15,14 @@ namespace MrCMS.Installation
         private readonly ISession _session;
         private Site _site;
         private readonly IConfigurationProvider _configurationProvider;
+        private readonly ITaskSettingManager _taskSettingManager;
 
-        public InitializeDatabase(ISession session, Site site, IConfigurationProvider configurationProvider)
+        public InitializeDatabase(ISession session, Site site, IConfigurationProvider configurationProvider, ITaskSettingManager taskSettingManager)
         {
             _session = session;
             _site = site;
             _configurationProvider = configurationProvider;
+            _taskSettingManager = taskSettingManager;
         }
 
         public void Initialize(InstallModel model)
@@ -32,7 +35,8 @@ namespace MrCMS.Installation
                 UICulture = model.UiCulture,
                 EnableInlineEditing = true,
                 SiteIsLive = true,
-                FormRendererType = FormRenderingType.Bootstrap3
+                FormRendererType = FormRenderingType.Bootstrap3,
+
             };
             var mediaSettings = new MediaSettings
             {
@@ -52,7 +56,7 @@ namespace MrCMS.Installation
             };
             var fileSystemSettings = new FileSystemSettings
             {
-                StorageType = typeof (FileSystem).FullName
+                StorageType = typeof(FileSystem).FullName
             };
 
             _configurationProvider.SaveSettings(siteSettings);
@@ -63,46 +67,12 @@ namespace MrCMS.Installation
         }
         private void SetupTasks()
         {
-            var deleteLogsTask = new ScheduledTask
-            {
-                Type = typeof(DeleteExpiredLogsTask).FullName,
-                EveryXSeconds = 600
-            };
-
-            var deleteQueuedTask = new ScheduledTask
-            {
-                Type = typeof(DeleteOldQueuedTasks).FullName,
-                EveryXSeconds = 600
-            };
-
-            var sendQueueEmailsTask = new ScheduledTask
-            {
-                Type = typeof(SendQueuedMessagesTask).FullName,
-                EveryXSeconds = 30
-            };
-
-            var publishPagesTask = new ScheduledTask
-            {
-                Type = typeof(PublishScheduledWebpagesTask).FullName,
-                EveryXSeconds = 10
-            };
-
-            var deleteOldLogsTask = new ScheduledTask
-            {
-                Type = typeof(DeleteExpiredLogsTask).FullName,
-                EveryXSeconds = 600
-            };
- 
-
-            _session.Transact(s =>
-            {
-                s.Save(deleteLogsTask);
-                s.Save(deleteQueuedTask);
-                s.Save(sendQueueEmailsTask);
-                s.Save(publishPagesTask);
-                s.Save(deleteOldLogsTask);
-            });
-
+            _taskSettingManager.Update(typeof (DeleteExpiredLogsTask), true, 600);
+            _taskSettingManager.Update(typeof (DeleteOldQueuedTasks), true, 600);
+            _taskSettingManager.Update(typeof (SendQueuedMessagesTask), true, 30);
+            _taskSettingManager.Update(typeof (PublishScheduledWebpagesTask), true, 10);
+            _taskSettingManager.Update(typeof (DeleteExpiredLogsTask), true, 600);
+            _taskSettingManager.Update(typeof (OptimiseIndexes), true, 600);
         }
     }
 }

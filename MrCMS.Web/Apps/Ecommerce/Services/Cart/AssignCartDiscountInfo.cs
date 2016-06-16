@@ -60,7 +60,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             IList<Discount> discounts = _getValidDiscounts.Get(cart, discountCodes);
 
             var discountInfos = (from discount in discounts
-                                 let result = _cartDiscountApplicationService.CheckLimitations(discount, cart)
+                                 let result = _cartDiscountApplicationService.CheckLimitations(discount, cart, discounts)
                                  select new DiscountInfo(discount, result)).Where(
                     info =>
                         info.Status != DiscountStatus.AutomaticAndInvalid && info.Status != DiscountStatus.NeverValid)

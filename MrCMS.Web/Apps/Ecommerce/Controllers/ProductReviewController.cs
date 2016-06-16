@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MrCMS.Services;
+using MrCMS.Services.Resources;
 using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.ProductReviews;
@@ -19,19 +22,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly IProductReviewUIService _productReviewUIService;
         private readonly IHelpfulnessVoteService _helpfulnessVoteService;
+        private readonly IGetCurrentUser _getCurrentUser;
 
-        public ProductReviewController(IProductReviewUIService productReviewUIService, IHelpfulnessVoteService helpfulnessVoteService)
+        public ProductReviewController(IProductReviewUIService productReviewUIService, IHelpfulnessVoteService helpfulnessVoteService, IGetCurrentUser getCurrentUser)
         {
             _productReviewUIService = productReviewUIService;
             _helpfulnessVoteService = helpfulnessVoteService;
+            _getCurrentUser = getCurrentUser;
         }
 
         public PartialViewResult Add(ProductVariant productVariant)
         {
+            var user = _getCurrentUser.Get();
             var model = new ProductReview
             {
                 ProductVariant = productVariant
             };
+
+            if (user != null)
+            {
+                model.Name = user.Name;
+                model.Email = user.Email;
+            }
             return PartialView(model);
         }
 
@@ -44,8 +56,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _productReviewUIService.Add(productReview);
 
             TempData["review-submitted"] = true;
-            
-            return Redirect(Referrer.ToString());
+
+            var url = Referrer.ToString();
+            if (!url.Contains("#product-review"))
+            {
+                url += "#product-reviews";
+            }
+            return Redirect(url);
         }
 
         public ActionResult HelpfulnessVotes(ProductReview productReview)

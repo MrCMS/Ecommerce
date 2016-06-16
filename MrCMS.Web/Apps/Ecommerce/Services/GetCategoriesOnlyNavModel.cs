@@ -49,7 +49,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             var publishedChildren =
                 categories
                     .Where(webpage => webpage.Parent.Id == entity.Id && webpage.PublishOn != null)
-                    .Where(webpage => webpage.Published).ToList();
+                    .Where(webpage => webpage.Published)
+                    .OrderBy(webpage => webpage.DisplayOrder)
+                    .ToList();
             if (publishedChildren.Any())
             {
                 navigation.AddRange(publishedChildren.Select(item => new NavigationRecord

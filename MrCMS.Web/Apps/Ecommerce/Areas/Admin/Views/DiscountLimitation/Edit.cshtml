@@ -3,6 +3,8 @@
 @{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
     Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/discount-limitation.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/category-search.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/sku-search.js");
 }
 
 @using (Html.BeginForm("Edit", "DiscountLimitation", FormMethod.Post, new { data_discount_limitation = "true" }))

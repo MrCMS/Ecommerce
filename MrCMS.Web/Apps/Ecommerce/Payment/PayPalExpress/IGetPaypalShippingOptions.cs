@@ -51,7 +51,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                 InsuranceAmount = 0m,
                 DisplayName = x.DisplayName,
                 Label = string.Format("({0})", x.Name),
-                TotalTax = x.GetShippingTax(cart) + cart.ItemTax
+                TotalTax = cart.ItemTax
             }).ToList();
             if (paypalShippingOptions.Any())
             {

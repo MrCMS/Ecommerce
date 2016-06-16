@@ -4,14 +4,11 @@
         fieldsSelector = '[data-application-fields]',
         formSelector = '[data-discount-application]';
 
-    function updateFancyBox() {
-        parent.$.fancybox.update();
-    }
+   
     function setFields(html) {
         var fieldsContainer = $(fieldsSelector);
         fieldsContainer.html(html);
         $(fromLimitationSelector).change();
-        updateFancyBox();
     }
 
     function submitForm(event) {
@@ -44,9 +41,9 @@
         var checkbox = $(event.target);
         var fields = $('[data-from-limitations]');
         if (checkbox.is(':checked'))
-            fields.hide({ duration: 0, complete: updateFancyBox });
+            fields.hide({ duration: 0 });
         else
-            fields.show({ duration: 0, complete: updateFancyBox });
+            fields.show({ duration: 0 });
     }
 
     $(function () {

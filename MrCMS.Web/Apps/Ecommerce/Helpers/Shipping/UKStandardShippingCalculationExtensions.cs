@@ -9,6 +9,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Shipping
 {
     public static class UKStandardShippingCalculationExtensions
     {
+        public static string FormatRestrictions(this IUKStandardShippingCalculation calculation)
+        {
+            var parts =
+                (calculation.RestrictedTo ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => x.Trim());
+
+            return string.Join(", ", parts);
+        }
+
         public static HashSet<string> LimitedPostcodes(this IUKStandardShippingCalculation calculation)
         {
             var limitedPostcodes = (calculation.RestrictedTo ?? string.Empty);

@@ -37,10 +37,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public string SalesChannel { get; set; }
 
         [DisplayName("Order Total From")]
-        public double? OrderTotalFrom { get; set; }
+        public decimal? OrderTotalFrom { get; set; }
 
         [DisplayName("Order Total To")]
-        public double? OrderTotalTo { get; set; }
+        public decimal? OrderTotalTo { get; set; }
 
         public List<SelectListItem> SalesChannelOptions
         {

@@ -1,0 +1,15 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Ecommerce.Pages.Product>
+
+@foreach (var chunk in Model.GetCardModels().Chunk(3))
+{
+    <div class="row">
+        @foreach (var productCardModel in chunk)
+        {
+            <div class="col-sm-4">
+                @{ Html.RenderPartial("ProductCardGrid", productCardModel); }
+            </div>
+        }
+    </div>
+}

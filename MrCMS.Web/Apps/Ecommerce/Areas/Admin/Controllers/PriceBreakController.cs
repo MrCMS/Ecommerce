@@ -24,10 +24,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ForceImmediateLuceneUpdate]
-        public RedirectResult Add(AddPriceBreakModel model)
+        public RedirectToRouteResult Add(AddPriceBreakModel model)
         {
             var priceBreak = _productVariantService.AddPriceBreak(model);
-            return Redirect(priceBreak.ProductVariant.EditUrl);
+            // product is edited by the webpage controller as it is a webpage
+            return RedirectToAction("Edit", "Webpage", new { id = priceBreak.ProductVariant.Product.Id });
         }
 
         public JsonResult IsQuantityValid(int quantity, ProductVariant productVariant)
@@ -49,11 +50,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         [ActionName("Delete")]
         [ForceImmediateLuceneUpdate]
-        public RedirectResult Delete_POST(PriceBreak priceBreak)
+        public RedirectToRouteResult Delete_POST(PriceBreak priceBreak)
         {
             _productVariantService.DeletePriceBreak(priceBreak);
-
-            return Redirect(priceBreak.ProductVariant.EditUrl);
+            // product is edited by the webpage controller as it is a webpage
+            return RedirectToAction("Edit", "Webpage", new { id = priceBreak.ProductVariant.Product.Id });
         }
     }
 }

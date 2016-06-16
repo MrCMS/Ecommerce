@@ -4,9 +4,11 @@ using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Models;
 using MrCMS.Web.Apps.NewsletterBuilder.ActionResults;
+using MrCMS.Web.Apps.NewsletterBuilder.ACL;
 using MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Services;
 using MrCMS.Web.Apps.NewsletterBuilder.Entities;
 using MrCMS.Web.Apps.NewsletterBuilder.Entities.ContentItems;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Controllers
@@ -20,6 +22,7 @@ namespace MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Controllers
             _newsletterAdminService = newsletterAdminService;
         }
 
+        [MrCMSACLRule(typeof(NewsletterACL), NewsletterACL.List)]
         public ViewResult Index()
         {
             List<Newsletter> newsletters = _newsletterAdminService.GetAll().OrderByDescending(x => x.CreatedOn).ToList();
@@ -27,15 +30,14 @@ namespace MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Controllers
         }
 
         // Add
-
-        [HttpGet]
+        [HttpGet, MrCMSACLRule(typeof(NewsletterACL), NewsletterACL.Add)]
         public PartialViewResult Add()
         {
             ViewData["templates"] = _newsletterAdminService.GetTemplateOptions();
             return PartialView();
         }
 
-        [HttpPost]
+        [HttpPost, MrCMSACLRule(typeof(NewsletterACL), NewsletterACL.Add)]
         public RedirectToRouteResult Add(Newsletter newsletter)
         {
             _newsletterAdminService.Add(newsletter);
@@ -43,8 +45,7 @@ namespace MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Controllers
         }
 
         // Edit
-
-        [HttpGet]
+        [HttpGet, MrCMSACLRule(typeof(NewsletterACL), NewsletterACL.Edit)]
         public PartialViewResult Edit(Newsletter newsletter)
         {
             ViewData["templates"] = _newsletterAdminService.GetTemplateOptions();
@@ -52,8 +53,7 @@ namespace MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Controllers
             return PartialView(newsletter);
         }
 
-        [HttpPost]
-        [ActionName("Edit")]
+        [HttpPost, ActionName("Edit"), MrCMSACLRule(typeof(NewsletterACL), NewsletterACL.Edit)]
         public RedirectToRouteResult Edit_POST(Newsletter newsletter)
         {
             _newsletterAdminService.Edit(newsletter);
@@ -61,15 +61,13 @@ namespace MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Controllers
         }
 
         // Delete
-
-        [HttpGet]
+        [HttpGet, MrCMSACLRule(typeof(NewsletterACL), NewsletterACL.Delete)]
         public PartialViewResult Delete(Newsletter newsletter)
         {
             return PartialView(newsletter);
         }
 
-        [HttpPost]
-        [ActionName("Delete")]
+        [HttpPost, ActionName("Delete"), MrCMSACLRule(typeof(NewsletterACL), NewsletterACL.Delete)]
         public RedirectToRouteResult Delete_POST(Newsletter newsletter)
         {
             _newsletterAdminService.Delete(newsletter);

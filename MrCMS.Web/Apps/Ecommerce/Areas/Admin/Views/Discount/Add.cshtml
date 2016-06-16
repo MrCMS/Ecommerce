@@ -5,6 +5,8 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
     var discountTypeOptions = ViewData["discount-type-options"] as List<SelectListItem>;
     Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/discount.js");
+    var requestUrl = HttpContext.Current.Request.Url;
+    var url = string.Format("{0}{1}{2}", requestUrl.Scheme, Uri.SchemeDelimiter, requestUrl.Authority);
 }
 @using (Html.BeginForm("Add", "Discount", FormMethod.Post))
 {
@@ -31,12 +33,33 @@
             @Html.ValidationMessageFor(x => x.ValidUntil)
         </div>
         <div class="form-group">
-            @Html.InlineCheckboxFor(discount => discount.RequiresCode,checkboxAttributes:new{@checked="checked"})
+            @Html.InlineCheckboxFor(discount => discount.RequiresCode, checkboxAttributes: new { @checked = "checked" })
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(x => x.CanBeAppliedFromUrl, checkboxAttributes: new {@checked = "checked"})
+        </div>
+        <div class="form-group from-url-group" data-code-field>
+            <label>@string.Format("This discount can be applied by navigating to {0}/Discount/{{Code}}", url))</label>
         </div>
         <div class="form-group" data-code-field>
             @Html.LabelFor(x => x.Code)
-            @Html.TextBoxFor(x => x.Code, new { @class = "form-control" })
+            @Html.TextBoxFor(x => x.Code, new {@class = "form-control"})
             @Html.ValidationMessageFor(x => x.Code)
         </div>
-    </fieldset>
+        <div class="form-group from-url-group" data-code-field>
+            @Html.LabelFor(x => x.SuccessMessage)
+            @Html.TextBoxFor(x => x.SuccessMessage, new {@class = "form-control"})
+            @Html.ValidationMessageFor(x => x.SuccessMessage)
+        </div>
+        <div class="form-group from-url-group" data-code-field>
+            @Html.LabelFor(x => x.AppliedNotYetValidMessage)
+            @Html.TextBoxFor(x => x.AppliedNotYetValidMessage, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.AppliedNotYetValidMessage)
+        </div>
+        <div class="form-group from-url-group" data-code-field>
+            @Html.LabelFor(x => x.RedirectUrl)
+            @Html.TextBoxFor(x => x.RedirectUrl, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.RedirectUrl)
+        </div>
+</fieldset>
 }

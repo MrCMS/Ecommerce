@@ -83,7 +83,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
             postInfo.postcode = _cart.BillingAddress.PostalCode;
             postInfo.country = _cart.BillingAddress.CountryCode;
 
-            postInfo.address = string.Format("{0}{1}", _cart.BillingAddress.Address1,
+            postInfo.address = string.Format("{0} {1}", _cart.BillingAddress.Address1,
                 _cart.BillingAddress.GetCountryName());
             postInfo.MC_callback = returnUrl;
             postInfo.name = string.Format("{0} {1}", _cart.BillingAddress.FirstName, _cart.BillingAddress.LastName);

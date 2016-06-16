@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
+using MrCMS.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
@@ -8,16 +8,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
     {
         private CheckLimitationsResult()
         {
-            CartItems = new List<CartItem>();
+            CartItems = new HashSet<CartItemData>();
         }
 
-        public List<CartItem> CartItems { get; set; }
+        public HashSet<CartItemData> CartItems { get; set; }
         public string[] Messages { get; private set; }
-        public string FormattedMessage { get { return string.Join(", ", Messages); } }
+
+        public string FormattedMessage
+        {
+            get { return string.Join(", ", Messages); }
+        }
 
         public CheckLimitationsResultStatus Status { get; private set; }
 
-        public bool Success { get { return Status == CheckLimitationsResultStatus.Success; } }
+        public bool Success
+        {
+            get { return Status == CheckLimitationsResultStatus.Success; }
+        }
 
         public static CheckLimitationsResult NeverValid(params string[] messages)
         {
@@ -37,7 +44,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             };
         }
 
-        public static CheckLimitationsResult Successful(IEnumerable<CartItem> applicableItems, params string[] messages)
+        public static CheckLimitationsResult Successful(IEnumerable<CartItemData> applicableItems,
+            params string[] messages)
         {
             var checkLimitationsResult = new CheckLimitationsResult
             {
@@ -59,7 +67,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                         ? CheckLimitationsResultStatus.CurrentlyInvalid
                         : CheckLimitationsResultStatus.Success,
                 Messages = results.SelectMany(x => x.Messages).ToArray(),
-                CartItems = results.SelectMany(x => x.CartItems).Distinct().ToList()
+                CartItems = results.SelectMany(x => x.CartItems).Distinct().ToHashSet()
             };
         }
     }

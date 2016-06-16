@@ -55,8 +55,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                            {
                                typeof (ProductSpecificationAttributeOption),
                                GetActions
+                           },
+                           {
+                               typeof (ProductSpecificationValue),
+                               GetValueActions
                            }
                        };
+        }
+
+        private IEnumerable<LuceneAction> GetValueActions(SystemEntity entity)
+        {
+            var line = entity as ProductSpecificationValue;
+            if (line == null)
+                yield break;
+
+            yield return new LuceneAction
+            {
+                Entity = line.Product.Unproxy(),
+                Operation = LuceneOperation.Update,
+                IndexDefinition = IndexingHelper.Get<ProductSearchIndex>()
+            };
         }
 
         private static IEnumerable<LuceneAction> GetActions(SystemEntity entity)

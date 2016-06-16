@@ -26,10 +26,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
         {
             _cartManager.SetPaymentMethod(PayPalExpressCheckoutPaymentMethod.MethodSystemName);
             _cartManager.SetPayPalExpressPayerId(details.PayerInfo.PayerID);
-            _cartManager.SetBillingAddress(details.BillingAddress.GetAddress());
-
+            SetBillingAddress(details);
             SetEmail(details);
-
             SetShippingAddress(details);
 
             return SetShippingMethod(details);
@@ -58,12 +56,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
             return shippingMethodSet;
         }
 
+        private void SetBillingAddress(GetExpressCheckoutDetailsResponseDetailsType details)
+        {
+            var address = details.BillingAddress.GetAddress();
+            if (address != null)
+            {
+                if (string.IsNullOrWhiteSpace(address.PhoneNumber))
+                    address.PhoneNumber = details.ContactPhone;
+            }
+
+            _cartManager.SetBillingAddress(address);
+        }
+
         private void SetShippingAddress(GetExpressCheckoutDetailsResponseDetailsType details)
         {
             PaymentDetailsType paymentDetails = details.PaymentDetails.FirstOrDefault();
             if (paymentDetails != null)
             {
-                _cartManager.SetShippingAddress(paymentDetails.ShipToAddress.GetAddress());
+                var address = paymentDetails.ShipToAddress.GetAddress();
+                if (string.IsNullOrWhiteSpace(address.PhoneNumber))
+                    address.PhoneNumber = details.ContactPhone;
+
+                _cartManager.SetShippingAddress(address);
             }
         }
 

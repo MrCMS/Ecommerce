@@ -52,7 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
                         RecipientName = giftCardInfo.RecipientName,
                         SenderEmail = giftCardInfo.SenderEmail,
                         SenderName = giftCardInfo.SenderName,
-                        Value = productVariant.Price,
+                        Value = orderLine.Price,
                         OrderLine = orderLine,
                     };
                     orderLine.GiftCards.Add(giftCard);

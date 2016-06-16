@@ -14,7 +14,7 @@ namespace MrCMS.EcommerceApp.Tests.Models.CartModelTests
         {
             var model = new CartModel()
             {
-                Items = new List<CartItem>
+                Items = new List<CartItemData>
                 {
                     new CartItemBuilder().WithPricePreTax(10).Build(),
                     new CartItemBuilder().WithPricePreTax(20).Build(),

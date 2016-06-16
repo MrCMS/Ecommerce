@@ -39,52 +39,43 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                 flatRateShippingOptions[0].ShippingOptionIsDefault = "true";
             }
             var setExpressCheckoutRequestDetailsType = new SetExpressCheckoutRequestDetailsType
-                                                           {
-                                                               ReturnURL = _payPalUrlService.GetReturnURL(),
-                                                               CancelURL = _payPalUrlService.GetCancelURL(),
-                                                               ReqConfirmShipping = _payPalShippingService.GetRequireConfirmedShippingAddress(),
-                                                               NoShipping = _payPalShippingService.GetNoShipping(cart),
-                                                               LocaleCode = _payPalExpressCheckoutSettings.LocaleCode,
-                                                               cppHeaderImage = _payPalExpressCheckoutSettings.LogoImageURL,
-                                                               cppCartBorderColor = _payPalExpressCheckoutSettings.CartBorderColor,
-                                                               PaymentDetails = _payPalOrderService.GetPaymentDetails(cart),
-                                                               BuyerEmail = _payPalOrderService.GetBuyerEmail(cart),
-                                                               MaxAmount = _payPalOrderService.GetMaxAmount(cart),
-                                                               InvoiceID = cart.CartGuid.ToString(),
-                                                               Custom = cart.CartGuid.ToString(),
-                                                               CallbackURL = _payPalUrlService.GetCallbackUrl(),
-                                                               CallbackTimeout = "6",
-                                                               FlatRateShippingOptions = flatRateShippingOptions,
-                                                           };
+            {
+                ReturnURL = _payPalUrlService.GetReturnURL(),
+                CancelURL = _payPalUrlService.GetCancelURL(),
+                ReqConfirmShipping = _payPalShippingService.GetRequireConfirmedShippingAddress(),
+                NoShipping = _payPalShippingService.GetNoShipping(cart),
+                LocaleCode = _payPalExpressCheckoutSettings.LocaleCode,
+                cppHeaderImage = _payPalExpressCheckoutSettings.LogoImageURL,
+                cppCartBorderColor = _payPalExpressCheckoutSettings.CartBorderColor,
+                PaymentDetails = _payPalOrderService.GetPaymentDetails(cart),
+                BuyerEmail = _payPalOrderService.GetBuyerEmail(cart),
+                MaxAmount = _payPalOrderService.GetMaxAmount(cart),
+                InvoiceID = cart.CartGuid.ToString(),
+                Custom = cart.CartGuid.ToString(),
+                CallbackURL = _payPalUrlService.GetCallbackUrl(),
+                CallbackTimeout = "6",
+                FlatRateShippingOptions = flatRateShippingOptions,
+            };
             var setExpressCheckoutRequestType = new SetExpressCheckoutRequestType
-                                                    {
-                                                        SetExpressCheckoutRequestDetails = setExpressCheckoutRequestDetailsType,
-                                                    };
+            {
+                SetExpressCheckoutRequestDetails = setExpressCheckoutRequestDetailsType,
+            };
             return new SetExpressCheckoutReq { SetExpressCheckoutRequest = setExpressCheckoutRequestType };
         }
 
         public GetExpressCheckoutDetailsReq GetGetExpressCheckoutRequest(string token)
         {
             return new GetExpressCheckoutDetailsReq
-                       {
-                           GetExpressCheckoutDetailsRequest = new GetExpressCheckoutDetailsRequestType { Token = token }
-                       };
+            {
+                GetExpressCheckoutDetailsRequest = new GetExpressCheckoutDetailsRequestType { Token = token }
+            };
         }
 
         public DoExpressCheckoutPaymentReq GetDoExpressCheckoutRequest(CartModel cart)
         {
             // populate payment details
-            var paymentDetails = new PaymentDetailsType
-                {
-                    OrderTotal = cart.TotalToPay.GetAmountType(),
-                    ShippingTotal = cart.ShippingTotal.GetAmountType(),
-                    ItemTotal = _payPalOrderService.GetItemTotal(cart),
-                    TaxTotal = cart.ItemTax.GetAmountType(),
-                    Custom = cart.CartGuid.ToString(),
-                    ButtonSource = "Thought_Cart_MrCMS",
-                    InvoiceID = cart.CartGuid.ToString(),
-                    PaymentDetailsItem = _payPalOrderService.GetPaymentDetailsItems(cart)
-                };
+            var paymentDetails = _payPalOrderService.GetPaymentDetails(cart);
+
             // build the request
             return new DoExpressCheckoutPaymentReq
             {
@@ -95,7 +86,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                         Token = cart.PayPalExpressToken,
                         PayerID = cart.PayPalExpressPayerId,
                         PaymentAction = _payPalExpressCheckoutSettings.PaymentAction,
-                        PaymentDetails = new List<PaymentDetailsType> { paymentDetails }
+                        PaymentDetails = paymentDetails
                     }
                 }
             };

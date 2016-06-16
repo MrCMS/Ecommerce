@@ -9,8 +9,6 @@ using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services.ProductReviews;
-using MrCMS.Web.Areas.Admin.Models;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.SqlCommand;
@@ -19,40 +17,57 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 {
     public class ProductReviewAdminService : IProductReviewAdminService
     {
-        private readonly IProductReviewUIService _productReviewUIService;
         private readonly ISession _session;
 
-        public ProductReviewAdminService(IProductReviewUIService productReviewUIService, ISession session)
+        public ProductReviewAdminService(ISession session)
         {
-            _productReviewUIService = productReviewUIService;
             _session = session;
+        }
+
+        public void Update(ProductReview productReview)
+        {
+            _session.Transact(session => session.Update(productReview));
+        }
+
+        public void Delete(ProductReview productReview)
+        {
+            _session.Transact(session => session.Delete(productReview));
         }
 
         public void BulkAction(ReviewUpdateModel model)
         {
-            var currentOperation = model.CurrentOperation;
+            ProductReviewOperation currentOperation = model.CurrentOperation;
 
             switch (currentOperation)
             {
                 case ProductReviewOperation.Approve:
-                    foreach (var item in model.Reviews)
+                    _session.Transact(session =>
                     {
-                        item.Approved = true;
-                        _productReviewUIService.Update(item);
-                    }
+                        foreach (ProductReview item in model.Reviews)
+                        {
+                            item.Approved = true;
+                            Update(item);
+                        }
+                    });
                     break;
                 case ProductReviewOperation.Reject:
-                    foreach (var item in model.Reviews)
+                    _session.Transact(session =>
                     {
-                        item.Approved = false;
-                        _productReviewUIService.Update(item);
-                    }
+                        foreach (ProductReview item in model.Reviews)
+                        {
+                            item.Approved = false;
+                            Update(item);
+                        }
+                    });
                     break;
                 case ProductReviewOperation.Delete:
-                    foreach (var item in model.Reviews)
+                    _session.Transact(session =>
                     {
-                        _productReviewUIService.Delete(item);
-                    }
+                        foreach (ProductReview item in model.Reviews)
+                        {
+                            Delete(item);
+                        }
+                    });
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -61,14 +76,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 
         public List<SelectListItem> GetApprovalOptions()
         {
-            return Enum.GetValues(typeof(ApprovalStatus))
+            return Enum.GetValues(typeof (ApprovalStatus))
                 .Cast<ApprovalStatus>()
                 .BuildSelectItemList(status => status.ToString(), emptyItem: null);
         }
 
         public IPagedList<ProductReview> Search(ProductReviewSearchQuery query)
         {
-            var queryOver = _session.QueryOver<ProductReview>();
+            IQueryOver<ProductReview, ProductReview> queryOver = _session.QueryOver<ProductReview>();
 
             switch (query.ApprovalStatus)
             {
@@ -90,7 +105,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 
                 queryOver = queryOver.JoinAlias(review => review.ProductVariant, () => productVariantAlias)
                     .JoinAlias(() => productVariantAlias.Product, () => productAlias)
-                    .Where(() => productVariantAlias.Name.IsInsensitiveLike(query.ProductName, MatchMode.Anywhere) || productAlias.Name.IsInsensitiveLike(query.ProductName, MatchMode.Anywhere));
+                    .Where(
+                        () =>
+                            productVariantAlias.Name.IsInsensitiveLike(query.ProductName, MatchMode.Anywhere) ||
+                            productAlias.Name.IsInsensitiveLike(query.ProductName, MatchMode.Anywhere));
             }
             if (!string.IsNullOrWhiteSpace(query.Email))
             {
@@ -109,7 +127,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
             if (query.DateTo.HasValue)
                 queryOver = queryOver.Where(review => review.CreatedOn < query.DateTo);
 
-            return queryOver.OrderBy(review => review.Approved).Asc.ThenBy(review => review.CreatedOn).Desc.Paged(query.Page);
+            return
+                queryOver.OrderBy(review => review.Approved)
+                    .Asc.ThenBy(review => review.CreatedOn)
+                    .Desc.Paged(query.Page);
         }
     }
 }

@@ -28,20 +28,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
             if (user != null)
             {
                 productReview.User = user;
-                productReview.Name = user.Name;
-                productReview.Email = user.Email;
             }
             _session.Transact(session => session.Save(productReview));
-        }
-
-        public void Update(ProductReview productReview)
-        {
-            _session.Transact(session => session.Update(productReview));
-        }
-
-        public void Delete(ProductReview productReview)
-        {
-            _session.Transact(session => session.Delete(productReview));
         }
 
         public IPagedList<ProductReview> GetReviewsForVariant(ProductVariant productVariant, int pageNum,

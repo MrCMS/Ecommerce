@@ -14,7 +14,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.Batching;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Newtonsoft.Json;
 using NHibernate;
 using NHibernate.Criterion;
@@ -105,6 +104,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             product.MetaDescription = dataTransferObject.SEODescription;
             product.MetaKeywords = dataTransferObject.SEOKeywords;
             product.ProductAbstract = dataTransferObject.Abstract;
+            product.SearchResultAbstract = dataTransferObject.SearchResultAbstract;
             product.PublishOn = dataTransferObject.PublishDate;
 
             bool isNew = false;

@@ -1,4 +1,4 @@
-using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Models.StockAvailability;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services
@@ -11,7 +11,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         {
             _productStockChecker = productStockChecker;
         }
-        public CanBuyStatus CanBuy(CartItem item)
+
+        public CanBuyStatus CanBuy(CartItemData item)
         {
             var productVariant = item.Item;
             var quantity = item.Quantity;

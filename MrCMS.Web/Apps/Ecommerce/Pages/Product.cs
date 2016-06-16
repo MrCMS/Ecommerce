@@ -27,10 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual MediaCategory Gallery { get; set; }
 
-        public virtual bool IsMultiVariant
-        {
-            get { return Variants.Count > 1; }
-        }
+        public virtual bool IsMultiVariant => Variants.Count > 1;
 
         public virtual IList<ProductVariant> Variants { get; set; }
 
@@ -47,6 +44,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         [DisplayName("Abstract")]
         [StringLength(500, ErrorMessage = "Abstract cannot be longer than 500 characters.")]
         public virtual string ProductAbstract { get; set; }
+
+        [DisplayName("Search Result Abstract"), StringLength(500, ErrorMessage = "Abstract cannot be longer than 500 characters.")]
+        public virtual string SearchResultAbstract { get; set; }
 
         public virtual IEnumerable<MediaFile> Images
         {
@@ -69,46 +69,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             }
         }
 
-        public virtual string EditUrl
-        {
-            get { return "/Admin/Webpage/Edit/" + Id; }
-        }
-
-        [DisplayFormat(DataFormatString = "{0:£0.00}")]
-        public virtual decimal? DisplayPrice
-        {
-            get
-            {
-                if (Variants.Any())
-                {
-                    return Variants.Count == 1
-                        ? Variants.First().Price
-                        : Variants.OrderBy(x => x.Price).First().Price;
-                }
-                return null;
-            }
-        }
-
-        [DisplayFormat(DataFormatString = "{0:£0.00}")]
-        public virtual decimal? DisplayPreviousPrice
-        {
-            get
-            {
-                if (Variants.Any())
-                {
-                    return Variants.Count == 1
-                        ? Variants.First().PreviousPriceIncludingTax
-                        : Variants.OrderBy(x => x.Price).First().PreviousPriceIncludingTax;
-                }
-                return null;
-            }
-        }
-
-        public virtual bool ShowPreviousPrice
-        {
-            get { return DisplayPreviousPrice != null && DisplayPreviousPrice > DisplayPrice; }
-        }
-
         public virtual IList<Product> RelatedProducts { get; set; }
 
 
@@ -123,15 +83,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                 SpecificationValues.FirstOrDefault(
                     value => value.ProductSpecificationAttributeOption.ProductSpecificationAttribute.Name == name);
             return spec == null ? null : spec.Value;
-        }
-
-        public virtual List<SelectListItem> GetVariantOptions(ProductVariant productVariant, bool showName = true,
-            bool showOptionValues = true)
-        {
-            return Variants.BuildSelectItemList(variant => variant.GetSelectOptionName(showName, showOptionValues),
-                variant => variant.Id.ToString(),
-                variant => variant == productVariant,
-                emptyItem: null);
         }
     }
 }

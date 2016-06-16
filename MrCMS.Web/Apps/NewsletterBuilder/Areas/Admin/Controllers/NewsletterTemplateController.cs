@@ -1,7 +1,9 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Web.Apps.NewsletterBuilder.ACL;
 using MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Services;
 using MrCMS.Web.Apps.NewsletterBuilder.Entities;
 using MrCMS.Web.Areas.Admin.Helpers;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Controllers
@@ -15,19 +17,20 @@ namespace MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Controllers
             _newsletterTemplateAdminService = newsletterTemplateAdminService;
         }
 
+        [MrCMSACLRule(typeof(NewsletterTemplateACL), NewsletterTemplateACL.List)]
         public ViewResult Index()
         {
             var newsletterTemplates = _newsletterTemplateAdminService.GetAll();
             return View(newsletterTemplates);
         }
 
-        [HttpGet]
+        [HttpGet, MrCMSACLRule(typeof(NewsletterTemplateACL), NewsletterTemplateACL.Add)]
         public ViewResult Add()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, MrCMSACLRule(typeof(NewsletterTemplateACL), NewsletterTemplateACL.Add)]
         public RedirectToRouteResult Add(NewsletterTemplate newsletterTemplate)
         {
             _newsletterTemplateAdminService.Add(newsletterTemplate);
@@ -35,15 +38,14 @@ namespace MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Controllers
             return RedirectToAction("Edit", new{id = newsletterTemplate.Id});
         }
 
-        [HttpGet]
+        [HttpGet, MrCMSACLRule(typeof(NewsletterTemplateACL), NewsletterTemplateACL.Edit)]
         public ViewResult Edit(NewsletterTemplate newsletterTemplate)
         {
             ViewData["template-data-options"] =_newsletterTemplateAdminService.GetTemplateDataOptions();
             return View(newsletterTemplate);
         }
 
-        [HttpPost]
-        [ActionName("Edit")]
+        [HttpPost, ActionName("Edit"), MrCMSACLRule(typeof(NewsletterTemplateACL), NewsletterTemplateACL.Edit)]
         public RedirectToRouteResult Edit_POST(NewsletterTemplate newsletterTemplate)
         {
             _newsletterTemplateAdminService.Edit(newsletterTemplate);
@@ -51,14 +53,13 @@ namespace MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Controllers
             return RedirectToAction("Edit", new { id = newsletterTemplate.Id });
         }
 
-        [HttpGet]
+        [HttpGet, MrCMSACLRule(typeof(NewsletterTemplateACL), NewsletterTemplateACL.Delete)]
         public ViewResult Delete(NewsletterTemplate newsletterTemplate)
         {
             return View(newsletterTemplate);
         }
 
-        [HttpPost]
-        [ActionName("Delete")]
+        [HttpPost, ActionName("Delete"), MrCMSACLRule(typeof(NewsletterTemplateACL), NewsletterTemplateACL.Delete)]
         public RedirectToRouteResult Delete_POST(NewsletterTemplate newsletterTemplate)
         {
             _newsletterTemplateAdminService.Delete(newsletterTemplate);

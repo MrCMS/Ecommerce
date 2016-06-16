@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Services.Cart;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using PayPal.PayPalAPIInterfaceService.Model;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
@@ -11,12 +12,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
     public class PayPalOrderService : IPayPalOrderService
     {
         private readonly PayPalExpressCheckoutSettings _payPalExpressCheckoutSettings;
-        private readonly ICartDiscountApplicationService _cartDiscountApplicationService;
+        private readonly TaxSettings _taxSettings;
 
-        public PayPalOrderService(PayPalExpressCheckoutSettings payPalExpressCheckoutSettings, ICartDiscountApplicationService cartDiscountApplicationService)
+        public PayPalOrderService(PayPalExpressCheckoutSettings payPalExpressCheckoutSettings, TaxSettings taxSettings)
         {
             _payPalExpressCheckoutSettings = payPalExpressCheckoutSettings;
-            _cartDiscountApplicationService = cartDiscountApplicationService;
+            _taxSettings = taxSettings;
         }
 
         public List<PaymentDetailsType> GetPaymentDetails(CartModel cart)
@@ -28,7 +29,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                 PaymentAction = _payPalExpressCheckoutSettings.PaymentAction,
                 OrderTotal = cart.GetCartTotalForPayPal().GetAmountType(),
                 TaxTotal = cart.GetCartTaxForPayPal().GetAmountType(),
-                ShippingTotal = cart.GetShippingTotalForPayPal().GetAmountType()
+                ShippingTotal = cart.GetShippingTotalForPayPal().GetAmountType(),
+                ButtonSource = "Thought_Cart_MrCMS"
             };
 
 
@@ -40,39 +42,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public List<PaymentDetailsItemType> GetPaymentDetailsItems(CartModel cart)
         {
-            var paymentDetailsItemTypes = cart.Items.Select(item => new PaymentDetailsItemType
+            var paymentDetailsItemTypes = GetCartItemPaymentDetailsItemTypes(cart);
+
+            if (cart.OrderTotalDiscount > 0)
             {
-                Name = item.Name,
-                Amount = item.UnitPricePreTax.GetAmountType(),
-                ItemCategory = item.RequiresShipping ? ItemCategoryType.PHYSICAL : ItemCategoryType.DIGITAL,
-                Quantity = item.Quantity,
-                Tax = item.UnitTax.GetAmountType(),
-            }).ToList();
-            var applications = (from discountInfo in cart.Discounts
-                                let info = _cartDiscountApplicationService.ApplyDiscount(discountInfo, cart)
-                                select new { info, discountInfo }).ToHashSet();
-            paymentDetailsItemTypes.AddRange(from application in applications
+                paymentDetailsItemTypes.Add(new PaymentDetailsItemType
+                {
+                    Name = "Order Discount",
+                    Amount = (-cart.OrderTotalDiscount).GetAmountType(),
+                    ItemCategory = ItemCategoryType.PHYSICAL,
+                    Quantity = 1,
+                    Tax = 0m.GetAmountType()
+                });
+            }
 
-                                             where application.info.OrderTotalDiscount > 0
-                                             select new PaymentDetailsItemType
-                                             {
-                                                 Name = "Order Total Discount - " + application.discountInfo.Discount.Name,
-                                                 Amount = (-application.info.OrderTotalDiscount).GetAmountType(),
-                                                 ItemCategory = ItemCategoryType.PHYSICAL,
-                                                 Quantity = 1,
-                                                 Tax = 0m.GetAmountType()
-                                             });
-
-            paymentDetailsItemTypes.AddRange(from application in applications
-                                             where application.info.ShippingDiscount > 0
-                                             select new PaymentDetailsItemType
-                                             {
-                                                 Name = "Shipping Discount - " + application.discountInfo.Discount.Name,
-                                                 Amount = (-application.info.ShippingDiscount).GetAmountType(),
-                                                 ItemCategory = ItemCategoryType.PHYSICAL,
-                                                 Quantity = 1,
-                                                 Tax = 0m.GetAmountType()
-                                             });
+            if (cart.ShippingDiscount > 0)
+            {
+                paymentDetailsItemTypes.Add(new PaymentDetailsItemType
+                {
+                    Name = "Shipping Discount",
+                    Amount = (-cart.ShippingDiscount).GetAmountType(),
+                    ItemCategory = ItemCategoryType.PHYSICAL,
+                    Quantity = 1,
+                    Tax = 0m.GetAmountType()
+                });
+            }
 
             paymentDetailsItemTypes.AddRange(from giftCard in cart.AppliedGiftCards
                                              where giftCard.AvailableAmount > 0
@@ -95,6 +89,37 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                     Tax = 0m.GetAmountType()
                 });
 
+            return paymentDetailsItemTypes;
+        }
+
+        private List<PaymentDetailsItemType> GetCartItemPaymentDetailsItemTypes(CartModel cart)
+        {
+            List<PaymentDetailsItemType> paymentDetailsItemTypes = new List<PaymentDetailsItemType>();
+            switch (_taxSettings.TaxCalculationMethod)
+            {
+                case TaxCalculationMethod.Individual:
+                    paymentDetailsItemTypes.AddRange(cart.Items.Select(item => new PaymentDetailsItemType
+                    {
+                        Name = item.Name,
+                        Amount = item.UnitPricePreTax.GetAmountType(),
+                        ItemCategory = item.RequiresShipping ? ItemCategoryType.PHYSICAL : ItemCategoryType.DIGITAL,
+                        Quantity = item.Quantity,
+                        Tax = item.UnitTax.GetAmountType(),
+                    }));
+                    break;
+                case TaxCalculationMethod.Row:
+                    paymentDetailsItemTypes.AddRange(cart.Items.Select(item => new PaymentDetailsItemType
+                    {
+                        Name = item.Name + " x" + item.Quantity,
+                        Amount = item.PricePreTax.GetAmountType(),
+                        ItemCategory = item.RequiresShipping ? ItemCategoryType.PHYSICAL : ItemCategoryType.DIGITAL,
+                        Quantity = 1,
+                        Tax = item.Tax.GetAmountType(),
+                    }));
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             return paymentDetailsItemTypes;
         }
 

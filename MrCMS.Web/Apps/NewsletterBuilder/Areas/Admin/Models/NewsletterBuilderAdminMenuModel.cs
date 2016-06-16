@@ -1,6 +1,8 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Helpers;
 using MrCMS.Models;
 using MrCMS.Web.Apps.NewsletterBuilder.ACL;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Models
 {
@@ -14,35 +16,20 @@ namespace MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Models
             _urlHelper = urlHelper;
         }
 
-        public string Text
-        {
-            get { return "Newsletter Builder"; }
-        }
+        public string Text => "Newsletter Builder";
 
-        public string IconClass
-        {
-            get { return "fa fa-envelope-o"; }
-        }
+        public string IconClass => "fa fa-envelope-o";
 
-        public string Url
-        {
-            get { return "#"; }
-        }
+        public string Url => "#";
 
-        public bool CanShow
-        {
-            get { return true; }
-        }
+        public bool CanShow => CurrentRequestData.CurrentUser.CanAccess<NewsletterBuilderAdminMenuACL>(NewsletterBuilderAdminMenuACL.ShowMenu);
 
         public SubMenu Children
         {
             get { return _children = _children ?? GetChildren(); }
         }
 
-        public int DisplayOrder
-        {
-            get { return 60; }
-        }
+        public int DisplayOrder => 60;
 
         private SubMenu GetChildren()
         {

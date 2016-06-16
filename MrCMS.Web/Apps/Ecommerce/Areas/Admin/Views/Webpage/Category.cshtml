@@ -2,7 +2,7 @@
 @using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Pages.Category
 <div class="row">
-    <div class="col-lg-3">
+    <div class="col-lg-6">
         <div class="form-group">
             @Html.LabelFor(webpage => webpage.FeatureImage)<br />
             @Html.TextBoxFor(webpage => webpage.FeatureImage, new { @class = "media-selector" })
@@ -11,7 +11,7 @@
             @Html.InlineCheckboxFor(x => x.ShowSubCategories)
         </div>
     </div>
-    <div class="col-lg-9">
+    <div class="col-lg-6">
         <div class="form-group">
             @Html.LabelFor(category => category.CategoryAbstract)
             @Html.TextAreaFor(category => category.CategoryAbstract, new { rows = 4, @class = "form-control" })

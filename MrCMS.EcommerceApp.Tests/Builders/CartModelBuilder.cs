@@ -15,7 +15,7 @@ namespace MrCMS.EcommerceApp.Tests.Builders
         private decimal? _totalPreShipping;
         private decimal? _weight;
         private string _shippingAddressCountry;
-        private readonly List<CartItem> _items = new List<CartItem>();
+        private readonly List<CartItemData> _items = new List<CartItemData>();
        
 
         private decimal? _shippableCalculationTotal;
@@ -45,7 +45,7 @@ namespace MrCMS.EcommerceApp.Tests.Builders
             return this;
         }
 
-        public CartModelBuilder WithItems(params CartItem[] items)
+        public CartModelBuilder WithItems(params CartItemData[] items)
         {
             _items.Clear();
             items.ForEach(info => _items.Add(info));

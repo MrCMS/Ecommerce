@@ -1,5 +1,4 @@
 ﻿using MrCMS.DbConfiguration.Mapping;
-using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
@@ -8,18 +7,23 @@ namespace MrCMS.EcommerceApp.Tests.Builders
     public class CartItemBuilder
     {
         private bool? _canBuy;
+        private decimal _discountAmount;
+        private decimal _discountPercentage;
+        private decimal? _pricePreTax;
         private int _quantity = 1;
+        private decimal? _tax;
         private ProductVariant _variant = new ProductVariant();
-        private decimal? _pricePreTax = null;
-        private decimal? _tax = null;
 
-        public CartItem Build()
+        public CartItemData Build()
         {
-            return new TestableCartItem(_canBuy, _pricePreTax, _tax)
-                       {
-                           Quantity = _quantity,
-                           Item = _variant
-                       };
+            var testableCartItem = new TestableCartItem(_canBuy, _pricePreTax, _tax)
+            {
+                Quantity = _quantity,
+                Item = _variant
+            };
+            testableCartItem.SetDiscountAmount(_discountAmount);
+            testableCartItem.SetDiscountPercentage(_discountPercentage);
+            return testableCartItem;
         }
 
         public CartItemBuilder WithItem(ProductVariant variant)
@@ -57,10 +61,22 @@ namespace MrCMS.EcommerceApp.Tests.Builders
             _canBuy = false;
             return this;
         }
+
+        public CartItemBuilder WithDiscountAmount(decimal discountAmount)
+        {
+            _discountAmount = discountAmount;
+            return this;
+        }
+
+        public CartItemBuilder WithDiscountPercentage(decimal discountPercentage)
+        {
+            _discountPercentage = discountPercentage;
+            return this;
+        }
     }
 
     [DoNotMap]
-    public class TestableCartItem : CartItem
+    public class TestableCartItem : CartItemData
     {
         private readonly bool? _canBuy;
         private readonly decimal? _pricePreTax;

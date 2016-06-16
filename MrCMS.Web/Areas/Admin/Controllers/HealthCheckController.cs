@@ -1,12 +1,12 @@
-using System;
 using System.Web.Mvc;
+using MrCMS.ACL.Rules;
 using MrCMS.HealthChecks;
-using MrCMS.Web.Areas.Admin.Helpers;
 using MrCMS.Web.Areas.Admin.ModelBinders;
+using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Web.Areas.Admin.Services.Dashboard;
+using MrCMS.Website;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
-using NHibernate;
 
 namespace MrCMS.Web.Areas.Admin.Controllers
 {
@@ -20,6 +20,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         }
 
         [DashboardAreaAction(DashboardArea = DashboardArea.RightColumn, Order = 100)]
+        [MrCMSACLRule(typeof(HealthChecksACL), HealthChecksACL.Show)]
         public PartialViewResult List()
         {
             return PartialView(_healthCheckService.GetHealthChecks());

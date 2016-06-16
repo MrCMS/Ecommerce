@@ -7,6 +7,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
     public interface IGetCartItemBasedApplicationProducts
     {
-        HashSet<CartItem> Get(CartItemBasedDiscountApplication application, CartModel cart);
+        HashSet<CartItemData> Get(CartItemBasedDiscountApplication application, CartModel cart);
     }
 }

@@ -1,9 +1,11 @@
+using System.Web;
 using MrCMS.DbConfiguration;
 using MrCMS.Helpers;
 using MrCMS.Settings;
 using MrCMS.Website;
 using NHibernate;
 using Ninject;
+using Ninject.Activation;
 using Ninject.Modules;
 using Ninject.Web.Common;
 
@@ -11,12 +13,20 @@ namespace MrCMS.IoC.Modules
 {
     public class NHibernateModule : NinjectModule
     {
-        private readonly bool _cacheEnabled = true;
-        private NHibernateConfigurator _configurator;
+        internal const string ModuleName = "MrCMS-NHibernate-Module";
 
-        public NHibernateModule(bool cacheEnabled = true)
+        public override string Name
+        {
+            get { return ModuleName; }
+        }
+
+        private readonly bool _cacheEnabled;
+        private readonly bool _forWebsite;
+
+        public NHibernateModule(bool forWebsite = true, bool cacheEnabled = true)
         {
             _cacheEnabled = cacheEnabled;
+            _forWebsite = forWebsite;
         }
 
         public override void Load()
@@ -33,20 +43,50 @@ namespace MrCMS.IoC.Modules
                 }
                 return null;
             });
-            _configurator = _configurator ?? new NHibernateConfigurator(Kernel.Get<IDatabaseProvider>());
-            _configurator.CacheEnabled = _cacheEnabled;
 
             Kernel.Bind<ISessionFactory>()
                 .ToMethod(
-                    context => _configurator.CreateSessionFactory())
+                    context =>
+                    {
+                        var configurator = new NHibernateConfigurator(context.Kernel.Get<IDatabaseProvider>())
+                        {
+                            CacheEnabled = _cacheEnabled
+                        };
+                        return configurator.CreateSessionFactory();
+                    })
                 .InSingletonScope();
 
-            Kernel.Bind<ISession>().ToMethod(
-                context =>
-                     context.Kernel.Get<ISessionFactory>().OpenFilteredSession()).InRequestScope();
-
+            if (_forWebsite)
+            {
+                Kernel.Bind<ISession>().ToMethod(GetSession).InRequestScope();
+            }
+            else
+            {
+                Kernel.Bind<ISession>().ToMethod(GetSession).InThreadScope();
+            }
             Kernel.Bind<IStatelessSession>()
                 .ToMethod(context => context.Kernel.Get<ISessionFactory>().OpenStatelessSession()).InRequestScope();
+        }
+
+        public override void Unload()
+        {
+            Kernel.Unbind<IDatabaseProvider>();
+            Kernel.Unbind<ISessionFactory>();
+            Kernel.Unbind<ISession>();
+            Kernel.Unbind<IStatelessSession>();
+        }
+
+        private static ISession GetSession(IContext context)
+        {
+            HttpContextBase httpContext = null;
+            try
+            {
+                httpContext = context.Kernel.Get<HttpContextBase>();
+            }
+            catch
+            {
+            }
+            return context.Kernel.Get<ISessionFactory>().OpenFilteredSession(httpContext);
         }
     }
 }

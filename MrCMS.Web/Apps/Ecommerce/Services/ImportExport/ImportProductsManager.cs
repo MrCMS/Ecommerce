@@ -31,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             Dictionary<string, List<string>> businessLogicErrors =
                 _importProductsValidationService.ValidateBusinessLogic(productsToImport);
             if (businessLogicErrors.Any())
-                ImportProductsResult.Failure(GetErrors(businessLogicErrors));
+              return ImportProductsResult.Failure(GetErrors(businessLogicErrors));
             Batch batch = _importProductsService.CreateBatch(productsToImport);
             return ImportProductsResult.Successful(batch);
         }

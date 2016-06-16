@@ -1,0 +1,17 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Entities.Users
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model UserAccountEditAddress
+@{
+    var address = ViewData["address"] as Address;
+}
+
+<h1>@Editable(Model, page => page.Name)</h1>
+@Editable(Model, page => page.BodyContent)
+
+<a href="@(UniquePageHelper.GetUrl<UserAccountAddresses>())" class="btn btn-default margin-top-10 margin-bottom-10">@Resource("Back")</a>
+
+@if (address != null)
+{
+    Html.RenderPartial("Edit", address);
+}

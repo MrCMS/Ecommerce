@@ -4,50 +4,61 @@ using MrCMS.Web.Apps.Ecommerce.Helpers.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using System.Linq;
+using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
+using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 {
-    public interface ISetTaxDetails
-    {
-        void SetOrderLinesTaxes(ref Order order);
-        void SetShippingTaxes(ref Order order);
-    }
     public class SetTaxDetails : ISetTaxDetails
     {
         private readonly AmazonSyncSettings _amazonSyncSettings;
         private readonly TaxSettings _taxSettings;
+        private readonly ISession _session;
         private readonly ITaxRateManager _taxRateManager;
+        //private readonly IProductPricingMethod _productPricingMethod;
+        private readonly IProductVariantService _productVariantService;
+        private readonly IGetProductVariantTaxRatePercentage _getProductVariantTaxRatePercentage;
 
-        public SetTaxDetails(AmazonSyncSettings amazonSyncSettings, TaxSettings taxSettings, 
-            ITaxRateManager taxRateManager)
+        public SetTaxDetails(AmazonSyncSettings amazonSyncSettings, TaxSettings taxSettings, ISession session,
+            ITaxRateManager taxRateManager, IProductVariantService productVariantService, IGetProductVariantTaxRatePercentage getProductVariantTaxRatePercentage)
         {
             _amazonSyncSettings = amazonSyncSettings;
             _taxSettings = taxSettings;
+            _session = session;
             _taxRateManager = taxRateManager;
+            //_productPricingMethod = productPricingMethod;
+            _productVariantService = productVariantService;
+            _getProductVariantTaxRatePercentage = getProductVariantTaxRatePercentage;
         }
 
         public void SetOrderLinesTaxes(ref Order order)
         {
             foreach (var orderLine in order.OrderLines)
             {
-                var taxRate = _taxRateManager.GetRateForOrderLine(orderLine);
+                var productVariant = _productVariantService.GetProductVariantBySKU(orderLine.SKU);
 
-                if (taxRate == null) continue;
+                var getDefaultTaxRate = new GetDefaultTaxRate(_session);
+                var productPricingMethod = new ProductPricingMethod(new TaxSettings
+                {
+                    PriceLoadingMethod = PriceLoadingMethod.IncludingTax,
+                    TaxCalculationMethod = TaxCalculationMethod.Individual,
+                    TaxesEnabled = true
+                }, getDefaultTaxRate);
 
-                var tax = orderLine.UnitPrice.ProductTax(taxRate.Percentage);
-                                                                       //new TaxSettings
-                                                                       //    {
-                                                                       //        TaxesEnabled = true,
-                                                                       //        LoadedPricesIncludeTax =true
-                                                                       //    });
-                //var tax = taxAwareProductPrice.Tax.GetValueOrDefault();
+                var taxRate = productVariant == null || productVariant.TaxRate == null
+                    ? getDefaultTaxRate.Get()
+                    : productVariant.TaxRate;
+                var taxRatePercentage = taxRate == null ? 0 : taxRate.Percentage;
+                var tax = productPricingMethod.GetTax(orderLine.UnitPrice, taxRatePercentage, 0m, 0m);
+
                 orderLine.UnitPricePreTax = orderLine.UnitPrice - tax;
-                orderLine.PricePreTax = orderLine.UnitPricePreTax*orderLine.Quantity;
+                orderLine.PricePreTax = orderLine.UnitPricePreTax * orderLine.Quantity;
                 orderLine.Tax = orderLine.Price - orderLine.PricePreTax;
-                orderLine.TaxRate = taxRate.Percentage;
+                orderLine.TaxRate = _getProductVariantTaxRatePercentage.GetTaxRatePercentage(productVariant);
 
             }
-            order.Subtotal = order.OrderLines.Sum(line => line.UnitPricePreTax*line.Quantity);
+            order.Subtotal = order.OrderLines.Sum(line => line.UnitPricePreTax * line.Quantity);
             order.Tax = order.OrderLines.Sum(line => line.Tax);
         }
 

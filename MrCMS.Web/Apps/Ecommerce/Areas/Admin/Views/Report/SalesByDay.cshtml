@@ -1,10 +1,9 @@
 ﻿@using System.Web.Mvc.Html
 @using MrCMS.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Models.ChartModel
+@model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.SalesByDayViewModel
 @{
     ViewBag.Title = "Sales by day";
 }
-
 <fieldset>
     <legend>
         Sales by day
@@ -19,7 +18,6 @@
                     @Html.TextBoxFor(x => x.From, new { @class = "form-control date-time-picker" })
                 </div>
             </div>
-
             <div class="col-lg-6">
                 <div class="form-group">
                     @Html.LabelFor(x => x.To)
@@ -41,7 +39,30 @@
         </div>
     </div>
 </fieldset>
-
+<table class="table table-bordered table-hover table-condensed">
+    <tr>
+        <th><b>Date</b></th>
+        <th><b># Orders</b></th>
+        <th><b># Items Sold</b></th>
+        <th><b>Sum of Revenue</b></th>
+    </tr>
+    @{
+        foreach (var sales in Model.Sales)
+        {
+            <tr>
+                <td>@sales.Date.ToShortDateString()</td>
+                <td>@sales.OrdersCount</td>
+                <td>@sales.OrderItemsCount</td>
+                <td>£@sales.TotalRevenue.ToString("#.##")</td>
+            </tr>
+        }
+        <tr>
+            <td>&nbsp;</td>
+            <td><b>@Model.Sales.Sum(s => s.OrdersCount)</b></td>
+            <td><b>@Model.Sales.Sum(s => s.OrderItemsCount)</b></td>
+            <td><b>£@Model.Sales.Sum(s => s.TotalRevenue).ToString("#.##")</b></td>
+        </tr>
+    }
+</table>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/sales-by-day.js"); }
-@{ Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/reports.css"); }

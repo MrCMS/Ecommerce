@@ -6,7 +6,7 @@ using FluentAssertions;
 
 namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
 {
-    public class AvailabilityTests
+    public class AvailabilityTests : MrCMSTest
     {
         [Fact]
         public void Product_Availability_IfPublishDateNotSetShouldBeOnPreOrder()

@@ -8,6 +8,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 {
     public interface IProductReviewAdminService
     {
+        void Update(ProductReview productReview);
+        void Delete(ProductReview productReview);
+
         void BulkAction(ReviewUpdateModel model);
 
         List<SelectListItem> GetApprovalOptions();

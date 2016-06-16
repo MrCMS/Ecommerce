@@ -1,15 +1,18 @@
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.EcommerceApp.Tests.Builders
 {
     public class ProductVariantBuilder : IEntityBuilder<ProductVariant>
     {
-        private int _stockRemaining = 100;
-        private TrackingPolicy _trackingPolicy = TrackingPolicy.Track;
+        private decimal _basePrice;
         private bool _hasRestrictedShipping;
         private string[] _restrictedTo = new string[0];
+        private int _stockRemaining = 100;
+        private decimal _taxRatePercentage;
+        private TrackingPolicy _trackingPolicy = TrackingPolicy.Track;
 
         public ProductVariant Build()
         {
@@ -18,13 +21,27 @@ namespace MrCMS.EcommerceApp.Tests.Builders
                 TrackingPolicy = _trackingPolicy,
                 StockRemaining = _stockRemaining,
                 HasRestrictedShipping = _hasRestrictedShipping,
-                RestrictedTo = _restrictedTo.ToHashSet()
+                RestrictedTo = _restrictedTo.ToHashSet(),
+                BasePrice = _basePrice,
+                TaxRate = new TaxRate {Percentage = _taxRatePercentage}
             };
         }
 
         public ProductVariantBuilder DoNotTrackStock()
         {
             _trackingPolicy = TrackingPolicy.DontTrack;
+            return this;
+        }
+
+        public ProductVariantBuilder WithBasePrice(decimal basePrice)
+        {
+            _basePrice = basePrice;
+            return this;
+        }
+
+        public ProductVariantBuilder WithTaxPercentage(decimal taxRatePercentage)
+        {
+            _taxRatePercentage = taxRatePercentage;
             return this;
         }
 

@@ -39,6 +39,8 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
                                                                  });
             mapping.Map(order => order.HttpData).MakeVarCharMax();
             mapping.Map(order => order.GiftMessage).MakeVarCharMax();
+            mapping.Map(x => x.SalesChannel).Index("IX_Order_SalesChannel");
+            mapping.Map(x => x.AnalyticsSent).Not.Nullable().Default("1");
         }
     }
 }

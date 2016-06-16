@@ -1,9 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using MrCMS.DbConfiguration;
 using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using MrCMS.Paging;
+using MrCMS.Settings;
 using MrCMS.Tasks;
+using MrCMS.Tasks.Entities;
+using MrCMS.Web.Areas.Admin.Models;
 using NHibernate;
 
 namespace MrCMS.Web.Areas.Admin.Services
@@ -11,44 +15,52 @@ namespace MrCMS.Web.Areas.Admin.Services
     public class TaskAdminService : ITaskAdminService
     {
         private readonly ISession _session;
-        private readonly Site _site;
+        private readonly ITaskSettingManager _taskSettingManager;
 
-        public TaskAdminService(ISession session, Site site)
+        public TaskAdminService(ISession session,ITaskSettingManager taskSettingManager)
         {
             _session = session;
-            _site = site;
+            _taskSettingManager = taskSettingManager;
         }
 
-        public List<ScheduledTask> GetAllScheduledTasks()
+        public List<TaskInfo> GetAllScheduledTasks()
         {
-            return _session.QueryOver<ScheduledTask>()
-                .Where(task => task.Site.Id == _site.Id)
-                .Cacheable()
-                .List()
-                .ToList();
+            return _taskSettingManager.GetInfo().OrderBy(x => x.Name).ToList();
+        }
+
+        public TaskUpdateData GetTaskUpdateData(string type)
+        {
+            var info = GetAllScheduledTasks().FirstOrDefault(x => x.TypeName == type);
+
+            return info == null
+                ? null
+                : new TaskUpdateData
+                {
+                    Enabled = info.Enabled,
+                    TypeName = info.TypeName,
+                    FrequencyInSeconds = info.FrequencyInSeconds,
+                    Name = info.Name
+                };
         }
 
         public IPagedList<QueuedTask> GetQueuedTasks(QueuedTaskSearchQuery searchQuery)
         {
-            return _session.QueryOver<QueuedTask>()
-                .Where(task => task.Site.Id == _site.Id)
-                .OrderBy(task => task.CreatedOn)
-                .Desc.Paged(searchQuery.Page);
+            using (new SiteFilterDisabler(_session))
+            {
+                return _session.QueryOver<QueuedTask>()
+                    .OrderBy(task => task.CreatedOn).Desc
+                    .Paged(searchQuery.Page);
+            }
         }
 
-        public void Add(ScheduledTask scheduledTask)
+        public void Update(TaskUpdateData info)
         {
-            _session.Transact(session => session.Save(scheduledTask));
+            _taskSettingManager.Update(info.Type, info.Enabled, info.FrequencyInSeconds);
         }
 
-        public void Update(ScheduledTask scheduledTask)
+        public void Reset(TaskUpdateData info)
         {
-            _session.Transact(session => session.Update(scheduledTask));
-        }
-
-        public void Delete(ScheduledTask scheduledTask)
-        {
-            _session.Transact(session => session.Delete(scheduledTask));
+            _taskSettingManager.Reset(info.Type, true);
         }
     }
 }

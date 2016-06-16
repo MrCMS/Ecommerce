@@ -7,6 +7,7 @@ using MrCMS.Web.Apps.Ecommerce.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Apps.Ecommerce.Services.Search;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Controllers
@@ -23,6 +24,7 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
             _productSearchIndexService = A.Fake<IProductSearchIndexService>();
             _cartModel = new CartModel();
             _htmlCacheService = A.Fake<IHtmlCacheService>();
+            Kernel.Rebind<IGetProductSearchView>().ToConstant(A.Fake<IGetProductSearchView>());
             _controller = new ProductSearchController(_productSearchIndexService, _cartModel,
                 _htmlCacheService)
             {

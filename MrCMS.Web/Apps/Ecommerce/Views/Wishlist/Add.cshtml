@@ -6,8 +6,8 @@
 @{
     if (enabled)
     {
-    <div data-add-to-wishlist="@Model.Id">
-        @if (!inWishlist)
+        <div data-add-to-wishlist="@Model.Id" class="padding-bottom-20">
+            @if (!inWishlist)
         {
             using (Html.BeginForm("Add", "Wishlist", new { Model.Id }, FormMethod.Post, new { data_wishlist_action = "add", @class = "margin-bottom-5" }))
             {
@@ -21,7 +21,7 @@
                 <input type="submit" class="btn btn-warning btn-sm" value="@Resource("Remove from wishlist")" />
             }
         }
-    </div>
+        </div>
     }
 }
 

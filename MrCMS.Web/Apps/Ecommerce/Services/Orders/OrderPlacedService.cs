@@ -63,5 +63,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             _session.Transact(session => session.Update(order));
             return new RegisterAndAssociateOrderResult();
         }
+
+        public bool UpdateAnalytics(Order order)
+        {
+            if (order.AnalyticsSent)
+                return false;
+            
+            order.AnalyticsSent = true;
+            _session.Transact(session => session.Update(order));
+
+            return true;
+        }
     }
 }

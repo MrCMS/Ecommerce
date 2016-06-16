@@ -22,6 +22,8 @@ namespace MrCMS.Web.Apps.Amazon.DbConfiguration
                 part.Map(data => data.StateProvince).Column("ShippingStateProvince");
                 part.Map(data => data.Title).Column("ShippingTitle");
             });
+
+            mapping.Map(x => x.Status).Index("IX_AmazonOrder_AmazonOrderStatus");
         }
     }
 }

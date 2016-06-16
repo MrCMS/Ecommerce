@@ -14,11 +14,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
     {
         private readonly ISession _session;
         private readonly ICartBuilder _cartBuilder;
+        private readonly IGetExistingCartItem _getExistingCartItem;
 
-        public CopyCartToUser(ISession session, ICartBuilder cartBuilder)
+        public CopyCartToUser(ISession session, ICartBuilder cartBuilder, IGetExistingCartItem getExistingCartItem)
         {
             _session = session;
             _cartBuilder = cartBuilder;
+            _getExistingCartItem = getExistingCartItem;
         }
 
         private void UserLoggedIn(User user, Guid previousSession)
@@ -30,25 +32,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
             {
                 foreach (var item in itemsToCopy)
                 {
-                    var existingItem =
-                        cart.Items.FirstOrDefault(
-                            cartItem => cartItem.Item.SKU == item.Item.SKU);
-                    if (existingItem != null)
-                        existingItem.Quantity += item.Quantity;
+                    var cartItem = _getExistingCartItem.GetExistingItem(cart, item.Item, item.Data);
+                    if (cartItem != null)
+                        cartItem.Quantity += item.Quantity;
                     else
                     {
-                        existingItem = new CartItem
+                        cartItem = new CartItem
                         {
                             Item = item.Item,
                             Quantity = item.Quantity,
                             UserGuid = CurrentRequestData.UserGuid
                         };
-                        cart.Items.Add(existingItem);
+                        cart.Items.Add(cartItem.GetCartItemData());
                     }
-                    session.SaveOrUpdate(existingItem);
+                    session.SaveOrUpdate(cartItem);
                     session.Delete(item);
                 }
-
             });
         }
 

@@ -39,59 +39,59 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase
         [DisplayName("Age Group")]
         public virtual AgeGroup AgeGroup { get; set; }
 
-        //Attributes
-        public virtual string Material
-        {
-            get
-            {
-                if (ProductVariant.OptionValues != null && ProductVariant.OptionValues.Any())
-                {
-                    var optionValue = ProductVariant.OptionValues.SingleOrDefault(x => x.ProductOption.Name == "Material");
-                    if (optionValue != null)
-                        return optionValue.Value;
-                }
-                return string.Empty;
-            }
-        }
-        public virtual string Pattern
-        {
-            get
-            {
-                if (ProductVariant.OptionValues != null && ProductVariant.OptionValues.Any())
-                {
-                    var optionValue = ProductVariant.OptionValues.SingleOrDefault(x => x.ProductOption.Name == "Pattern");
-                    if (optionValue != null)
-                        return optionValue.Value;
-                }
-                return string.Empty;
-            }
-        }
-        public virtual string Color
-        {
-            get
-            {
-                if (ProductVariant.OptionValues != null && ProductVariant.OptionValues.Any())
-                {
-                    var optionValue = ProductVariant.OptionValues.SingleOrDefault(x => x.ProductOption.Name == "Color" || x.ProductOption.Name == "Colour");
-                    if (optionValue != null)
-                        return optionValue.Value;
-                }
-                return string.Empty;
-            }
-        }
-        public virtual string Size
-        {
-            get
-            {
-                if (ProductVariant.OptionValues != null && ProductVariant.OptionValues.Any())
-                {
-                    var optionValue = ProductVariant.OptionValues.SingleOrDefault(x => x.ProductOption.Name == "Size");
-                    if (optionValue != null)
-                        return optionValue.Value;
-                }
-                return string.Empty;
-            }
-        }
+        ////Attributes
+        //public virtual string Material
+        //{
+        //    get
+        //    {
+        //        if (ProductVariant.OptionValues != null && ProductVariant.OptionValues.Any())
+        //        {
+        //            var optionValue = ProductVariant.OptionValues.SingleOrDefault(x => x.ProductOption.Name == "Material");
+        //            if (optionValue != null)
+        //                return optionValue.Value;
+        //        }
+        //        return string.Empty;
+        //    }
+        //}
+        //public virtual string Pattern
+        //{
+        //    get
+        //    {
+        //        if (ProductVariant.OptionValues != null && ProductVariant.OptionValues.Any())
+        //        {
+        //            var optionValue = ProductVariant.OptionValues.SingleOrDefault(x => x.ProductOption.Name == "Pattern");
+        //            if (optionValue != null)
+        //                return optionValue.Value;
+        //        }
+        //        return string.Empty;
+        //    }
+        //}
+        //public virtual string Color
+        //{
+        //    get
+        //    {
+        //        if (ProductVariant.OptionValues != null && ProductVariant.OptionValues.Any())
+        //        {
+        //            var optionValue = ProductVariant.OptionValues.SingleOrDefault(x => x.ProductOption.Name == "Color" || x.ProductOption.Name == "Colour");
+        //            if (optionValue != null)
+        //                return optionValue.Value;
+        //        }
+        //        return string.Empty;
+        //    }
+        //}
+        //public virtual string Size
+        //{
+        //    get
+        //    {
+        //        if (ProductVariant.OptionValues != null && ProductVariant.OptionValues.Any())
+        //        {
+        //            var optionValue = ProductVariant.OptionValues.SingleOrDefault(x => x.ProductOption.Name == "Size");
+        //            if (optionValue != null)
+        //                return optionValue.Value;
+        //        }
+        //        return string.Empty;
+        //    }
+        //}
 
         //AdWords
         [DisplayName("AdWords Grouping")]

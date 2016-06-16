@@ -228,10 +228,35 @@
 
 
 })(jQuery);
+var MrCMSFeatherlightSettings = {
+    type: 'iframe',
+    iframeWidth: 800,
+    afterOpen: function () {
+        setCloseButtonPosition(this.$instance);
+    },
+    beforeOpen: function () {
+        $(".mrcms-edit-menu", document).hide();
+    },
+    onResize: function () {
+        if (this.autoHeight) {
+            // Shrink:
+            this.$content.css('height', '10px');
+            // Then set to the full height:
+            this.$content.css('height', this.$content.contents().find('body')[0].scrollHeight);
+        }
+        setCloseButtonPosition(this.$instance);
+    }
+}
+function setCloseButtonPosition(contents) {
+    var offset = contents.find(".featherlight-content").offset();
+    var scrollTop = $(document).scrollTop();
+    contents.find(".featherlight-close-icon").css('top', offset.top - scrollTop);
+    contents.find(".featherlight-close-icon").css('right', offset.left - 20);
+}
 
 $(function () {
     $('.editable', document).mrcmsinline();
-
+    
     var featherlightSettings = $.extend({}, MrCMSFeatherlightSettings, {
         filter: '[data-toggle="fb-modal"]'
     });
@@ -279,29 +304,4 @@ function post_to_url(path, params, method) {
 
     document.body.appendChild(form);
     form.submit();
-}
-
-var MrCMSFeatherlightSettings = {
-    type: 'iframe',
-    iframeWidth: 800,
-    afterOpen: function () {
-        setCloseButtonPosition(this.$instance);
-    },
-    beforeOpen: function () {
-    },
-    onResize: function () {
-        if (this.autoHeight) {
-            // Shrink:
-            this.$content.css('height', '10px');
-            // Then set to the full height:
-            this.$content.css('height', this.$content.contents().find('body')[0].scrollHeight);
-        }
-        setCloseButtonPosition(this.$instance);
-    }
-}
-
-function setCloseButtonPosition(contents) {
-    var offset = contents.find(".featherlight-content").offset();
-    contents.find(".featherlight-close-icon").css('top', offset.top);
-    contents.find(".featherlight-close-icon").css('right', offset.left + -20);
 }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
@@ -16,13 +15,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public override DiscountApplicationInfo Apply(BuyXGetYFree application, CartModel cart,
             CheckLimitationsResult checkLimitationsResult)
         {
-            IEnumerable<CartItem> cartItems = GetItems(application, checkLimitationsResult, cart);
+            IEnumerable<CartItemData> cartItems = GetItems(application, checkLimitationsResult, cart);
             var prices = new List<ItemPrice>();
-            foreach (CartItem cartItem in cartItems)
+            foreach (var cartItem in cartItems)
             {
-                for (int i = 0; i < cartItem.Quantity; i++)
+                for (var i = 0; i < cartItem.Quantity; i++)
                 {
-                    prices.Add(new ItemPrice { Id = cartItem.Id, UnitPrice = cartItem.UnitPrice });
+                    prices.Add(new ItemPrice {Id = cartItem.Id, UnitPrice = cartItem.UnitPrice});
                 }
             }
             var numberFree = (prices.Count/(application.BuyAmount + application.FreeAmount))*application.FreeAmount;
@@ -30,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
             return new DiscountApplicationInfo
             {
-                ItemDiscounts = itemPrices.GroupBy(x => x.Id).ToDictionary(cartItem => cartItem.Key, item => item.Sum(x => x.UnitPrice))
+                ItemsFree = itemPrices.GroupBy(x => x.Id).ToDictionary(cartItem => cartItem.Key, item => item.Count())
             };
         }
     }

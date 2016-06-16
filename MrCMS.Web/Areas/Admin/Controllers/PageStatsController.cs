@@ -1,6 +1,8 @@
 using System.Web.Mvc;
-using MrCMS.Web.Areas.Admin.Helpers;
+using MrCMS.Web.Apps.Ecommerce.ACL;
+using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Web.Areas.Admin.Services;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Areas.Admin.Controllers
@@ -16,6 +18,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
 
         [DashboardAreaAction(DashboardArea = DashboardArea.LeftColumn, Order = 100)]
         [OutputCache(Duration = 3600, VaryByParam = "none")]
+        [MrCMSACLRule(typeof(StatsAdminMenuACL), StatsAdminMenuACL.PageViews)]
         public PartialViewResult Summary()
         {
             return PartialView(_pageStatsService.GetSummary());

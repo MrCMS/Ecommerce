@@ -20,10 +20,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
         public virtual int Rating { get; set; }
 
         [Required]
+        [DisplayName("Name (this is what we will display)")]
         public virtual string Name { get; set; }
 
         [Required]
         [EmailValidator]
+        [DisplayName("Email (will not be shown on site)")]
         public virtual string Email { get; set; }
 
         [Required]
