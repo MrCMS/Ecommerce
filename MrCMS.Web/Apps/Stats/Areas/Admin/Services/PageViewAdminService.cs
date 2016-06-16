@@ -7,7 +7,6 @@ using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Stats.Areas.Admin.Models;
 using MrCMS.Web.Apps.Stats.Entities;
-using MrCMS.Web.Apps.Stats.Helpers;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Transform;

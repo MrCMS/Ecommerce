@@ -42,7 +42,7 @@ namespace MrCMS.Web.Apps.Stats.Areas.Admin.Models
         {
             var subMenu = new SubMenu
             {
-                new ChildMenuItem("Page Views", _urlHelper.Action("Index", "PageViews"), ACLOption.Create(new StatsAdminMenuACL(), StatsAdminMenuACL.PageViews)),
+                new ChildMenuItem("Page Views", _urlHelper.Action("Index", "PageViews"), ACLOption.Create(new StatsAdminMenuACL(), StatsAdminMenuACL.PageViews))
             };
 
             return subMenu;

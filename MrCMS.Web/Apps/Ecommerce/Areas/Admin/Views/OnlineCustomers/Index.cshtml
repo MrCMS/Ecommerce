@@ -1,0 +1,70 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Areas.Admin.Models
+@using MrCMS.Web.Areas.Admin.Services
+@model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.OnlineCustomerSearchQuery
+@{
+    ViewBag.Title = "Online Customers";
+    var onlineCustomers = ViewData["results"] as IPagedList<OnlineCustomerCart> ?? PagedList<OnlineCustomerCart>.Empty;
+}
+
+@if (Model != null)
+{
+    <form>
+        <fieldset>
+            <legend>
+                Customer Cart Information
+            </legend>
+
+            @using (Html.BeginForm("Index", "OnlineCustomers", FormMethod.Get))
+            {
+                <div class="row">
+                    <div class="col-xs-2">
+                        @Html.LabelFor(query => query.FirstName)
+                        <div class="form-group">
+                            @Html.TextBoxFor(query => query.FirstName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.LabelFor(query => query.LastName)
+                        <div class="form-group">
+                            @Html.TextBoxFor(query => query.LastName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        @Html.LabelFor(query => query.Email)
+                        <div class="form-group">
+                            @Html.TextBoxFor(query => query.Email, new {@class = "form-control"})
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        &nbsp;
+                        <div class="form-group">
+                            <input type="checkbox" name="IsAbandoned" value="true" id="Valuation" @(Model.IsAbandoned ? "checked=\"checked\"" : string.Empty)/> Show Abandoned Carts Only
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        &nbsp;
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary btn-success" value="Search" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <br />
+
+            @if (onlineCustomers.Any())
+            {
+                Html.RenderPartial("OnlineCustomersList", onlineCustomers.ToList());
+                @Html.Pager(onlineCustomers, "Index", page => new { page })
+            }
+            else
+            {
+                <p>
+                    There are currently no customers that match your search criteria.
+                </p>
+            }
+        </fieldset>
+    </form>
+}

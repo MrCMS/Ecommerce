@@ -474,6 +474,7 @@
     <Compile Include="Apps\Core\CoreAppInstallation.cs" />
     <Compile Include="Apps\Core\DbConfiguration\PlainTextWidgetOveride.cs" />
     <Compile Include="Apps\Core\DbConfiguration\TextWidgetOveride.cs" />
+    <Compile Include="Apps\Core\DbConfiguration\UserSessionDataOverride.cs" />
     <Compile Include="Apps\Core\Indexing\WebpageSearchIndexDefinition.cs" />
     <Compile Include="Apps\Core\Indexing\WebpageSearch\BodyContentFieldDefinition.cs" />
     <Compile Include="Apps\Core\Indexing\WebpageSearch\CreatedOnFieldDefinition.cs" />
@@ -563,6 +564,7 @@
     <Compile Include="Apps\Ecommerce\ACL\GoogleBaseACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\ImportExportACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\LowStockReportACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\OnlineCustomersACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\OrderACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\OrdersByShippingTypeACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\PaymentSettingsACL.cs" />
@@ -590,9 +592,11 @@
     <Compile Include="Apps\Ecommerce\ACL\WorldPaySettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ActionFilters\ReturnJsonTrueIfAjaxPostAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Bundles\EcommerceAdminStylesheetBundle.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OnlineCustomersController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AmountPerUnitController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListTemplateDataController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\OnlineCustomerSearchQuery.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\Sales.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\SalesByDayViewModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetPricingMethodOptions.cs" />
@@ -2208,6 +2212,7 @@
     <Compile Include="Areas\Admin\Services\INotificationAdminService.cs" />
     <Compile Include="Areas\Admin\Services\INotificationHubService.cs" />
     <Compile Include="Areas\Admin\Services\InPageAdminService.cs" />
+    <Compile Include="Areas\Admin\Services\IOnlineCustomerService.cs" />
     <Compile Include="Areas\Admin\Services\IPageDefaultsAdminService.cs" />
     <Compile Include="Areas\Admin\Services\IPageTemplateAdminService.cs" />
     <Compile Include="Areas\Admin\Services\IPersistentNotificationUIService.cs" />
@@ -2241,6 +2246,9 @@
     <Compile Include="Areas\Admin\Services\MessageTemplateTokensAdminService.cs" />
     <Compile Include="Areas\Admin\Services\NotificationAdminService.cs" />
     <Compile Include="Areas\Admin\Services\NotificationHubService.cs" />
+    <Compile Include="Areas\Admin\Models\OnlineCustomerCart.cs" />
+    <Compile Include="Areas\Admin\Models\OnlineCustomerCartItem.cs" />
+    <Compile Include="Areas\Admin\Services\OnlineCustomerService.cs" />
     <Compile Include="Areas\Admin\Services\PageDefaultsAdminService.cs" />
     <Compile Include="Areas\Admin\Services\PageTemplateAdminService.cs" />
     <Compile Include="Areas\Admin\Services\PersistentNotificationUIService.cs" />
@@ -4450,6 +4458,9 @@
     <Content Include="Apps\Ecommerce\Views\Shared\Notifications.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ItemIsInCategory\SearchCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ItemHasSKU\SearchSKUs.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OnlineCustomers\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\OnlineCustomersList.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OnlineCustomers\Cart.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />

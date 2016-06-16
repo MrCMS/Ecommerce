@@ -44,6 +44,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     new ChildMenuItem("Sort Option Values", _urlHelper.Action("Index", "ProductOptionSorting"), ACLOption.Create(new ProductOptionSortingACL(), ProductOptionSortingACL.List)),
                     new ChildMenuItem("Discounts", _urlHelper.Action("Index", "Discount"), ACLOption.Create(new DiscountACL(), DiscountACL.List)),
                     new ChildMenuItem("E-Tags", _urlHelper.Action("Index", "ETag"), ACLOption.Create(new ETagACL(), ETagACL.List)),
+                    new ChildMenuItem("Customers Carts", _urlHelper.Action("Index", "OnlineCustomers"), ACLOption.Create(new OnlineCustomersACL(), OnlineCustomersACL.ViewCustomers))
                 };
 
                 if (_ecommerceSettings.GiftCardsEnabled)
