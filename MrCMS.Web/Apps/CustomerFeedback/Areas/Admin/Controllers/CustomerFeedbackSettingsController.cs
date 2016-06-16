@@ -25,8 +25,7 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Controllers
             return View(_configurationProvider.GetSiteSettings<CustomerFeedbackSettings>());
         }
 
-        [HttpPost]
-        [MrCMSACLRule(typeof(CustomerFeedbackSettingsACL), CustomerFeedbackSettingsACL.View)]
+        [HttpPost, MrCMSACLRule(typeof(CustomerFeedbackSettingsACL), CustomerFeedbackSettingsACL.View)]
         public RedirectToRouteResult Save([IoCModelBinder(typeof(CustomerFeedbackSettingsModelBinder))] CustomerFeedbackSettings settings)
         {
             _configurationProvider.SaveSettings(settings);

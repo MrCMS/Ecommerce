@@ -27,7 +27,7 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Services
             if (!_settings.IsEnabled)
                 return;
 
-            var temp = CurrentRequestData.Now.AddDays(-_settings.TimeAfterOrderToSendFeedbackEmail);
+            var thresholdDate = CurrentRequestData.Now.AddDays(-_settings.TimeAfterOrderToSendFeedbackEmail);
 
             // Get Records that require message to be send to customer
             var feedbackToSend =
@@ -36,7 +36,7 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Services
                         record =>
                             !record.IsSent 
                             && record.CreatedOn >= _settings.SendFeedbackStartDate
-                            && record.CreatedOn >= temp)
+                            && record.CreatedOn >= thresholdDate)
                     .Cacheable()
                     .List();
 

@@ -42,8 +42,7 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Controllers
             return PartialView(feedbackFacet);
         }
 
-        [HttpPost]
-        [ActionName("Edit")]
+        [HttpPost, ActionName("Edit")]
         public RedirectToRouteResult Edit_POST(FeedbackFacet feedbackFacet)
         {
             _adminService.Edit(feedbackFacet);
@@ -57,8 +56,7 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Controllers
             return PartialView(feedbackFacet);
         }
 
-        [HttpPost]
-        [ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         public RedirectToRouteResult Delete_POST(FeedbackFacet feedbackFacet)
         {
             _adminService.Delete(feedbackFacet);

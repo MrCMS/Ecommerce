@@ -18,12 +18,12 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Events
         {
             CorrespondenceRecord record = args.Item;
 
-            if (record.CorrespondenceDirection == CorrespondenceDirection.Outgoing)
-            {
-                var message = _messageParser.GetMessage(record);
-                if(message != null)
-                    _messageParser.QueueMessage(message);
-            }
+            if (record.CorrespondenceDirection != CorrespondenceDirection.Outgoing)
+                return;
+
+            var message = _messageParser.GetMessage(record);
+            if(message != null)
+                _messageParser.QueueMessage(message);
         }
     }
 }

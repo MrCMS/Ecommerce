@@ -23,7 +23,7 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Services
                 CorrespondenceDirection = CorrespondenceDirection.Incoming,
                 Order = model.Order,
                 MessageInfo = model.Message,
-                User = CurrentRequestData.CurrentUser ?? CurrentRequestData.CurrentUser
+                User = CurrentRequestData.CurrentUser
             };
 
             _session.Transact(session => session.Save(correspondenceRecord));

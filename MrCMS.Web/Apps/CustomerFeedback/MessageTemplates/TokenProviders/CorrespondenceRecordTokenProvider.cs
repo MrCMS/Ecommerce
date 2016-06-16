@@ -6,11 +6,11 @@ using MrCMS.Web.Apps.CustomerFeedback.Pages;
 
 namespace MrCMS.Web.Apps.CustomerFeedback.MessageTemplates.TokenProviders
 {
-    public class CorrespondanceRecordTokenProvider : ITokenProvider<CorrespondenceRecord>
+    public class CorrespondenceRecordTokenProvider : ITokenProvider<CorrespondenceRecord>
     {
         private readonly IUniquePageService _uniquePageService;
 
-        public CorrespondanceRecordTokenProvider(IUniquePageService uniquePageService)
+        public CorrespondenceRecordTokenProvider(IUniquePageService uniquePageService)
         {
             _uniquePageService = uniquePageService;
         }

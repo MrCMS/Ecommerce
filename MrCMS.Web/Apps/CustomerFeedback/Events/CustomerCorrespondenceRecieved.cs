@@ -20,16 +20,15 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Events
 
         public void Execute(OnAddedArgs<CorrespondenceRecord> args)
         {
-            if (args.Item.CorrespondenceDirection == CorrespondenceDirection.Incoming)
-            {
-                var emailMessage = _messageParser.GetMessage(args.Item);
-                if(emailMessage != null)
-                    _messageParser.QueueMessage(emailMessage);
+            if (args.Item.CorrespondenceDirection != CorrespondenceDirection.Incoming)
+                return;
 
-                var message = string.Format("Customer Correspondence Recieved for <a href='/Admin/CustomerInteraction/ShowInteraction/{0}'>Order {0}</a>", args.Item.Order.Id);
-                _notificationPublisher.PublishNotification(message);
-            }
+            var emailMessage = _messageParser.GetMessage(args.Item);
+            if(emailMessage != null)
+                _messageParser.QueueMessage(emailMessage);
 
+            var message = string.Format("Customer Correspondence Recieved for <a href='/Admin/CustomerInteraction/ShowInteraction/{0}'>Order {0}</a>", args.Item.Order.Id);
+            _notificationPublisher.PublishNotification(message);
         }
     }
 }

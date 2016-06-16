@@ -19,13 +19,13 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Events
         public void Execute(OnUpdatedArgs<FeedbackRecord> args)
         {
             // if user has completed a feedback form add a message to admin
-            if (args.Item.IsCompleted)
-            {
-                var link = _urlHelper.Action("Show", "FeedbackRecord", new { id = args.Item.Id });
-                var message = string.Format("Feedback has been recieved for <a href='{0}'>Order {1}</a>", link, args.Item.Order.Id);
+            if (!args.Item.IsCompleted)
+                return;
 
-                _notificationPublisher.PublishNotification(message);
-            }
+            var link = _urlHelper.Action("Show", "FeedbackRecord", new { id = args.Item.Id });
+            var message = string.Format("Feedback has been recieved for <a href='{0}'>Order {1}</a>", link, args.Item.Order.Id);
+
+            _notificationPublisher.PublishNotification(message);
         }
     }
 }
