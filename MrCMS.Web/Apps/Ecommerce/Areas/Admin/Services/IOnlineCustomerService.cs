@@ -1,9 +1,8 @@
-using System;
+﻿using System;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
-using MrCMS.Web.Areas.Admin.Models;
 
-namespace MrCMS.Web.Areas.Admin.Services
+namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 {
     public interface IOnlineCustomerService
     {

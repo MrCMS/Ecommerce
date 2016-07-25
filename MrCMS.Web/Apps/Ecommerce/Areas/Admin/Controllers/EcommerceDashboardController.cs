@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Services.Reports;
+using MrCMS.Web.Areas.Admin.Helpers;
 using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;

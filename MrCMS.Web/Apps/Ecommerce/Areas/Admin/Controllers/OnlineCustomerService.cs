@@ -5,18 +5,20 @@ using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
-using MrCMS.Web.Areas.Admin.Models;
 using Newtonsoft.Json;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.SqlCommand;
 using NHibernate.Transform;
 
-namespace MrCMS.Web.Areas.Admin.Services
+namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class OnlineCustomerService : IOnlineCustomerService
     {
@@ -124,24 +126,24 @@ namespace MrCMS.Web.Areas.Admin.Services
                     builder.Select(data => data.UpdatedOn).WithAlias(() => sessionDataQueryResult.UpdatedOn);
 
                     builder.SelectSubQuery(QueryOver.Of<SessionData>()
-                            .Where(x => x.UserGuid == sessionDataAlias.UserGuid && x.Key == CartManager.CurrentOrderEmailKey)
-                            .Select(x => x.Data)
-                            .Take(1)).WithAlias(() => sessionDataQueryResult.SessionEmail);
+                        .Where(x => x.UserGuid == sessionDataAlias.UserGuid && x.Key == CartManager.CurrentOrderEmailKey)
+                        .Select(x => x.Data)
+                        .Take(1)).WithAlias(() => sessionDataQueryResult.SessionEmail);
 
                     builder.SelectSubQuery(QueryOver.Of<SessionData>()
-                            .Where(x => x.UserGuid == sessionDataAlias.UserGuid && x.Key == CartManager.CurrentShippingAddressKey)
-                            .Select(x => x.Data)
-                            .Take(1)).WithAlias(() => sessionDataQueryResult.SessionShippingAddress);
+                        .Where(x => x.UserGuid == sessionDataAlias.UserGuid && x.Key == CartManager.CurrentShippingAddressKey)
+                        .Select(x => x.Data)
+                        .Take(1)).WithAlias(() => sessionDataQueryResult.SessionShippingAddress);
 
                     builder.SelectSubQuery(QueryOver.Of<SessionData>()
-                            .Where(x => x.UserGuid == sessionDataAlias.UserGuid && x.Key == CartManager.CurrentBillingAddressKey)
-                            .Select(x => x.Data)
-                            .Take(1)).WithAlias(() => sessionDataQueryResult.SessionBillingAddress);
+                        .Where(x => x.UserGuid == sessionDataAlias.UserGuid && x.Key == CartManager.CurrentBillingAddressKey)
+                        .Select(x => x.Data)
+                        .Take(1)).WithAlias(() => sessionDataQueryResult.SessionBillingAddress);
 
                     builder.SelectSubQuery(QueryOver.Of<SessionData>()
-                            .Where(x => x.UserGuid == sessionDataAlias.UserGuid && x.Key == CartManager.CurrentBillingAddressSameAsShippingAddressKey)
-                            .Select(x => x.Data)
-                            .Take(1)).WithAlias(() => sessionDataQueryResult.BillingAddressIsSameAsShipping);
+                        .Where(x => x.UserGuid == sessionDataAlias.UserGuid && x.Key == CartManager.CurrentBillingAddressSameAsShippingAddressKey)
+                        .Select(x => x.Data)
+                        .Take(1)).WithAlias(() => sessionDataQueryResult.BillingAddressIsSameAsShipping);
 
                     return builder;
                 });
@@ -220,5 +222,6 @@ namespace MrCMS.Web.Areas.Admin.Services
                 }
             }
         }
+
     }
 }

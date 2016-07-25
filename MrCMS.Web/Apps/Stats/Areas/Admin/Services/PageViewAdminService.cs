@@ -7,6 +7,7 @@ using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Stats.Areas.Admin.Models;
 using MrCMS.Web.Apps.Stats.Entities;
+using MrCMS.Web.Apps.Stats.Helpers;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Transform;
@@ -66,7 +67,7 @@ namespace MrCMS.Web.Apps.Stats.Areas.Admin.Services
                 .OrderBy(Projections.CountDistinct(() => analyticsUser.Id)).Desc
                 .ThenBy(Projections.CountDistinct(() => analyticsSession.Id)).Desc
                 .ThenBy(Projections.CountDistinct(() => pageView.Id)).Desc
-                .Paged<AnalyticsPageView, PageViewResult>(Projections.CountDistinct(() => pageView.Url), query.Page, enableCache:false); //todo enable cache when Nhibernate is updated to 4.1
+                .Paged<AnalyticsPageView, PageViewResult>(Projections.CountDistinct(() => pageView.Url), query.Page); //todo enable cache when Nhibernate is updated to 4.1
 
             List<int?> ids = pageViewResults.Select(viewResult => viewResult.WebpageId).Where(i => i.HasValue).ToList();
             Dictionary<int, Webpage> webpages =

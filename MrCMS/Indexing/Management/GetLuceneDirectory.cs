@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
-using Lucene.Net.Analysis.Standard;
-using Lucene.Net.Index;
 using Lucene.Net.Store;
 using Lucene.Net.Store.Azure;
 using MrCMS.Entities.Multisite;
 using MrCMS.Services;
 using MrCMS.Settings;
 using Directory = Lucene.Net.Store.Directory;
-using Version = Lucene.Net.Util.Version;
 
 namespace MrCMS.Indexing.Management
 {
@@ -20,9 +17,9 @@ namespace MrCMS.Indexing.Management
         private readonly IAzureFileSystem _azureFileSystem;
         private readonly HttpContextBase _context;
         private readonly FileSystemSettings _fileSystemSettings;
-
+        
         private static readonly Dictionary<int, Dictionary<string, Directory>> DirectoryCache =
-            new Dictionary<int, Dictionary<string, Directory>>();
+            new Dictionary<int, Dictionary<string,Directory>>();
 
         public GetLuceneDirectory(FileSystemSettings fileSystemSettings, IAzureFileSystem azureFileSystem,
             HttpContextBase context)
@@ -52,14 +49,7 @@ namespace MrCMS.Indexing.Management
             var dictionary = DirectoryCache[siteId];
             if (!dictionary.ContainsKey(folderName))
             {
-                var directory = GetDirectory(site, folderName, useRAMCache);
-                if (!IndexReader.IndexExists(directory))
-                {
-                    using (new IndexWriter(directory, new StandardAnalyzer(Version.LUCENE_30), true, IndexWriter.MaxFieldLength.UNLIMITED))
-                    {
-                    }
-                }
-                dictionary[folderName] = directory;
+                dictionary[folderName] = GetDirectory(site, folderName, useRAMCache);
             }
             return dictionary[folderName];
         }
@@ -79,16 +69,8 @@ namespace MrCMS.Indexing.Management
 
         public void ClearCache()
         {
-            foreach (var directory in DirectoryCache.SelectMany(x => x.Value.Values))
-            {
-                try
-                {
-                    directory.Dispose();
-                }
-                catch
-                {
-                }
-            }
+            foreach (var indexSearcher in DirectoryCache.SelectMany(x => x.Value.Values))
+                indexSearcher.Dispose();
 
             DirectoryCache.Clear();
         }

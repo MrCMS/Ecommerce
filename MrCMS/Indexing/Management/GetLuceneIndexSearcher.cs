@@ -45,30 +45,28 @@ namespace MrCMS.Indexing.Management
 
         public void Reset(IndexDefinition definition)
         {
+            Reset(definition.IndexFolderName);
+        }
+
+        public void Reset(string folderName)
+        {
             if (IndexSearcherCache.ContainsKey(SiteId))
             {
-                IndexSearcherCache[SiteId].Remove(definition.IndexFolderName);
+                IndexSearcherCache[SiteId].Remove(folderName);
             }
         }
 
         public void ClearCache()
         {
             foreach (var indexSearcher in IndexSearcherCache.SelectMany(x => x.Value.Values))
-            {
-                try
-                {
-                    indexSearcher.Dispose();
-                }
-                catch { }
-            }
+                indexSearcher.Dispose();
 
             IndexSearcherCache.Clear();
         }
 
         public IndexSearcher GetInternal(string folderName)
         {
-            var directory = _getLuceneDirectory.Get(_site, folderName, true);
-            return new IndexSearcher(directory);
+            return new IndexSearcher(_getLuceneDirectory.Get(_site, folderName, true));
         }
     }
 }

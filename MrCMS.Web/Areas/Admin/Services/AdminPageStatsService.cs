@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Multisite;
 using MrCMS.Web.Areas.Admin.Models;
+using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Transform;

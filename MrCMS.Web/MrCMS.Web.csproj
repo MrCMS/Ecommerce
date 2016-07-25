@@ -594,13 +594,16 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Bundles\EcommerceAdminStylesheetBundle.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OnlineCustomersController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AmountPerUnitController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OnlineCustomerService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListTemplateDataController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\OnlineCustomerCart.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\OnlineCustomerSearchQuery.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\Sales.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\SalesByDayViewModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetPricingMethodOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetPricingMethodOptions.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IOnlineCustomerService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Helpers\EntityExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Nop190\Nop1901.designer.cs">
       <AutoGen>True</AutoGen>
@@ -2050,7 +2053,6 @@
     <Compile Include="Areas\Admin\Helpers\SEOAnalysisExtensions.cs" />
     <Compile Include="Areas\Admin\Helpers\SetAdminViewDataExtensions.cs" />
     <Compile Include="Areas\Admin\Helpers\UniversalSearchHelper.cs" />
-    <Compile Include="Areas\Admin\Helpers\WebpageExtensions.cs" />
     <Compile Include="Areas\Admin\Hubs\BatchProcessingHub.cs" />
     <Compile Include="Areas\Admin\Hubs\NotificationHub.cs" />
     <Compile Include="Areas\Admin\ModelBinders\ACLUpdateModelBinder.cs" />
@@ -2212,7 +2214,6 @@
     <Compile Include="Areas\Admin\Services\INotificationAdminService.cs" />
     <Compile Include="Areas\Admin\Services\INotificationHubService.cs" />
     <Compile Include="Areas\Admin\Services\InPageAdminService.cs" />
-    <Compile Include="Areas\Admin\Services\IOnlineCustomerService.cs" />
     <Compile Include="Areas\Admin\Services\IPageDefaultsAdminService.cs" />
     <Compile Include="Areas\Admin\Services\IPageTemplateAdminService.cs" />
     <Compile Include="Areas\Admin\Services\IPersistentNotificationUIService.cs" />
@@ -2246,9 +2247,6 @@
     <Compile Include="Areas\Admin\Services\MessageTemplateTokensAdminService.cs" />
     <Compile Include="Areas\Admin\Services\NotificationAdminService.cs" />
     <Compile Include="Areas\Admin\Services\NotificationHubService.cs" />
-    <Compile Include="Areas\Admin\Models\OnlineCustomerCart.cs" />
-    <Compile Include="Areas\Admin\Models\OnlineCustomerCartItem.cs" />
-    <Compile Include="Areas\Admin\Services\OnlineCustomerService.cs" />
     <Compile Include="Areas\Admin\Services\PageDefaultsAdminService.cs" />
     <Compile Include="Areas\Admin\Services\PageTemplateAdminService.cs" />
     <Compile Include="Areas\Admin\Services\PersistentNotificationUIService.cs" />
@@ -3602,6 +3600,7 @@
     <Content Include="Areas\Admin\Content\Scripts\lib\store.js" />
     <Content Include="Areas\Admin\Content\Scripts\lib\tag-it.min.js" />
     <Content Include="Areas\Admin\Content\Scripts\lib\tmpl.min.js" />
+    <Content Include="Areas\Admin\Content\Scripts\lib\update-area.js" />
     <Content Include="Areas\Admin\Content\Scripts\mrcms\add-category.js" />
     <Content Include="Areas\Admin\Content\Scripts\mrcms\add-layout.js" />
     <Content Include="Areas\Admin\Content\Scripts\mrcms\add-page-template.js" />
@@ -4255,6 +4254,12 @@
     <Content Include="Apps\Galleries\Views\Pages\Gallery.cshtml" />
     <Content Include="Apps\Galleries\Views\Pages\GalleryList.cshtml" />
     <Content Include="Apps\Galleries\Views\Web.config" />
+    <Content Include="Apps\Ecommerce\Views\Shared\Notifications.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ItemIsInCategory\SearchCategories.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ItemHasSKU\SearchSKUs.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OnlineCustomers\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\OnlineCustomersList.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OnlineCustomers\Cart.cshtml" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\CHANGES.md" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\LICENSE.md" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\plugins\scayt\LICENSE.md" />
@@ -4333,6 +4338,7 @@
     <Content Include="Areas\Admin\Views\Log\Show.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\Add.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\MediaCategory\Directory.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\FileList.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\FileResult.cshtml" />
@@ -4455,12 +4461,6 @@
     <Content Include="Areas\Admin\Views\Widget\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Widget\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\Notifications.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ItemIsInCategory\SearchCategories.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ItemHasSKU\SearchSKUs.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OnlineCustomers\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\OnlineCustomersList.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OnlineCustomers\Cart.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />

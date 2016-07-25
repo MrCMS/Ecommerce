@@ -274,16 +274,18 @@ namespace MrCMS.Indexing.Management
 
         private Directory GetDirectory(Site site)
         {
-            return _getLuceneDirectory.Get(site, Definition.IndexFolderName, false);
+            return _getLuceneDirectory.Get(site, IndexFolderName);
         }
 
         private void Write(Action<IndexWriter> writeFunc, bool recreateIndex)
         {
             if (recreateIndex)
                 _getLuceneIndexWriter.RecreateIndex(Definition);
-            var indexWriter = _getLuceneIndexWriter.Get(Definition);
-            writeFunc(indexWriter);
-            indexWriter.Commit();
+            using (var indexWriter = _getLuceneIndexWriter.Get(Definition))
+            {
+                writeFunc(indexWriter);
+                indexWriter.Commit();
+            }
             _getLuceneIndexSearcher.Reset(Definition);
         }
     }

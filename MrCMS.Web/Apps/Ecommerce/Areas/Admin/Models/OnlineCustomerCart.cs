@@ -1,11 +1,19 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
-using MrCMS.Web.Areas.Admin.Services;
 
-namespace MrCMS.Web.Areas.Admin.Models
+namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models
 {
+
+    public class OnlineCustomerCartItem
+    {
+        public ProductVariant Product { get; set; }
+        public int Quantity { get; set; }
+    }
     public class OnlineCustomerCart
     {
         public int? UserId { get; set; }
@@ -37,9 +45,9 @@ namespace MrCMS.Web.Areas.Admin.Models
         {
             get
             {
-                return BillingAddressIsSameAsShipping 
-                    ? "Same as Shipping Address" 
-                    : BillingAddress == null 
+                return BillingAddressIsSameAsShipping
+                    ? "Same as Shipping Address"
+                    : BillingAddress == null
                         ? "N/A"
                         : BillingAddress.GetDescription();
             }
