@@ -20,8 +20,7 @@ namespace MrCMS.HealthChecks
             if (_bundlingSettings.EnableOptimisations)
                 return new HealthCheckResult
                 {
-                    OK = true,
-                    Messages = new List<string> {_stringResourceProvider.GetValue("Optimizations enabled"),}
+                    OK = true
                 };
 
             return new HealthCheckResult
