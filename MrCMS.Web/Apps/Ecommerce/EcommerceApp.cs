@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce
 
         public override string Version
         {
-            get { return "0.4.1"; }
+            get { return "0.5"; }
         }
 
         protected override void RegisterServices(IKernel kernel)
