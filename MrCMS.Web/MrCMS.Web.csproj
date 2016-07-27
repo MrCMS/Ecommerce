@@ -2367,12 +2367,9 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\lib\zero-clipboard\ZeroClipboard.swf" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\ecommerce-admin.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-theme.css" />
-    <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap.css" />
-    <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap.min.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.js" />
-    <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.min.js" />
     <Content Include="Apps\Ecommerce\Content\FontAwesome\css\font-awesome.css" />
     <Content Include="Apps\Ecommerce\Content\FontAwesome\css\font-awesome.min.css" />
     <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\fontawesome-webfont.svg" />
