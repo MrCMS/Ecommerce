@@ -1,0 +1,49 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.ACL
+@model IList<MrCMS.Web.Areas.Admin.Models.OnlineCustomerCart>
+
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                # of Items in Cart
+            </th>
+            <th>
+                Last Modified
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var onlineCustomerCart in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Edit", "User", new {Id = onlineCustomerCart.UserId})" @(string.IsNullOrWhiteSpace(onlineCustomerCart.FirstName) ? "style=pointer-events:none;" : string.Empty)>@onlineCustomerCart.DisplayName</a>
+                </td>
+                <td>
+                    @onlineCustomerCart.Email
+                </td>
+                <td>
+                    @onlineCustomerCart.ItemsCount
+                </td>
+                <td>
+                    @onlineCustomerCart.LastUpdatedOn
+                </td>
+                <td>
+                    @if (Html.CanAccess<OnlineCustomersACL>(OnlineCustomersACL.ViewCart))
+                    {
+                        <a href="@Url.Action("Cart", "OnlineCustomers", new { Id = onlineCustomerCart.UserGuid })">View Cart</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

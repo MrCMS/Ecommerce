@@ -30,9 +30,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (order != null)
             {
                 ViewData["order"] = order;
-                TempData["order"] = order;//required for Google Analytics
-
                 ViewData["user-can-register"] = _orderPlacedService.GetRegistrationStatus(order.OrderEmail);
+                ViewData["render-analytics"] = _orderPlacedService.UpdateAnalytics(order);
 
                 return View(page);
             }

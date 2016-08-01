@@ -1,5 +1,9 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model IList<MrCMS.Web.Apps.Ecommerce.Entities.Discounts.Discount>
+@{
+    var requestUrl = HttpContext.Current.Request.Url;
+    var url = string.Format("{0}{1}{2}", requestUrl.Scheme, Uri.SchemeDelimiter, requestUrl.Authority);
+}
 <table class="table table-condensed table-striped">
     <thead>
         <tr>
@@ -8,6 +12,9 @@
             </th>
             <th>
                 Code
+            </th>
+            <th>
+                Url
             </th>
             <th>
                 Time period
@@ -32,6 +39,16 @@
                     else
                     {
                         <span>Not required</span>
+                    }
+                </td>
+                <td>
+                    @if (item.CanBeAppliedFromUrl)
+                    {
+                        @Html.Label(string.Format("{0}/Discount/{1}", url, item.Code))
+                    }
+                    else
+                    {
+                        <span>Cannot be applied from Url</span>
                     }
                 </td>
                 <td>

@@ -1,0 +1,36 @@
+﻿@using MrCMS.Settings
+@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
+
+@if (ViewData["render-analytics"] as bool? ?? false)
+{
+    @Html.Raw(SiteSettings<SEOSettings>().TrackingScripts)
+
+    <script type="text/javascript">
+        ga('require', 'ecommerce');
+
+        ga('ecommerce:addTransaction', {
+            'id': '@Model.Id',
+            'affiliation': '@Model.Site.Name',
+            'revenue': '@Model.Total',
+            'shipping': '@Model.ShippingTotal',
+            'tax': '@Model.Tax'
+        });
+
+        @{
+            foreach (var item in Model.OrderLines)
+            {
+                <text>
+                    ga('ecommerce:addItem', {
+                        'id': '@item.Id',
+                        'name': '@item.Name',
+                        'sku': '@item.SKU',
+                        'category': '@item.Options',
+                        'price': '@item.UnitPrice',
+                        'quantity': '@item.Quantity'
+                    });
+                </text>
+            }
+        }
+        ga('ecommerce:send');
+    </script>
+}

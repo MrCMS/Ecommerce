@@ -27,5 +27,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
 
         public virtual IList<DiscountLimitation> Limitations { get; set; }
         public virtual IList<DiscountApplication> Applications { get; set; }
+
+        public virtual bool CanBeAppliedFromUrl { get; set; }
+        public virtual string RedirectUrl { get; set; }
+        public virtual string SuccessMessage { get; set; }
+        public virtual string AppliedNotYetValidMessage { get; set; }
     }
 }

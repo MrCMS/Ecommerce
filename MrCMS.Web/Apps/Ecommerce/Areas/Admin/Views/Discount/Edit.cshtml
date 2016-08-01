@@ -1,12 +1,13 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Discounts.Discount
-@using MrCMS.Helpers
+﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Entities.Discounts
-@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model Discount
 @{
     ViewBag.Title = "Edit Discount";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/discount.js");
     var discountUsages = ViewData["usages"] as IList<DiscountUsage> ?? new List<DiscountUsage>();
+    var requestUrl = HttpContext.Current.Request.Url;
+    var url = string.Format("{0}{1}{2}", requestUrl.Scheme, Uri.SchemeDelimiter, requestUrl.Authority);
 }
 @using (Html.BeginForm("Edit", "Discount", FormMethod.Post))
 {
@@ -60,6 +61,27 @@
                     @Html.LabelFor(x => x.ValidUntil)
                     @Html.TextBoxFor(x => x.ValidUntil, new { @class = "form-control date-time-picker" })
                     @Html.ValidationMessageFor(x => x.ValidUntil)
+                </div>
+                <div class="form-group">
+                    @Html.InlineCheckboxFor(discount => discount.CanBeAppliedFromUrl, checkboxAttributes: new { @checked = "checked" })
+                </div>
+                <div class="form-group from-url-group" data-code-field>
+                    <label>@string.Format("This discount can be applied by navigating to {0}/Discount/{1}", url, Model.Code)</label>
+                </div>
+                <div class="form-group from-url-group">
+                    @Html.LabelFor(x => x.SuccessMessage)
+                    @Html.TextBoxFor(x => x.SuccessMessage, new {@class = "form-control"})
+                    @Html.ValidationMessageFor(x => x.SuccessMessage)
+                </div>
+                <div class="form-group from-url-group">
+                    @Html.LabelFor(x => x.AppliedNotYetValidMessage)
+                    @Html.TextBoxFor(x => x.AppliedNotYetValidMessage, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.AppliedNotYetValidMessage)
+                </div>
+                <div class="form-group from-url-group">
+                    @Html.LabelFor(x => x.RedirectUrl)
+                    @Html.TextBoxFor(x => x.RedirectUrl, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.RedirectUrl)
                 </div>
                 @Html.InfoBlock("Heads up! ", "Leave Valid From and Until blank to make discount valid forever")
             </div>

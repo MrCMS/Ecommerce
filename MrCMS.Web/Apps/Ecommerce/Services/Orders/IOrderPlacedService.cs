@@ -10,5 +10,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         EmailRegistrationStatus GetRegistrationStatus(string orderEmail);
         Task<LoginAndAssociateOrderResult> LoginAndAssociateOrder(LoginModel model, Order order);
         Task<RegisterAndAssociateOrderResult> RegisterAndAssociateOrder(RegisterModel model, Order order);
+        bool UpdateAnalytics(Order order);
     }
 }

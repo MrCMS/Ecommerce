@@ -1,16 +1,17 @@
-﻿(function($) {
+﻿(function ($) {
     var selector = '#RequiresCode',
         limitationsSelector = '[data-discount-limitations]',
-        applicationsSelector = '[data-discount-applications]';
+        applicationsSelector = '[data-discount-applications]',
+        canBeAppliedFromUrlSelector = '#CanBeAppliedFromUrl';
 
     function reloadLimitations(event) {
         var limitations = $(limitationsSelector);
         if (limitations.length == 0)
             return;
-        limitations.each(function(index, element) {
+        limitations.each(function (index, element) {
             var list = $(element);
             var url = list.data('discount-limitations');
-            $.get(url, function(response) {
+            $.get(url, function (response) {
                 list.replaceWith(response);
             });
         });
@@ -19,10 +20,10 @@
         var applications = $(applicationsSelector);
         if (applications.length == 0)
             return;
-        applications.each(function(index, element) {
+        applications.each(function (index, element) {
             var list = $(element);
             var url = list.data('discount-applications');
-            $.get(url, function(response) {
+            $.get(url, function (response) {
                 list.replaceWith(response);
             });
         });
@@ -34,8 +35,17 @@
         $('[data-code-field]').toggle(required.is(':checked'));
     }
 
-    $(function() {
+    function showHideCodeFromUrlFields() {
+        $('.from-url-group').toggle();
+    }
+
+    $(function () {
+        if (!$('#CanBeAppliedFromUrl').is(':checked')) {
+            $('.from-url-group').toggle();
+        }
+
         $(document).on('change', selector, showHideCodeField);
+        $(document).on('change', canBeAppliedFromUrlSelector, showHideCodeFromUrlFields);
         $(document).on('reload-limitations', reloadLimitations);
         $(document).on('reload-applications', reloadApplications);
         $(selector).change();

@@ -13,12 +13,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         private readonly EcommerceSettings _ecommerceSettings;
         private readonly UrlHelper _urlHelper;
 
-        public EcommerceAdminMenuModel(EcommerceSettings ecommerceSettings, UrlHelper urlHelper)
-        {
-            _ecommerceSettings = ecommerceSettings;
-            _urlHelper = urlHelper;
-        }
-
         public string Text
         {
             get { return "Catalog"; }
@@ -33,7 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public bool CanShow
         {
-            get { return CurrentRequestData.CurrentUser.CanAccess<CatalogACL>(CatalogACL.Show); }
+            get { return CurrentRequestData.CurrentUser.CanAccess<CatalogAdminMenuACL>(CatalogAdminMenuACL.ShowMenu); }
         }
 
         public SubMenu Children
@@ -42,25 +36,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             {
                 var adminItems = new List<ChildMenuItem>
                 {
-                    new ChildMenuItem("Orders", _urlHelper.Action("Index", "Order"),
-                        ACLOption.Create(new OrderACL(), OrderACL.List)),
-                    new ChildMenuItem("Products", _urlHelper.Action("Index", "Product"),
-                        ACLOption.Create(new ProductACL(), ProductACL.List)),
-                    new ChildMenuItem("Categories", _urlHelper.Action("Index", "Category"),
-                        ACLOption.Create(new CategoryACL(), CategoryACL.List)),
-                    new ChildMenuItem("Brands", _urlHelper.Action("Index", "Brand"),
-                        ACLOption.Create(new BrandACL(), BrandACL.List)),
-                    new ChildMenuItem("Product Specifications",
-                        _urlHelper.Action("Index", "ProductSpecificationAttribute"),
-                        ACLOption.Create(new ProductSpecificationAttributeACL(), ProductSpecificationAttributeACL.List)),
-                    new ChildMenuItem("Sort Option Values",
-                        _urlHelper.Action("Index", "ProductOptionSorting"),
-                        ACLOption.Create(new ProductOptionSortingACL(), ProductOptionSortingACL.List)),
-                    new ChildMenuItem("Discounts", _urlHelper.Action("Index", "Discount"),
-                        ACLOption.Create(new DiscountACL(), DiscountACL.List)),
-                    new ChildMenuItem("E-Tags", _urlHelper.Action("Index", "ETag"),
-                        ACLOption.Create(new ETagACL(), ETagACL.List)),
+                    new ChildMenuItem("Orders", _urlHelper.Action("Index", "Order"), ACLOption.Create(new OrderACL(), OrderACL.List)),
+                    new ChildMenuItem("Products", _urlHelper.Action("Index", "Product"), ACLOption.Create(new ProductACL(), ProductACL.List)),
+                    new ChildMenuItem("Categories", _urlHelper.Action("Index", "Category"), ACLOption.Create(new CategoryACL(), CategoryACL.List)),
+                    new ChildMenuItem("Brands", _urlHelper.Action("Index", "Brand"), ACLOption.Create(new BrandACL(), BrandACL.List)),
+                    new ChildMenuItem("Product Specifications", _urlHelper.Action("Index", "ProductSpecificationAttribute"), ACLOption.Create(new ProductSpecificationAttributeACL(), ProductSpecificationAttributeACL.List)),
+                    new ChildMenuItem("Sort Option Values", _urlHelper.Action("Index", "ProductOptionSorting"), ACLOption.Create(new ProductOptionSortingACL(), ProductOptionSortingACL.List)),
+                    new ChildMenuItem("Discounts", _urlHelper.Action("Index", "Discount"), ACLOption.Create(new DiscountACL(), DiscountACL.List)),
+                    new ChildMenuItem("E-Tags", _urlHelper.Action("Index", "ETag"), ACLOption.Create(new ETagACL(), ETagACL.List)),
+                    new ChildMenuItem("Customers Carts", _urlHelper.Action("Index", "OnlineCustomers"), ACLOption.Create(new OnlineCustomersACL(), OnlineCustomersACL.ViewCustomers))
                 };
+
                 if (_ecommerceSettings.GiftCardsEnabled)
                 {
                     adminItems.Add(new ChildMenuItem("Gift Cards", _urlHelper.Action("Index", "GiftCard"),
@@ -77,8 +63,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
                 var ecommerceMenu = new SubMenu();
                 ecommerceMenu.AddRange(adminItems);
-                ecommerceMenu.Add(new ChildMenuItem("Product Reviews", _urlHelper.Action("Index", "ProductReview"),
-                    ACLOption.Create(new ProductReviewACL(), ProductReviewACL.List)));
+                ecommerceMenu.Add(new ChildMenuItem("Product Reviews", _urlHelper.Action("Index", "ProductReview"), ACLOption.Create(new ProductReviewACL(), ProductReviewACL.List)));
                 return ecommerceMenu;
             }
         }
@@ -86,6 +71,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public int DisplayOrder
         {
             get { return 45; }
+        }
+
+        public EcommerceAdminMenuModel(EcommerceSettings ecommerceSettings, UrlHelper urlHelper)
+        {
+            _ecommerceSettings = ecommerceSettings;
+            _urlHelper = urlHelper;
         }
     }
 }

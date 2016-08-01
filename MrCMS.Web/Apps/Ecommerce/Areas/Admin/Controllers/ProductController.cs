@@ -9,13 +9,10 @@ using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
-using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Web.Areas.Admin.Services;
 using MrCMS.Website;
 using MrCMS.Website.Binders;
@@ -34,13 +31,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IProductService _productService;
         private readonly SiteSettings _siteSettings;
         private readonly IUniquePageService _uniquePageService;
-        private readonly IETagAdminService _eTagAdminService;
 
-        public ProductController(IProductService productService, IDocumentService documentService,
+        public ProductController(IProductService productService, 
+            IDocumentService documentService,
             ICategoryService categoryService,
-            IProductOptionManager productOptionManager, IFileAdminService fileAdminService,
-            IProductOptionManagementService productOptionManagementService, SiteSettings siteSettings,
-            IUniquePageService uniquePageService, IETagAdminService eTagAdminService)
+            IProductOptionManager productOptionManager, 
+            IFileAdminService fileAdminService,
+            IProductOptionManagementService productOptionManagementService, 
+            SiteSettings siteSettings,
+            IUniquePageService uniquePageService)
         {
             _productService = productService;
             _documentService = documentService;
@@ -50,7 +49,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _productOptionManagementService = productOptionManagementService;
             _siteSettings = siteSettings;
             _uniquePageService = uniquePageService;
-            _eTagAdminService = eTagAdminService;
         }
 
         /// <summary>
