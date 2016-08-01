@@ -11,6 +11,11 @@
         });
 
         $(".logo a img").addClass("img-responsive");
+
+        $('#notification-close').on('click', function () {
+            $('.ecommerce-notification').hide();
+        });
+
     });
 })(jQuery);
 

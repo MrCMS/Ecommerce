@@ -1,16 +1,6 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @{
-    Html.IncludeCss("~/Apps/Ecommerce/Content/Styles/style.css");
-
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#notification-close').on('click', function () {
-                $('.mrcms-notifications').hide();
-            });
-        });
-    </script>
 
     var discountResult = TempData["discount-result"] as CheckCodeResult;
     if (discountResult != null)
@@ -19,7 +9,7 @@
             ? "notification-success"
             : "notification-fail";
 
-        <div class="mrcms-notifications @displayClass">
+        <div class="ecommerce-notification @displayClass">
             <div class="notification">@discountResult.Message <a id="notification-close">Close</a></div>
         </div>
     }

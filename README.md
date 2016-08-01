@@ -141,5 +141,6 @@ Version 0.5.0
     * Updated product search to search by name and price-from-to in admin
     * Removed Indecies for Orders in admin in favour of SQL
     * Ability to view current customer carts
+    * Sales by day report updated to show tabular information
 
 
