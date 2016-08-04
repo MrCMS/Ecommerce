@@ -1308,6 +1308,7 @@
     <Compile Include="Apps\Ecommerce\Models\ProductSearchSort.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductSearchView.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductValueModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ProductVariantPagedList.cs" />
     <Compile Include="Apps\Ecommerce\Models\RedirectDetails.cs" />
     <Compile Include="Apps\Ecommerce\Models\RegisterAndAssociateOrderResult.cs" />
     <Compile Include="Apps\Ecommerce\Models\RegisterModel.cs" />
