@@ -25,9 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
             return cartItems.Any()
                 ? CheckLimitationsResult.Successful(cartItems)
-                : CheckLimitationsResult.CurrentlyInvalid(
-                    _stringResourceProvider.GetValue(
-                        "You don't have the required item(s) in your cart for this discount"));
+                : CheckLimitationsResult.CurrentlyInvalid(_stringResourceProvider.GetValue("You don't have the required item(s) in your cart for this discount"));
         }
     }
 }

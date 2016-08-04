@@ -1,13 +1,13 @@
 ﻿using MrCMS.Paging;
-using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
-    public class ProductPagedList : StaticPagedList<Product>
+    public class ProductVariantPagedList : StaticPagedList<ProductVariant>
     {
         public int? ProductContainerId { get; private set; }
 
-        public ProductPagedList(IPagedList<Product> products, int? productContainerId)
+        public ProductVariantPagedList(IPagedList<ProductVariant> products, int? productContainerId)
             : base(products, products)
         {
             ProductContainerId = productContainerId;
