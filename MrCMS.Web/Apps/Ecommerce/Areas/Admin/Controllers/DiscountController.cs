@@ -31,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [MrCMSACLRule(typeof (DiscountACL), DiscountACL.Add)]
         public PartialViewResult Add()
         {
-            return PartialView();
+            return PartialView(new Discount());
         }
 
         [HttpPost]

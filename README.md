@@ -138,8 +138,10 @@ Version 0.5.0
     * Upgraded to Mr CMS 0.5.1
     * Updated ACL Rules to include ecommerce app locations
     * When creating discounts you can now pick products and categories using a GUI rather than specifying IDs
+    * Discounts can be applied via a URL
     * Updated product search to search by name and price-from-to in admin
-    * Removed Indecies for Orders in admin in favour of SQL
+    * Removed Indecies for Orders in admin in favour of S QL
+    * Added price and product name to product search
     * Ability to view current customer carts
     * Sales by day report updated to show tabular information
 
