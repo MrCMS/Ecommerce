@@ -14,7 +14,6 @@ using MrCMS.Helpers;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using NHibernate.Criterion;
-using NHibernate.SqlCommand;
 using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
@@ -34,31 +33,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             _uniquePageService = uniquePageService;
         }
 
-        public ProductPagedList Search(string queryTerm = null, int page = 1)
+        public ProductVariantPagedList Search(string queryTerm = null, int page = 1)
         {
-            IPagedList<Product> pagedList;
+            IPagedList<ProductVariant> pagedList;
+
             var pageSize = _ecommerceSettings.DefaultPageSize > 0 ? _ecommerceSettings.DefaultPageSize : 10;
             if (!string.IsNullOrWhiteSpace(queryTerm))
             {
-                Product productAlias = null;
-                ProductVariant productVariantAlias = null;
-                pagedList = _session.QueryOver(() => productAlias)
-                                    .JoinAlias(() => productAlias.Variants, () => productVariantAlias, JoinType.LeftOuterJoin)
-                                    .Where(
-                                        () =>
-                                        productVariantAlias.SKU == queryTerm ||
-                                        productAlias.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere) ||
-                                        productVariantAlias.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere))
+                pagedList = _session.QueryOver<ProductVariant>()
+                                    .Where(x => x.SKU == queryTerm || x.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere))
                                     .Paged(page, pageSize);
             }
             else
             {
-                pagedList = _session.Paged(QueryOver.Of<Product>(), page, pageSize);
+                pagedList = _session.Paged(QueryOver.Of<ProductVariant>(), page, pageSize);
             }
 
             var productContainer = _uniquePageService.GetUniquePage<ProductContainer>();
             var productContainerId = productContainer == null ? (int?)null : productContainer.Id;
-            return new ProductPagedList(pagedList, productContainerId);
+            return new ProductVariantPagedList(pagedList, productContainerId);
         }
 
         public IList<Product> Search(string queryTerm)
@@ -111,7 +104,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             var relatedProduct = _documentService.GetDocument<Product>(relatedProductId);
 
-            if (product.RelatedProducts.Any(x => x.Id == relatedProductId)) return;
+            if (product.RelatedProducts.Any(x => x.Id == relatedProductId))
+                return;
 
             product.RelatedProducts.Add(relatedProduct);
             _session.Transact(session => session.SaveOrUpdate(product));
@@ -236,7 +230,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 Product categoryProductAlias = null;
                 queryOver = queryOver.WithSubquery.WhereExists(QueryOver.Of<Category>()
                             .JoinAlias(category => category.Products, () => categoryProductAlias)
-                            .Where(x => x.Name.IsInsensitiveLike(query.CategoryName, MatchMode.Anywhere) 
+                            .Where(x => x.Name.IsInsensitiveLike(query.CategoryName, MatchMode.Anywhere)
                                     && categoryProductAlias.Id == productAlias.Id)
                             .Select(x => x.Id));
             }
@@ -244,7 +238,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (!string.IsNullOrWhiteSpace(query.SKU))
             {
                 queryOver = queryOver.WithSubquery.WhereExists(QueryOver.Of<ProductVariant>()
-                            .Where(x => x.Product.Id == productAlias.Id 
+                            .Where(x => x.Product.Id == productAlias.Id
                                 && x.SKU.IsInsensitiveLike(query.SKU, MatchMode.Anywhere))
                             .Select(x => x.Id));
             }
