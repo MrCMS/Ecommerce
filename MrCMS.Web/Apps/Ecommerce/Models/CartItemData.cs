@@ -93,7 +93,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public string DownloadFileUrl => Item.DownloadFileUrl;
 
-        public bool HasDiscount => _discountAmount > 0 || _freeItems > 0;
+        public bool HasDiscount => _discountAmount > 0 || _freeItems > 0 || _discountPercentage > 0;
 
         public virtual bool CanBuy => CanBuyStatus.OK;
 
