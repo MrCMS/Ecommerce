@@ -16,12 +16,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         private readonly ILoginService _loginService;
         private readonly IRegistrationService _registrationService;
         private readonly ISession _session;
-        private readonly IUserService _userService;
+        private readonly IUserLookup _userLookup;
 
-        public OrderPlacedService(IUserService userService, ILoginService loginService, ISession session,
+        public OrderPlacedService(IUserLookup userLookup, ILoginService loginService, ISession session,
             IRegistrationService registrationService)
         {
-            _userService = userService;
+            _userLookup = userLookup;
             _loginService = loginService;
             _session = session;
             _registrationService = registrationService;
@@ -31,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             if (CurrentRequestData.CurrentUser != null)
                 return EmailRegistrationStatus.LoggedIn;
-            if (_userService.GetUserByEmail(orderEmail) != null)
+            if (_userLookup.GetUserByEmail(orderEmail) != null)
                 return EmailRegistrationStatus.EmailInUse;
             return EmailRegistrationStatus.Available;
         }

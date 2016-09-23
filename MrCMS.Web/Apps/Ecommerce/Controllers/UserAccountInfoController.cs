@@ -15,15 +15,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     public class UserAccountInfoController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly IUniquePageService _uniquePageService;
-        private readonly IUserService _userService;
+        private readonly IUserLookup _userLookup;
+        private readonly IUserManagementService _userManagementService;
         private readonly IAuthorisationService _authorisationService;
 
-        public UserAccountInfoController(IUniquePageService uniquePageService, IUserService userService, 
-            IAuthorisationService authorisationService)
+        public UserAccountInfoController(IUniquePageService uniquePageService, IUserLookup userLookup, 
+            IAuthorisationService authorisationService, IUserManagementService userManagementService)
         {
             _uniquePageService = uniquePageService;
-            _userService = userService;
+            _userLookup = userLookup;
             _authorisationService = authorisationService;
+            _userManagementService = userManagementService;
         }
 
         public ActionResult Show(UserAccountInfo page)
@@ -64,7 +66,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                     user.LastName = model.LastName;
                     user.Email = model.Email;
 
-                    _userService.SaveUser(user);
+                    _userManagementService.SaveUser(user);
                     await _authorisationService.SetAuthCookie(user, false);
                     
                     TempData.SuccessMessages().Add("User Info Updated");

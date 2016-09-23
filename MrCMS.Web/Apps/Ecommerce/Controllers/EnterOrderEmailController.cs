@@ -21,14 +21,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly CartModel _cart;
         private readonly ICartManager _cartManager;
         private readonly ILoginService _loginService;
-        private readonly IUserService _userService;
+        private readonly IUserLookup _userLookup;
 
-        public EnterOrderEmailController(CartModel cart, ICartManager cartManager, ILoginService loginService, IUserService userService)
+        public EnterOrderEmailController(CartModel cart, ICartManager cartManager, ILoginService loginService, IUserLookup userLookup)
         {
             _cart = cart;
             _cartManager = cartManager;
             _loginService = loginService;
-            _userService = userService;
+            _userLookup = userLookup;
         }
 
         [CanEnterCheckout]
@@ -60,7 +60,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         {
             if (model.HavePassword)
             {
-                var user = _userService.GetUserByEmail(model.OrderEmail.Trim());
+                var user = _userLookup.GetUserByEmail(model.OrderEmail.Trim());
                 if (user != null)
                 {
                     var authenticated =await _loginService.AuthenticateUser(new LoginModel

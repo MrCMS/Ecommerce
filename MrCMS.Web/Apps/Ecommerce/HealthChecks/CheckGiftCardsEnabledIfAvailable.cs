@@ -33,12 +33,12 @@ namespace MrCMS.Web.Apps.Ecommerce.HealthChecks
                     {
                         string.Format("Gift cards are not enabled but there are {0} gift card{1} added in the system. Enable giftcards from settings so people can use gift cards.", giftCards, (giftCards == 1 ? "" : "s")),
                     },
-                    OK = false
+                    Status = HealthCheckStatus.Warning
                 };
             }
             return new HealthCheckResult
             {
-                OK = true
+                Status = HealthCheckStatus.Success
             };
         }
     }

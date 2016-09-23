@@ -21,8 +21,8 @@ namespace MrCMS.Messages
             if (!CurrentRequestData.DatabaseIsInstalled || !Directory.Exists(settingsFolder) || !Directory.EnumerateFiles(settingsFolder,"*.json",SearchOption.AllDirectories).Any())
                 return;
             var session = kernel.Get<IStatelessSession>();
-            CopyOldSystemSettings(session);
-            CopyOldSiteSettings(session);
+            CopyOldSystemTemplates(session);
+            CopyOldSiteOverrides(session);
         }
 
         private static string GetTemplatesFolder()
@@ -30,7 +30,7 @@ namespace MrCMS.Messages
             return HostingEnvironment.MapPath("~/App_Data/Templates");
         }
 
-        private static void CopyOldSiteSettings(IStatelessSession session)
+        private static void CopyOldSiteOverrides(IStatelessSession session)
         {
             var sites = session.QueryOver<Site>().List();
             foreach (var site in sites)
@@ -38,7 +38,7 @@ namespace MrCMS.Messages
                 CopyTemplates(session, site.Id);
             }
         }
-        private static void CopyOldSystemSettings(IStatelessSession session)
+        private static void CopyOldSystemTemplates(IStatelessSession session)
         {
             CopyTemplates(session, null);
         }
@@ -49,11 +49,14 @@ namespace MrCMS.Messages
 
             var folder = Path.Combine(templatesFolder, siteId.HasValue ? siteId.ToString(): "system");
 
+            if (!Directory.Exists(folder))
+                return;
+
             var files = Directory.EnumerateFiles(folder, "*.json", SearchOption.AllDirectories);
 
             session.Transact(statelessSession =>
             {
-                foreach (var file in files)
+                foreach (var file in files.Where(File.Exists))
                 {
                     var type =
                         TypeHelper.GetAllTypes()
@@ -72,7 +75,7 @@ namespace MrCMS.Messages
                         Type = type.FullName,
                         SiteId = siteId
                     });
-                    File.Move(file, file + ".migrated");
+                    File.Move(file, Path.ChangeExtension(file, ".migrated"));
                 }
             });
         }

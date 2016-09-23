@@ -8,17 +8,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class UserOrderController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly IUserService _userService;
+        private readonly IBelongToUserLookupService _belongToUserLookupService;
 
-        public UserOrderController(IUserService userService)
+        public UserOrderController(IBelongToUserLookupService belongToUserLookupService)
         {
-            _userService = userService;
+            _belongToUserLookupService = belongToUserLookupService;
         }
 
         [ChildActionOnly]
         public PartialViewResult List(User user)
         {
-            var orders = _userService.GetAll<Order>(user);
+            var orders = _belongToUserLookupService.GetAll<Order>(user);
             return PartialView(orders);
         }
 
