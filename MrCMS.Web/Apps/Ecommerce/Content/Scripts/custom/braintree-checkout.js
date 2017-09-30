@@ -1,9 +1,11 @@
 ﻿(function ($) {
     var client;
     var token;
+    var threeDSecureRequired;
 
     $(function () {
-        $('#braintree-checkout').on('submit', check3DSecure);
+        threeDSecureRequired = getThreeDSecureRequired();
+        $('#braintree-checkout').on('submit', threeDSecureRequired ? check3DSecure : tokenizeCard);
         token = getClientToken();
         client = new braintree.api.Client({ clientToken: token });
 
@@ -13,6 +15,10 @@
 
     function getClientToken() {
         return $('#ClientToken').val();
+    }
+
+    function getThreeDSecureRequired() {
+        return $('#ThreeDSecureRequired').val() === 'true';
     }
 
     function getForm() {
@@ -77,6 +83,42 @@
                 errorArea.append(error.message);
             }
         });
+    }
+
+    function tokenizeCard(event) {
+        event.preventDefault();
+        var form = $(event.target);
+        var errorArea = $('[data-braintree-errors]');
+        var submitButton = form.find('[data-submit-button]');
+
+        errorArea.hide();
+        disablePaymentButton(submitButton);
+
+        client.tokenizeCard({
+            number: form.find('[data-braintree-name="number"]').val(),
+            cardholderName: form.find('[data-braintree-name="cardholder_name"]').val(),
+            expirationMonth: form.find('[data-braintree-name="expiration_month"]').val(),
+            expirationYear: form.find('[data-braintree-name="expiration_year"]').val(),
+            cvv: form.find('[data-braintree-name="cvv"]').val(),
+            billingAddress: {
+                postalCode: form.find('[data-braintree-name="postal_code"]').val()
+            }
+        }, function (error, response) {
+            if (!error) {
+                postToUrl("/Apps/Ecommerce/Confirm/BraintreePayment/Card", {
+                    nonce: response,
+                    liabilityShifted: false,
+                    liabilityShiftPossible: false
+                });
+            }
+            else {
+                enablePaymentButton(submitButton);
+                errorArea.empty();
+                errorArea.show();
+                errorArea.append(error.message);
+            }
+        });
+
     }
 
     function postToUrl(path, params) {
