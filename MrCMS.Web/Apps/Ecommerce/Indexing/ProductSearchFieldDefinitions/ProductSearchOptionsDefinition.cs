@@ -42,6 +42,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                     .Select(value => value.ProductOption.Id).WithAlias(() => data.OptionId)
                     .Select(() => productVariantAlias.Product.Id).WithAlias(() => data.ProductId)
                 ).TransformUsing(Transformers.AliasToBean<OptionValueData>())
+                .Cacheable()
                 .List<OptionValueData>();
 
             Dictionary<int, IEnumerable<string>> dictionary =

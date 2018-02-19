@@ -39,6 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                     .Select(variant => variant.Product.Id).WithAlias(() => list.ProductId)
                 )
                 .TransformUsing(Transformers.AliasToBean<PartNumberList>())
+                .Cacheable()
                 .List<PartNumberList>();
             Dictionary<int, IEnumerable<string>> dictionary = partNumberLists.GroupBy(skuList => skuList.ProductId)
                 .ToDictionary(lists => lists.Key, lists => lists.Select(partNumberList => partNumberList.PartNumber));

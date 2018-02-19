@@ -38,6 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                     .Select(variant => variant.Product.Id).WithAlias(() => list.ProductId)
                 )
                 .TransformUsing(Transformers.AliasToBean<SkuList>())
+                .Cacheable()
                 .List<SkuList>();
             var groupedSkus = skuLists.GroupBy(skuList => skuList.ProductId)
                 .ToDictionary(lists => lists.Key, lists => lists.Select(skuList => skuList.SKU));

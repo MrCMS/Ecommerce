@@ -100,6 +100,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                     builder.Select(x => x.Name).WithAlias(() => info.Name);
                     return builder;
                 }).TransformUsing(Transformers.AliasToBean<BrandInfo>())
+                .Cacheable()
                 .List<BrandInfo>()
                 .BuildSelectItemList(item => item.Name, item => item.Id.ToString(), null, new SelectListItem
                 {

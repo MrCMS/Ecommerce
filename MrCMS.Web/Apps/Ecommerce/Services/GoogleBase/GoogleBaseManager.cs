@@ -122,6 +122,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
                     builder.Select(() => productAlias.Id).WithAlias(() => map.ProductId);
                     return builder;
                 }).TransformUsing(Transformers.AliasToBean<ProductCategoryMap>())
+                .Cacheable()
                 .List<ProductCategoryMap>().GroupBy(x => x.ProductId)
                 .ToDictionary(x => x.Key,
                     x =>
