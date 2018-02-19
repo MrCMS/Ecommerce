@@ -3,31 +3,37 @@ using System.Collections.Generic;
 using System.Web.Routing;
 using MrCMS.Apps;
 using MrCMS.Entities.Documents.Web;
+using MrCMS.Helpers;
 using MrCMS.Services;
 
 namespace MrCMS.Website.Routing
 {
     public class GetWebpageForRequest : IGetWebpageForRequest
     {
-        private readonly IDocumentService _documentService;
+        private readonly IGetDocumentByUrl<Webpage> _getWebpageByUrl;
 
-        public GetWebpageForRequest(IDocumentService documentService)
+        public GetWebpageForRequest(IGetDocumentByUrl<Webpage> getWebpageByUrl)
         {
-            _documentService = documentService;
+            _getWebpageByUrl = getWebpageByUrl;
         }
 
-        private Dictionary<string, Webpage> _cache = new Dictionary<string, Webpage>();
+        private readonly Dictionary<string, Webpage> _cache = new Dictionary<string, Webpage>();
 
         public Webpage Get(RequestContext context, string url = null)
         {
             string data = url ?? Convert.ToString(context.RouteData.Values["data"]);
 
             if (_cache.ContainsKey(data))
-                return _cache[data];
+            {
+                var page = _cache[data];
+                if (page != null)
+                    page = page.Unproxy();
+                return page;
+            }
 
             Webpage webpage = string.IsNullOrWhiteSpace(data)
                 ? CurrentRequestData.HomePage
-                : _documentService.GetDocumentByUrl<Webpage>(data);
+                : _getWebpageByUrl.GetByUrl(data);
 
             if (webpage != null && !webpage.Published && !CurrentRequestData.CurrentUserIsAdmin)
             {
@@ -39,6 +45,8 @@ namespace MrCMS.Website.Routing
             {
                 if (MrCMSApp.AppWebpages.ContainsKey(webpage.GetType()))
                     context.RouteData.DataTokens["app"] = MrCMSApp.AppWebpages[webpage.GetType()];
+
+                webpage = webpage.Unproxy();
             }
 
             _cache[data] = webpage;

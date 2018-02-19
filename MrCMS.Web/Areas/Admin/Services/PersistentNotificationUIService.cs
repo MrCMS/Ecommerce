@@ -12,12 +12,12 @@ namespace MrCMS.Web.Areas.Admin.Services
     public class PersistentNotificationUIService : IPersistentNotificationUIService
     {
         private readonly ISession _session;
-        private readonly IUserService _userService;
+        private readonly IUserLookup _userLookup;
 
-        public PersistentNotificationUIService(ISession session, IUserService userService)
+        public PersistentNotificationUIService(ISession session, IUserLookup userLookup)
         {
             _session = session;
-            _userService = userService;
+            _userLookup = userLookup;
         }
 
         public IList<NotificationModel> GetNotifications()
@@ -38,6 +38,7 @@ namespace MrCMS.Web.Areas.Admin.Services
                 .OrderBy(notification => notification.CreatedOn).Desc
                 .TransformUsing(Transformers.AliasToBean<NotificationModel>())
                 .Take(15)
+                .Cacheable()
                 .List<NotificationModel>();
         }
 
@@ -54,7 +55,7 @@ namespace MrCMS.Web.Areas.Admin.Services
 
         public void MarkAllAsRead()
         {
-            var user = _userService.GetCurrentUser(CurrentRequestData.CurrentContext);
+            var user = _userLookup.GetCurrentUser(CurrentRequestData.CurrentContext);
             user.LastNotificationReadDate = CurrentRequestData.Now;
             _session.Transact(session => session.Update(user));
         }

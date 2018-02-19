@@ -12,19 +12,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
     public class SetupEcommerceMedia : ISetupEcommerceMedia
     {
         private readonly IFileService _fileService;
-        private readonly IDocumentService _documentService;
+        private readonly IGetDocumentByUrl<MediaCategory> _getByUrl;
 
-        public SetupEcommerceMedia(IFileService fileService, IDocumentService documentService)
+        public SetupEcommerceMedia(IFileService fileService, IGetDocumentByUrl<MediaCategory> getByUrl)
         {
             _fileService = fileService;
-            _documentService = documentService;
+            _getByUrl = getByUrl;
         }
 
         public MediaModel Setup()
         {
             var model = new MediaModel();
 
-            var defaultMediaCategory = _documentService.GetDocumentByUrl<MediaCategory>("default");
+            var defaultMediaCategory = _getByUrl.GetByUrl("default");
             try
             {
                 var memoryStream = new MemoryStream(EcommerceInstallHelper.GetFileFromUrl(EcommerceInstallInfo.LogoImageUrl));

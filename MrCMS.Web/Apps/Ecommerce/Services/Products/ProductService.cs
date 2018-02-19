@@ -22,14 +22,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     public class ProductService : IProductService
     {
         private readonly ISession _session;
-        private readonly IDocumentService _documentService;
         private readonly SiteSettings _ecommerceSettings;
         private readonly IUniquePageService _uniquePageService;
 
-        public ProductService(ISession session, IDocumentService documentService, SiteSettings ecommerceSettings, IUniquePageService uniquePageService)
+        public ProductService(ISession session, SiteSettings ecommerceSettings, IUniquePageService uniquePageService)
         {
             _session = session;
-            _documentService = documentService;
             _ecommerceSettings = ecommerceSettings;
             _uniquePageService = uniquePageService;
         }
@@ -85,7 +83,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public void AddCategory(Product product, int categoryId)
         {
-            var category = _documentService.GetDocument<Category>(categoryId);
+            var category = _session.Get<Category>(categoryId);
             product.Categories.Add(category);
             category.Products.Add(product);
             _session.Transact(session =>
@@ -97,7 +95,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public void RemoveCategory(Product product, int categoryId)
         {
-            var category = _documentService.GetDocument<Category>(categoryId);
+            var category = _session.Get<Category>(categoryId);
             product.Categories.Remove(category);
             category.Products.Remove(product);
             _session.Transact(session =>
@@ -109,7 +107,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public void AddRelatedProduct(Product product, int relatedProductId)
         {
-            var relatedProduct = _documentService.GetDocument<Product>(relatedProductId);
+            var relatedProduct = _session.Get<Product>(relatedProductId);
 
             if (product.RelatedProducts.Any(x => x.Id == relatedProductId)) return;
 
@@ -119,7 +117,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public void RemoveRelatedProduct(Product product, int relatedProductId)
         {
-            var relatedProduct = _documentService.GetDocument<Product>(relatedProductId);
+            var relatedProduct = _session.Get<Product>(relatedProductId);
             product.RelatedProducts.Remove(relatedProduct);
             relatedProduct.RelatedProducts.Remove(product);
             _session.Transact(session =>
@@ -136,7 +134,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public Product Get(int id)
         {
-            return _session.QueryOver<Product>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
+            return _session.Get<Product>(id);
         }
 
         public Product GetByName(string name)

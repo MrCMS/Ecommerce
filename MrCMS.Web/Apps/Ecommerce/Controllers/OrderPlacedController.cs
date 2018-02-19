@@ -2,9 +2,8 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using MrCMS.Helpers;
+using MrCMS.Models.Auth;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Core.Models;
-using MrCMS.Web.Apps.Core.Models.RegisterAndLogin;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
@@ -39,9 +38,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         }
 
         [HttpPost]
-        public async Task<RedirectResult> LoginAndAssociateOrder(LoginModel model, [IoCModelBinder(typeof(OrderByGuidModelBinder))]Order order)
+        public RedirectResult LoginAndAssociateOrder(LoginModel model, [IoCModelBinder(typeof(OrderByGuidModelBinder))]Order order)
         {
-            var result = await _orderPlacedService.LoginAndAssociateOrder(model, order);
+            var result = _orderPlacedService.LoginAndAssociateOrder(model, order);
             if (!result.Success)
                 TempData["login-error"] = result.Error;
             return _uniquePageService.RedirectTo<OrderPlaced>(new { id = order.Guid });

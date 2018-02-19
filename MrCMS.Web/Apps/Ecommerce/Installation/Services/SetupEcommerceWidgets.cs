@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Text;
+using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Documents.Web.FormProperties;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Pages;
@@ -10,22 +11,27 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Widgets;
 using MrCMS.Web.Areas.Admin.Services;
 using MrCMS.Website.Caching;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 {
     public class SetupEcommerceWidgets : ISetupEcommerceWidgets
     {
         private readonly IWidgetService _widgetService;
-        private readonly IDocumentService _documentService;
+        private readonly IGetDocumentByUrl<Webpage> _getByUrl;
+        private readonly ISession _session;
+        private readonly IWebpageAdminService _webpageAdminService;
         private readonly IFormAdminService _formAdminService;
         private readonly IFileService _fileService;
 
-        public SetupEcommerceWidgets(IWidgetService widgetService, IDocumentService documentService, IFormAdminService formAdminService, IFileService fileService)
+        public SetupEcommerceWidgets(IWidgetService widgetService, IGetDocumentByUrl<Webpage> getByUrl, IFormAdminService formAdminService, IFileService fileService, IWebpageAdminService webpageAdminService, ISession session)
         {
             _widgetService = widgetService;
-            _documentService = documentService;
+            _getByUrl = getByUrl;
             _formAdminService = formAdminService;
             _fileService = fileService;
+            _webpageAdminService = webpageAdminService;
+            _session = session;
         }
 
         public void Setup(PageModel pageModel, MediaModel mediaModel, LayoutModel layoutModel)
@@ -42,7 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
         {
             var breadcrumbs = new BreadCrumb
             {
-                LayoutArea = layoutModel.ProductLayout.LayoutAreas.Single(x => x.AreaName == "Before Product Content"),
+                LayoutArea = layoutModel.ProductLayout.LayoutAreas.First(x => x.AreaName == "Before Product Content"),
                 Name = "Breadcrumbs",
                 IsRecursive = true,
                 Cache = true,
@@ -53,7 +59,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 
             var relatedProducts = new RelatedProducts
             {
-                LayoutArea = layoutModel.ProductLayout.LayoutAreas.Single(x => x.AreaName == "After Product Content"),
+                LayoutArea = layoutModel.ProductLayout.LayoutAreas.First(x => x.AreaName == "After Product Content"),
                 Name = "Related Products",
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Absolute,
@@ -63,7 +69,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 
             var peopleAlsoBought = new PeopleWhoBoughtThisAlsoBought
             {
-                LayoutArea = layoutModel.ProductLayout.LayoutAreas.Single(x => x.AreaName == "After Product Content"),
+                LayoutArea = layoutModel.ProductLayout.LayoutAreas.First(x => x.AreaName == "After Product Content"),
                 Name = "People who bought this also bought",
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Absolute,
@@ -73,7 +79,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 
             var otherCategories = new NotWhatYouWereLookingForWidget
             {
-                LayoutArea = layoutModel.ProductLayout.LayoutAreas.Single(x => x.AreaName == "Below Product Price"),
+                LayoutArea = layoutModel.ProductLayout.LayoutAreas.First(x => x.AreaName == "Below Product Price"),
                 Name = "Not what you were looking for?",
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Absolute,
@@ -89,7 +95,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 Image = _fileService.GetFileLocation(mediaModel.Logo, new Size { Width = 200, Height = 200 }),
                 Link = "/",
-                LayoutArea = layoutModel.CheckoutLayout.LayoutAreas.Single(x => x.AreaName == "Checkout Header Left"),
+                LayoutArea = layoutModel.CheckoutLayout.LayoutAreas.First(x => x.AreaName == "Checkout Header Left"),
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Sliding,
                 CacheLength = 60
@@ -99,7 +105,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var checkoutSecureBadge = new LinkedImage
             {
                 Image = mediaModel.SecureCheckout.FileUrl,
-                LayoutArea = layoutModel.CheckoutLayout.LayoutAreas.Single(x => x.AreaName == "Checkout Header Middle"),
+                LayoutArea = layoutModel.CheckoutLayout.LayoutAreas.First(x => x.AreaName == "Checkout Header Middle"),
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Sliding,
                 CacheLength = 60
@@ -120,7 +126,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             //breadcrumb
             var breadcrumbs = new BreadCrumb
             {
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Before Content"),
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.First(x => x.AreaName == "Before Content"),
                 Name = "Breadcrumbs",
                 Webpage = pageModel.ProductSearch,
                 IsRecursive = true,
@@ -168,7 +174,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var nav = new MobileFriendlyNavigation.Widgets.MobileFriendlyNavigation
             {
                 Name = "Navigation",
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == ("Navigation")),
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.First(x => x.AreaName == ("Navigation")),
                 IncludeChildren = true,
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Sliding,
@@ -239,7 +245,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             //home footer form
             var footerLinksWidgetForm = new TextWidget
             {
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 4"),
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.First(x => x.AreaName == "Footer Area 4"),
                 Name = "Footer links",
                 Text = string.Format("[form-{0}]", pageModel.HomePage.Id),
                 Cache = true,
@@ -256,7 +262,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Name = "Logo",
                 Link = "/",
                 Image = mediaModel.Logo.FileUrl,
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Header Left"),
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.First(x => x.AreaName == "Header Left"),
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Sliding,
                 CacheLength = 60
@@ -266,7 +272,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var searchBox = new SearchBox
             {
                 Name = "Search",
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Header Middle"),
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.First(x => x.AreaName == "Header Middle"),
                 Cache = true,
             };
             _widgetService.AddWidget(searchBox);
@@ -275,7 +281,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var userLinks = new EcommerceUserLinks
             {
                 Name = "Ecommerce User Links",
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "User Links")
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.First(x => x.AreaName == "User Links")
             };
             _widgetService.AddWidget(userLinks);
 
@@ -283,14 +289,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var cartWidget = new CartWidget
             {
                 Name = "Cart Widget",
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Header Right")
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.First(x => x.AreaName == "Header Right")
             };
             _widgetService.AddWidget(cartWidget);
 
             //footer links
             var footerLinksWidget = new TextWidget
             {
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 1"),
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.First(x => x.AreaName == "Footer Area 1"),
                 Name = "Footer links",
                 Text = EcommerceInstallInfo.FooterText1,
                 Cache = true,
@@ -301,7 +307,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 
             footerLinksWidget = new TextWidget
             {
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 2"),
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.First(x => x.AreaName == "Footer Area 2"),
                 Name = "Footer links",
                 Text = EcommerceInstallInfo.FooterText2,
                 Cache = true,
@@ -312,7 +318,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 
             footerLinksWidget = new TextWidget
             {
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 3"),
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.First(x => x.AreaName == "Footer Area 3"),
                 Name = "Footer links",
                 Text = EcommerceInstallInfo.FooterText3,
                 Cache = true,
@@ -323,7 +329,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 
             var afterContentCardsTeaser = new TextWidget
             {
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "After Content"),
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.First(x => x.AreaName == "After Content"),
                 Name = "Footer links",
                 Text = EcommerceInstallInfo.AfterContentCardsTeaser,
                 Cache = true,
@@ -333,10 +339,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 
             _widgetService.AddWidget(afterContentCardsTeaser);
 
-            var page404 = _documentService.GetDocumentByUrl<TextPage>("404");
+            var page404 = _getByUrl.GetByUrl("404");
             var notFoundProducts = new On404SearchWidget
             {
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "After Content"),
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.First(x => x.AreaName == "After Content"),
                 Name = "What about these?",
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Sliding,
@@ -348,7 +354,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 
         private void GetFormProperties(TextPage home)
         {
-            home = _documentService.GetDocument<TextPage>(home.Id);
+            home = _session.Get<TextPage>(home.Id);
             var name = new TextBox
             {
                 Name = "Email",
@@ -358,15 +364,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Webpage = home
             };
             _formAdminService.AddFormProperty(name);
-            _documentService.SaveDocument(home);
+            _webpageAdminService.Add(home);
         }
 
         private string GetFeaturedProducts()
         {
-            var product1 = _documentService.GetDocumentByUrl<Product>(FeaturedProductsInfo.Product1Url);
-            var product2 = _documentService.GetDocumentByUrl<Product>(FeaturedProductsInfo.Product2Url);
-            var product3 = _documentService.GetDocumentByUrl<Product>(FeaturedProductsInfo.Product3Url);
-            var product4 = _documentService.GetDocumentByUrl<Product>(FeaturedProductsInfo.Product4Url);
+            var product1 = _getByUrl.GetByUrl(FeaturedProductsInfo.Product1Url);
+            var product2 = _getByUrl.GetByUrl(FeaturedProductsInfo.Product2Url);
+            var product3 = _getByUrl.GetByUrl(FeaturedProductsInfo.Product3Url);
+            var product4 = _getByUrl.GetByUrl(FeaturedProductsInfo.Product4Url);
             var ids = new StringBuilder();
             if (product1 != null)
                 ids.Append(product1.Id + ",");
@@ -382,10 +388,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 
         private string GetFeaturedCategories()
         {
-            var cat1 = _documentService.GetDocumentByUrl<Category>(FeaturedCategoriesInfo.Category1Url);
-            var cat2 = _documentService.GetDocumentByUrl<Category>(FeaturedCategoriesInfo.Category2Url);
-            var cat3 = _documentService.GetDocumentByUrl<Category>(FeaturedCategoriesInfo.Category3Url);
-            var cat4 = _documentService.GetDocumentByUrl<Category>(FeaturedCategoriesInfo.Category4Url);
+            var cat1 = _getByUrl.GetByUrl(FeaturedCategoriesInfo.Category1Url);
+            var cat2 = _getByUrl.GetByUrl(FeaturedCategoriesInfo.Category2Url);
+            var cat3 = _getByUrl.GetByUrl(FeaturedCategoriesInfo.Category3Url);
+            var cat4 = _getByUrl.GetByUrl(FeaturedCategoriesInfo.Category4Url);
             var ids = new StringBuilder();
             if (cat1 != null)
                 ids.Append(cat1.Id + ",");

@@ -10,18 +10,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
     public class SetupEcommerceSettings : ISetupEcommerceSettings
     {
         private readonly IConfigurationProvider _configurationProvider;
-        private readonly IDocumentService _documentService;
+        private readonly IGetDocumentByUrl<Layout> _getByUrl;
 
-        public SetupEcommerceSettings(IConfigurationProvider configurationProvider, IDocumentService documentService)
+        public SetupEcommerceSettings(IConfigurationProvider configurationProvider, IGetDocumentByUrl<Layout> getByUrl)
         {
             _configurationProvider = configurationProvider;
-            _documentService = documentService;
+            _getByUrl = getByUrl;
         }
 
         public void Setup(MediaModel mediaModel)
         {
             var siteSettings = _configurationProvider.GetSiteSettings<SiteSettings>();
-            var documentByUrl = _documentService.GetDocumentByUrl<Layout>("_ContentLayout");
+            var documentByUrl = _getByUrl.GetByUrl("_ContentLayout");
             if (documentByUrl != null)
                 siteSettings.DefaultLayoutId = documentByUrl.Id;
             siteSettings.ThemeName = "Ecommerce";

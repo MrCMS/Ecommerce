@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using MrCMS.DbConfiguration.Configuration;
 using MrCMS.Helpers;
 using MrCMS.Helpers.Validation;
 
@@ -43,8 +44,10 @@ namespace MrCMS.Entities.People
         public virtual byte[] PasswordHash { get; set; }
         public virtual byte[] PasswordSalt { get; set; }
 
-
         public virtual string CurrentEncryption { get; set; }
+
+        [MaxLength(200), IsDBLength]
+        public virtual string Source { get; set; }
 
         [Required]
         [EmailValidator]
@@ -60,6 +63,9 @@ namespace MrCMS.Entities.People
 
         public virtual Guid? ResetPasswordGuid { get; set; }
         public virtual DateTime? ResetPasswordExpiry { get; set; }
+
+        public virtual string TwoFactorCode { get; set; }
+        public virtual DateTime? TwoFactorCodeExpiry { get; set; }
 
         public virtual ISet<UserRole> Roles { get; set; }
         public virtual IList<UserProfileData> UserProfileData { get; set; }

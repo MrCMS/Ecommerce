@@ -42,6 +42,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
             return _session.QueryOver<Category>().Where(x => x.Parent.Id == category.Id && x.PublishOn <= CurrentRequestData.Now).Cacheable().List();
         }
 
+        public Category GetCategory(int id)
+        {
+            return _session.Get<Category>(id);
+        }
+
         public CategorySearchModel GetCategoriesForSearch(ProductSearchQuery query)
         {
             List<int> availableCategories = _productSearchIndexService.GetCategories(query);

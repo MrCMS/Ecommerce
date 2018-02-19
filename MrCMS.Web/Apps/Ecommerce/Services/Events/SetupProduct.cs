@@ -6,6 +6,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Areas.Admin.Services;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Events
@@ -13,12 +14,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Events
     public class SetupProduct : IOnAdding<Product>
     {
         private readonly ISession _session;
-        private readonly IDocumentService _documentService;
+        private readonly IGetDocumentByUrl<MediaCategory> _mediaCategoryByUrl;
+        private readonly IMediaCategoryAdminService _mediaCategoryAdminService;
 
-        public SetupProduct(ISession session,IDocumentService documentService)
+        public SetupProduct(ISession session, IGetDocumentByUrl<MediaCategory> mediaCategoryByUrl,IMediaCategoryAdminService mediaCategoryAdminService)
         {
             _session = session;
-            _documentService = documentService;
+            _mediaCategoryByUrl = mediaCategoryByUrl;
+            _mediaCategoryAdminService = mediaCategoryAdminService;
         }
 
         public void Execute(OnAddingArgs<Product> args)
@@ -36,7 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Events
                 _session.Transact(s => s.Save(productVariant));
             }
 
-            var mediaCategory = _documentService.GetDocumentByUrl<MediaCategory>("product-galleries");
+            var mediaCategory = _mediaCategoryByUrl.GetByUrl("product-galleries");
             if (mediaCategory == null)
             {
                 mediaCategory = new MediaCategory
@@ -46,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Events
                     IsGallery = true,
                     HideInAdminNav = true
                 };
-                _documentService.AddDocument(mediaCategory);
+                _mediaCategoryAdminService.Add(mediaCategory);
             }
             var productGallery = new MediaCategory
             {
@@ -58,7 +61,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Events
             };
             product.Gallery = productGallery;
 
-            _documentService.AddDocument(productGallery);
+            _mediaCategoryAdminService.Add(productGallery);
         }
     }
 }

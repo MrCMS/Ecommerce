@@ -12,17 +12,15 @@ namespace MrCMS.EcommerceApp.Tests.Services
 {
     public class ProductServiceTests : InMemoryDatabaseTest
     {
-        private readonly IDocumentService _documentService;
         private readonly ProductService _productService;
         private readonly SiteSettings _siteSettings;
         private readonly IUniquePageService _uniquePageService;
 
         public ProductServiceTests()
         {
-            _documentService = A.Fake<IDocumentService>();
             _siteSettings = new SiteSettings() { DefaultPageSize = 10 };
             _uniquePageService = A.Fake<IUniquePageService>();
-            _productService = new ProductService(Session, _documentService, _siteSettings, _uniquePageService);
+            _productService = new ProductService(Session, _siteSettings, _uniquePageService);
         }
 
         [Fact]

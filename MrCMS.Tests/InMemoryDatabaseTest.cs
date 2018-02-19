@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Web;
 using Elmah;
+using FakeItEasy;
 using Iesi.Collections.Generic;
 using MrCMS.DbConfiguration;
 using MrCMS.Entities.Multisite;
 using MrCMS.Entities.People;
+using MrCMS.Events;
 using MrCMS.Helpers;
 using MrCMS.IoC;
 using MrCMS.IoC.Modules;
@@ -24,7 +26,7 @@ namespace MrCMS.Tests
     {
         private static Configuration Configuration;
         private static ISessionFactory SessionFactory;
-        protected static ISession Session;
+        protected ISession Session;
         private readonly object lockObject = new object();
 
         protected InMemoryDatabaseTest()
@@ -46,7 +48,8 @@ namespace MrCMS.Tests
             }
             Session = SessionFactory.OpenFilteredSession(Kernel.Get<HttpContextBase>());
             Kernel.Bind<ISession>().ToMethod(context => Session);
-            Kernel.Bind<IStatelessSession>().ToMethod(context => SessionFactory.OpenStatelessSession());
+            Kernel.Bind<IStatelessSession>()
+                .ToMethod(context => SessionFactory.OpenStatelessSession(Session.Connection));
 
             new SchemaExport(Configuration).Execute(false, true, false, Session.Connection, null);
 
@@ -70,7 +73,8 @@ namespace MrCMS.Tests
             Kernel.Load(new SettingsModule(true));
             Kernel.Load(new FileSystemModule());
             Kernel.Load(new SiteModule());
-            _eventContext = new TestableEventContext(Kernel.Get<EventContext>());
+            Kernel.Rebind<IExternalUserSource>().ToConstant(A.Fake<IExternalUserSource>());
+            _eventContext = new TestableEventContext(/*Kernel.Get<EventContext>()*/);
             Kernel.Rebind<IEventContext>().ToMethod(context => EventContext);
         }
 
@@ -115,5 +119,9 @@ namespace MrCMS.Tests
                 base.Dispose();
             }
         }
+    }
+
+    public class DummyEvent : IEvent
+    {
     }
 }

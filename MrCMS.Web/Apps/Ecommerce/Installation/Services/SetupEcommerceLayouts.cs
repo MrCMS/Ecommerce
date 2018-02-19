@@ -13,16 +13,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 {
     public class SetupEcommerceLayouts : ISetupEcommerceLayouts
     {
-        private readonly IDocumentService _documentService;
+        private readonly ILayoutAdminService _layoutAdminService;
         private readonly ILayoutAreaAdminService _layoutAreaAdminService;
         private readonly IPageDefaultsAdminService _pageDefaultsAdminService;
         private readonly IPageTemplateAdminService _pageTemplateAdminService;
 
-        public SetupEcommerceLayouts(IDocumentService documentService, ILayoutAreaAdminService layoutAreaAdminService,
+        public SetupEcommerceLayouts(ILayoutAdminService layoutAdminService, ILayoutAreaAdminService layoutAreaAdminService,
             IPageTemplateAdminService pageTemplateAdminService,
             IPageDefaultsAdminService pageDefaultsAdminService)
         {
-            _documentService = documentService;
+            _layoutAdminService = layoutAdminService;
             _layoutAreaAdminService = layoutAreaAdminService;
             _pageTemplateAdminService = pageTemplateAdminService;
             _pageDefaultsAdminService = pageDefaultsAdminService;
@@ -38,7 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 UrlSegment = "_BaseEcommerceLayout",
                 LayoutAreas = new List<LayoutArea>(),
             };
-            _documentService.AddDocument(baseLayout);
+            _layoutAdminService.Add(baseLayout);
 
             //ecommerce main layout
             var eCommerceLayout = new Layout
@@ -63,9 +63,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 new LayoutArea {AreaName = "Footer Area 4", Layout = eCommerceLayout}
             };
 
-            _documentService.AddDocument(eCommerceLayout);
+            _layoutAdminService.Add(eCommerceLayout);
             foreach (LayoutArea area in ecommerceLayoutArea)
-                _layoutAreaAdminService.SaveArea(area);
+                _layoutAreaAdminService.Add(area);
 
             layoutModel.EcommerceLayout = eCommerceLayout;
 
@@ -84,9 +84,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 new LayoutArea {AreaName = "Teaser3", Layout = homeLayout},
                 new LayoutArea {AreaName = "Teaser4", Layout = homeLayout}
             };
-            _documentService.AddDocument(homeLayout);
+            _layoutAdminService.Add(homeLayout);
             foreach (LayoutArea area in homeLayoutAreas)
-                _layoutAreaAdminService.SaveArea(area);
+                _layoutAreaAdminService.Add(area);
             layoutModel.HomeLayout = homeLayout;
             //checkout layout
             var checkoutLayout = new Layout
@@ -104,10 +104,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 new LayoutArea {AreaName = "Checkout Footer Left", Layout = checkoutLayout},
                 new LayoutArea {AreaName = "Checkout Footer Right", Layout = checkoutLayout}
             };
-            _documentService.AddDocument(checkoutLayout);
+            _layoutAdminService.Add(checkoutLayout);
 
             foreach (LayoutArea area in checkoutLayoutAreas)
-                _layoutAreaAdminService.SaveArea(area);
+                _layoutAreaAdminService.Add(area);
             layoutModel.CheckoutLayout = checkoutLayout;
             //product layout
             var productLayout = new Layout
@@ -126,9 +126,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 new LayoutArea {AreaName = "After Product Content", Layout = productLayout}
             };
 
-            _documentService.AddDocument(productLayout);
+            _layoutAdminService.Add(productLayout);
             foreach (LayoutArea area in productLayoutAreas)
-                _layoutAreaAdminService.SaveArea(area);
+                _layoutAreaAdminService.Add(area);
             layoutModel.ProductLayout = productLayout;
             //category/search layout
             var searchLayout = new Layout
@@ -144,9 +144,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 new LayoutArea {AreaName = "After Filters", Layout = searchLayout}
             };
 
-            _documentService.AddDocument(searchLayout);
+            _layoutAdminService.Add(searchLayout);
             foreach (LayoutArea area in searchLayoutAreas)
-                _layoutAreaAdminService.SaveArea(area);
+                _layoutAreaAdminService.Add(area);
             layoutModel.SearchLayout = searchLayout;
 
             var contentLayout = new Layout
@@ -156,7 +156,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 LayoutAreas = new List<LayoutArea>(),
                 Parent = eCommerceLayout
             };
-            _documentService.AddDocument(contentLayout);
+            _layoutAdminService.Add(contentLayout);
             layoutModel.ContentLayout = contentLayout;
 
             // UserAccount
@@ -171,9 +171,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 new LayoutArea {AreaName = "Right Column", Layout = userAccountLayout}
             };
-            _documentService.AddDocument(userAccountLayout);
+            _layoutAdminService.Add(userAccountLayout);
             foreach (LayoutArea area in userAccountAreas)
-                _layoutAreaAdminService.SaveArea(area);
+                _layoutAreaAdminService.Add(area);
             layoutModel.UserAccountLayout = userAccountLayout;
 
             //Page templates
