@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MrCMS.Web</RootNamespace>
     <AssemblyName>MrCMS.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <UseIISExpress>false</UseIISExpress>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -88,7 +88,7 @@
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Iesi.Collections.4.0.2\lib\net461\Iesi.Collections.dll</HintPath>
+      <HintPath>..\packages\Iesi.Collections.4.0.4\lib\net461\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <HintPath>..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
@@ -129,8 +129,8 @@
     <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
@@ -191,7 +191,7 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=4.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\packages\NHibernate.4.1.1.4000\lib\net40\NHibernate.dll</HintPath>
+      <HintPath>..\packages\NHibernate.4.1.2.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate.Caches.SysCache2, Version=4.0.0.4000, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NHibernate.Caches.SysCache2.4.0.0.4000\lib\net40\NHibernate.Caches.SysCache2.dll</HintPath>
@@ -244,26 +244,26 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
@@ -462,7 +462,7 @@
     <Compile Include="Apps\Core\Metadata\ForgottenPasswordPageMetadata.cs" />
     <Compile Include="Apps\Core\Metadata\LoginPageMetaData.cs" />
     <Compile Include="Apps\Core\Metadata\RegisterPageMetadata.cs" />
-    <Compile Include="Apps\Core\Metadata\ResetPasswordPageMetadata.cs" />
+    <Compile Include="Apps\Core\Metadata\ResetPasswordPageMetaData.cs" />
     <Compile Include="Apps\Core\Metadata\SearchPageMetaData.cs" />
     <Compile Include="Apps\Core\Metadata\TextPageMetaData.cs" />
     <Compile Include="Apps\Core\Metadata\TwoFactorCodePageMetadata.cs" />
@@ -3678,9 +3678,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Content\install\images\mr-cms-thumb.jpg" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Nop280\Nop280.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
@@ -4140,96 +4137,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OnlineCustomers\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\OnlineCustomersList.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OnlineCustomers\Cart.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Article\ForUser.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\AuthorInfo\Add.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\AuthorInfo\Edit.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\AuthorInfo\Show.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\User\Article.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\User\AuthorInfo.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Web.config" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\Article.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\ArticleAdd.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\ArticleList.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\ArticleListAdd.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleArchive.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleArchiveAdd.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleCategories.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleCategoriesAdd.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\LatestXArticles.cshtml" />
-    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\LatestXArticlesAdd.cshtml" />
-    <Content Include="Apps\Articles\Views\Pages\Article.cshtml" />
-    <Content Include="Apps\Articles\Views\Pages\ArticleList.cshtml" />
-    <Content Include="Apps\Articles\Views\Web.config" />
-    <Content Include="Apps\Articles\Views\Widgets\ArticleArchive.cshtml" />
-    <Content Include="Apps\Articles\Views\Widgets\ArticleCategories.cshtml" />
-    <Content Include="Apps\Articles\Views\Widgets\LatestXArticles.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Web.config" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\ForgottenPasswordPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\LoginPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\RegisterPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\ResetPasswordPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\SearchPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\TextPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\TextPageAdd.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\UserAccountPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\CurrentPageSubNavigation.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\CurrentPageSubNavigationAdd.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\LinkedImage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\LinkedImageAdd.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\Navigation.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\NavigationAdd.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\PlainTextWidget.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\PlainTextWidgetAdd.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\Slider.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\TextWidget.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\TextWidgetAdd.cshtml" />
-    <Content Include="Apps\Core\Content\Bootstrap\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Apps\Core\Content\Bootstrap\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Apps\Core\Content\Bootstrap\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.eot" />
-    <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.ttf" />
-    <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.woff" />
-    <Content Include="Apps\Core\Views\ExternalLogin\Facebook.cshtml" />
-    <Content Include="Apps\Core\Views\ExternalLogin\Google.cshtml" />
-    <Content Include="Apps\Core\Views\ExternalLogin\LinkedIn.cshtml" />
-    <Content Include="Apps\Core\Views\ExternalLogin\Providers.cshtml" />
-    <Content Include="Apps\Core\Views\ExternalLogin\StandardProvider.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\LoginPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\RegisterPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\ResetPasswordPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\SearchPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\TextPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\TwoFactorCodePage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\UserAccountPage.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\ChangePassword.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\ForgotPasswordForm.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\LoginBox.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\PasswordReset.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\SearchForm.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\SearchQuery.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\_BaseLayout.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\_OneColumn.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\_TwoColumn.cshtml" />
-    <Content Include="Apps\Core\Views\Web.config" />
-    <Content Include="Apps\Core\Views\Widgets\CurrentPageSubNavigation.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\LinkedImage.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\Navigation.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\PlainTextWidget.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\Slider.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\TextWidget.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\UserLinks.cshtml" />
-    <Content Include="Apps\Galleries\Areas\Admin\Views\Web.config" />
-    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\Gallery.cshtml" />
-    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\GalleryAdd.cshtml" />
-    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\GalleryList.cshtml" />
-    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\GalleryListAdd.cshtml" />
-    <Content Include="Apps\Galleries\Content\blueimp-Bootstrap-Image-Gallery\README.md" />
-    <Content Include="Apps\Galleries\Views\Pages\Gallery.cshtml" />
-    <Content Include="Apps\Galleries\Views\Pages\GalleryList.cshtml" />
-    <Content Include="Apps\Galleries\Views\Web.config" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\CHANGES.md" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\LICENSE.md" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\plugins\scayt\LICENSE.md" />
@@ -4435,6 +4342,96 @@
     <Content Include="Areas\Admin\Views\Widget\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Widget\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Article\ForUser.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\AuthorInfo\Add.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\AuthorInfo\Edit.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\AuthorInfo\Show.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\User\Article.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\User\AuthorInfo.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\Article.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\ArticleAdd.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\ArticleList.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\ArticleListAdd.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleArchive.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleArchiveAdd.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleCategories.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\ArticleCategoriesAdd.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\LatestXArticles.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\LatestXArticlesAdd.cshtml" />
+    <Content Include="Apps\Articles\Views\Pages\Article.cshtml" />
+    <Content Include="Apps\Articles\Views\Pages\ArticleList.cshtml" />
+    <Content Include="Apps\Articles\Views\Web.config" />
+    <Content Include="Apps\Articles\Views\Widgets\ArticleArchive.cshtml" />
+    <Content Include="Apps\Articles\Views\Widgets\ArticleCategories.cshtml" />
+    <Content Include="Apps\Articles\Views\Widgets\LatestXArticles.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\ForgottenPasswordPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\LoginPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\RegisterPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\ResetPasswordPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\SearchPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\TextPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\TextPageAdd.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\UserAccountPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\CurrentPageSubNavigation.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\CurrentPageSubNavigationAdd.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\LinkedImage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\LinkedImageAdd.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\Navigation.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\NavigationAdd.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\PlainTextWidget.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\PlainTextWidgetAdd.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\Slider.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\TextWidget.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\TextWidgetAdd.cshtml" />
+    <Content Include="Apps\Core\Content\Bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Apps\Core\Content\Bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Apps\Core\Content\Bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.eot" />
+    <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.ttf" />
+    <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.woff" />
+    <Content Include="Apps\Core\Views\ExternalLogin\Facebook.cshtml" />
+    <Content Include="Apps\Core\Views\ExternalLogin\Google.cshtml" />
+    <Content Include="Apps\Core\Views\ExternalLogin\LinkedIn.cshtml" />
+    <Content Include="Apps\Core\Views\ExternalLogin\Providers.cshtml" />
+    <Content Include="Apps\Core\Views\ExternalLogin\StandardProvider.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\LoginPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\RegisterPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\ResetPasswordPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\SearchPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\TextPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\TwoFactorCodePage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\UserAccountPage.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\ChangePassword.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\ForgotPasswordForm.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\LoginBox.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\PasswordReset.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\SearchForm.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\SearchQuery.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\_BaseLayout.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\_OneColumn.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\_TwoColumn.cshtml" />
+    <Content Include="Apps\Core\Views\Web.config" />
+    <Content Include="Apps\Core\Views\Widgets\CurrentPageSubNavigation.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\LinkedImage.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\Navigation.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\PlainTextWidget.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\Slider.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\TextWidget.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\UserLinks.cshtml" />
+    <Content Include="Apps\Galleries\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\Gallery.cshtml" />
+    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\GalleryAdd.cshtml" />
+    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\GalleryList.cshtml" />
+    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\GalleryListAdd.cshtml" />
+    <Content Include="Apps\Galleries\Content\blueimp-Bootstrap-Image-Gallery\README.md" />
+    <Content Include="Apps\Galleries\Views\Pages\Gallery.cshtml" />
+    <Content Include="Apps\Galleries\Views\Pages\GalleryList.cshtml" />
+    <Content Include="Apps\Galleries\Views\Web.config" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
@@ -4442,12 +4439,15 @@
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Widgets\Slider.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Widgets\UserLinks.cshtml" />
     <Content Include="Themes\Ecommerce\Views\Web.config" />
+    <Content Include="Views\Error\FileNotFound.cshtml" />
+    <Content Include="Views\Install\Setup.cshtml" />
+    <Content Include="Views\Shared\_Installation.cshtml" />
+    <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Amazon\Controllers\" />
     <Folder Include="Apps\Core\Areas\Admin\Controllers\" />
     <Folder Include="Apps\Core\Entities\" />
-    <Folder Include="Apps\Core\Helpers\" />
     <Folder Include="Apps\Core\Settings\" />
     <Folder Include="Apps\Core\Tasks\" />
     <Folder Include="Apps\Ecommerce\ActionResults\" />
@@ -4472,10 +4472,6 @@
     <Folder Include="Themes\Ecommerce\Content\" />
     <Folder Include="Themes\Ecommerce\Shared\" />
     <Folder Include="Themes\Ecommerce\Views\Shared\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Install\Setup.cshtml" />
-    <Content Include="Views\Shared\_Installation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MrCMS.PaypointService\MrCMS.PaypointService.csproj">
@@ -4531,9 +4527,9 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.105.2\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.105.2\build\net46\System.Data.SQLite.Core.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.105.2\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.105.2\build\net46\System.Data.SQLite.Core.targets')" />
 </Project>
