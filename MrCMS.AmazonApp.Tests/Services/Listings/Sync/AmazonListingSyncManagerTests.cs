@@ -1,6 +1,5 @@
 ﻿using FakeItEasy;
 using FluentAssertions;
-using MrCMS.EcommerceApp.Tests;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Listings;

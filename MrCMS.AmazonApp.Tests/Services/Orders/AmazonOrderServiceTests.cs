@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
-using MrCMS.EcommerceApp.Tests;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;

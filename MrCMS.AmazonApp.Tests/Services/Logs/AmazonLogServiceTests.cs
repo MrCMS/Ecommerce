@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using MrCMS.EcommerceApp.Tests;
 using MrCMS.Web.Apps.Amazon.Entities.Logs;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
