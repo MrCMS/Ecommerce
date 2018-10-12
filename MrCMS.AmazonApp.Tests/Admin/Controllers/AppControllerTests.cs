@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
-using MrCMS.EcommerceApp.Tests;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Amazon.Models;

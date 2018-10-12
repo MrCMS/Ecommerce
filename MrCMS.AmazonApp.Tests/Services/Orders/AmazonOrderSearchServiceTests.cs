@@ -1,5 +1,4 @@
 ﻿using FakeItEasy;
-using MrCMS.EcommerceApp.Tests;
 using MrCMS.Web.Apps.Amazon.Services.Orders;
 
 namespace MrCMS.AmazonApp.Tests.Services.Orders
