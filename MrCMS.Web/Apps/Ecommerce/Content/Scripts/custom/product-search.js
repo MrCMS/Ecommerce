@@ -9,7 +9,8 @@
         $(document).on('click', '#product-query-container a[data-action=remove-option]', removeOption);
         $(document).on('click', '[data-view]', changeView);
 
-        // Bind to StateChange Event
+
+       // Bind to StateChange Event
         history.Adapter.bind(window, 'statechange', updatePage);
 
         initializeSlider();
@@ -186,6 +187,9 @@
     function updatePage(event) { // Note: We are using statechange instead of popstate
         var state = history.getState();
         var data = state.data;
+        if (isEmpty(data)) {
+            data = getData(1);
+        }
         $.get('/search/query', data, updateQuery);
         $("#loading-message").show();
         $.get('/search/results', data, updateResults);
@@ -208,4 +212,5 @@
             }, 350);
         }
     }
+    function isEmpty(obj) { for(var key in obj) { if(obj.hasOwnProperty(key)) return false; } return true; }
 })(jQuery, window);
