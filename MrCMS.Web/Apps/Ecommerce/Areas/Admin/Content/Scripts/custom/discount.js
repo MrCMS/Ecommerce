@@ -36,12 +36,12 @@
     }
 
     function showHideCodeFromUrlFields() {
-        $('.from-url-group').toggle();
+        $('[data-applied-by-url]').toggle();
     }
 
     $(function () {
         if (!$('#CanBeAppliedFromUrl').is(':checked')) {
-            $('.from-url-group').toggle();
+            $('[data-applied-by-url]').toggle();
         }
 
         $(document).on('change', selector, showHideCodeField);

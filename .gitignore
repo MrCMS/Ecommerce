@@ -95,3 +95,5 @@ MrCMS.Web/Properties/PublishProfiles/demo.mrcms.com.pubxml
 .vs/config/applicationhost.config
 *.playlist
 MrCMS.Web/mrcms.config
+
+.vs*

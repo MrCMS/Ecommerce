@@ -12,11 +12,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class UserAccountInfoController : MrCMSAppUIController<EcommerceApp>
     {
-        private readonly IAuthorisationService _authorisationService;
         private readonly IUniquePageService _uniquePageService;
         private readonly IUserManagementService _userService;
+        private readonly IAuthorisationService _authorisationService;
 
-        public UserAccountInfoController(IUniquePageService uniquePageService, IUserManagementService userService,
+        public UserAccountInfoController(IUniquePageService uniquePageService, MrCMS.Services.IUserManagementService userService,
             IAuthorisationService authorisationService)
         {
             _uniquePageService = uniquePageService;

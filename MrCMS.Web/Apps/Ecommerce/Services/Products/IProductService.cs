@@ -10,7 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public interface IProductService
     {
-        ProductPagedList Search(string queryTerm = null, int page = 1);
+        ProductVariantPagedList Search(string queryTerm = null, int page = 1);
         IList<Product> Search(string queryTerm);
         IPagedList<Product> RelatedProductsSearch(Product product, string query, int page = 1);
         void AddCategory(Product product, int categoryId);

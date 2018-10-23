@@ -8,7 +8,6 @@ using MrCMS.Web.Apps.Ecommerce.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models
 {
-
     public class OnlineCustomerCartItem
     {
         public ProductVariant Product { get; set; }

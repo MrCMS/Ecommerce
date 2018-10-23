@@ -37,6 +37,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _passwordManagementService = passwordManagementService;
             _authorisationService = authorisationService;
             _productReviewUIService = productReviewUIService;
+            _userManagementService = userManagementService;
         }
 
         public ActionResult UserAccountOrders(int page = 1)
