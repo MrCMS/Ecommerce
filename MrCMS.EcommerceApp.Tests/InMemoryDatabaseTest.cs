@@ -80,6 +80,8 @@ namespace MrCMS.EcommerceApp.Tests
             Kernel.Bind<IMessageTemplateProvider>().ToConstant(_messageTemplateProvider);
             Kernel.Rebind<IExternalUserSource>().ToConstant(A.Fake<IExternalUserSource>());
             _eventContext = new TestableEventContext(Kernel.Get<EventContext>());
+            // this creates a dependency on the file system which we don't want
+            _eventContext.Disable<CreateFolderOnAddMediaCategory>();
             Kernel.Rebind<IEventContext>().ToMethod(context => EventContext);
         }
 

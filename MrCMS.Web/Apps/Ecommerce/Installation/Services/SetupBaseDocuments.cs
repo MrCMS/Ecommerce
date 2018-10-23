@@ -8,20 +8,25 @@ using MrCMS.Web.Apps.Ecommerce.Installation.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Web.Areas.Admin.Services;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 {
     public class SetupBaseDocuments : ISetupBaseDocuments
     {
-        private readonly IDocumentService _documentService;
+        private readonly IWebpageAdminService _webpageAdminService;
+        private readonly IGetDocumentByUrl<TextPage> _getByUrl;
+        private readonly ISession _session;
         private readonly IPageTemplateAdminService _pageTemplateAdminService;
         private readonly IFormAdminService _formAdminService;
 
-        public SetupBaseDocuments(IDocumentService documentService, IPageTemplateAdminService pageTemplateAdminService, IFormAdminService formAdminService)
+        public SetupBaseDocuments(IWebpageAdminService webpageAdminService, IPageTemplateAdminService pageTemplateAdminService, IFormAdminService formAdminService, IGetDocumentByUrl<TextPage> getByUrl, ISession session)
         {
-            _documentService = documentService;
+            _webpageAdminService = webpageAdminService;
             _pageTemplateAdminService = pageTemplateAdminService;
             _formAdminService = formAdminService;
+            _getByUrl = getByUrl;
+            _session = session;
         }
 
         public PageModel Setup(MediaModel mediaModel)
@@ -40,10 +45,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 UrlSegment = "products",
                 RevealInNavigation = false
             };
-            _documentService.AddDocument(productSearch);
-            _documentService.PublishNow(productSearch);
-            _documentService.AddDocument(categoryContainer);
-            _documentService.PublishNow(categoryContainer);
+            _webpageAdminService.Add(productSearch);
+            _webpageAdminService.PublishNow(productSearch);
+            _webpageAdminService.Add(categoryContainer);
+            _webpageAdminService.PublishNow(categoryContainer);
             pageModel.ProductSearch = productSearch;
 
             var now = DateTime.UtcNow;
@@ -54,7 +59,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 RevealInNavigation = false,
                 PublishOn = now
             };
-            _documentService.AddDocument(yourBasket);
+            _webpageAdminService.Add(yourBasket);
             var enterOrderEmail = new EnterOrderEmail
             {
                 Name = "Enter Order Email",
@@ -64,7 +69,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 DisplayOrder = 0,
                 PublishOn = now,
             };
-            _documentService.AddDocument(enterOrderEmail);
+            _webpageAdminService.Add(enterOrderEmail);
             var setPaymentDetails = new PaymentDetails
             {
                 Name = "Set Payment Details",
@@ -74,7 +79,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 DisplayOrder = 1,
                 PublishOn = now,
             };
-            _documentService.AddDocument(setPaymentDetails);
+            _webpageAdminService.Add(setPaymentDetails);
             var setDeliveryDetails = new SetShippingDetails
             {
                 Name = "Set Shipping Details",
@@ -84,7 +89,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 DisplayOrder = 2,
                 PublishOn = now,
             };
-            _documentService.AddDocument(setDeliveryDetails);
+            _webpageAdminService.Add(setDeliveryDetails);
             var orderPlaced = new OrderPlaced
             {
                 Name = "Order Placed",
@@ -94,7 +99,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 DisplayOrder = 3,
                 PublishOn = now,
             };
-            _documentService.AddDocument(orderPlaced);
+            _webpageAdminService.Add(orderPlaced);
 
             // User Account
             var userAccount = new SitemapPlaceholder
@@ -104,7 +109,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 RevealInNavigation = false,
                 PublishOn = now
             };
-            _documentService.AddDocument(userAccount);
+            _webpageAdminService.Add(userAccount);
 
             var userAccountInfo = new UserAccountInfo
             {
@@ -114,7 +119,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 PublishOn = now,
                 Parent = userAccount
             };
-            _documentService.AddDocument(userAccountInfo);
+            _webpageAdminService.Add(userAccountInfo);
 
             var userAccountPassword = new UserAccountChangePassword
             {
@@ -124,7 +129,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 PublishOn = now,
                 Parent = userAccount
             };
-            _documentService.AddDocument(userAccountPassword);
+            _webpageAdminService.Add(userAccountPassword);
 
             var userAccountAddresses = new UserAccountAddresses
             {
@@ -134,7 +139,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 PublishOn = now,
                 Parent = userAccount
             };
-            _documentService.AddDocument(userAccountAddresses);
+            _webpageAdminService.Add(userAccountAddresses);
 
             var editAddress = new UserAccountEditAddress
             {
@@ -144,7 +149,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 PublishOn = now,
                 Parent = userAccountAddresses
             };
-            _documentService.AddDocument(editAddress);
+            _webpageAdminService.Add(editAddress);
 
             var userAccountOrders = new UserAccountOrders
             {
@@ -154,7 +159,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 PublishOn = now,
                 Parent = userAccount
             };
-            _documentService.AddDocument(userAccountOrders);
+            _webpageAdminService.Add(userAccountOrders);
 
             var userOrder = new UserOrder
             {
@@ -164,7 +169,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 PublishOn = now,
                 Parent = userAccountOrders
             };
-            _documentService.AddDocument(userOrder);
+            _webpageAdminService.Add(userOrder);
 
             var userAccountReviews = new UserAccountReviews
             {
@@ -174,7 +179,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 PublishOn = now,
                 Parent = userAccount
             };
-            _documentService.AddDocument(userAccountReviews);
+            _webpageAdminService.Add(userAccountReviews);
 
             var userAccountRewards = new UserAccountRewardPoints
             {
@@ -184,7 +189,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 PublishOn = now,
                 Parent = userAccount
             };
-            _documentService.AddDocument(userAccountRewards);
+            _webpageAdminService.Add(userAccountRewards);
 
             // End User Account
 
@@ -197,7 +202,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 RevealInNavigation = false,
                 PublishOn = now
             };
-            _documentService.AddDocument(addedToCart);
+            _webpageAdminService.Add(addedToCart);
             pageModel.ProductAddedToCart = addedToCart;
 
             var wishlist = new ShowWishlist
@@ -207,7 +212,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 RevealInNavigation = true,
                 PublishOn = now
             };
-            _documentService.AddDocument(wishlist);
+            _webpageAdminService.Add(wishlist);
 
             var newIn = new NewInProducts
             {
@@ -216,7 +221,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 RevealInNavigation = true,
                 PublishOn = now
             };
-            _documentService.AddDocument(newIn);
+            _webpageAdminService.Add(newIn);
 
             var about = new TextPage()
             {
@@ -226,10 +231,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 PublishOn = now,
                 BodyContent = EcommerceInstallInfo.AboutUsText
             };
-            _documentService.AddDocument(about);
+            _webpageAdminService.Add(about);
 
             //update core pages
-            var homePage = _documentService.GetDocumentByUrl<TextPage>("home");
+            var homePage = _getByUrl.GetByUrl("home");
             if (homePage != null)
             {
                 homePage.BodyContent = EcommerceInstallInfo.HomeCopy;
@@ -241,16 +246,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 }
 
                 homePage.SubmitButtonText = "Sign up";
-                _documentService.SaveDocument(homePage);
+                _webpageAdminService.Update(homePage);
                 pageModel.HomePage = homePage;
             }
-            var page2 = _documentService.GetDocumentByUrl<TextPage>("page-2");
+            var page2 = _getByUrl.GetByUrl("page-2");
             if (page2 != null)//demopage in core not needed
-                _documentService.DeleteDocument(page2);
+                _webpageAdminService.Delete(page2);
 
-            var contactus = _documentService.GetDocumentByUrl<TextPage>("contact-us");
+            var contactus = _getByUrl.GetByUrl("contact-us");
             if (contactus != null)//demopage in core not needed
-                _documentService.DeleteDocument(contactus);
+                _webpageAdminService.Delete(contactus);
 
             //Added to cart
             var contactUs = new ContactUs()
@@ -266,7 +271,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 BodyContent = "[form]",
                 FormDesign = EcommerceInstallInfo.ContactFormDesign
             };
-            _documentService.AddDocument(contactUs);
+            _webpageAdminService.Add(contactUs);
             GetFormProperties(contactUs);
 
             var brandListing = new BrandListing
@@ -277,14 +282,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 PublishOn = now,
                 BodyContent = ""
             };
-            _documentService.AddDocument(brandListing);
+            _webpageAdminService.Add(brandListing);
 
             return pageModel;
         }
 
         private void GetFormProperties(ContactUs contactus)
         {
-            contactus = _documentService.GetDocument<ContactUs>(contactus.Id);
+            contactus = _session.Get<ContactUs>(contactus.Id);
             var name = new TextBox
             {
                 Name = "Name",

@@ -1,6 +1,5 @@
-﻿using MrCMS.Entities.People;
-using MrCMS.Helpers;
-using MrCMS.Web.Apps.Core.Services;
+﻿using MrCMS.Helpers;
+using MrCMS.Services.Auth;
 using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using NHibernate;
@@ -26,14 +25,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
             if (!_ecommerceSettings.RewardPointsEnabled)
                 return;
 
-            int pointsForRegistration = _rewardPointSettings.PointsForRegistration;
+            var pointsForRegistration = _rewardPointSettings.PointsForRegistration;
             if (pointsForRegistration <= 0)
                 return;
-            User user = args.User;
+            var user = args.User;
             var registrationPoints = new RegistrationPoints
             {
                 User = user,
-                Points = pointsForRegistration,
+                Points = pointsForRegistration
             };
             _session.Transact(session => session.Save(registrationPoints));
         }

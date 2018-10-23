@@ -3,17 +3,15 @@
 
 @if (ViewData["render-analytics"] as bool? ?? false)
 {
-    @Html.Raw(SiteSettings<SEOSettings>().TrackingScripts)
-
     <script type="text/javascript">
         ga('require', 'ecommerce');
 
         ga('ecommerce:addTransaction', {
             'id': '@Model.Id',
             'affiliation': '@Model.Site.Name',
-            'revenue': '@Model.Total',
+            'revenue': '@Model.Total.ToString("0.##")',
             'shipping': '@Model.ShippingTotal',
-            'tax': '@Model.Tax'
+            'tax': '@Model.Tax.ToString("0.##")'
         });
 
         @{
@@ -25,7 +23,7 @@
                         'name': '@item.Name',
                         'sku': '@item.SKU',
                         'category': '@item.Options',
-                        'price': '@item.UnitPrice',
+                        'price': '@item.UnitPrice.ToString("0.##")',
                         'quantity': '@item.Quantity'
                     });
                 </text>

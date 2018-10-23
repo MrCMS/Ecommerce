@@ -32,6 +32,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     builder.Select(x => x.Name).WithAlias(() => info.Name);
                     return builder;
                 }).TransformUsing(Transformers.AliasToBean<BrandInfo>())
+                .Cacheable()
                     .List<BrandInfo>();
             return items.BuildSelectItemList(brand => brand.Name, brand => brand.Id.ToString(),
                 brand => brand.Id == query.BrandId, "All Brands");

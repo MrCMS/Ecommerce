@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
-using MrCMS.Web.Apps.Core.Services;
+using MrCMS.Services.Auth;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website;
@@ -12,15 +11,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
 {
     public class CopyCartToUser : IOnUserLoggedIn, IOnUserRegistered
     {
-        private readonly ISession _session;
         private readonly ICartBuilder _cartBuilder;
         private readonly IGetExistingCartItem _getExistingCartItem;
+        private readonly ISession _session;
 
         public CopyCartToUser(ISession session, ICartBuilder cartBuilder, IGetExistingCartItem getExistingCartItem)
         {
             _session = session;
             _cartBuilder = cartBuilder;
             _getExistingCartItem = getExistingCartItem;
+        }
+
+        public void Execute(UserLoggedInEventArgs args)
+        {
+            UserLoggedIn(args.User, args.PreviousSession);
+        }
+
+        public void Execute(OnUserRegisteredEventArgs args)
+        {
+            UserLoggedIn(args.User, args.PreviousSession);
         }
 
         private void UserLoggedIn(User user, Guid previousSession)
@@ -34,7 +43,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
                 {
                     var cartItem = _getExistingCartItem.GetExistingItem(cart, item.Item, item.Data);
                     if (cartItem != null)
+                    {
                         cartItem.Quantity += item.Quantity;
+                    }
                     else
                     {
                         cartItem = new CartItem
@@ -49,16 +60,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
                     session.Delete(item);
                 }
             });
-        }
-
-        public void Execute(UserLoggedInEventArgs args)
-        {
-            UserLoggedIn(args.User, args.PreviousSession);
-        }
-
-        public void Execute(OnUserRegisteredEventArgs args)
-        {
-            UserLoggedIn(args.User, args.PreviousSession);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.IO;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Services;
+using MrCMS.Web.Areas.Admin.Services;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
 {
@@ -8,19 +9,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
     {
         private const string NopProductImages = "nop-product-images";
         private readonly IFileService _fileService;
-        private readonly IDocumentService _documentService;
+        private readonly IGetDocumentByUrl<MediaCategory> _getByUrl;
+        private readonly IMediaCategoryAdminService _mediaCategoryAdminService;
 
-        public ImportPictureData(IFileService fileService, IDocumentService documentService)
+        public ImportPictureData(IFileService fileService, IGetDocumentByUrl<MediaCategory> getByUrl, IMediaCategoryAdminService mediaCategoryAdminService)
         {
             _fileService = fileService;
-            _documentService = documentService;
+            _getByUrl = getByUrl;
+            _mediaCategoryAdminService = mediaCategoryAdminService;
         }
 
         public string ImportPictures(NopCommerceDataReader dataReader, NopImportContext nopImportContext)
         {
             var pictureData = dataReader.GetPictureData();
 
-            var mediaCategory = _documentService.GetDocumentByUrl<MediaCategory>(NopProductImages);
+            var mediaCategory = _getByUrl.GetByUrl(NopProductImages);
             if (mediaCategory == null)
             {
                 mediaCategory = new MediaCategory
@@ -30,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                     IsGallery = false,
                     HideInAdminNav = false
                 };
-                _documentService.AddDocument(mediaCategory);
+                _mediaCategoryAdminService.Add(mediaCategory);
             }
 
             foreach (var data in pictureData)

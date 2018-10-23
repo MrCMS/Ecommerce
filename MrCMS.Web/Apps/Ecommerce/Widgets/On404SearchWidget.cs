@@ -4,7 +4,7 @@ using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Widgets
 {
-    [OutputCacheable]
+    [WidgetOutputCacheable]
     public class On404SearchWidget : Widget
     {
         public On404SearchWidget()

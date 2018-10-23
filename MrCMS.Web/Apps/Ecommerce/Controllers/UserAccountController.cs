@@ -27,12 +27,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IProductReviewUIService _productReviewUIService;
 
         public UserAccountController(IOrderService orderService,
-            IUserLookup userLookup, 
+            IUserLookup userLookup, IUserManagementService userManagementService, 
             IPasswordManagementService passwordManagementService, 
-            IAuthorisationService authorisationService, IProductReviewUIService productReviewUIService, IUserManagementService userManagementService)
+            IAuthorisationService authorisationService, IProductReviewUIService productReviewUIService)
         {
             _orderService = orderService;
             _userLookup = userLookup;
+            _userManagementService = userManagementService;
             _passwordManagementService = passwordManagementService;
             _authorisationService = authorisationService;
             _productReviewUIService = productReviewUIService;

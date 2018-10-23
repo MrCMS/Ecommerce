@@ -1,7 +1,6 @@
 ﻿using FakeItEasy;
 using FluentAssertions;
 using MarketplaceWebServiceFeedsClasses;
-using MrCMS.EcommerceApp.Tests;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Services.Api.Feeds;
 using MrCMS.Web.Apps.Amazon.Settings;

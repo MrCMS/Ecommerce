@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
-using MrCMS.Entities.People;
 using MrCMS.Helpers;
+using MrCMS.Models.Auth;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Core.Models.RegisterAndLogin;
-using MrCMS.Web.Apps.Core.Services;
+using MrCMS.Services.Auth;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website;
@@ -36,14 +35,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             return EmailRegistrationStatus.Available;
         }
 
-        public async Task<LoginAndAssociateOrderResult> LoginAndAssociateOrder(LoginModel model, Order order)
+        public LoginAndAssociateOrderResult LoginAndAssociateOrder(LoginModel model, Order order)
         {
-            LoginResult authenticateUser = await _loginService.AuthenticateUser(model);
-            if (!authenticateUser.Success)
+            var authenticateUser = _loginService.AuthenticateUser(model);
+            if (authenticateUser.Status != LoginStatus.Success)
                 return new LoginAndAssociateOrderResult
                 {
                     Error = "We were unable to log you in, please check your password and try again"
                 };
+            //TODO: 2FA flow
 
             order.User = CurrentRequestData.CurrentUser;
             _session.Transact(session => session.Update(order));
@@ -58,7 +58,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                     Error = "The provided email already has an account associated"
                 };
 
-            User registeredUser = await _registrationService.RegisterUser(model);
+            var registeredUser = await _registrationService.RegisterUser(model);
             order.User = registeredUser;
             _session.Transact(session => session.Update(order));
             return new RegisterAndAssociateOrderResult();
@@ -68,7 +68,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             if (order.AnalyticsSent)
                 return false;
-            
+
             order.AnalyticsSent = true;
             _session.Transact(session => session.Update(order));
 

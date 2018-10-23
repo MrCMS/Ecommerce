@@ -16,12 +16,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public class ImportProductsValidationService : IImportProductsValidationService
     {
-        private readonly IDocumentService _documentService;
         private readonly IWebpageUrlService _urlService;
 
-        public ImportProductsValidationService(IDocumentService documentService,IWebpageUrlService urlService)
+        public ImportProductsValidationService(IWebpageUrlService urlService)
         {
-            _documentService = documentService;
             _urlService = urlService;
         }
 

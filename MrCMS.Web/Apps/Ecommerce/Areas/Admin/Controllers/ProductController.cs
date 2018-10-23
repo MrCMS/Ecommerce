@@ -24,7 +24,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class ProductController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly ICategoryService _categoryService;
-        private readonly IDocumentService _documentService;
         private readonly IFileAdminService _fileAdminService;
         private readonly IProductOptionManagementService _productOptionManagementService;
         private readonly IProductOptionManager _productOptionManager;
@@ -33,7 +32,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IUniquePageService _uniquePageService;
 
         public ProductController(IProductService productService, 
-            IDocumentService documentService,
             ICategoryService categoryService,
             IProductOptionManager productOptionManager, 
             IFileAdminService fileAdminService,
@@ -42,7 +40,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             IUniquePageService uniquePageService)
         {
             _productService = productService;
-            _documentService = documentService;
             _categoryService = categoryService;
             _productOptionManager = productOptionManager;
             _fileAdminService = fileAdminService;
@@ -122,7 +119,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult RemoveCategory(Product product, int categoryId)
         {
-            ViewData["category"] = _documentService.GetDocument<Category>(categoryId);
+            ViewData["category"] = _categoryService.GetCategory(categoryId);
             return PartialView(product);
         }
 
@@ -413,7 +410,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult AddRelatedProductItems(Product product, string query, int page = 1)
         {
-            ViewData["product"] = _documentService.GetDocument<Product>(product.Id);
+            ViewData["product"] = _productService.Get(product.Id);
             IPagedList<Product> items = _productService.RelatedProductsSearch(product, query, page);
             return PartialView(items);
         }
@@ -443,9 +440,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("RemoveRelatedProduct")]
         public RedirectToRouteResult RemoveRelatedProduct_POST(Product product, int relatedProductId)
         {
-            Product relatedProduct = product.RelatedProducts.SingleOrDefault(x => x.Id == relatedProductId);
-            product.RelatedProducts.Remove(relatedProduct);
-            _documentService.SaveDocument(relatedProduct);
+            _productService.RemoveRelatedProduct(product,relatedProductId);
 
             return RedirectToAction("Edit", "Webpage", new { id = product.Id });
         }

@@ -73,6 +73,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                     .Select(variant => variant.Product.Id).WithAlias(() => list.ProductId)
                 )
                 .TransformUsing(Transformers.AliasToBean<PriceList>())
+                .Cacheable()
                 .List<PriceList>();
 
             var taxRates = _session.QueryOver<TaxRate>().Cacheable().List();

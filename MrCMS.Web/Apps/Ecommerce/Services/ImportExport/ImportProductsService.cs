@@ -14,6 +14,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.Batching;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
+using MrCMS.Web.Areas.Admin.Services;
 using Newtonsoft.Json;
 using NHibernate;
 using NHibernate.Criterion;
@@ -26,7 +27,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     {
         private readonly ICreateBatch _createBatch;
         private readonly IGetNewBrandPage _getNewBrandPage;
-        private readonly IDocumentService _documentService;
+        private readonly IGetDocumentByUrl<MediaCategory> _getByUrl;
+        private readonly IMediaCategoryAdminService _mediaCategoryAdminService;
         private readonly IImportProductImagesService _importProductImagesService;
         private readonly IImportProductVariantsService _importProductVariantsService;
         private readonly IImportProductSpecificationsService _importSpecificationsService;
@@ -35,14 +37,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private readonly IUniquePageService _uniquePageService;
 
 
-        public ImportProductsService(IDocumentService documentService,
+        public ImportProductsService(IGetDocumentByUrl<MediaCategory> getByUrl,
+            IMediaCategoryAdminService mediaCategoryAdminService,
             IImportProductSpecificationsService importSpecificationsService,
             IImportProductVariantsService importProductVariantsService,
             IImportProductImagesService importProductImagesService,
             IImportProductUrlHistoryService importUrlHistoryService, ISession session,
             IUniquePageService uniquePageService, ICreateBatch createBatch, IGetNewBrandPage getNewBrandPage)
         {
-            _documentService = documentService;
+            _getByUrl = getByUrl;
+            _mediaCategoryAdminService = mediaCategoryAdminService;
             _importSpecificationsService = importSpecificationsService;
             _importProductVariantsService = importProductVariantsService;
             _importProductImagesService = importProductImagesService;
@@ -77,7 +81,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         public Product ImportProduct(ProductImportDataTransferObject dataTransferObject)
         {
             var uniquePage = _uniquePageService.GetUniquePage<ProductContainer>();
-            var productGalleriesCategory = _documentService.GetDocumentByUrl<MediaCategory>("product-galleries");
+            var productGalleriesCategory = _getByUrl.GetByUrl("product-galleries");
             if (productGalleriesCategory == null)
             {
                 productGalleriesCategory = new MediaCategory
@@ -87,7 +91,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     IsGallery = true,
                     HideInAdminNav = true
                 };
-                _documentService.AddDocument(productGalleriesCategory);
+                _mediaCategoryAdminService.Add(productGalleriesCategory);
             }
 
 

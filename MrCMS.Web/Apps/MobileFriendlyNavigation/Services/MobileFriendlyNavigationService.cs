@@ -117,6 +117,7 @@ namespace MrCMS.Web.Apps.MobileFriendlyNavigation.Services
                     .Select(y => y.DisplayOrder).WithAlias(() => nodeAlias.DisplayOrder)
                     .SelectSubQuery(countSubNodes).WithAlias(() => nodeAlias.ChildCount))
                 .TransformUsing(Transformers.AliasToBean<MobileFriendlyNavigationChildNode>())
+                .Cacheable()
                 .List<MobileFriendlyNavigationChildNode>().ToList()
                 .GroupBy(node => node.ParentId)
                 .ToDictionary(grouping => grouping.Key, g => g.ToList());

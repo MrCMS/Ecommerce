@@ -266,11 +266,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             wsInfo.Cells["C1"].Value = "Export Date";
             wsInfo.Cells["D1"].Value = "Export Source";
 
-            wsInfo.Cells["A2"].Value = MrCMSHtmlHelper.AssemblyVersion(null);
+            wsInfo.Cells["A2"].Value = MrCMSHtmlHelperExtensions.AssemblyVersion(null);
             wsInfo.Cells["B2"].Value = "Product";
             wsInfo.Cells["C2"].Style.Numberformat.Format = "YYYY-MM-DD hh:mm:ss";
             wsInfo.Cells["C2"].Value = DateTime.UtcNow;
-            wsInfo.Cells["D2"].Value = "MrCMS " + MrCMSHtmlHelper.AssemblyVersion(null);
+            wsInfo.Cells["D2"].Value = "MrCMS " + MrCMSHtmlHelperExtensions.AssemblyVersion(null);
 
             wsInfo.Cells["A:D"].AutoFitColumns();
             wsInfo.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;

@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MrCMS.Web.Apps.Core.Models;
-using MrCMS.Web.Apps.Core.Models.RegisterAndLogin;
+using MrCMS.Models.Auth;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {

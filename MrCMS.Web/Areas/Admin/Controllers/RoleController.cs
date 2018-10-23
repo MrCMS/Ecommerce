@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 using MrCMS.ACL.Rules;
 using MrCMS.Entities.People;
 using MrCMS.Models;

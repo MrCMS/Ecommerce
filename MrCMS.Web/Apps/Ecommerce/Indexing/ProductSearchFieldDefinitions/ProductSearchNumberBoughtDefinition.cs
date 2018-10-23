@@ -42,6 +42,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                             .SelectSum(line => line.Quantity)
                             .WithAlias(() => numberBoughtCount.Count))
                 .TransformUsing(Transformers.AliasToBean<GroupedNumberBoughtCount>())
+                .Cacheable()
                 .List<GroupedNumberBoughtCount>().ToHashSet();
 
             HashSet<ProductVariant> variants =
@@ -73,6 +74,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                         builder.SelectSum(line => line.Quantity)
                             .WithAlias(() => numberBoughtCount.Count))
                 .TransformUsing(Transformers.AliasToBean<NumberBoughtCount>())
+                .Cacheable()
                 .SingleOrDefault<NumberBoughtCount>();
             return singleOrDefault != null ? singleOrDefault.Count : 0;
         }

@@ -31,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         public IPagedList<OnlineCustomerCart> Search(OnlineCustomerSearchQuery query)
         {
-            var sessionDataQuery = GetSessionDataQuery(query);
+            var sessionDataQuery = GetSessionDataQuery(query).Cacheable();
             var sessionData = sessionDataQuery.List<SessionDataQueryResult>();
             var userCartItemCounts = GetUserCartItemCounts(sessionData);
 
@@ -55,7 +55,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         public OnlineCustomerCart GetCart(Guid userGuid)
         {
-            var sessionData = GetSessionDataQuery().Where(x => x.UserGuid == userGuid).List<SessionDataQueryResult>().FirstOrDefault();
+            var sessionData = GetSessionDataQuery().Where(x => x.UserGuid == userGuid).Cacheable()
+                .List<SessionDataQueryResult>().FirstOrDefault();
             var cartItems = GetCartItems(userGuid);
 
             return new OnlineCustomerCart
@@ -89,6 +90,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
                     return builder;
                 }).TransformUsing(Transformers.AliasToBean<OnlineCustomerCartItem>())
+                .Cacheable()
                 .List<OnlineCustomerCartItem>();
         }
 
@@ -104,6 +106,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
                     return builder;
                 }).TransformUsing(Transformers.AliasToBean<UserCartItemCountQueryResult>())
+                .Cacheable()
                 .List<UserCartItemCountQueryResult>();
         }
 
