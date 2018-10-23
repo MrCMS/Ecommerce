@@ -144,5 +144,7 @@ Version 0.5.0 (November 2018)
     * Added price and product name to product search
     * Ability to view current customer carts
     * Sales by day report updated to show tabular information
+	* Order Export to XLS
+	* Removed stats app (Use Google Analytics)
 
 
