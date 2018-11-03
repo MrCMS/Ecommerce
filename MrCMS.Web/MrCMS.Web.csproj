@@ -90,6 +90,9 @@
     <Reference Include="Iesi.Collections, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\Iesi.Collections.4.0.4\lib\net461\Iesi.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ionic.Zip.1.9.1.8\lib\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <HintPath>..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
     </Reference>
@@ -554,6 +557,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AmountPerUnitController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BraintreeSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BulkOrdersActionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BulkShippingController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BulkStockUpdateController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BuyXGetYFreeController.cs" />
@@ -658,9 +662,11 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\GetWarehouseStockFromFileResult.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\GiftCardSearchQuery.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\LowStockReportSearchModel.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\MarkOrdersAsShippedViewModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\OnlineCustomerCart.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\OnlineCustomerSearchQuery.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\OrderExportQuery.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\PickingListViewModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ProductAdminSearchQuery.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ProductOptionSortingData.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ProductOptionSortingSearchQuery.cs" />
@@ -671,6 +677,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ReviewUpdateModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\Sales.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\SalesByDayViewModel.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\SelectedOrdersViewModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ShippingMethodInfo.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\StockGenerationModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\StockGenerationType.cs" />
@@ -687,6 +694,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\AddOrderVoidedNote.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BrandAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BrandListingWebpageTreeNav.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BulkOrdersAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BulkShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BulkSimpleStockUpdateService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BulkStockUpdateAdminService.cs" />
@@ -715,6 +723,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GiftCardAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GiftCardSettingsAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBrandAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBulkOrdersAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBulkShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBulkSimpleStockUpdateService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBulkStockUpdateAdminService.cs" />
@@ -759,7 +768,9 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ISetVariantTypeProperties.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IShippingCountryIsAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IShippingMethodAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ISKUSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IStockReportAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ItemHasSKUController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IUKCourierShippingAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IUKCourierShippingCalculationAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IUKFirstClassShippingAdminService.cs" />
@@ -861,6 +872,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\SetVariantTypeProperties.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ShippingCountryIsAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ShippingMethodAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\SKUSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\StockReportAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\TidyUpProduct.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\UKCourierShippingAdminService.cs" />
@@ -1461,6 +1473,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\ItemIsInCategoryChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ITermsAndConditionsUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\OnlyByItselfChecker.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\OrderExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\OrderTotalFixedAmountApplier.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\SetShippingDateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ShippingCountryIsChecker.cs" />
@@ -2276,6 +2289,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\abstract.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\bulk-orders.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\category-search.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\content-item-product-list.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\country-based-shipping-calculation.js" />
@@ -2289,6 +2303,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-product.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-products.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\FileSaver.min.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\generate-warehouse-stock.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\gift-cards.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\google-base.js" />
@@ -4407,6 +4422,10 @@
     <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.eot" />
     <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.ttf" />
     <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.woff" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\BulkOrdersAction\CreatePickingList.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\BulkOrdersAction\MarkOrdersAsShippedForm.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\BulkOrdersAction\NoCheckboxesSelected.cshtml" />
+    <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />

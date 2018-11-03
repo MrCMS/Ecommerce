@@ -4,25 +4,28 @@
 @using MrCMS.Web.Apps.Ecommerce.Entities.Orders
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Web.Apps.Ecommerce.Services.Cart
 @model OrderSearchModel
 @{
     ViewBag.Title = "Orders";
     var results = ViewData["results"] as IPagedList<Order> ?? PagedList<Order>.Empty;
     var paymentStatusOptions = ViewData["payment-status-options"] as List<SelectListItem> ?? new List<SelectListItem>();
     var shippingStatusOptions = ViewData["shipping-status-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    var ordersShipped = TempData["orders-shipped"] is bool ? (bool)TempData["orders-shipped"] : false;
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/FileSaver.min.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/bulk-orders.js");
+    var exportStatus = TempData["export-status"] as string;
 }
-
 @using (Html.BeginForm("Index", "Order", FormMethod.Get))
 {
-
     <fieldset>
         <legend>
             Orders
             <span class="btn-group  display-inline  pull-right">
-                <button type="submit" class="btn btn-primary">Search</button>
+                <button type="submit" class="btn btn-primary" name="Command" value="Search">Search</button>
             </span>
         </legend>
-
+        @Html.HiddenFor(x => x.Page)
         <div class="row">
             <div class="col-lg-4">
                 <div class="form-group">
@@ -74,10 +77,36 @@
         }
         else
         {
-
+            if (ordersShipped)
+            {
+                <div class="alert alert-success">
+                    @Resource("Selected order(s) successfully marked as shipped.")
+                </div>
+            }
+            if (!string.IsNullOrWhiteSpace(exportStatus))
+            {
+                <div class="alert alert-danger">
+                    @exportStatus
+                </div>
+            }
             <table class="table table-condensed table-striped">
                 <thead>
                     <tr>
+                        <th>
+                            <input type="checkbox" id="selectAll" value="selectAll" />
+                        </th>
+                        <th colspan="9">
+                            <input type="button" class="btn btn-primary bullk-action-button" value="@Resource("Download Invoice(s)")" data-download-invoices />
+                            &nbsp;&nbsp;
+                            <input type="button" class="btn btn-primary bullk-action-button" value="@Resource("Picking list")" data-picking-list />
+                            &nbsp;&nbsp;
+                            <input type="button" class="btn btn-primary bullk-action-button" value="@Resource("Mark as shipped")" data-mark-as-shipped />
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+
+                        </th>
                         <th>
                             Channel
                         </th>
@@ -86,6 +115,9 @@
                         </th>
                         <th>
                             Email
+                        </th>
+                        <th>
+                            Orders
                         </th>
                         <th>
                             Payment Info
@@ -116,6 +148,9 @@
                         }
                         <tr class="@status">
                             <td>
+                                <input type="checkbox" value="@order.Id" />
+                            </td>
+                            <td>
                                 @(order.SalesChannel ?? EcommerceApp.DefaultSalesChannel)
                             </td>
                             <td>
@@ -123,6 +158,9 @@
                             </td>
                             <td style="word-break: break-all">
                                 @order.OrderEmail
+                            </td>
+                            <td>
+                                @order.GetTotalOrders()
                             </td>
                             <td>
                                 @if (!order.IsCancelled)
@@ -179,7 +217,8 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    @Html.ActionLink("Details", "Edit", "Order", new { id = order.Id }, new { @class = "btn btn-xs btn-default" })
+                                    @Html.ActionLink("Invoice (PDF)", "Create", "OrderInvoice", new { id = order.Id }, new { @class = "btn btn-xs btn-default" })
+                                    @Html.ActionLink("Details", "Edit", "Order", new { id = order.Id }, new { @class = "btn btn-xs btn-primary" })
                                 </div>
                             </td>
                         </tr>
