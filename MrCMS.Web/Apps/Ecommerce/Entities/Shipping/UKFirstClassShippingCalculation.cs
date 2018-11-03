@@ -25,5 +25,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         [DisplayName("Restricted To")]
         public virtual string RestrictedTo { get; set; }
+
+        [DisplayName("Excluded From")]
+        public virtual string ExcludedFrom { get; set; }
     }
 }

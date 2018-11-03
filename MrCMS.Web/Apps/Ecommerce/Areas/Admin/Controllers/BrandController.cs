@@ -33,6 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost, ActionName("Migrate")]
         public ActionResult Migrate_POST()
         {
+            Server.ScriptTimeout = 600;
             _brandAdminService.MigrateBrands();
             TempData.SuccessMessages().Add("Brands migrated to pages.");
             return RedirectToAction("Index");

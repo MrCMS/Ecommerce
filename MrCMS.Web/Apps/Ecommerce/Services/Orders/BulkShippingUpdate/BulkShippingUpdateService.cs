@@ -38,12 +38,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate
                     {
                         Order order = _orderService.Get(dataTransferObject.OrderId);
 
-                        if (order == null || string.IsNullOrWhiteSpace(dataTransferObject.ShippingMethod))
+                        if (order == null /*|| string.IsNullOrWhiteSpace(dataTransferObject.ShippingMethod)*/)
                             continue;
-                        ShippingMethodInfo shippingMethod = shippingMethodInfos.FirstOrDefault(info => info.DisplayName == dataTransferObject.ShippingMethod);
-                        if (shippingMethod == null)
+
+                        if (order.OrderStatus == OrderStatus.Shipped || order.OrderStatus == OrderStatus.Complete)
                             continue;
-                        order.ShippingMethodName = shippingMethod.DisplayName;
+
+                        if (!string.IsNullOrWhiteSpace(dataTransferObject.ShippingMethod))
+                        {
+                            ShippingMethodInfo shippingMethod = shippingMethodInfos.FirstOrDefault(info => (info.DisplayName == dataTransferObject.ShippingMethod || info.Name == dataTransferObject.ShippingMethod));
+                            if (shippingMethod != null)
+                                order.ShippingMethodName = shippingMethod.DisplayName;
+                        }
+                        
                         order.TrackingNumber = dataTransferObject.TrackingNumber;
                         _orderService.MarkAsShipped(order);
                         noOfUpdatedItems++;

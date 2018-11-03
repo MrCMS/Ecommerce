@@ -1,0 +1,7 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations.ItemDoesNotHaveSKU
+
+<div class="form-group">
+    @Html.LabelFor(x => x.SKUs)
+    @Html.TextBoxFor(x => x.SKUs, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.SKUs)
+</div>

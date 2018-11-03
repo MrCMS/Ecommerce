@@ -991,6 +991,7 @@
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercentFromItems.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercentFromOrder.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\CartTotalGreaterThanX.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemDoesNotHaveSKU.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemHasSKU.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemIsInCategory.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OnlyByItself.cs" />
@@ -1469,6 +1470,8 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetShippingAddress.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetValidDiscounts.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ISetShippingDateService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\ItemBrandIsNotChecker.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\ItemDoesNotHaveSKUChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ItemHasSKUChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ItemIsInCategoryChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ITermsAndConditionsUIService.cs" />
@@ -4425,6 +4428,8 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BulkOrdersAction\CreatePickingList.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BulkOrdersAction\MarkOrdersAsShippedForm.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BulkOrdersAction\NoCheckboxesSelected.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ItemBrandIsNot\Fields.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ItemDoesNotHaveSKU\Fields.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />

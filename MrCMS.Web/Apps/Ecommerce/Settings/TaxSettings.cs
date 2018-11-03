@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using MrCMS.Settings;
-using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 
 namespace MrCMS.Web.Apps.Ecommerce.Settings
 {
@@ -31,10 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         [DisplayName("Taxes Enabled?")]
         public bool TaxesEnabled { get; set; }
 
-        public override bool RenderInSettings
-        {
-            get { return false; }
-        }
+        public override bool RenderInSettings => false;
     }
 
     public enum DiscountOnPrices
