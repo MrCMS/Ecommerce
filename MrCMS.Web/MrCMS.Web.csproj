@@ -568,6 +568,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryProductsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CharityClearSettingsController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ClickAndCollectController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryBasedShippingCalculationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryBasedShippingController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
@@ -585,6 +586,8 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\GiftCardSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\GoogleBaseController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ImportExportController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ItemBrandIsNotSKUController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ItemDoesNotHaveSKUController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ItemHasSKUController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ItemIsInCategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\LowStockReportController.cs" />
@@ -702,6 +705,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BulkWarehousedStockUpdateValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CategoryAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CategoryProductsAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ClickAndCollectAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CountryBasedShippingAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CountryBasedShippingCalculationAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CSVFileWriter.cs" />
@@ -731,6 +735,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBulkWarehousedStockUpdateValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICategoryAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICategoryProductsAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IClickAndCollectAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICountryBasedShippingAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICountryBasedShippingCalculationAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICSVFileWriter.cs" />
@@ -1754,6 +1759,7 @@
     <Compile Include="Apps\Ecommerce\Services\SetShippingMethodService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ShippingMethodSubmenuGenerator.cs" />
     <Compile Include="Apps\Ecommerce\Services\ShippingMethodUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Shipping\ClickAndCollect.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\CountryBasedShipping.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingMethod.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IStandardShippingCalculation.cs" />
@@ -1786,6 +1792,7 @@
     <Compile Include="Apps\Ecommerce\Services\Widgets\GetEcommerceUserLinks.cs" />
     <Compile Include="Apps\Ecommerce\Services\Wishlists\IWishlistUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Wishlists\WishlistUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Settings\ClickAndCollectSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSearchCacheSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\GiftCardSettings.cs" />
@@ -4430,6 +4437,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BulkOrdersAction\NoCheckboxesSelected.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ItemBrandIsNot\Fields.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ItemDoesNotHaveSKU\Fields.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ClickAndCollect\Configure.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />

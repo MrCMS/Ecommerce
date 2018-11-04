@@ -1,0 +1,34 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Entities.Shipping
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Helpers.Shipping
+@model MrCMS.Web.Apps.Ecommerce.Settings.ClickAndCollectSettings
+@{
+    ViewBag.Title = "Click and Collect Settings";
+}
+@using (Html.BeginForm("Configure", "ClickAndCollect", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            UK Courier Shipping Settings
+            <span class="btn-group display-inline pull-right">
+                <a href="@Url.Action("Index", "ShippingMethod")" class="btn btn-default">Back</a>
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </span>
+        </legend>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.LabelFor(settings => settings.DisplayName)
+                    @Html.TextBoxFor(settings => settings.DisplayName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(settings => settings.DisplayName)
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(settings => settings.Description)
+                    @Html.TextBoxFor(settings => settings.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(settings => settings.Description)
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}
