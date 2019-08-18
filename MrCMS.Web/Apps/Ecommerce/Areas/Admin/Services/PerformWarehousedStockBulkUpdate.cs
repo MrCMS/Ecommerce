@@ -26,6 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 
         public BulkUpdateResult Update(List<BulkWarehouseStockUpdateDTO> dtoList)
         {
+            var errors = new List<string>();
             var warehouseStocks = _statelessSession.Query<WarehouseStock>()
                 .Where(stock => stock.Site.Id == _site.Id && !stock.IsDeleted
                                 && stock.ProductVariant != null
@@ -34,6 +35,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                 .Fetch(stock => stock.ProductVariant)
                 .Fetch(stock => stock.Warehouse)
                 .ToList();
+
+            var duplicates = warehouseStocks
+                .GroupBy(x => new {x.ProductVariantSKU, x.Warehouse.Id})
+                .Where(group => group.Count() > 1)
+                .Select(group => new BulkWarehouseStockUpdateDTO
+                {
+                    SKU = group.Key.ProductVariantSKU,
+                    WarehouseId = group.Key.Id
+                }).ToList();
+
+            if (duplicates.Any())
+            {
+                foreach (var bulkWarehouseStockUpdateDto in duplicates)
+                {
+                    errors.Add($"A duplicate SKU of {bulkWarehouseStockUpdateDto.SKU} was found for warehouse Id {bulkWarehouseStockUpdateDto.WarehouseId} in the database.");
+                }
+
+                return new BulkUpdateResult
+                {
+                    IsSuccess = false,
+                    Messages = errors
+                };
+            }
+
             var dictionary = warehouseStocks
                 .GroupBy(stock => stock.ProductVariant.SKU)
                 .ToDictionary(stocks => stocks.Key,

@@ -26,22 +26,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             _getDefaultTaxRate = getDefaultTaxRate;
         }
 
-        public string Name
-        {
-            get { return "UK First Class"; }
-        }
+        public string Name => "UK First Class";
 
-        public string DisplayName
-        {
-            get { return _ukFirstClassShippingSettings.DisplayName; }
-        }
+        public string DisplayName => _ukFirstClassShippingSettings.DisplayName;
 
-        public string Description
-        {
-            get { return _ukFirstClassShippingSettings.Description; }
-        }
+        public string Description => _ukFirstClassShippingSettings.Description;
 
-        public string TypeName { get { return GetType().FullName; } }
+        public string TypeName => GetType().FullName;
 
         public bool CanBeUsed(CartModel cart)
         {
@@ -96,15 +87,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             }
         }
 
-        public string ConfigureController
-        {
-            get { return "UKFirstClassShipping"; }
-        }
+        public string ConfigureController => "UKFirstClassShipping";
 
-        public string ConfigureAction
-        {
-            get { return "Configure"; }
-        }
+        public string ConfigureAction => "Configure";
 
         private UKFirstClassShippingCalculation GetBestAvailableCalculation(CartModel cart)
         {

@@ -1,0 +1,7 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations.ItemBrandIsNot
+
+<div class="form-group">
+    @Html.LabelFor(x => x.Brands)
+    @Html.TextBoxFor(x => x.Brands, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.Brands)
+</div>
