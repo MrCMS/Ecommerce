@@ -17,6 +17,7 @@ namespace MrCMS.Helpers
             var li = new TagBuilder("li");
             foreach (string @class in classes)
                 li.AddCssClass(@class);
+            li.AddCssClass("page-item");
             li.InnerHtml = inner;
             return li;
         }
@@ -38,6 +39,7 @@ namespace MrCMS.Helpers
             var first = new TagBuilder("a");
             first.SetInnerText(textValue);
             first.Attributes["href"] = linkUrl;
+            first.AddCssClass("page-link");
             return WrapInListItem(first.ToString(), "PagedList-skipToFirst");
         }
 
@@ -52,6 +54,10 @@ namespace MrCMS.Helpers
 
         private static string GetCurrentPath(HtmlHelper helper)
         {
+            if (CurrentRequestData.CurrentPage != null)
+            {
+                return CurrentRequestData.CurrentPage.LiveUrlSegment;
+            }
             if (helper.ViewContext.HttpContext.Request.Url != null)
                 return helper.ViewContext.HttpContext.Request.Url.GetComponents(UriComponents.Path,
                                                                                  UriFormat.SafeUnescaped);
@@ -81,6 +87,7 @@ namespace MrCMS.Helpers
             string textValue = string.Format(format, targetPageNumber);
 
             var previous = new TagBuilder("a");
+            previous.AddCssClass("page-link");
             previous.SetInnerText(textValue);
 
             if (list.HasPreviousPage)
@@ -127,12 +134,15 @@ namespace MrCMS.Helpers
 
             var page = new TagBuilder("a");
             page.SetInnerText(textValue);
+            page.AddCssClass("page-link");
 
             var currentPage = i == list.PageNumber;
             if (currentPage)
                 return WrapInListItem(page.ToString(), "active");
 
             page.Attributes["href"] = url;
+
+            
 
             return WrapInListItem(page.ToString());
         }
@@ -159,6 +169,7 @@ namespace MrCMS.Helpers
 
             var next = new TagBuilder("a");
             next.SetInnerText(textValue);
+            next.AddCssClass("page-link");
 
             if (list.HasNextPage)
                 next.Attributes["href"] = url;
@@ -175,7 +186,7 @@ namespace MrCMS.Helpers
             return LastItem(html, list, url, getRouteValues, format);
         }
 
-        private static TagBuilder Last(HtmlHelper html, IPagedList list, 
+        private static TagBuilder Last(HtmlHelper html, IPagedList list,
                                        Func<int, object> getRouteValues, string format)
         {
             var url = html.UrlWithCurrentQueryString(GetCurrentPath(html), getRouteValues(list.PageCount));
@@ -193,6 +204,7 @@ namespace MrCMS.Helpers
             var last = new TagBuilder("a");
             last.SetInnerText(textValue);
             last.Attributes["href"] = url;
+            last.AddCssClass("page-link");
             return WrapInListItem(last.ToString(), "PagedList-skipToLast");
         }
 
@@ -216,7 +228,7 @@ namespace MrCMS.Helpers
         {
             var link = new TagBuilder("a");
             link.SetInnerText(format);
-
+            link.AddCssClass("page-link");
             return WrapInListItem(link.ToString(), "PagedList-ellipses");
         }
 
@@ -456,8 +468,19 @@ namespace MrCMS.Helpers
                     routeValueDictionary.Add(key, queryString[key]);
             }
 
-            return "/" + relativePath + "?" +
-                   string.Join("&", routeValueDictionary.Select(pair => string.Format("{0}={1}", pair.Key, pair.Value)));
+            var keysToRemove = routeValueDictionary.Keys.Where(
+                s => string.IsNullOrWhiteSpace(Convert.ToString(routeValueDictionary[s]))
+                || (s.Contains("Page", StringComparison.InvariantCultureIgnoreCase) && string.Equals(routeValueDictionary[s].ToString(), "1", StringComparison.Ordinal))
+                ).ToList();
+            
+            foreach (var key in keysToRemove)
+                routeValueDictionary.Remove(key);
+
+            var basicUrl = "/" + relativePath;
+            return !routeValueDictionary.Any()
+                ? basicUrl
+                : basicUrl + "?" +
+                  string.Join("&", routeValueDictionary.Select(pair => string.Format("{0}={1}", pair.Key, pair.Value)));
         }
     }
 }

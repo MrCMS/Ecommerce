@@ -30,6 +30,8 @@ obj/
 [Dd]ebug*/
 [Rr]elease*/
 Ankh.NoLoad
+.vs/*
+.idea/*
 
 #MonoDevelop
 *.pidb
@@ -92,3 +94,6 @@ MrCMS.Web/Properties/PublishProfiles/demo.mrcms.com.pubxml
 *.vsp
 .vs/config/applicationhost.config
 *.playlist
+MrCMS.Web/mrcms.config
+
+.vs*

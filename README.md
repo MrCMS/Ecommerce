@@ -19,7 +19,7 @@ Mr CMS eCommerce project is currently supplied with the latest version of Mr CMS
 	* Stock management
 	* Lucene based filterable search (automatically managed)
 	* Message template management for order confirmations etc
-	* Price breaks (buy 10 for £1.99 instead of £2.50)
+	* Price breaks (buy 10 for ï¿½1.99 instead of ï¿½2.50)
 	* Country based shipping
 	* Shipping by weight
 	* Payments by: PayPal, Braintree, Paypoint, SagePay, WorldPay and CharityClear
@@ -132,5 +132,20 @@ Version 0.4.1 (March 2016)
     * Category Abstract for products
     * Brand image added to product cards
     * Google Base fix max length
+
+Version 0.5.0 (November 2018)
+----------
+    * Upgraded to Mr CMS 0.6
+    * Updated ACL Rules to include ecommerce app locations
+    * When creating discounts you can now pick products and categories using a GUI rather than specifying IDs
+    * Discounts can be applied via a URL
+    * Updated product search to search by name and price-from-to in admin
+    * Removed Lucene for Orders in admin in favour of SQL
+    * Added price and product name to product search
+    * Ability to view current customer carts
+    * Sales by day report updated to show tabular information
+	* Order Export to XLS
+	* Removed stats app (Use Google Analytics)
+	* Added basic click and collect
 
 

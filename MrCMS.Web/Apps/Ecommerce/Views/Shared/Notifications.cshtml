@@ -1,0 +1,16 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
+@{
+
+    var discountResult = TempData["discount-result"] as CheckCodeResult;
+    if (discountResult != null)
+    {
+        var displayClass = discountResult.Success
+            ? "notification-success"
+            : "notification-fail";
+
+        <div class="ecommerce-notification @displayClass">
+            <div class="notification">@discountResult.Message <a id="notification-close">Close</a></div>
+        </div>
+    }
+}

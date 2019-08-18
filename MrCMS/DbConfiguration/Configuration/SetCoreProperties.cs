@@ -1,9 +1,9 @@
-﻿using System;
-using MrCMS.Entities;
+﻿using MrCMS.Entities;
 using MrCMS.Entities.Multisite;
 using MrCMS.Website;
 using NHibernate.Event;
 using NHibernate.Persister.Entity;
+using System;
 
 namespace MrCMS.DbConfiguration.Configuration
 {
@@ -16,10 +16,22 @@ namespace MrCMS.DbConfiguration.Configuration
             if (systemEntity != null)
             {
                 DateTime now = CurrentRequestData.Now;
-                SetCreatedOn(@event.Persister, @event.State, systemEntity, now);
-                SetUpdatedOn(@event.Persister, @event.State, systemEntity, now);
-                if (systemEntity is SiteEntity && (systemEntity as SiteEntity).Site == null)
-                    SetSite(@event.Persister, @event.State, systemEntity as SiteEntity, CurrentRequestData.CurrentSite);
+
+                if (systemEntity.CreatedOn == DateTime.MinValue)
+                {
+                    SetCreatedOn(@event.Persister, @event.State, systemEntity, now);
+                }
+
+                if (systemEntity.UpdatedOn == DateTime.MinValue)
+                {
+                    SetUpdatedOn(@event.Persister, @event.State, systemEntity, now);
+                }
+
+                if (systemEntity is SiteEntity && (systemEntity as SiteEntity).Site == null && CurrentRequestData.CurrentSite != null)
+                {
+                    SetSite(@event.Persister, @event.State, systemEntity as SiteEntity,
+                        @event.Session.Get<Site>(CurrentRequestData.CurrentSite.Id));
+                }
             }
             return false;
         }
@@ -49,7 +61,10 @@ namespace MrCMS.DbConfiguration.Configuration
         {
             int index = Array.IndexOf(persister.PropertyNames, propertyName);
             if (index == -1)
+            {
                 return;
+            }
+
             state[index] = value;
         }
     }

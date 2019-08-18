@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,7 +8,7 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using MrCMS.Apps;
 using MrCMS.Batching.Entities;
-using MrCMS.Config;
+using MrCMS.DbConfiguration.Caches;
 using MrCMS.DbConfiguration.Configuration;
 using MrCMS.DbConfiguration.Conventions;
 using MrCMS.DbConfiguration.Filters;
@@ -16,16 +17,17 @@ using MrCMS.Entities;
 using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Documents.Web.FormProperties;
-using MrCMS.Entities.Messaging;
 using MrCMS.Entities.People;
 using MrCMS.Entities.Widget;
 using MrCMS.Helpers;
+using MrCMS.Website;
 using NHibernate;
 using NHibernate.Cache;
 using NHibernate.Caches.SysCache2;
-using NHibernate.Cfg;
 using NHibernate.Event;
 using NHibernate.Tool.hbm2ddl;
+using Ninject;
+using Environment = NHibernate.Cfg.Environment;
 
 namespace MrCMS.DbConfiguration
 {
@@ -45,9 +47,9 @@ namespace MrCMS.DbConfiguration
 
         public ISessionFactory CreateSessionFactory()
         {
-            NHibernate.Cfg.Configuration configuration = GetConfiguration();
+            var configuration = GetConfiguration();
 
-            ISessionFactory sessionFactory = configuration.BuildSessionFactory();
+            var sessionFactory = configuration.BuildSessionFactory();
 
             return sessionFactory;
         }
@@ -68,15 +70,22 @@ namespace MrCMS.DbConfiguration
 
         public NHibernate.Cfg.Configuration GetConfiguration()
         {
-            List<Assembly> assemblies = GetAssemblies();
+            var assemblies = GetAssemblies();
 
-            IPersistenceConfigurer iPersistenceConfigurer = _databaseProvider.GetPersistenceConfigurer();
-            AutoPersistenceModel autoPersistenceModel = GetAutoPersistenceModel(assemblies);
-            ApplyCoreFilters(autoPersistenceModel);
+            if (_databaseProvider == null)
+                throw new Exception("Please set the database provider in mrcms.config");
 
-            NHibernate.Cfg.Configuration config = Fluently.Configure()
+            var iPersistenceConfigurer = _databaseProvider.GetPersistenceConfigurer();
+            var autoPersistenceModel = GetAutoPersistenceModel(assemblies);
+
+            var config = Fluently.Configure()
                 .Database(iPersistenceConfigurer)
-                .Mappings(m => m.AutoMappings.Add(autoPersistenceModel))
+                .Mappings(m =>
+                {
+                    m.AutoMappings.Add(autoPersistenceModel);
+                    foreach (var assembly in assemblies)
+                        m.FluentMappings.AddFromAssembly(assembly);
+                })
                 .Cache(SetupCache)
                 .ExposeConfiguration(AppendListeners)
                 .ExposeConfiguration(AppSpecificConfiguration)
@@ -104,7 +113,7 @@ namespace MrCMS.DbConfiguration
 
         private List<Assembly> GetAssemblies()
         {
-            HashSet<Assembly> assemblies = TypeHelper.GetAllMrCMSAssemblies();
+            var assemblies = TypeHelper.GetAllMrCMSAssemblies();
             if (ManuallyAddedAssemblies != null)
                 assemblies.AddRange(ManuallyAddedAssemblies);
 
@@ -120,29 +129,26 @@ namespace MrCMS.DbConfiguration
 
         private void SetupCache(CacheSettingsBuilder builder)
         {
-            if (!CacheEnabled) 
+            if (!CacheEnabled)
                 return;
 
             builder.UseSecondLevelCache()
                 .UseQueryCache()
                 .QueryCacheFactory<StandardQueryCacheFactory>();
-            var mrCMSSection = WebConfigurationManager.GetSection("mrcms") as MrCMSConfigSection;
-            if (mrCMSSection != null)
+            var providerType = TypeHelper.GetTypeByName(WebConfigurationManager.AppSettings["mrcms-cache-provider"]);
+            var cacheInitializers = NHibernateCacheInitializers.Initializers;
+            if (providerType != null && cacheInitializers.ContainsKey(providerType))
             {
-                builder.ProviderClass(mrCMSSection.CacheProvider.AssemblyQualifiedName);
-                if (mrCMSSection.MinimizePuts)
-                    builder.UseMinimalPuts();
+                var initializer = MrCMSKernel.Kernel.Get(cacheInitializers[providerType]) as CacheProviderInitializer;
+                if (initializer != null)
+                {
+                    initializer.Initialize(builder);
+                    return;
+                }
             }
-            else
-                builder.ProviderClass<SysCacheProvider>();
+            builder.ProviderClass<SysCacheProvider>();
         }
-
-        private static void ApplyCoreFilters(AutoPersistenceModel autoPersistenceModel)
-        {
-            autoPersistenceModel.Add(typeof(NotDeletedFilter));
-            autoPersistenceModel.Add(typeof(SiteFilter));
-        }
-
+        
         private static AutoPersistenceModel GetAutoPersistenceModel(List<Assembly> finalAssemblies)
         {
             return AutoMap.Assemblies(new MrCMSMappingConfiguration(), finalAssemblies)
@@ -168,11 +174,10 @@ namespace MrCMS.DbConfiguration
 
         private void AppendListeners(NHibernate.Cfg.Configuration configuration)
         {
-            configuration.AppendListeners(ListenerType.PreInsert,
-                new[]
-                {
-                    new SetCoreProperties()
-                });
+            configuration.AppendListeners(ListenerType.PreInsert, new[]
+            {
+                new SetCoreProperties()
+            });
             var softDeleteListener = new SoftDeleteListener();
             configuration.SetListener(ListenerType.Delete, softDeleteListener);
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
@@ -49,25 +48,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
                         data.Add(item.Where(x => x.Key.Hour == i + 1).Sum(x => x.Value));
                     }
                 }
-                else if (model.From.Month == model.To.Month || ts.Days < 31)
+                else
                 {
                     for (int i = 0; i < ts.Days; i++)
                     {
-                        oldDate = currentDate;
-                        currentDate = oldDate.AddDays(1);
-                        data.Add(i == 0
-                            ? item.Where(x => x.Key.Date == currentDate.Date).Sum(x => x.Value)
-                            : item.Where(x => oldDate.Date <= x.Key && x.Key < currentDate.Date)
-                                .Sum(x => x.Value));
-                    }
-                }
-                else
-                {
-                    while (oldDate.Month <= currentDate.Month)
-                    {
-                        oldDate = currentDate;
-                        data.Add(item.Where(x => x.Key.Month == currentDate.Month).Sum(x => x.Value));
-                        currentDate = oldDate.AddMonths(1);
+                        data.Add(item.Where(x => x.Key == currentDate.AddDays(i)).Sum(x => x.Value));
                     }
                 }
 
@@ -91,22 +76,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
                     model.Labels.Add(oldDate.Hour.ToString());
                 }
             }
-            else if (model.From.Month == model.To.Month || ts.Days < 31)
+            else
             {
                 for (int i = 0; i < ts.Days; i++)
                 {
                     oldDate = currentDate;
                     currentDate = oldDate.AddDays(1);
                     model.Labels.Add(oldDate.ToString("dd/MM"));
-                }
-            }
-            else
-            {
-                while (oldDate.Month <= currentDate.Month)
-                {
-                    oldDate = currentDate;
-                    currentDate = oldDate.AddMonths(1);
-                    model.Labels.Add(oldDate.Month.GetMonth());
                 }
             }
         }

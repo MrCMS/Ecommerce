@@ -8,9 +8,17 @@ namespace MrCMS.Settings
         [TextArea]
         public string RobotsText { get; set; }
 
+        [DisplayName("Robots.txt file for staging")]
+        [TextArea]
+        public string RobotsTextStaging { get; set; }
+
         [DisplayName("Tracking Scripts (head)")]
         [TextArea]
         public string TrackingScripts { get; set; }
+
+        [DisplayName("Tracking Scripts (top of body)")]
+        [TextArea]
+        public string TrackingScriptsBody { get; set; }
 
         [DisplayName("Enable HTML Minification")]
         public bool EnableHtmlMinification { get; set; }
@@ -19,5 +27,8 @@ namespace MrCMS.Settings
         {
             get { return true; }
         }
+
+        [MediaSelector]
+        public string Favicon { get; set; }
     }
 }

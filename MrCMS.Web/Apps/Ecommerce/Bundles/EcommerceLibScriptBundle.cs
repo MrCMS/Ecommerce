@@ -16,7 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Bundles
         {
             get
             {
-                yield return "~/Apps/Ecommerce/Content/bootstrap/js/bootstrap.min.js";
+                yield return "~/Apps/Ecommerce/Content/bootstrap/js/bootstrap.js";
                 yield return "~/Apps/Ecommerce/Content/Scripts/jquery.validate.min.js";
                 yield return "~/Apps/Ecommerce/Content/Scripts/jquery.validate.unobtrusive.min.js";
                 yield return "~/Apps/Ecommerce/Content/Scripts/ecommerce.js";

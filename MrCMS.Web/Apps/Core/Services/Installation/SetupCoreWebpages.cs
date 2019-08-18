@@ -21,7 +21,7 @@ namespace MrCMS.Web.Apps.Core.Services.Installation
             _configurationProvider = configurationProvider;
         }
 
-        private class ErrorPages 
+        private class ErrorPages
         {
             public Webpage Error403 { get; set; }
             public Webpage Error404 { get; set; }
@@ -30,20 +30,24 @@ namespace MrCMS.Web.Apps.Core.Services.Installation
 
         public void Setup()
         {
+            ErrorPages errorPages = GetErrorPages();
             _session.Transact(session =>
             {
                 GetBasicPages().ForEach(webpage => session.Save(webpage));
 
-                ErrorPages errorPages = GetErrorPages();
                 session.Save(errorPages.Error403);
                 session.Save(errorPages.Error404);
                 session.Save(errorPages.Error500);
+            });
 
-                var siteSettings = _configurationProvider.GetSiteSettings<SiteSettings>();
-                siteSettings.Error403PageId = errorPages.Error403.Id;
-                siteSettings.Error404PageId = errorPages.Error404.Id;
-                siteSettings.Error500PageId = errorPages.Error500.Id;
-                _configurationProvider.SaveSettings(siteSettings);
+            var siteSettings = _configurationProvider.GetSiteSettings<SiteSettings>();
+            siteSettings.Error403PageId = errorPages.Error403.Id;
+            siteSettings.Error404PageId = errorPages.Error404.Id;
+            siteSettings.Error500PageId = errorPages.Error500.Id;
+            _configurationProvider.SaveSettings(siteSettings);
+
+            _session.Transact(session =>
+            {
 
                 GetAccountPages().ForEach(webpage => session.Save(webpage));
 
@@ -109,7 +113,7 @@ namespace MrCMS.Web.Apps.Core.Services.Installation
             };
 
             yield return loginPage;
-            var forgottenPassword = new ForgottenPasswordPage
+            yield return new ForgottenPasswordPage
             {
                 Name = "Forgot Password",
                 UrlSegment = "forgot-password",
@@ -117,9 +121,8 @@ namespace MrCMS.Web.Apps.Core.Services.Installation
                 DisplayOrder = 0,
                 RevealInNavigation = false
             };
-            yield return forgottenPassword;
 
-            var resetPassword = new ResetPasswordPage
+            yield return new ResetPasswordPage
             {
                 Name = "Reset Password",
                 UrlSegment = "reset-password",
@@ -127,9 +130,8 @@ namespace MrCMS.Web.Apps.Core.Services.Installation
                 DisplayOrder = 1,
                 RevealInNavigation = false
             };
-            yield return resetPassword;
 
-            var userAccountPage = new UserAccountPage
+            yield return new UserAccountPage
             {
                 Name = "My Account",
                 UrlSegment = "my-account",
@@ -137,14 +139,21 @@ namespace MrCMS.Web.Apps.Core.Services.Installation
                 DisplayOrder = 1,
                 RevealInNavigation = false
             };
-            yield return userAccountPage;
+            yield return new TwoFactorCodePage
+            {
+                Name = "Verify Code",
+                UrlSegment = "verify-code",
+                BodyContent = "An email has been sent to your email address with your authentication code. Please enter this code below to authorise your login.",
+                Parent = loginPage,
+                DisplayOrder = 4,
+                RevealInNavigation = false
+            };
 
-            var registerPage = new RegisterPage
+            yield return new RegisterPage
             {
                 Name = "Register",
                 UrlSegment = "register",
             };
-            yield return registerPage;
         }
 
 
@@ -155,7 +164,7 @@ namespace MrCMS.Web.Apps.Core.Services.Installation
                 Name = "Home",
                 UrlSegment = "home",
                 BodyContent =
-                    "<h1>Mr CMS</h1> <p>Welcome to Mr CMS, the only CMS you will need.</p><p> Turn on inline editing above, then click here. Pretty cool huh? </p>",
+                    "<h1>Mr CMS</h1> <p>Welcome to Mr CMS.</p><p> Turn on inline editing above, then click here to start editing. </p>",
                 RevealInNavigation = true,
             };
             CurrentRequestData.HomePage = homePage;

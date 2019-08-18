@@ -46,6 +46,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                             .Select(order => productAlias.Name)
                             .WithAlias(() => productSortDataAlias.Name))
                     .TransformUsing(Transformers.AliasToBean<ProductSortData>())
+                    .Cacheable()
                     .List<ProductSortData>().ToHashSet();
 
             return products.Select(product => orders.FirstOrDefault(order => order.Id == product.Id)

@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
-using MrCMS.Entities.People;
 using MrCMS.Helpers;
+using MrCMS.Models.Auth;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Core.Models.RegisterAndLogin;
-using MrCMS.Web.Apps.Core.Services;
+using MrCMS.Services.Auth;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website;
@@ -16,12 +15,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         private readonly ILoginService _loginService;
         private readonly IRegistrationService _registrationService;
         private readonly ISession _session;
-        private readonly IUserService _userService;
+        private readonly IUserLookup _userLookup;
 
-        public OrderPlacedService(IUserService userService, ILoginService loginService, ISession session,
+        public OrderPlacedService(IUserLookup userLookup, ILoginService loginService, ISession session,
             IRegistrationService registrationService)
         {
-            _userService = userService;
+            _userLookup = userLookup;
             _loginService = loginService;
             _session = session;
             _registrationService = registrationService;
@@ -31,19 +30,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             if (CurrentRequestData.CurrentUser != null)
                 return EmailRegistrationStatus.LoggedIn;
-            if (_userService.GetUserByEmail(orderEmail) != null)
+            if (_userLookup.GetUserByEmail(orderEmail) != null)
                 return EmailRegistrationStatus.EmailInUse;
             return EmailRegistrationStatus.Available;
         }
 
-        public async Task<LoginAndAssociateOrderResult> LoginAndAssociateOrder(LoginModel model, Order order)
+        public LoginAndAssociateOrderResult LoginAndAssociateOrder(LoginModel model, Order order)
         {
-            LoginResult authenticateUser = await _loginService.AuthenticateUser(model);
-            if (!authenticateUser.Success)
+            var authenticateUser = _loginService.AuthenticateUser(model);
+            if (authenticateUser.Status != LoginStatus.Success)
                 return new LoginAndAssociateOrderResult
                 {
                     Error = "We were unable to log you in, please check your password and try again"
                 };
+            //TODO: 2FA flow
 
             order.User = CurrentRequestData.CurrentUser;
             _session.Transact(session => session.Update(order));
@@ -58,10 +58,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                     Error = "The provided email already has an account associated"
                 };
 
-            User registeredUser = await _registrationService.RegisterUser(model);
+            var registeredUser = await _registrationService.RegisterUser(model);
             order.User = registeredUser;
             _session.Transact(session => session.Update(order));
             return new RegisterAndAssociateOrderResult();
+        }
+
+        public bool UpdateAnalytics(Order order)
+        {
+            if (order.AnalyticsSent)
+                return false;
+
+            order.AnalyticsSent = true;
+            _session.Transact(session => session.Update(order));
+
+            return true;
         }
     }
 }

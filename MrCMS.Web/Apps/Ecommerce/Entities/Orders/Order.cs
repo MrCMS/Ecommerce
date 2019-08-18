@@ -127,6 +127,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         [DisplayName("Gift Message")]
         public virtual string GiftMessage { get; set; }
 
+        public virtual bool AnalyticsSent { get; set; }
+
         public virtual OrderStatus OrderStatus
         {
             get

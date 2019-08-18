@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
@@ -12,31 +10,33 @@ using MrCMS.Indexing.Management;
 using MrCMS.Models;
 using MrCMS.Website;
 using StackExchange.Profiling;
+using System;
+using System.Linq;
 using Version = Lucene.Net.Util.Version;
 
 namespace MrCMS.Search
 {
     public class UniversalSearchIndexManager : IUniversalSearchIndexManager
     {
-        private static IndexSearcher _searcher;
-        private readonly IGetLuceneDirectory _getLuceneDirectory;
+        private const string FolderName = "UniversalSearch";
         private readonly Site _site;
+        private readonly IGetLuceneIndexWriter _getLuceneIndexWriter;
+        private readonly IGetLuceneIndexSearcher _getLuceneIndexSearcher;
+        private readonly IGetLuceneDirectory _getLuceneDirectory;
         private readonly IUniversalSearchItemGenerator _universalSearchItemGenerator;
         protected Analyzer Analyser;
-        private Directory _directory;
 
         public UniversalSearchIndexManager(IUniversalSearchItemGenerator universalSearchItemGenerator, Site site,
-            IGetLuceneDirectory getLuceneDirectory)
+            IGetLuceneIndexWriter getLuceneIndexWriter, IGetLuceneIndexSearcher getLuceneIndexSearcher, IGetLuceneDirectory getLuceneDirectory)
         {
             _universalSearchItemGenerator = universalSearchItemGenerator;
             _site = site;
+            _getLuceneIndexWriter = getLuceneIndexWriter;
+            _getLuceneIndexSearcher = getLuceneIndexSearcher;
             _getLuceneDirectory = getLuceneDirectory;
         }
 
-        private bool IndexExists
-        {
-            get { return IndexReader.IndexExists(GetDirectory(_site)); }
-        }
+        private bool IndexExists => IndexReader.IndexExists(GetDirectory(_site));
 
         public void Insert(SystemEntity entity)
         {
@@ -52,7 +52,9 @@ namespace MrCMS.Search
             };
 
             if (!AnyExistInEndRequest(data))
+            {
                 CurrentRequestData.OnEndRequest.Add(new AddUniversalSearchTaskInfo(data));
+            }
         }
 
         public void Update(SystemEntity entity)
@@ -68,7 +70,9 @@ namespace MrCMS.Search
             };
 
             if (!AnyExistInEndRequest(data))
+            {
                 CurrentRequestData.OnEndRequest.Add(new AddUniversalSearchTaskInfo(data));
+            }
         }
 
         public void Delete(SystemEntity entity)
@@ -85,7 +89,9 @@ namespace MrCMS.Search
             };
 
             if (!AnyExistInEndRequest(data))
+            {
                 CurrentRequestData.OnEndRequest.Add(new AddUniversalSearchTaskInfo(data));
+            }
         }
 
         public void ReindexAll()
@@ -111,14 +117,16 @@ namespace MrCMS.Search
         public IndexSearcher GetSearcher()
         {
             EnsureIndexExists();
-            return _searcher ?? (_searcher = new IndexSearcher(GetDirectory(_site), true));
+            return _getLuceneIndexSearcher.Get(FolderName);
         }
 
 
         public void EnsureIndexExists()
         {
             if (!IndexExists)
+            {
                 ReindexAll();
+            }
         }
 
         public MrCMSIndex GetUniversalIndexInfo()
@@ -132,15 +140,31 @@ namespace MrCMS.Search
                 TypeName = GetType().FullName
             };
         }
+        private static readonly object LockObject = new object();
 
         public void Write(Action<IndexWriter> writeFunc, bool recreateIndex = false)
         {
-            using (var indexWriter = new IndexWriter(GetDirectory(_site), GetAnalyser(), recreateIndex,
-                IndexWriter.MaxFieldLength.UNLIMITED))
+            if (recreateIndex)
             {
-                writeFunc(indexWriter);
+                RecreateIndex();
             }
-            _searcher = null;
+
+            lock (LockObject)
+            {
+                using (var indexWriter = _getLuceneIndexWriter.Get(FolderName, GetAnalyser()))
+                {
+                    writeFunc(indexWriter);
+                    indexWriter.Commit();
+                }
+                _getLuceneDirectory.ResetRamDirectory(_site, FolderName);
+            }
+
+            _getLuceneIndexSearcher.Reset(FolderName);
+        }
+
+        private void RecreateIndex()
+        {
+            _getLuceneIndexWriter.RecreateIndex(FolderName, GetAnalyser());
         }
 
         private static bool AnyExistInEndRequest(UniversalSearchIndexData data)
@@ -153,7 +177,9 @@ namespace MrCMS.Search
         private int? GetNumberOfDocs()
         {
             if (!IndexExists)
+            {
                 return null;
+            }
 
             using (IndexReader indexReader = IndexReader.Open(GetDirectory(_site), true))
             {
@@ -163,14 +189,26 @@ namespace MrCMS.Search
 
         private DateTime? GetLastModified()
         {
-            long lastModified = IndexReader.LastModified(GetDirectory(_site));
             try
             {
-                return new DateTime(1970, 1, 1).AddMilliseconds(lastModified);
+                long lastModified = IndexReader.LastModified(GetDirectory(_site));
+                DateTime time;
+                var sourceTimeZone = TimeZoneInfo.Utc;
+                try
+                {
+                    time = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(lastModified);
+                }
+                catch
+                {
+                    time = DateTime.FromFileTime(lastModified);
+                    sourceTimeZone = TimeZoneInfo.Local;
+                }
+
+                return TimeZoneInfo.ConvertTime(time, sourceTimeZone, CurrentRequestData.TimeZoneInfo);
             }
             catch
             {
-                return DateTime.FromFileTime(lastModified);
+                return null;
             }
         }
 
@@ -186,7 +224,7 @@ namespace MrCMS.Search
 
         private Directory GetDirectory(Site site)
         {
-            return _getLuceneDirectory.Get(site, "UniversalSearch");
+            return _getLuceneDirectory.GetStandardDictionary(site, FolderName);
         }
     }
 }

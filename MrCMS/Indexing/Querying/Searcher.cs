@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Lucene.Net.Index;
+﻿using Lucene.Net.Index;
 using Lucene.Net.Search;
 using MrCMS.Entities;
 using MrCMS.Indexing.Management;
 using MrCMS.Paging;
 using MrCMS.Settings;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MrCMS.Indexing.Querying
 {
@@ -15,20 +15,19 @@ namespace MrCMS.Indexing.Querying
         where TDefinition : IndexDefinition<TEntity>
     {
         private readonly TDefinition _definition;
+        private readonly IGetLuceneIndexSearcher _getLuceneIndexSearcher;
         private readonly SiteSettings _siteSettings;
         private bool _disposed;
 
-        public Searcher(TDefinition definition, SiteSettings siteSettings)
+        public Searcher(TDefinition definition, IGetLuceneIndexSearcher getLuceneIndexSearcher, SiteSettings siteSettings)
         {
             _definition = definition;
+            _getLuceneIndexSearcher = getLuceneIndexSearcher;
             _siteSettings = siteSettings;
             IndexManager.EnsureIndexExists<TEntity, TDefinition>();
         }
 
-        public TDefinition Definition
-        {
-            get { return _definition; }
-        }
+        public TDefinition Definition => _definition;
 
         public IPagedList<TEntity> Search(Query query, int pageNumber, int? pageSize = null, Filter filter = null,
             Sort sort = null)
@@ -80,7 +79,7 @@ namespace MrCMS.Indexing.Querying
 
         public IList<TEntity> GetAll(Query query = null, Filter filter = null, Sort sort = null)
         {
-            TopFieldDocs topDocs = IndexSearcher.Search(query, filter, int.MaxValue, sort ?? Sort.RELEVANCE);
+            TopFieldDocs topDocs = IndexSearcher.Search(query ?? new MatchAllDocsQuery(), filter, int.MaxValue, sort ?? Sort.RELEVANCE);
 
             IEnumerable<TEntity> entities =
                 Definition.Convert(topDocs.ScoreDocs.Select(doc => IndexSearcher.Doc(doc.Doc)));
@@ -91,7 +90,7 @@ namespace MrCMS.Indexing.Querying
         public IList<TSubclass> GetAll<TSubclass>(Query query = null, Filter filter = null, Sort sort = null)
             where TSubclass : TEntity
         {
-            BooleanQuery booleanQuery = UpdateQuery<TSubclass>(query);
+            BooleanQuery booleanQuery = UpdateQuery<TSubclass>(query ?? new MatchAllDocsQuery());
 
             TopFieldDocs topDocs = IndexSearcher.Search(booleanQuery, filter, int.MaxValue, sort ?? Sort.RELEVANCE);
 
@@ -101,21 +100,15 @@ namespace MrCMS.Indexing.Querying
             return entities.ToList();
         }
 
-        public IndexSearcher IndexSearcher
-        {
-            get { return Definition.GetSearcher(); }
-        }
+        public IndexSearcher IndexSearcher => _getLuceneIndexSearcher.Get(Definition);
 
-        public string IndexName
-        {
-            get { return Definition.IndexName; }
-        }
+        public string IndexName => Definition.IndexName;
 
         public void Dispose()
         {
             Dispose(true);
 
-            // Use SupressFinalize in case a subclass 
+            // Use SuppressFinalize in case a subclass 
             // of this type implements a finalizer.
             GC.SuppressFinalize(this);
         }
@@ -132,13 +125,16 @@ namespace MrCMS.Indexing.Querying
                 booleanQuery = query as BooleanQuery;
             }
             if (booleanQuery != null)
+            {
                 booleanQuery.Add(
                     new TermQuery(new Term(IndexDefinition<TEntity>.EntityType.FieldName, typeof(TSubclass).FullName)),
                     Occur.MUST);
+            }
+
             return booleanQuery;
         }
 
-        protected void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             // If you need thread safety, use a lock around these  
             // operations, as well as in your methods that use the resource. 

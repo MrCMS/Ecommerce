@@ -261,4 +261,43 @@ li a.notification {position:absolute;top:3px;right:3px;background:url(/Apps/Ecom
     li a.notification {position:absolute;top:1px;right:2px;background:url(/Apps/Ecommerce/Content/Images/notification.png) no-repeat 0 0;width:24px;height:25px;color:#fff;font-size:12px;line-height:26px;padding:0;text-align:center;}
 }
 
+.ecommerce-notification {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        min-height: 30px;
+        z-index: 9999;
+    }
 
+        .notification-success {
+            background-color: #006400;
+        }
+
+        .notification-fail {
+            background-color: #8b0000;
+        }
+
+        .notification-close {
+            width: 35px;
+        }
+
+        .ecommerce-notification > .notification {
+            padding-top: 5px;
+            width: 50%;
+            margin: 0 auto;
+            text-align: center;
+            color: #FFFFFF;
+        }
+
+        #notification-close {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        #notification-close:hover {
+            cursor: pointer;
+        }
+
+        body.mrcms-admin-bar-on .ecommerce-notification {
+            top: 30px;
+        }

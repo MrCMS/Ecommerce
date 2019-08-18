@@ -8,7 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     public class DiscountController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly ICartDiscountService _cartDiscountService;
-        private const string DiscountInvalid = "discount-invalid";
+        private const string DiscountResult = "discount-result";
 
         public DiscountController(ICartDiscountService cartDiscountService)
         {
@@ -18,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [ChildActionOnly]
         public ActionResult Error()
         {
-            var error = TempData[DiscountInvalid] as CheckCodeResult;
+            var error = TempData[DiscountResult] as CheckCodeResult;
             if (error != null && !error.Success)
             {
                 return PartialView(error);
@@ -29,10 +29,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpPost]
         public JsonResult Apply(string discountCode)
         {
-            var result = _cartDiscountService.AddDiscountCode(discountCode);
+            var result = _cartDiscountService.AddDiscountCode(discountCode, false);
             if (!result.Success)
             {
-                TempData[DiscountInvalid] = result;
+                TempData[DiscountResult] = result;
             }
             return Json(discountCode);
         }
@@ -42,6 +42,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         {
             _cartDiscountService.RemoveDiscountCode(discountCode);
             return Json(discountCode);
+        }
+
+        [HttpGet]
+        public void Code(string discountCode)
+        {
+            var result = _cartDiscountService.AddDiscountCode(discountCode, true, Referrer);
+
+            TempData[DiscountResult] = result;
+
+            Response.Redirect(result.RedirectUrl);
         }
     }
 }

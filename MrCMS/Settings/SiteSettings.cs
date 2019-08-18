@@ -22,7 +22,6 @@ namespace MrCMS.Settings
             DaysToKeepLogs = 30;
             TaskExecutorKey = "executor";
             TaskExecutorPassword = Guid.NewGuid().ToString();
-            PageExtensionsToRoute = ".asp,.php,.aspx";
             TaskExecutionDelay = 10;
         }
 
@@ -30,6 +29,7 @@ namespace MrCMS.Settings
         {
             get { return _siteSettingsOptionGeneratorOverride ?? _siteSettingsOptionGenerator; }
         }
+
 
         [DropDownSelection("Themes"), DisplayName("Theme")]
         public string ThemeName { get; set; }
@@ -64,19 +64,32 @@ namespace MrCMS.Settings
         [DisplayName("Log 404 in admin logs")]
         public bool Log404s { get; set; }
 
-        [DisplayName("Site UI Culture"), DropDownSelection("UiCultures")]
-        public string UICulture { get; set; }
+        [DisplayName("Raygun API Key")]
+        public string RaygunAPIKey { get; set; }
+        [DisplayName("Raygun Excluded Status Codes")]
+        public string RaygunExcludedStatusCodes { get; set; }
 
-        [DisplayName("Page extensions you want Mr CMS to handle")]
-        public string PageExtensionsToRoute { get; set; }
-
-        public IEnumerable<string> WebExtensionsToRoute
+        public IEnumerable<int> RaygunExcludedStatusCodeCollection
         {
             get
             {
-                return (PageExtensionsToRoute ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (string.IsNullOrWhiteSpace(RaygunExcludedStatusCodes)) yield break;
+                string[] statusCodes = RaygunExcludedStatusCodes.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string statusCode in statusCodes)
+                {
+                    if (int.TryParse(statusCode, out int id))
+                        yield return id;
+                }
             }
         }
+
+
+
+        [DisplayName("Site UI Culture"), DropDownSelection("UiCultures")]
+        public string UICulture { get; set; }
+
+        [MediaSelector]
+        public string AdminLogo { get; set; }
 
         public CultureInfo CultureInfo
         {
@@ -106,8 +119,6 @@ namespace MrCMS.Settings
 
         public string TaskExecutorKey { get; set; }
         public string TaskExecutorPassword { get; set; }
-
-        public bool SelfExecuteTasks { get; set; }
         public int TaskExecutionDelay { get; set; }
 
         public bool HasHoneyPot
@@ -125,6 +136,7 @@ namespace MrCMS.Settings
 
         [DisplayName("MiniProfiler Enabled?")]
         public bool MiniProfilerEnabled { get; set; }
+
 
         public IEnumerable<string> AllowedIPs
         {

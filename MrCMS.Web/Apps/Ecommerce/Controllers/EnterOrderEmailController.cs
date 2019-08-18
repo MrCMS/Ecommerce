@@ -2,9 +2,6 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Core.Models;
-using MrCMS.Web.Apps.Core.Models.RegisterAndLogin;
-using MrCMS.Web.Apps.Core.Services;
 using MrCMS.Web.Apps.Ecommerce.Filters;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
@@ -12,6 +9,8 @@ using MrCMS.Web.Areas.Admin.Helpers;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Helpers;
+using MrCMS.Models.Auth;
+using MrCMS.Services.Auth;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
@@ -21,9 +20,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly CartModel _cart;
         private readonly ICartManager _cartManager;
         private readonly ILoginService _loginService;
-        private readonly IUserService _userService;
+        private readonly IUserLookup _userService;
 
-        public EnterOrderEmailController(CartModel cart, ICartManager cartManager, ILoginService loginService, IUserService userService)
+        public EnterOrderEmailController(CartModel cart, ICartManager cartManager, ILoginService loginService, IUserLookup userService)
         {
             _cart = cart;
             _cartManager = cartManager;
@@ -63,15 +62,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 var user = _userService.GetUserByEmail(model.OrderEmail.Trim());
                 if (user != null)
                 {
-                    var authenticated =await _loginService.AuthenticateUser(new LoginModel
+                    var authenticated =_loginService.AuthenticateUser(new LoginModel
                                                        {
                                                            Email = user.Email,
                                                            Password = model.Password
                                                        });
-                    if (authenticated.Success)
+                    if (authenticated.Status != LoginStatus.Success)
                     {
                         return Redirect(UniquePageHelper.GetUrl<SetShippingDetails>());
                     }
+                    // TODO: 2FA flow
                 }
                 TempData.ErrorMessages().Add("There was an error logging in with the provided email and password");
                 return Redirect(UniquePageHelper.GetUrl<EnterOrderEmail>());

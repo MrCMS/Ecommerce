@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
@@ -19,15 +20,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
             _groupOrdersService = groupOrdersService;
         }
 
-        public Dictionary<string, IList<KeyValuePair<DateTime, decimal>>> GetRevenueGroupedByDate(DateTime from,
-            DateTime to)
+        public IList<Sales> GetRevenueWithOrdersGroupedByDate(DateTime from, DateTime to)
+        {
+            var revenueGroupedByDate = new List<Sales>();
+            var data = _revenueService.GetBaseDataGroupedByDate(from, to);
+
+            revenueGroupedByDate.AddRange(data.Select(x => new Sales
+            {
+                Date = x.Key,
+                OrdersCount = x.Count(),
+                OrderItemsCount = x.Select(o => o.OrderLines.Count).Sum(),
+                TotalRevenue = x.Sum(o => o.Total)
+            }).OrderByDescending(o => o.Date).ToList());
+
+            return revenueGroupedByDate;
+        }
+
+        public Dictionary<string, IList<KeyValuePair<DateTime, decimal>>> GetRevenueGroupedByDate(DateTime from, DateTime to)
         {
             var revenueGroupedByDate = new Dictionary<string, IList<KeyValuePair<DateTime, decimal>>>();
             IEnumerable<IGrouping<string, Order>> baseData = _revenueService.GetBaseDataGroupedBySalesChannel(from, to).ToList();
             foreach (string salesChannel in EcommerceApp.SalesChannels)
             {
-                IList<KeyValuePair<DateTime, decimal>> data =
-                    _groupRevenueService.GetRevenueGroupedByDateCreated(baseData, salesChannel);
+                IList<KeyValuePair<DateTime, decimal>> data = _groupRevenueService.GetRevenueGroupedByDateCreated(baseData, salesChannel);
                 if (data != null)
                     revenueGroupedByDate[salesChannel] = data;
             }

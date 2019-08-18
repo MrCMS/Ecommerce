@@ -35,37 +35,61 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                  .Cacheable().List();
         }
 
-        public CheckCodeResult CheckCode(CartModel cart, string discountCode)
+        public CheckCodeResult CheckCode(CartModel cart, string discountCode, bool fromUrl)
         {
             DateTime now = CurrentRequestData.Now;
             var code = discountCode.Trim();
-            var discounts = _session.QueryOver<Discount>()
-                .Where(
-                    discount =>
-                        (discount.Code == code && discount.RequiresCode) &&
-                        (discount.ValidFrom == null || discount.ValidFrom <= now) &&
-                        (discount.ValidUntil == null || discount.ValidUntil >= now))
-                .Cacheable().List();
+            var query = _session.QueryOver<Discount>().Where(x
+                => (x.Code == code && x.RequiresCode)
+                   && (x.ValidFrom == null || x.ValidFrom <= now)
+                   && (x.ValidUntil == null || x.ValidUntil >= now));
 
-            if (!discounts.Any())
+            if (fromUrl)
+                query = query.Where(x => x.CanBeAppliedFromUrl);
+
+            var discount = query.Cacheable().List().FirstOrDefault();
+
+            var defaultRedirectUrl = "/";
+            var checkCodeResult = new CheckCodeResult
             {
-                return new CheckCodeResult
-                {
-                    Message = _stringResourceProvider.GetValue("The code you entered is not valid.")
-                };
+                RedirectUrl = discount != null
+                    ? string.IsNullOrEmpty(discount.RedirectUrl)
+                        ? defaultRedirectUrl
+                        : discount.RedirectUrl
+                    : defaultRedirectUrl,
+            };
+
+            if (discount == null)
+            {
+                checkCodeResult.Message = _stringResourceProvider.GetValue("The code you entered is not valid.");
+                return checkCodeResult;
+            }
+            var discounts = Get(cart,cart.DiscountCodes);
+            discounts.Add(discount);
+
+            var checkLimitationsResult = _cartDiscountApplicationService.CheckLimitations(discount, cart, discounts);
+            if (checkLimitationsResult.Status == CheckLimitationsResultStatus.NeverValid)
+            {
+                checkCodeResult.Message = checkLimitationsResult.FormattedMessage;
+                return checkCodeResult;
             }
 
-            var checkLimitationsResults = discounts.Select(
-                discount =>
-                    _cartDiscountApplicationService.CheckLimitations(discount, cart, discounts)).ToList();
-            if (checkLimitationsResults.All(result => result.Status == CheckLimitationsResultStatus.NeverValid))
+            checkCodeResult.Status =
+                checkLimitationsResult.Status == CheckLimitationsResultStatus.CurrentlyInvalid
+                    ? CheckLimitationsResultStatus.CurrentlyInvalid
+                    : CheckLimitationsResultStatus.Success;
+            if (fromUrl && checkLimitationsResult.Status == CheckLimitationsResultStatus.CurrentlyInvalid)
             {
-                return new CheckCodeResult
-                {
-                    Message = checkLimitationsResults.First().FormattedMessage
-                };
+                checkCodeResult.Message = string.IsNullOrWhiteSpace(discount.AppliedNotYetValidMessage)
+                    ? checkLimitationsResult.FormattedMessage
+                    : discount.AppliedNotYetValidMessage;
             }
-            return new CheckCodeResult { Success = true };
+            else
+            {
+                checkCodeResult.Message = discount.SuccessMessage;
+            }
+
+            return checkCodeResult;
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
-using MrCMS.EcommerceApp.Tests;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
@@ -56,7 +55,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 
             var result = _ordersController.Index(model);
 
-            A.CallTo(() => _amazonOrderSearchService.Search(model, model.Page, _ecommerceSettings.DefaultPageSize)).MustHaveHappened();
+            A.CallTo(() => _amazonOrderSearchService.Search(model)).MustHaveHappened();
         }
 
         [Fact]
@@ -72,7 +71,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 
             var result = _ordersController.Orders(model);
 
-            A.CallTo(() => _amazonOrderSearchService.Search(model, model.Page, _ecommerceSettings.DefaultPageSize)).MustHaveHappened();
+            A.CallTo(() => _amazonOrderSearchService.Search(model)).MustHaveHappened();
         }
 
         [Fact]

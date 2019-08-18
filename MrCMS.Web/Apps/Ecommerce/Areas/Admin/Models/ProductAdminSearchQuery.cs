@@ -13,6 +13,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models
 
         public PublishStatus PublishStatus { get; set; }
 
+        [DisplayName("Product Name")]
+        public string Name { get; set; }
+
         public string SKU { get; set; }
 
         public string Brand { get; set; }
@@ -21,5 +24,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models
         public string CategoryName { get; set; }
 
         public int? ProductContainerId { get; private set; }
+
+        public decimal? PriceFrom { get; set; }
+        public decimal? PriceTo { get; set; }
     }
 }

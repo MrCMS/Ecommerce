@@ -13,13 +13,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
     {
         private readonly IGetCurrentUser _getCurrentUser;
         private readonly CartModel _cart;
-        private readonly IUserService _userService;
+        private readonly IBelongToUserLookupService _belongToUserLookupService;
 
-        public GetExistingAddressOptions(IGetCurrentUser getCurrentUser, CartModel cart, IUserService userService)
+        public GetExistingAddressOptions(IGetCurrentUser getCurrentUser, CartModel cart, IBelongToUserLookupService belongToUserLookupService)
         {
             _getCurrentUser = getCurrentUser;
             _cart = cart;
-            _userService = userService;
+            _belongToUserLookupService = belongToUserLookupService;
         }
 
         public List<SelectListItem> Get(IAddress addressToExclude)
@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
             var currentUser = _getCurrentUser.Get();
             if (currentUser != null)
-                addresses.AddRange(_userService.GetAll<Address>(currentUser));
+                addresses.AddRange(_belongToUserLookupService.GetAll<Address>(currentUser));
 
             var enumerable = addresses.Distinct(AddressComparison.Comparer).OfType<Address>();
             addresses = enumerable.Where(a => addressToExclude == null || !AddressComparison.Comparer.Equals(a, addressToExclude)).ToList();

@@ -23,15 +23,13 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
     public class ImportProductsValidationServiceTests : InMemoryDatabaseTest
     {
-        private IDocumentService _documentService;
         private readonly ImportProductsValidationService _importProductsValidationService;
         private IWebpageUrlService _webpageUrlService;
 
         public ImportProductsValidationServiceTests()
         {
-            _documentService = A.Fake<IDocumentService>();
             _webpageUrlService = A.Fake<IWebpageUrlService>();
-            _importProductsValidationService = new ImportProductsValidationService(_documentService,_webpageUrlService);
+            _importProductsValidationService = new ImportProductsValidationService(_webpageUrlService);
         }
 
         [Fact]

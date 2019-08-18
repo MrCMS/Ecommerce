@@ -41,7 +41,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                     builder.Select(x => x.Id).WithAlias(() => mapping.ProductId);
                     builder.Select(() => categoryAlias.Id).WithAlias(() => mapping.CategoryId);
                     return builder;
-                }).TransformUsing(Transformers.AliasToBean<CategoryMapping>()).List<CategoryMapping>()
+                }).TransformUsing(Transformers.AliasToBean<CategoryMapping>())
+                .Cacheable()
+                .List<CategoryMapping>()
                 .GroupBy(x => x.ProductId, x => x.CategoryId)
                 .ToDictionary(x => x.Key);
 

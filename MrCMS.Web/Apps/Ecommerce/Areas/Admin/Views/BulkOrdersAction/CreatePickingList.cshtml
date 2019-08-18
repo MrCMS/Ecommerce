@@ -1,0 +1,48 @@
+﻿@model List<MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.PickingListViewModel>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+}
+<fieldset>
+    <legend>
+        @Resource("Orders - picking list")
+        <span class="btn-group  display-inline  pull-right hidden-print">
+            <a href="javascript:window.print()" class="btn btn-primary">@Resource("Print")</a>
+        </span>
+    </legend>
+    
+    @if (Model.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>
+                    @Resource("Product Name")
+                </th>
+                <th>
+                    @Resource("SKU")
+                </th>
+                <th>
+                    @Resource("Quantity")
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.ProductName
+                        </td>
+                        <td>
+                            @item.Sku
+                        </td>
+                        <td>
+                            @item.Quantity
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
+    }
+</fieldset>

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Services.Resources;
+using MrCMS.Web.Apps.Amazon;
+using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
@@ -179,6 +181,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
             var columns = new Dictionary<string, Func<Order, object>>
             {
                 {"Id", order => order.Id},
+                {"Amazon Id", order => order.SalesChannel == AmazonApp.SalesChannel ? GetAmazonOrderId(order) : string.Empty},
                 {"Guid", order => order.Guid},
                 {"Date", order => order.OrderDate.GetValueOrDefault(order.CreatedOn)},
                 {"Email", order => order.OrderEmail},
@@ -241,6 +244,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                 {"Order Status", order => order.OrderStatus},
             };
             return columns;
+        }
+
+        private string GetAmazonOrderId(Order order)
+        {
+            var amazonOrder =
+                _session.QueryOver<AmazonOrder>().Where(item => item.Order.Id == order.Id).SingleOrDefault();
+            return amazonOrder == null ? string.Empty : amazonOrder.AmazonOrderId;
         }
     }
 }

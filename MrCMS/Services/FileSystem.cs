@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Web.Hosting;
-using MrCMS.Website;
+using MrCMS.Models;
 
 namespace MrCMS.Services
 {
     public class FileSystem : IFileSystem
     {
-        private const string _mediaDirectory = "/content/upload/";
-        public string MediaDirectory { get { return _mediaDirectory; } }
+        public const string MediaDirectory = "/content/upload/";
 
         public string SaveFile(Stream stream, string filePath, string contentType)
         {
@@ -47,8 +46,8 @@ namespace MrCMS.Services
 
         private static string GetRelativeFilePath(string relativeFilePath)
         {
-            if (!relativeFilePath.StartsWith(_mediaDirectory) && !relativeFilePath.StartsWith("/" + _mediaDirectory))
-                relativeFilePath = Path.Combine(_mediaDirectory, relativeFilePath);
+            if (!relativeFilePath.StartsWith(MediaDirectory) && !relativeFilePath.StartsWith("/" + MediaDirectory))
+                relativeFilePath = Path.Combine(MediaDirectory, relativeFilePath);
             return relativeFilePath;
         }
 
@@ -107,5 +106,7 @@ namespace MrCMS.Services
                     yield return "/" + file.Remove(0, ApplicationPath.Length).Replace('\\', '/');
             }
         }
+
+        public CdnInfo CdnInfo => null;
     }
 }

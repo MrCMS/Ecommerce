@@ -20,21 +20,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     public class UserAccountController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly IOrderService _orderService;
-        private readonly IUserService _userService;
+        private readonly IUserLookup _userLookup;
+        private readonly IUserManagementService _userManagementService;
         private readonly IPasswordManagementService _passwordManagementService;
         private readonly IAuthorisationService _authorisationService;
         private readonly IProductReviewUIService _productReviewUIService;
 
         public UserAccountController(IOrderService orderService,
-            IUserService userService, 
+            IUserLookup userLookup, IUserManagementService userManagementService, 
             IPasswordManagementService passwordManagementService, 
             IAuthorisationService authorisationService, IProductReviewUIService productReviewUIService)
         {
             _orderService = orderService;
-            _userService = userService;
+            _userLookup = userLookup;
+            _userManagementService = userManagementService;
             _passwordManagementService = passwordManagementService;
             _authorisationService = authorisationService;
             _productReviewUIService = productReviewUIService;
+            _userManagementService = userManagementService;
         }
 
         public ActionResult UserAccountOrders(int page = 1)
@@ -89,7 +92,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             
             if (model != null && ModelState.IsValid)
             {
-                var existingUser = _userService.GetUserByEmail(model.Email);
+                var existingUser = _userLookup.GetUserByEmail(model.Email);
                 if (existingUser != null)
                     return Redirect(UniquePageHelper.GetUrl<ProductSearch>());
                 
@@ -103,7 +106,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 };
 
                 _passwordManagementService.SetPassword(user, model.Password, model.Password);
-                _userService.AddUser(user);
+                _userManagementService.AddUser(user);
                 _authorisationService.SetAuthCookie(user, false);
                 CurrentRequestData.CurrentUser = user;
 
@@ -112,7 +115,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 {
                     user.FirstName = order.BillingAddress.FirstName;
                     user.LastName = order.BillingAddress.LastName;
-                    _userService.SaveUser(user);
+                    _userManagementService.SaveUser(user);
                 }
 
                 return Redirect(UniquePageHelper.GetUrl<UserAccountPage>());

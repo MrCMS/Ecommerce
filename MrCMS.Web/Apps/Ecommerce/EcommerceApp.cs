@@ -11,8 +11,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
-using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using Ninject;
 using Ninject.Web.Common;
 
@@ -32,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce
 
         public override string Version
         {
-            get { return "0.4.1"; }
+            get { return "0.5"; }
         }
 
         protected override void RegisterServices(IKernel kernel)

@@ -9,13 +9,10 @@ using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
-using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Web.Areas.Admin.Services;
 using MrCMS.Website;
 using MrCMS.Website.Binders;
@@ -27,30 +24,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class ProductController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly ICategoryService _categoryService;
-        private readonly IDocumentService _documentService;
         private readonly IFileAdminService _fileAdminService;
         private readonly IProductOptionManagementService _productOptionManagementService;
         private readonly IProductOptionManager _productOptionManager;
         private readonly IProductService _productService;
         private readonly SiteSettings _siteSettings;
         private readonly IUniquePageService _uniquePageService;
-        private readonly IETagAdminService _eTagAdminService;
 
-        public ProductController(IProductService productService, IDocumentService documentService,
+        public ProductController(IProductService productService, 
             ICategoryService categoryService,
-            IProductOptionManager productOptionManager, IFileAdminService fileAdminService,
-            IProductOptionManagementService productOptionManagementService, SiteSettings siteSettings,
-            IUniquePageService uniquePageService, IETagAdminService eTagAdminService)
+            IProductOptionManager productOptionManager, 
+            IFileAdminService fileAdminService,
+            IProductOptionManagementService productOptionManagementService, 
+            SiteSettings siteSettings,
+            IUniquePageService uniquePageService)
         {
             _productService = productService;
-            _documentService = documentService;
             _categoryService = categoryService;
             _productOptionManager = productOptionManager;
             _fileAdminService = fileAdminService;
             _productOptionManagementService = productOptionManagementService;
             _siteSettings = siteSettings;
             _uniquePageService = uniquePageService;
-            _eTagAdminService = eTagAdminService;
         }
 
         /// <summary>
@@ -124,7 +119,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult RemoveCategory(Product product, int categoryId)
         {
-            ViewData["category"] = _documentService.GetDocument<Category>(categoryId);
+            ViewData["category"] = _categoryService.GetCategory(categoryId);
             return PartialView(product);
         }
 
@@ -415,7 +410,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult AddRelatedProductItems(Product product, string query, int page = 1)
         {
-            ViewData["product"] = _documentService.GetDocument<Product>(product.Id);
+            ViewData["product"] = _productService.Get(product.Id);
             IPagedList<Product> items = _productService.RelatedProductsSearch(product, query, page);
             return PartialView(items);
         }
@@ -445,9 +440,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("RemoveRelatedProduct")]
         public RedirectToRouteResult RemoveRelatedProduct_POST(Product product, int relatedProductId)
         {
-            Product relatedProduct = product.RelatedProducts.SingleOrDefault(x => x.Id == relatedProductId);
-            product.RelatedProducts.Remove(relatedProduct);
-            _documentService.SaveDocument(relatedProduct);
+            _productService.RemoveRelatedProduct(product,relatedProductId);
 
             return RedirectToAction("Edit", "Webpage", new { id = product.Id });
         }

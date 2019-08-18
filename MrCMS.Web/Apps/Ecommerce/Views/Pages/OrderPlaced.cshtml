@@ -1,6 +1,6 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.OrderPlaced
 @using MrCMS.Helpers
-@using MrCMS.Web.Apps.Core.Models.RegisterAndLogin
+@using MrCMS.Models.Auth
 @using MrCMS.Web.Apps.Ecommerce.Entities.Orders
 @using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints
 @using MrCMS.Web.Apps.Ecommerce.Helpers
@@ -8,8 +8,11 @@
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @{
     var order = ViewData["order"] as Order;
-    var emailRegistrationStatus = ViewData["user-can-register"] is EmailRegistrationStatus ? (EmailRegistrationStatus)ViewData["user-can-register"] : EmailRegistrationStatus.Available;
+    var emailRegistrationStatus = ViewData["user-can-register"] as EmailRegistrationStatus? ?? EmailRegistrationStatus.Available;
+    
+    Html.RenderPartial("GoogleAnalyticsOrderPartial", order);
 }
+
 <div class="padding-top-bottom-20">
     <div class="row">
         <div class="col-sm-8">

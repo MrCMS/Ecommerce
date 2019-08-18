@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Web.Apps.Articles.ModelBinders;
+using MrCMS.Attributes;
 using MrCMS.Web.Apps.Core.ModelBinders;
 using MrCMS.Web.Apps.Core.Models.Search;
 using MrCMS.Web.Apps.Core.Pages;
@@ -17,13 +17,10 @@ namespace MrCMS.Web.Apps.Core.Controllers
         {
             _webpageSearchService = webpageSearchService;
         }
-
+        [CanonicalLinks]
         public ActionResult Show(SearchPage page, [IoCModelBinder(typeof(WebpageSearchQueryModelBinder))]WebpageSearchQuery model)
         {
             ViewData["webpageSearchQueryModel"] = model;
-
-            if (string.IsNullOrWhiteSpace(model.Term))
-                return View(page);
 
             ViewData["searchResults"] = _webpageSearchService.Search(model);
             return View(page);

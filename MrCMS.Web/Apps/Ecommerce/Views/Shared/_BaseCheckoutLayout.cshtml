@@ -4,6 +4,9 @@
 @using MrCMS.Web.Apps.Ecommerce.Bundles
 @using MrCMS.Website
 @model MrCMS.Entities.Documents.Web.Webpage
+@{
+    var seoSettings = SiteSettings<SEOSettings>();
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +18,7 @@
     @Styles.Render(CheckoutStylesheetBundle.BundleUrl)
     @{ Html.RenderCss(); }
     @Html.Raw(Model.CustomHeaderScripts)
+    @Html.Raw(seoSettings.TrackingScripts)
 </head>
 <body>
     @RenderBody()
@@ -26,7 +30,6 @@
     }
     @{ Html.RenderScripts(); }
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><script src="/Apps/Core/Content/Scripts/respond.min.js"></script><![endif]-->
-    @{ Html.RenderAction("GetEcommerceTrackingCode", "GoogleAnalytics", new { page = this.Page }); }
     @if (CurrentRequestData.CurrentUserIsAdmin && SiteSettings<SiteSettings>().EnableInlineEditing)
     {
         Html.RenderAction("InPageEditor", "InPageAdmin", new { id = Model.Id, area = "Admin" });

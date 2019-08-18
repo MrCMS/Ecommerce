@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Reflection;
 using System.Web.Mvc;
 
 namespace MrCMS.Helpers
@@ -33,16 +32,16 @@ namespace MrCMS.Helpers
         {
             var fieldInfo = typeof(T).GetField(value.ToString());
 
-            var displayAttributes = fieldInfo.GetCustomAttributes(
+            var descriptionAttributes = fieldInfo.GetCustomAttributes(
                 typeof(DisplayAttribute), false) as DisplayAttribute[];
 
             var defaultValue = value.ToString().BreakUpString();
 
-            if (displayAttributes == null)
+            if (descriptionAttributes == null)
                 return defaultValue;
 
-            return (displayAttributes.Length > 0)
-                ? displayAttributes[0].Name
+            return (descriptionAttributes.Length > 0)
+                ? descriptionAttributes[0].Name
                 : defaultValue;
         }
 

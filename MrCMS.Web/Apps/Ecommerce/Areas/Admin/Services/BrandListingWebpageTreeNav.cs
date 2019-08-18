@@ -10,5 +10,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         {
             return new AdminTree();
         }
+
+        public override bool HasChildren(int id)
+        {
+            return false;
+        }
     }
 }

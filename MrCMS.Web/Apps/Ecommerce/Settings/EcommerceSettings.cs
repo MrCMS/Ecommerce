@@ -22,6 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
             BrandUrl = "brand/{0}";
             ProductUrl = "product/{0}";
             CategoryUrl = "category/{0}";
+            SearchProductsPerPage = "10,20,30,50";
         }
 
 

@@ -103,8 +103,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                         Name = item.Name,
                         Amount = item.UnitPricePreTax.GetAmountType(),
                         ItemCategory = item.RequiresShipping ? ItemCategoryType.PHYSICAL : ItemCategoryType.DIGITAL,
-                        Quantity = item.Quantity,
+                        Quantity = item.PricedQuantity,
                         Tax = item.UnitTax.GetAmountType(),
+                        Description = item.PricedQuantity != item.Quantity ? $"{item.Name} x {item.Quantity} ({item.Quantity - item.PricedQuantity} free)" : null
                     }));
                     break;
                 case TaxCalculationMethod.Row:

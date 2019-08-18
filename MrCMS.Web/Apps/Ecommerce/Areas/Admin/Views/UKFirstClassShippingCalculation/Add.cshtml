@@ -40,6 +40,11 @@
                     @Html.TextBoxFor(x => x.RestrictedTo, new { @class = "form-control" })
                     @Html.ValidationMessageFor(x => x.RestrictedTo)
                 </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ExcludedFrom)
+                    @Html.TextBoxFor(x => x.ExcludedFrom, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ExcludedFrom)
+                </div>
             </div>
         </div>
     </fieldset>

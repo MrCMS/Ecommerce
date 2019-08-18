@@ -1,14 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using FakeItEasy;
+﻿using FakeItEasy;
 using FluentAssertions;
-using MrCMS.EcommerceApp.Tests;
-using MrCMS.EcommerceApp.Tests.Helpers;
+using MrCMS.AmazonApp.Tests.Helpers;
 using MrCMS.Web.Apps.Amazon.Services.Orders.Sync;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
-using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -19,23 +15,27 @@ namespace MrCMS.AmazonApp.Tests.Services.Orders.Sync
     public class SetTaxDetailsTests : InMemoryDatabaseTest
     {
         private readonly AmazonSyncSettings _amazonSyncSettings;
-        private readonly TaxSettings _taxSettings;
-        private readonly ITaxRateManager _taxRateManager;
-        private readonly ISetTaxDetails _setTaxes;
-        private IProductPricingMethod _productPricingMethod;
-        private IProductVariantService _productVariantService;
 
         private readonly IGetProductVariantTaxRatePercentage _getProductVariantTaxRatePercentage =
             A.Fake<IGetProductVariantTaxRatePercentage>();
 
+        private readonly ISetTaxDetails _setTaxes;
+        private readonly ITaxRateManager _taxRateManager;
+        private readonly TaxSettings _taxSettings;
+        private readonly IProductVariantService _productVariantService;
+
         public SetTaxDetailsTests()
         {
-            _amazonSyncSettings = new AmazonSyncSettings() { UseDefaultTaxRateForShippingTax = true, TryCalculateVat = true };
-            _taxSettings = new TaxSettings() { TaxesEnabled = true, ShippingRateTaxesEnabled = true };
+            _amazonSyncSettings = new AmazonSyncSettings
+            {
+                UseDefaultTaxRateForShippingTax = true,
+                TryCalculateVat = true
+            };
+            _taxSettings = new TaxSettings {TaxesEnabled = true, ShippingRateTaxesEnabled = true};
             _taxRateManager = A.Fake<ITaxRateManager>();
             _productVariantService = A.Fake<IProductVariantService>();
-            _productPricingMethod = A.Fake<IProductPricingMethod>();
-            _setTaxes = new SetTaxDetails(_amazonSyncSettings, _taxSettings, _taxRateManager, _productPricingMethod, _productVariantService, _getProductVariantTaxRatePercentage);
+            _setTaxes = new SetTaxDetails(_amazonSyncSettings, _taxSettings, Session, _taxRateManager,
+                _productVariantService, _getProductVariantTaxRatePercentage);
         }
 
         //[Fact]
@@ -101,10 +101,10 @@ namespace MrCMS.AmazonApp.Tests.Services.Orders.Sync
         [Fact]
         public void SetTaxDetails_SetShippingTaxes_ShouldSetProperties()
         {
-            Kernel.SetTaxSettings(true, shippingTaxesEnabled: true, shippingPricesIncludeTax: true);
-            var order = new Order() { ShippingTotal = 3 };
+            Kernel.SetTaxSettings(true, true, true);
+            var order = new Order {ShippingTotal = 3};
 
-            var taxRate = new TaxRate() { Percentage = 50 };
+            var taxRate = new TaxRate {Percentage = 50};
 
             A.CallTo(() => _taxRateManager.GetDefaultRate()).Returns(taxRate);
 
@@ -118,7 +118,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Orders.Sync
         [Fact]
         public void SetTaxDetails_SetShippingTaxes_ShouldNotSetPropertiesIfNoTaxRateIsFound()
         {
-            var order = new Order() { ShippingTotal = 3 };
+            var order = new Order {ShippingTotal = 3};
 
             A.CallTo(() => _taxRateManager.GetDefaultRate()).Returns(null);
 

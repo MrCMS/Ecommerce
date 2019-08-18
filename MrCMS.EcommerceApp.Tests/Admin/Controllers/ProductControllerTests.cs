@@ -8,7 +8,6 @@ using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
-using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
@@ -22,7 +21,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
     public class ProductControllerTests
     {
         private readonly ICategoryService _categoryService;
-        private readonly IDocumentService _documentService;
         private readonly IFileAdminService _fileService;
         private readonly ProductController _productController;
         private readonly IProductOptionManagementService _productOptionManagementService;
@@ -31,23 +29,22 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private readonly IProductService _productService;
         private readonly SiteSettings _siteSettings;
         private readonly IUniquePageService _uniquePageService;
-        private readonly IETagAdminService _eTagAdminService;
+
         public ProductControllerTests()
         {
-            _documentService = A.Fake<IDocumentService>();
             _productService = A.Fake<IProductService>();
             _categoryService = A.Fake<ICategoryService>();
             _productOptionManager = A.Fake<IProductOptionManager>();
             _fileService = A.Fake<IFileAdminService>();
             _productOptionManagementService = A.Fake<IProductOptionManagementService>();
-            _siteSettings = new SiteSettings {DefaultPageSize = 10};
+            _siteSettings = new SiteSettings { DefaultPageSize = 10 };
             _uniquePageService = A.Fake<IUniquePageService>();
             _productSearch = new ProductSearch();
-            _eTagAdminService = A.Fake<IETagAdminService>();
+
             A.CallTo(() => _uniquePageService.GetUniquePage<ProductSearch>()).Returns(_productSearch);
-            _productController = new ProductController(_productService, _documentService, _categoryService,
-                _productOptionManager,
-                _fileService, _productOptionManagementService, _siteSettings, _uniquePageService, _eTagAdminService);
+
+            _productController = new ProductController(_productService, _categoryService, _productOptionManager,
+                _fileService, _productOptionManagementService, _siteSettings, _uniquePageService);
         }
 
         [Fact]
@@ -198,7 +195,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var product = new Product {Id = 123};
             var category = new Category();
-            A.CallTo(() => _documentService.GetDocument<Category>(1)).Returns(category);
+            A.CallTo(() => _categoryService.GetCategory(1)).Returns(category);
 
             PartialViewResult result = _productController.RemoveCategory(product, 1);
 

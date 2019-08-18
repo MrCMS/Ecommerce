@@ -52,7 +52,9 @@ namespace MrCMS.Search.ItemCreation
                 .SelectList(builder =>
                     builder.Select(webpage => webpage.Id).WithAlias(() => tagInfo.WebpageId)
                         .Select(() => tagAlias.Name).WithAlias(() => tagInfo.TagName))
-                .TransformUsing(Transformers.AliasToBean<TagInfo>()).List<TagInfo>()
+                .TransformUsing(Transformers.AliasToBean<TagInfo>())
+                .Cacheable()
+                .List<TagInfo>()
                 .GroupBy(info => info.WebpageId)
                 .ToDictionary(infos => infos.Key, infos => infos.Select(x => x.TagName));
             return webpages.ToDictionary(webpage => webpage,
@@ -70,7 +72,8 @@ namespace MrCMS.Search.ItemCreation
 
         private IEnumerable<string> GetSecondaryTerms(Webpage webpage, IEnumerable<string> tags)
         {
-            yield return webpage.BodyContent;
+            if (!string.IsNullOrWhiteSpace(webpage.BodyContent))
+                yield return webpage.BodyContent;
             yield return webpage.UrlSegment;
             foreach (string tag in tags)
             {

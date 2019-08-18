@@ -25,7 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public decimal GetTaxRatePercentage(ProductVariant productVariant)
         {
             TaxRate defaultTaxRate = _getDefaultTaxRate.Get();
-            var taxRate = productVariant.TaxRate;
+            var taxRate = productVariant == null ? null : productVariant.TaxRate;
             return _taxSettings.TaxesEnabled
                 ? taxRate == null
                     ? defaultTaxRate != null

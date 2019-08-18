@@ -2,14 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Lucene.Net.Search;
 using MrCMS.Helpers;
-using MrCMS.Indexing.Querying;
 using MrCMS.Paging;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Indexing;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
@@ -20,22 +17,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 {
     public class OrderAdminService : IOrderAdminService
     {
-        private readonly ISearcher<Order, OrderSearchIndex> _orderSearcher;
+        private readonly IOrderSearchService _orderSearcService;
         private readonly ISession _session;
         private readonly IShippingMethodAdminService _shippingMethodAdminService;
 
-        public OrderAdminService(ISearcher<Order, OrderSearchIndex> orderSearcher, ISession session, IShippingMethodAdminService shippingMethodAdminService)
+        public OrderAdminService(IOrderSearchService orderSearcService, ISession session, IShippingMethodAdminService shippingMethodAdminService)
         {
-            _orderSearcher = orderSearcher;
+            _orderSearcService = orderSearcService;
             _session = session;
             _shippingMethodAdminService = shippingMethodAdminService;
         }
 
         public IPagedList<Order> Search(OrderSearchModel model)
         {
-            var query = new OrderSearchQuery(model);
-            return _orderSearcher.Search(query.GetQuery(), model.Page, filter: query.GetFilter(),
-                sort: new Sort(new SortField("id", SortField.INT, true)));
+            return _orderSearcService.SearchOrders(model);
         }
 
         public Order Get(int id)

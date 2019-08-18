@@ -14,52 +14,42 @@ using MrCMS.Helpers;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using NHibernate.Criterion;
-using NHibernate.SqlCommand;
 using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
-using ProductSearchQuery = MrCMS.Web.Apps.Ecommerce.Models.ProductSearchQuery;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public class ProductService : IProductService
     {
         private readonly ISession _session;
-        private readonly IDocumentService _documentService;
         private readonly SiteSettings _ecommerceSettings;
         private readonly IUniquePageService _uniquePageService;
 
-        public ProductService(ISession session, IDocumentService documentService, SiteSettings ecommerceSettings, IUniquePageService uniquePageService)
+        public ProductService(ISession session, SiteSettings ecommerceSettings, IUniquePageService uniquePageService)
         {
             _session = session;
-            _documentService = documentService;
             _ecommerceSettings = ecommerceSettings;
             _uniquePageService = uniquePageService;
         }
 
-        public ProductPagedList Search(string queryTerm = null, int page = 1)
+        public ProductVariantPagedList Search(string queryTerm = null, int page = 1)
         {
-            IPagedList<Product> pagedList;
+            IPagedList<ProductVariant> pagedList;
+
             var pageSize = _ecommerceSettings.DefaultPageSize > 0 ? _ecommerceSettings.DefaultPageSize : 10;
             if (!string.IsNullOrWhiteSpace(queryTerm))
             {
-                Product productAlias = null;
-                ProductVariant productVariantAlias = null;
-                pagedList = _session.QueryOver(() => productAlias)
-                                    .JoinAlias(() => productAlias.Variants, () => productVariantAlias, JoinType.LeftOuterJoin)
-                                    .Where(
-                                        () =>
-                                        productVariantAlias.SKU == queryTerm ||
-                                        productAlias.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere) ||
-                                        productVariantAlias.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere))
+                pagedList = _session.QueryOver<ProductVariant>()
+                                    .Where(x => x.SKU == queryTerm || x.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere))
                                     .Paged(page, pageSize);
             }
             else
             {
-                pagedList = _session.Paged(QueryOver.Of<Product>(), page, pageSize);
+                pagedList = _session.Paged(QueryOver.Of<ProductVariant>(), page, pageSize);
             }
 
             var productContainer = _uniquePageService.GetUniquePage<ProductContainer>();
             var productContainerId = productContainer == null ? (int?)null : productContainer.Id;
-            return new ProductPagedList(pagedList, productContainerId);
+            return new ProductVariantPagedList(pagedList, productContainerId);
         }
 
         public IList<Product> Search(string queryTerm)
@@ -86,7 +76,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public void AddCategory(Product product, int categoryId)
         {
-            var category = _documentService.GetDocument<Category>(categoryId);
+            var category = _session.Get<Category>(categoryId);
             product.Categories.Add(category);
             category.Products.Add(product);
             _session.Transact(session =>
@@ -98,7 +88,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public void RemoveCategory(Product product, int categoryId)
         {
-            var category = _documentService.GetDocument<Category>(categoryId);
+            var category = _session.Get<Category>(categoryId);
             product.Categories.Remove(category);
             category.Products.Remove(product);
             _session.Transact(session =>
@@ -110,9 +100,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public void AddRelatedProduct(Product product, int relatedProductId)
         {
-            var relatedProduct = _documentService.GetDocument<Product>(relatedProductId);
+            var relatedProduct = _session.Get<Product>(relatedProductId);
 
-            if (product.RelatedProducts.Any(x => x.Id == relatedProductId)) return;
+            if (product.RelatedProducts.Any(x => x.Id == relatedProductId))
+                return;
 
             product.RelatedProducts.Add(relatedProduct);
             _session.Transact(session => session.SaveOrUpdate(product));
@@ -120,7 +111,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public void RemoveRelatedProduct(Product product, int relatedProductId)
         {
-            var relatedProduct = _documentService.GetDocument<Product>(relatedProductId);
+            var relatedProduct = _session.Get<Product>(relatedProductId);
             product.RelatedProducts.Remove(relatedProduct);
             relatedProduct.RelatedProducts.Remove(product);
             _session.Transact(session =>
@@ -137,7 +128,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public Product Get(int id)
         {
-            return _session.QueryOver<Product>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
+            return _session.Get<Product>(id);
         }
 
         public Product GetByName(string name)
@@ -213,7 +204,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             Product productAlias = null;
 
-            var queryOver = _session.QueryOver(()=> productAlias);
+            var queryOver = _session.QueryOver(() => productAlias);
 
             switch (query.PublishStatus)
             {
@@ -235,39 +226,38 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (!string.IsNullOrWhiteSpace(query.CategoryName))
             {
                 Product categoryProductAlias = null;
-                queryOver =
-                    queryOver.WithSubquery.WhereExists(
-                        QueryOver.Of<Category>()
+                queryOver = queryOver.WithSubquery.WhereExists(QueryOver.Of<Category>()
                             .JoinAlias(category => category.Products, () => categoryProductAlias)
-                            .Where(
-                                x =>
-                                    x.Name.IsInsensitiveLike(query.CategoryName, MatchMode.Anywhere) &&
-                                    categoryProductAlias.Id == productAlias.Id)
+                            .Where(x => x.Name.IsInsensitiveLike(query.CategoryName, MatchMode.Anywhere)
+                                    && categoryProductAlias.Id == productAlias.Id)
                             .Select(x => x.Id));
-                //queryOver = queryOver.JoinAlias(product => product.Categories, () => categoryAlias)
-                //    .Where(() => categoryAlias.Name.IsInsensitiveLike(query.CategoryName, MatchMode.Anywhere));
             }
 
             if (!string.IsNullOrWhiteSpace(query.SKU))
             {
-                queryOver =
-                    queryOver.WithSubquery.WhereExists(
-                        QueryOver.Of<ProductVariant>()
-                            .Where(
-                                x =>
-                                    x.Product.Id == productAlias.Id &&
-                                    x.SKU.IsInsensitiveLike(query.SKU, MatchMode.Anywhere)).Select(x => x.Id));
-                //queryOver = queryOver.JoinAlias(product => product.Variants, () => productVariantAlias)
-                //    .Where(() => productVariantAlias.SKU.IsInsensitiveLike(query.SKU, MatchMode.Anywhere));
+                queryOver = queryOver.WithSubquery.WhereExists(QueryOver.Of<ProductVariant>()
+                            .Where(x => x.Product.Id == productAlias.Id
+                                && x.SKU.IsInsensitiveLike(query.SKU, MatchMode.Anywhere))
+                            .Select(x => x.Id));
             }
+
+            if (!string.IsNullOrWhiteSpace(query.Name))
+            {
+                queryOver = queryOver.Where(x => x.Name.IsInsensitiveLike(query.Name, MatchMode.Anywhere));
+            }
+
+            var min = query.PriceFrom ?? 0;
+            var max = query.PriceTo ?? int.MaxValue;
+            queryOver = queryOver.WithSubquery.WhereExists(QueryOver.Of<ProductVariant>()
+                            .Where(x => x.Product.Id == productAlias.Id && x.BasePrice >= min && x.BasePrice <= max)
+                            .Select(x => x.Id));
 
             return queryOver.OrderBy(product => product.Name).Asc.Paged(query.Page);
         }
 
         public IList<Product> GetNewIn(int numberOfItems = 10)
         {
-            return
-                _session.QueryOver<Product>()
+            return _session.QueryOver<Product>()
                     .Where(x => x.PublishOn <= CurrentRequestData.Now)
                     .OrderBy(x => x.CreatedOn)
                     .Desc.Take(numberOfItems)

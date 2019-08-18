@@ -31,6 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                 );
 
             return queryOver.TransformUsing(Transformers.AliasToBean<ProductOptionSortingData>())
+                .Cacheable()
                 .List<ProductOptionSortingData>().ToList();
         }
 

@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Services;
 using Ninject;
 
 namespace MrCMS.Website.Filters

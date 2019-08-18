@@ -1,0 +1,61 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.OnlineCustomerCart
+@{
+    ViewBag.Title = "Cart Details";
+}
+
+<h3>Cart Details</h3>
+<div class="row">
+    <div class="col-xs-11">
+        <strong>Name:</strong> <a href="@Url.Action("Edit", "User", new {Id = Model.UserId}) @(string.IsNullOrWhiteSpace(Model.FirstName) ? "style='pointer-events:none;'" : string.Empty)">@Model.DisplayName</a> <br />
+        <strong>Email:</strong> @Model.Email<br />
+        <strong>Shipping Address:</strong> @Model.ShippingAddress.GetDescription()<br />
+        <strong>Billing Address:</strong> @Model.BillingAddressDescription<br /><br />
+        <strong>Last Updated On:</strong> @Model.LastUpdatedOn<br /><br />
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-1">
+        <a href="@Request.UrlReferrer" class="btn btn-primary">Return to Search</a>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            <a href="@Url.Action("Edit", "Webpage", new { item.Product.Id })">@item.Product.DisplayName</a>
+                        </td>
+                        <td>
+                            @item.Quantity
+                        </td>
+                        <td>
+                            @item.Product.BasePrice
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                    <td><strong>@Model.SubTotal</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
