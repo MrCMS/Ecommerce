@@ -26,6 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree
         }
         [DisplayName("3D Secure Required?")]
         public bool ThreeDSecureRequired { get; set; }
+
         [DisplayName("Paypal Payment Enabled?")]
         public bool PayPalPaymentEnabled { get; set; }
     }

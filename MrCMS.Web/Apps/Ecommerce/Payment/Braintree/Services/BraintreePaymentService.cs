@@ -34,7 +34,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services
         public string GenerateClientToken()
         {
             var gateway = GetGateway();
+
             var clientToken = gateway.ClientToken.generate();
+
             return clientToken;
         }
 

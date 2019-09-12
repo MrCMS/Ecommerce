@@ -28,9 +28,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Services
                     _paymentMethods =
                         _paymentMethods ??
                         TypeHelper.GetAllConcreteTypesAssignableFrom<BasePaymentMethod>()
-                            .Select(type => _kernel.Get(type))
-                            .Cast<BasePaymentMethod>()
-                            .ToList();
+                                  .Select(type => _kernel.Get(type))
+                                  .Cast<BasePaymentMethod>()
+                                  .ToList();
             }
         }
 
