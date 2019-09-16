@@ -22,11 +22,21 @@
 </head>
 <body>
     @RenderBody()
+
+    <!--
+        Include the following script(i.e. https://js.stripe.com/v3/) in the head section on every page on your site.
+        This script must always load directly from js.stripe.com to remain PCI compliant.
+        thought.co.uk can not include the script in a bundle or host a copy of its own.
+    -->
+    <script src="https://js.stripe.com/v3/"></script>
+
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+
     @Scripts.Render(CheckoutLibScriptBundle.BundleUrl)
-    @{ 
-    //Html.AddAppUIScripts();
+    @{
+        //Html.AddAppUIScripts();
     }
     @{ Html.RenderScripts(); }
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><script src="/Apps/Core/Content/Scripts/respond.min.js"></script><![endif]-->

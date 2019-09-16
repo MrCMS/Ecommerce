@@ -191,11 +191,11 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new[] { typeof(WorldPayController).Namespace });
 
 
-
             //Charity Clear Routes
             context.MapRoute("CharityClear Form", "Apps/Ecommerce/Confirm/CharityClear",
                 new { controller = "CharityClear", action = "Form" },
                 new[] { typeof(CharityClearController).Namespace });
+
             context.MapRoute("CharityClear PaymentInfo Notification",
                  "Apps/Ecommerce/CharityClear/Notification",
                  new { controller = "CharityClear", action = "Notification" },
@@ -212,6 +212,15 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Braintree Paypal Post", "Apps/Ecommerce/Confirm/BraintreePayment/Paypal",
                 new {controller = "Braintree", action = "MakePaymentPaypal"},
                 new[] {typeof (BraintreeController).Namespace});
+
+
+            context.MapRoute("Stripe Form", "Apps/Ecommerce/Confirm/Stripe",
+                new { controller = "Stripe", action = "Form" },
+                new[] { typeof(StripeController).Namespace });
+
+            context.MapRoute("Stripe Form Post", "Apps/Ecommerce/Confirm/StripePayment",
+                new { controller = "Stripe", action = "RequestCharge" },
+                new[] { typeof(StripeController).Namespace });
         }
 
 

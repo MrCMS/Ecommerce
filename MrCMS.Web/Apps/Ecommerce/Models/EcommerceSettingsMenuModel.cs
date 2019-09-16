@@ -68,18 +68,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     new ChildMenuItem("Payment Settings",
                         _urlHelper.Action("Index", "PaymentSettings"),
                         ACLOption.Create(new PaymentSettingsACL(), PaymentSettingsACL.View)),
+
                     new ChildMenuItem("Paypoint", _urlHelper.Action("Index", "PaypointSettings"),
                         ACLOption.Create(new PaypointSettingsACL(), PaypointSettingsACL.View)),
+
                     new ChildMenuItem("PayPal Express Checkout", _urlHelper.Action("Index", "PayPalExpressCheckoutSettings"),
                         ACLOption.Create(new PayPalExpressCheckoutSettingsACL(), PayPalExpressCheckoutSettingsACL.View)),
+
                     new ChildMenuItem("SagePay", _urlHelper.Action("Index", "SagePaySettings"),
                         ACLOption.Create(new SagePaySettingsACL(), SagePaySettingsACL.View)),
+
                     new ChildMenuItem("WorldPay", _urlHelper.Action("Index", "WorldPaySettings"),
                         ACLOption.Create(new WorldPaySettingsACL(), WorldPaySettingsACL.View)),
+
                     new ChildMenuItem("Charity Clear", _urlHelper.Action("Index", "CharityClearSettings"),
                         ACLOption.Create(new WorldPaySettingsACL(), WorldPaySettingsACL.View)),
+
                     new ChildMenuItem("Braintree", _urlHelper.Action("Index", "BraintreeSettings"),
-                        ACLOption.Create(new BraintreeSettingsACL(), BraintreeSettingsACL.View))
+                        ACLOption.Create(new BraintreeSettingsACL(), BraintreeSettingsACL.View)),
+
+                      new ChildMenuItem("Stripe", _urlHelper.Action("Index", "StripeSettings"),
+                        ACLOption.Create(new StripeSettingsACL(), StripeSettingsACL.View))
                 }));
 
                 subMenu.Add(new ChildMenuItem("Product Review Settings", "/Admin/Apps/Ecommerce/ProductReviewSettings/Edit",

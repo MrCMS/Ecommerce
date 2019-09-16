@@ -126,6 +126,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services
                 Success = false,
                 Errors = new List<string> { result.Message }
             };
+
         }
 
         private AddressRequest GetBillingAddress()

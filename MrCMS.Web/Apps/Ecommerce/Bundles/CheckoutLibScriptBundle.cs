@@ -24,7 +24,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Bundles
                 yield return "~/Apps/Ecommerce/Content/Scripts/custom/discount.js";
                 yield return "~/Apps/Ecommerce/Content/Scripts/custom/gift-message.js";
                 yield return "~/Apps/Ecommerce/Content/Scripts/custom/gift-cards.js";
-                yield return "~/Apps/Ecommerce/Content/Scripts/custom/reward-points.js";
+                yield return "~/Apps/Ecommerce/Content/Scripts/custom/reward-points.js";                        
+                
             }
         }
     }

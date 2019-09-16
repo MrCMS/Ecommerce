@@ -226,6 +226,10 @@
     <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\PdfSharp.Charting.dll</HintPath>
     </Reference>
+    <Reference Include="Stripe.net, Version=29.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stripe.net.29.0.1\lib\net45\Stripe.net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Data.SQLite, Version=1.0.105.2, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.105.2\lib\net46\System.Data.SQLite.dll</HintPath>
@@ -552,6 +556,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Bundles\EcommerceAdminStylesheetBundle.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AmountPerUnitController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\StripeSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BraintreeSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BulkShippingController.cs" />
@@ -877,6 +882,7 @@
     <Compile Include="Apps\Ecommerce\Bundles\EcommerceLibScriptBundle.cs" />
     <Compile Include="Apps\Ecommerce\Bundles\EcommerceStylesheetBundle.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\AddToCartController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\StripeController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\BraintreeController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\BrandController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\BrandListingController.cs" />
@@ -1375,6 +1381,13 @@
     <Compile Include="Apps\Ecommerce\Payment\SagePay\VspServerMode.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Services\IPaymentMethodService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Services\PaymentMethodService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Stripe\Models\StripeGateway.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Stripe\Models\StripeResponse.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Stripe\Models\StripePaymentDetailsModel.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Stripe\Services\IStripePaymentService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Stripe\Services\StripePaymentService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Stripe\StripePaymentMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Stripe\StripeSettings.cs" />
     <Compile Include="Apps\Ecommerce\Payment\WorldPay\Models\WorldPayPostInfo.cs" />
     <Compile Include="Apps\Ecommerce\Payment\WorldPay\Services\IWorldPayPaymentService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\WorldPay\Services\WorldPayPaymentService.cs" />
@@ -4407,6 +4420,9 @@
     <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.eot" />
     <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.ttf" />
     <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.woff" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\StripeSettings\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Stripe\Form.cshtml" />
+    <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
