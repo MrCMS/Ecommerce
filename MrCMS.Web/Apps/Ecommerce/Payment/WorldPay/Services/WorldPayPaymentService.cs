@@ -47,10 +47,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
             string returnUrl = string.Format("{0}/Apps/Ecommerce/WorldPay/Notification", schemeAndAuthority);
 
             var postInfo = new WorldPayPostInfo();
-            postInfo.PostUrl = _worldPaySettings.GetPostUrl();
+                postInfo.PostUrl = _worldPaySettings.GetPostUrl();
 
-            postInfo.instId = _worldPaySettings.InstanceId;
-            postInfo.cartId = _cart.CartGuid.ToString();
+                postInfo.instId = _worldPaySettings.InstanceId;
+                postInfo.cartId = _cart.CartGuid.ToString();
 
             if (!string.IsNullOrEmpty(_worldPaySettings.PaymentMethod))
             {

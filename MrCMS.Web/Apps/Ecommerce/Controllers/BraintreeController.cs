@@ -43,7 +43,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             }
 
             TempData.ErrorMessages().AddRange(response.Errors);
-
             return _uniquePageService.RedirectTo<PaymentDetails>();
         }
 

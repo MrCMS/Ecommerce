@@ -12,6 +12,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapAreaRoute("Admin controllers", "Admin", "Admin/Apps/Ecommerce/{controller}/{action}/{id}",
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 new[] { typeof(ProductController).Namespace });
+
             context.MapRoute("Product Variant - GetPriceBreaksForProductVariant",
                 "Apps/Ecommerce/ProductVariant/GetPriceBreaksForProductVariant",
                 new { controller = "ProductVariant", action = "GetPriceBreaksForProductVariant" });
@@ -25,9 +26,11 @@ namespace MrCMS.Web.Apps.Ecommerce
 
             context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders",
                 new { controller = "UserAccount", action = "UserAccountOrders" });
+
             context.MapRoute("User Account - download Order PDF", "Apps/Ecommerce/OrderPdf/ExportOrderToPdf/{id}",
                 new { controller = "OrderPdf", action = "ExportOrderToPdf" },
                 new[] { typeof(OrderPdfController).Namespace });
+
             context.MapRoute("Product Search - Query", "search/query",
                 new { controller = "ProductSearch", action = "Query" }, new[] { typeof(ProductSearchController).Namespace });
             context.MapRoute("Product Search - Results", "search/results",
@@ -50,7 +53,6 @@ namespace MrCMS.Web.Apps.Ecommerce
 
             context.MapRoute("Products - Back in stock request", "Apps/Ecommerce/Product/BackInStock",
                 new { controller = "Product", action = "BackInStock" }, new[] { typeof(ProductController).Namespace });
-
 
             context.MapRoute("Download Product", "digital-download/{guid}/{id}",
                 new { controller = "DownloadOrderedFile", action = "Download" },
@@ -105,9 +107,11 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Wishlist - Add to Wishlist", "Apps/Ecommerce/AddToWishlist",
                 new { controller = "Wishlist", action = "Add" },
                 new[] { typeof(WishlistController).Namespace });
+
             context.MapRoute("Wishlist - Remove from Wishlist", "Apps/Ecommerce/RemoveFromWishlist",
                 new { controller = "Wishlist", action = "Remove" },
                 new[] { typeof(WishlistController).Namespace });
+
             context.MapRoute("Wishlist - Summary", "Apps/Ecommerce/WishlistSummary",
                 new { controller = "Wishlist", action = "Summary" },
                 new[] { typeof(WishlistController).Namespace });
@@ -219,11 +223,15 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new[] { typeof(StripeController).Namespace });
 
             context.MapRoute("Stripe Form Post", "Apps/Ecommerce/Confirm/StripePayment",
-                new { controller = "Stripe", action = "RequestCharge" },
+                new { controller = "Stripe", action = "ConfirmPaymentStatus" },
                 new[] { typeof(StripeController).Namespace });
+
+            //StripeWebHook api route
+            context.MapRoute("Stripe Webhook Post", "Apps/Ecommerce/Confirm/StripeFulfilmentWebhook",
+                new { controller = "StripeWebhook", action = "Post" },
+                new[] { typeof(StripeWebhookController).Namespace });
         }
-
-
+        
         private static void MapCheckoutRoutes(MrCMSAppRegistrationContext context)
         {
             context.MapRoute("Set Shipping Details - Edit Shipping Address",

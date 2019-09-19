@@ -41,7 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe
             get { return _stripeSettings.Enabled; }
         }
 
-        protected override bool StandardCanUseLogic(CartModel cart) //???
+        protected override bool StandardCanUseLogic(CartModel cart)
         {
             return !cart.IsPayPalTransaction;
         }

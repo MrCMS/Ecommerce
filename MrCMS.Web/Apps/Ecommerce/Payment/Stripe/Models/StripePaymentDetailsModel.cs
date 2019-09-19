@@ -16,10 +16,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Models
       //  [Required]
         //public string Description { get; set; }
 
-      //  [Required]
         public string SourceToken { get; set; }
 
         public string CustomerName { get; set; }
 
+        public bool PaymentIntentStatus { get; set; }
+
+        public string HandleCardPaymentStatus { get; set; }
+
+        public string PaymentIntentId { get; set; }
+        
     }
 }

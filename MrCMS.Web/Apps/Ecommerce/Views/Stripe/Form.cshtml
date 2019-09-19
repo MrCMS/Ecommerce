@@ -1,5 +1,6 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Payment.Stripe
 @model MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Models.StripePaymentDetailsModel
+
 <!-- The stripe script must always load directly from js.stripe.com to remain PCI compliant.
      Thought can not include the script in a bundle or host a copy of it internally. -->
 <!-- <script src="https://js.stripe.com/v3/"></script> -->
@@ -13,26 +14,20 @@
 <div class="row">
     <div class="col-sm-8">
         <div data-card="true">
+
             <h4>Credit or debit card</h4>
-            @using (Html.BeginForm("RequestCharge", "Stripe", FormMethod.Post, new { id = "payment-form" }))
+
+            @using (Html.BeginForm("ConfirmPaymentStatus", "Stripe", FormMethod.Post, new { id = "payment-form" }))
             {
-                /*Html.Hidden("SourceToken", token)
-                @Html.HiddenFor(x => x.SourceToken, new { value = token })  
-                 */
-
-
                 @Html.HiddenFor(x => x.TotalAmount)
 
                 <div class="form-row">
 
                     <label for="CustomerName"> CustomerName: </label>
-
-                    @Html.EditorFor(model => model.CustomerName)
-
+                    @Html.EditorFor(model => model.CustomerName, new { name = "CustomerName", id = "CustomerName" })
                     <br />
 
                     <label for="card-element"> Credit or debit card </label>
-
                     <div id="card-element">
                         <!-- A Stripe Element will be inserted here. -->
                     </div>
@@ -41,19 +36,22 @@
                     <div id="card-errors" role="alert"></div>
                 </div>
 
-                <!-- <button>Submit Payment</button> -->
+                @Html.HiddenFor(x => x.HandleCardPaymentStatus, new { id = "HandleCardPaymentStatus", name = "HandleCardPaymentStatus" })
 
-                <input type="submit" value="@Resource("Confirm Order")" class="btn btn-primary btn-lg" data-submit-button="true" />
+
+                <input type="hidden" id = "PaymentIntentId", name = "PaymentIntentId" value="@ViewData["PaymentIntentId"]"/>
+
+                <div>&nbsp;</div>
+
+                <input type="submit" value="@Resource("Confirm Order")" class="btn btn-primary btn-lg"
+                       data-submit-button="true" id="card-button" data-secret="@ViewData["ClientSecret"]" />
             }
-        </div>
 
+        </div>
     </div>
 </div>
 
 <script>
-    var stripe = Stripe('pk_test_XY7OUNA5IDeAwOxOiN2oUbx300173QVGGl');
-    var elements = stripe.elements();
-
     // Custom styling can be passed to options when creating an Element.
     var style =
     {
@@ -62,67 +60,148 @@
             fontSize: '16px',
             color: "#32325d",
         }
-
     };
 
+    //create an instance of the Stripe object,
+    var stripe = Stripe('pk_test_XY7OUNA5IDeAwOxOiN2oUbx300173QVGGl');
+
+    //create an instance of the Elements object
+    var elements = stripe.elements();         
+
     // Create an instance of the card Element.
-    var card = elements.create('card', { style: style });
+    var cardElement = elements.create('card', { style: style });
 
     // Add an instance of the card Element into the `card-element` <div>.
-    card.mount('#card-element');
+    cardElement.mount('#card-element');
 
+       
+    var cardholderName = document.getElementById('CustomerName');
+    var cardButton = document.getElementById('card-button');
+    var clientSecret = cardButton.dataset.secret;
 
-    //Error handler
-    card.addEventListener('change', function (event) {
-        var displayError = document.getElementById('card-errors');
-
-        if (event.error) {
-            displayError.textContent = event.error.message;
-        }
-        else {
-            displayError.textContent = '';
-        }
-    });
-
-
-    //Create a token to securely transmit card information
-    // Create a token or display an error when the form is submitted.
-    var form = document.getElementById('payment-form');
-
-    form.addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        stripe.createToken(card).then(function (result) {
-            if (result.error) {
+    //Submit the payment to Stripe from the client
+    cardButton.addEventListener('click', function (ev)
+    {
+         // Complete the payment
+        stripe.handleCardPayment(
+                clientSecret,
+                cardElement,
+                {
+                    payment_method_data:
+                    {
+                        billing_details: { name: cardholderName.value}
+                    }
+                }
+        ).then(function (result)
+        {
+            if (result.error)
+            {
+                // Display error.message in your UI.
                 // Inform the customer that there was an error.
                 var errorElement = document.getElementById('card-errors');
-                errorElement.textContent = result.error.message;
+                    errorElement.textContent = result.error.message;
             }
-            else {
-                // Send the token to your server.
-                stripeTokenHandler(result.token);
+            else
+            {
+                // The payment has succeeded. Display a success message.
             }
+
+        var status = result.paymentIntent.status ? result.paymentIntent.status : result.error.message; 
+
+        var hiddenCardPaymentStatusInput = document.getElementById('HandleCardPaymentStatus');
+            hiddenCardPaymentStatusInput.setAttribute('value', status); 
+            
         });
     });
 
+    var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function (event)
+        {
+            event.preventDefault();
+            setTimeout(function()
+            { 
+               form.submit();
+            }, 1800);
+        });
+
+    //Create a token to securely transmit card information
+    // Create a token or display an error when the form is submitted.
+    //var form = document.getElementById('payment-form');
+    /*
+    form.addEventListener('submit', function (event) {
+
+        alert("payment form event listener added.");
+
+            event.preventDefault();
+
+        // Complete the payment
+        stripe.handleCardPayment(clientSecret, cardElement,
+            {
+                payment_method_data:
+                {
+                    billing_details: { name: cardholderName.value}
+                }
+            }
+        ).then(function (result)
+        {
+            if (result.error)
+            {
+                // Display error.message in your UI.
+                // Inform the customer that there was an error.
+                var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+            }
+            //else
+            //{
+                // The payment has succeeded. Display a success message.
+                alert("payment has succeeded: " + result.message);
+                //stripeTokenHandler(result.token);
+                
+                // Insert the token ID into the form so it gets submitted to the server
+                var form = document.getElementById('payment-form');
+
+                var hiddenInput = document.createElement('input');
+                    hiddenInput.setAttribute('type', 'hidden');
+                    hiddenInput.setAttribute('name', 'SourceToken');
+                    hiddenInput.setAttribute('value', token.id);
+
+                form.appendChild(hiddenInput);
+
+                // Submit the form
+                form.submit();
+            //}
+        });
+
+            /*
+            stripe.createToken(card).then(function (result)
+            {
+                if (result.error)
+                {
+                    // Inform the customer that there was an error.
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                }
+                else
+                {
+                    // Send the token to your server.
+                    stripeTokenHandler(result.token);
+                }
+            });
+        });
+    */
+
     //Submit the token and the rest of your form to your server
-    function stripeTokenHandler(token) {
-
-       // alert("token Id obtained: " + token.id);
-
+    function stripeTokenHandler(token)
+    {
         // Insert the token ID into the form so it gets submitted to the server
-        var form = document.getElementById('payment-form');
+        var cardElement = document.getElementById('card-element');
 
         var hiddenInput = document.createElement('input');
-        hiddenInput.setAttribute('type', 'hidden');
-        hiddenInput.setAttribute('name', 'SourceToken');
-        hiddenInput.setAttribute('value', token.id);
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'SourceToken');
+            hiddenInput.setAttribute('value', token.id);
 
-        form.appendChild(hiddenInput);
-
-        // Submit the form
-        form.submit();
+        cardElement.appendChild(hiddenInput);
     }
-
 
 </script>
