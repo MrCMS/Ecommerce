@@ -15,10 +15,8 @@
     <div class="col-sm-8">
         <div data-card="true">
 
-            <h4>Credit or debit card</h4>
-
             @using (Html.BeginForm("ConfirmPaymentStatus", "Stripe", FormMethod.Post, new { id = "payment-form" }))
-            {
+                {
                 @Html.HiddenFor(x => x.TotalAmount)
 
                 <div class="form-row">
@@ -39,14 +37,14 @@
                 @Html.HiddenFor(x => x.HandleCardPaymentStatus, new { id = "HandleCardPaymentStatus", name = "HandleCardPaymentStatus" })
 
 
-                <input type="hidden" id = "PaymentIntentId", name = "PaymentIntentId" value="@ViewData["PaymentIntentId"]"/>
+                <input type="hidden" id="PaymentIntentId" , name="PaymentIntentId" value="@ViewData["PaymentIntentId"]" />
 
                 <div>&nbsp;</div>
 
                 <input type="submit" value="@Resource("Confirm Order")" class="btn btn-primary btn-lg"
                        data-submit-button="true" id="card-button" data-secret="@ViewData["ClientSecret"]" />
             }
-
+            
         </div>
     </div>
 </div>
@@ -73,7 +71,6 @@
 
     // Add an instance of the card Element into the `card-element` <div>.
     cardElement.mount('#card-element');
-
        
     var cardholderName = document.getElementById('CustomerName');
     var cardButton = document.getElementById('card-button');
@@ -104,93 +101,29 @@
             else
             {
                 // The payment has succeeded. Display a success message.
-            }
+             var status = result.paymentIntent.status ? result.paymentIntent.status : result.error.message; 
 
-        var status = result.paymentIntent.status ? result.paymentIntent.status : result.error.message; 
+            var hiddenCardPaymentStatusInput = document.getElementById('HandleCardPaymentStatus');
 
-        var hiddenCardPaymentStatusInput = document.getElementById('HandleCardPaymentStatus');
-            hiddenCardPaymentStatusInput.setAttribute('value', status); 
-            
+                hiddenCardPaymentStatusInput.setAttribute('value', status);       
+            }      
         });
     });
-
+        
     var form = document.getElementById('payment-form');
+
         form.addEventListener('submit', function (event)
         {
             event.preventDefault();
-            setTimeout(function()
+           setTimeout(function()
             { 
                form.submit();
             }, 1800);
         });
-
-    //Create a token to securely transmit card information
-    // Create a token or display an error when the form is submitted.
-    //var form = document.getElementById('payment-form');
-    /*
-    form.addEventListener('submit', function (event) {
-
-        alert("payment form event listener added.");
-
-            event.preventDefault();
-
-        // Complete the payment
-        stripe.handleCardPayment(clientSecret, cardElement,
-            {
-                payment_method_data:
-                {
-                    billing_details: { name: cardholderName.value}
-                }
-            }
-        ).then(function (result)
-        {
-            if (result.error)
-            {
-                // Display error.message in your UI.
-                // Inform the customer that there was an error.
-                var errorElement = document.getElementById('card-errors');
-                    errorElement.textContent = result.error.message;
-            }
-            //else
-            //{
-                // The payment has succeeded. Display a success message.
-                alert("payment has succeeded: " + result.message);
-                //stripeTokenHandler(result.token);
-                
-                // Insert the token ID into the form so it gets submitted to the server
-                var form = document.getElementById('payment-form');
-
-                var hiddenInput = document.createElement('input');
-                    hiddenInput.setAttribute('type', 'hidden');
-                    hiddenInput.setAttribute('name', 'SourceToken');
-                    hiddenInput.setAttribute('value', token.id);
-
-                form.appendChild(hiddenInput);
-
-                // Submit the form
-                form.submit();
-            //}
-        });
-
-            /*
-            stripe.createToken(card).then(function (result)
-            {
-                if (result.error)
-                {
-                    // Inform the customer that there was an error.
-                    var errorElement = document.getElementById('card-errors');
-                    errorElement.textContent = result.error.message;
-                }
-                else
-                {
-                    // Send the token to your server.
-                    stripeTokenHandler(result.token);
-                }
-            });
-        });
-    */
+        
 
     //Submit the token and the rest of your form to your server
+    /*
     function stripeTokenHandler(token)
     {
         // Insert the token ID into the form so it gets submitted to the server
@@ -203,5 +136,5 @@
 
         cardElement.appendChild(hiddenInput);
     }
-
+    */
 </script>

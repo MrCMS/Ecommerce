@@ -1,10 +1,19 @@
-﻿using MrCMS.Web.Apps.Ecommerce.Models;
+﻿using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Models;
+using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Areas.Admin.Services;
+using MrCMS.Website;
+using Newtonsoft.Json;
+using NHibernate;
 using Stripe;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Web;
+using System.Web.Mvc;
 using StripeResponse = MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Models.StripeResponse;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Services
@@ -15,87 +24,186 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Services
         private readonly CartModel _cartModel;
         private readonly IOrderPlacementService _orderPlacementService;
         private readonly ILogAdminService _logAdminService;
-        public StripePaymentService(StripeSettings stripeSettings, 
-                                    CartModel cartModel,
-                                    IOrderPlacementService orderPlacementService, 
-                                    ILogAdminService logAdminService)
+        private readonly ICartBuilder _cartBuilder;
+        private readonly ISession _session;
+        //Signing secret copied from the endpoint config section of the dashboard
+        const string secret = "whsec_DdBQwdfwo03wV5VnvzEnxhoO3aNssySe";
+        private ViewDataDictionary _ViewDataDictionary;
+        private string _ViewName;
+        private string _stripeBalanceTransactionId;
+        private IUniquePageService _uniquePageService;
+        public StripePaymentService(StripeSettings stripeSettings, CartModel cartModel, ICartBuilder cartBuilder,
+                                    ISession session, IOrderPlacementService orderPlacementService, ILogAdminService logAdminService,
+                                    IUniquePageService uniquePageService)
         {
             _stripeSettings = stripeSettings;
             _cartModel = cartModel;
             _orderPlacementService = orderPlacementService;
             _logAdminService = logAdminService;
+            _cartBuilder = cartBuilder;
+            _session = session;
+            _uniquePageService = uniquePageService;
         }
-        private StripeGateway GetGateway()
+        
+        public PaymentIntent CreatePaymentIntent(decimal totalAmount)
         {
-            return new StripeGateway
+            // Set your secret key: remember to change this to your live secret key in production
+            // See your keys here: https://dashboard.stripe.com/account/apikeys
+            StripeConfiguration.ApiKey = "sk_test_HSfKyVKUpA7tADbscgmX9d0w00scE9qsh1";
+
+            var paymentIntentService = new PaymentIntentService();
+
+            var paymentIntentOptions = new PaymentIntentCreateOptions
             {
-                MerchantId = _stripeSettings.MerchantId,
-                PublicKey = _stripeSettings.PublicKey,
-                PrivateKey = _stripeSettings.PrivateKey
-            };                                  
+                Amount = (long)(totalAmount * 100),
+                Currency = "gbp"
+            };
+
+            //Create the PaymentIntent instance
+            PaymentIntent paymentIntent = paymentIntentService.Create(paymentIntentOptions);
+
+            return paymentIntent;
+        }       
+
+
+        public ActionResult HandleNotification(HttpRequestBase request)
+        {
+            StripeCustomResult stripeCustomResult = new StripeCustomResult();
+
+            try
+            {
+                var json = new StreamReader(System.Web.HttpContext.Current.Request.InputStream).ReadToEnd();
+                Event stripeEvent = EventUtility.ConstructEvent(json, request.Headers["Stripe-Signature"], secret);
+                Charge charge = null;
+
+                switch (stripeEvent.Type)
+                {
+                    case "charge.succeeded":
+
+                        charge = (Charge)stripeEvent.Data.Object;
+                        CartModel cart = _cartModel;
+
+                        //update the order payment status        
+                        //StripeResponse
+                        if(charge != null)
+                        {
+                            stripeCustomResult.StripeResultType = StripeCustomEnumerations.ResultType.ChargeSuccess;
+                        }
+                        else
+                        {
+                            stripeCustomResult.StripeResultType = StripeCustomEnumerations.ResultType.ChargeNotFound;
+                        }
+
+                        break;
+
+                    case "charge.failed":
+                        stripeCustomResult.StripeResultType = StripeCustomEnumerations.ResultType.ChargeFailure;
+
+                        break;
+
+                    default:
+                        // Handle other event types
+
+                        break;
+                }
+
+                stripeCustomResult.StripeResultType = StripeCustomEnumerations.ResultType.BadRequest;
+
+            }
+            catch (StripeException e)
+            {
+                var testStripeExceptionStop = e.Message;
+                // Invalid Signature
+                stripeCustomResult.StripeResultType = StripeCustomEnumerations.ResultType.BadRequest;
+
+                return stripeCustomResult;
+            }
+
+            return stripeCustomResult;
         }
 
         public StripeResponse BuildMrCMSOrder(Charge currentCharge)
-        {        
+            {
             //Create Stripe transaction
-            BalanceTransaction balanceTransaction = new BalanceTransaction
+            StripeBalanceTransaction balanceTransaction = new StripeBalanceTransaction
             {
-                Id = currentCharge.Id,
-                Amount = (long)(_cartModel.TotalToPay * 100)
-            };
+                    Id = currentCharge.Id,
+                    Amount = (long)(_cartModel.TotalToPay * 100)
+             };
 
-            //try creating MrCMS Order object
-            try
-            {
-                if (currentCharge != null)
+                //try creating MrCMS Order object
+                try
                 {
-                    var testTwoStop = string.Empty;
+                    if (currentCharge != null)
+                    {
+                        var testTwoStop = string.Empty;
 
-                    Random rand = new Random();
-                    int randomOrderId = rand.Next();
+                        Entities.Orders.Order order = _orderPlacementService.PlaceOrder(_cartModel,
+                            o =>
+                            {
+                                o.PaymentStatus = PaymentStatus.Paid;
+                                o.CaptureTransactionId = balanceTransaction.Id;
+                                o.Total = currentCharge.Amount;
+                                o.Subtotal = currentCharge.Amount;
+                                o.TotalPaid = currentCharge.Amount;
+                            });
 
-                    Entities.Orders.Order order = _orderPlacementService.PlaceOrder(_cartModel,
-                        o =>
-                        {
-                            o.PaymentStatus = PaymentStatus.Pending;
-                            o.CaptureTransactionId = balanceTransaction.Id;
-                            o.Total = currentCharge.Amount;
-                            o.Subtotal = currentCharge.Amount;
-                            o.TotalPaid = currentCharge.Amount;
-                        });
+                    //set the current stripe order id
+                    balanceTransaction.Order = order;
+                    _stripeBalanceTransactionId = balanceTransaction.Id;          
 
                     // Success
                     return new StripeResponse
+                        {
+                            Success = true,
+                            Order = order,
+                            Errors = new System.Collections.Generic.List<string>()
+                        };
+                    }
+                    else
                     {
-                        Success = true,
-                        Order = order,
-                        Errors = new System.Collections.Generic.List<string>()
-                    };
+                        // error return      
+                        return new StripeResponse
+                        {
+                            Success = false,
+                            Errors = new List<string> { currentCharge.FailureMessage }
+                        };
+                    }
+
                 }
-                else
+                catch (Exception ex)
                 {
                     // error return      
                     return new StripeResponse
                     {
                         Success = false,
-                        Errors = new List<string> { currentCharge.FailureMessage }
+                        Errors = new List<string> { "Exception encountered while trying to charge your card. Descrtiption: " + ex.Message }
                     };
                 }
 
-            }
-            catch (Exception ex)
+            }                     
+              
+         public StripeList<Charge> GetChargeAttemptesList(string paymentIntentId)
+        {
+            // Set your secret key: remember to change this to your live secret key in production
+            // See your keys here: https://dashboard.stripe.com/account/apikeys
+            StripeConfiguration.ApiKey = "sk_test_HSfKyVKUpA7tADbscgmX9d0w00scE9qsh1";
+
+            var service = new ChargeService();
+
+            var options = new ChargeListOptions
             {
-                // error return      
-                return new StripeResponse
-                {
-                    Success = false,
-                    Errors = new List<string> { "Exception encountered while trying to charge your card. Descrtiption: " + ex.Message }
-                };
-            }
+                PaymentIntentId = paymentIntentId, //"{{PAYMENT_INTENT_ID}}",
+                // Limit the number of objects to return (the default is 10)
+                Limit = 3,
+            };
 
-        }
-                     
+            var charges = service.List(options);
 
+            return charges;
+        }       
+
+        /*
         public StripeResponse MakePayment(ChargeCreateOptions options)
         {
             StripeGateway stripeGateway = GetGateway();
@@ -158,78 +266,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Services
 
             return optionsDetail;
         }
+                
+    */
 
-        //Payment Intent API 
-        public PaymentIntent CreatePaymentIntent(decimal totalAmount)
+        private StripeGateway GetGateway()
         {
-            // Set your secret key: remember to change this to your live secret key in production
-            // See your keys here: https://dashboard.stripe.com/account/apikeys
-            StripeConfiguration.ApiKey = "sk_test_HSfKyVKUpA7tADbscgmX9d0w00scE9qsh1";
-
-            var service = new PaymentIntentService();
-
-            var options = new PaymentIntentCreateOptions
+            return new StripeGateway
             {
-                Amount = (long)(totalAmount * 100),
-                Currency = "gbp"
-            };
-
-            PaymentIntent paymentIntent = service.Create(options);
-
-            return paymentIntent;
-        }
-
-        public StripeList<Charge> GetChargeAttemptesList(string paymentIntentId)
+                MerchantId = _stripeSettings.MerchantId,
+                PublicKey = _stripeSettings.PublicKey,
+                PrivateKey = _stripeSettings.PrivateKey
+            };                                  
+        }   
+        private CartModel GetCart(string orderId)
         {
-            // Set your secret key: remember to change this to your live secret key in production
-            // See your keys here: https://dashboard.stripe.com/account/apikeys
-            StripeConfiguration.ApiKey = "sk_test_HSfKyVKUpA7tADbscgmX9d0w00scE9qsh1";
-
-            var service = new ChargeService();
-
-            var options = new ChargeListOptions
+            string serializedTxCode = JsonConvert.SerializeObject(orderId);
+            SessionData sessionData = _session.QueryOver<SessionData>()
+                                              .Where(data => data.Key == CartManager.CurrentCartGuid && data.Data == serializedTxCode)
+                                              .SingleOrDefault();
+            if (sessionData != null)
             {
-                PaymentIntentId = paymentIntentId, //"{{PAYMENT_INTENT_ID}}",
-                // Limit the number of objects to return (the default is 10)
-                Limit = 3,
-            };
-
-            var charges = service.List(options);
-
-            return charges;
+                CurrentRequestData.UserGuid = sessionData.UserGuid;
+                return _cartBuilder.BuildCart(sessionData.UserGuid);
+            }
+            return null;
         }
-
-            /*
-            private AddressRequest GetBillingAddress()
-            {
-                var addressRequest = new AddressRequest
-                {
-                    FirstName = _cartModel.BillingAddress.FirstName,
-                    LastName = _cartModel.BillingAddress.LastName,
-                    StreetAddress = _cartModel.BillingAddress.Address1,
-                    Locality = _cartModel.BillingAddress.City,
-                    Region = _cartModel.BillingAddress.StateProvince,
-                    PostalCode = _cartModel.BillingAddress.PostalCode,
-                    CountryCodeAlpha2 = _cartModel.BillingAddress.CountryCode
-                };
-                if (!string.IsNullOrWhiteSpace(_cartModel.BillingAddress.Company))
-                    addressRequest.Company = _cartModel.BillingAddress.Company;
-                if (!string.IsNullOrWhiteSpace(_cartModel.BillingAddress.Address2))
-                    addressRequest.ExtendedAddress = _cartModel.BillingAddress.Address2;
-
-                return addressRequest;
-            }
-
-            public IEnumerable<SelectListItem> ExpiryMonths()
-            {
-                return Enumerable.Range(1, 12).BuildSelectItemList(i => i.ToString().PadLeft(2, '0'), i => i.ToString(), emptyItemText: "Month");
-            }
-
-            public IEnumerable<SelectListItem> ExpiryYears()
-            {
-                return Enumerable.Range(DateTime.Now.Year, 11).BuildSelectItemList(i => i.ToString(), emptyItemText: "Year");
-            }
-
-            */
-        }
+    }
 }

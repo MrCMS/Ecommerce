@@ -1391,6 +1391,9 @@
     <Compile Include="Apps\Ecommerce\Payment\SagePay\VspServerMode.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Services\IPaymentMethodService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Services\PaymentMethodService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Stripe\Models\StripeBalanceTransaction.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Stripe\Models\StripeCustomEnumerations.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Stripe\Models\StripeCustomResult.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Stripe\Models\StripeGateway.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Stripe\Models\StripeResponse.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Stripe\Models\StripePaymentDetailsModel.cs" />

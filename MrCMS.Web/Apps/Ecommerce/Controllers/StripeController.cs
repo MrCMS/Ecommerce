@@ -4,10 +4,10 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Services;
 using MrCMS.Website.Controllers;
-using Stripe;
 using System;
 using System.Linq;
 using System.Web.Mvc;
+using Stripe;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
@@ -17,6 +17,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IUniquePageService _uniquePageService;
         private readonly CartModel _cartModel;
         private PaymentIntent _paymentIntent;
+
         public StripeController(IStripePaymentService StripePaymentService, 
                                 IUniquePageService uniquePageService, CartModel cartModel)
         {
@@ -28,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpGet]
         public PartialViewResult Form()
         {
-            //Get Payment Intent
+            //Create Payment Intent using Stripe Payment Service
             _paymentIntent = _StripePaymentService.CreatePaymentIntent(_cartModel.TotalToPay);
 
             ViewData["ClientSecret"] = _paymentIntent.ClientSecret;
@@ -38,6 +39,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             {
                 TotalAmount = _cartModel.TotalToPay
             });
+        }
+
+        public ActionResult Notification()
+        {
+            var stripeCustomResult = (StripeCustomResult)_StripePaymentService.HandleNotification(Request);
+
+            if(stripeCustomResult.StripeResultType == StripeCustomEnumerations.ResultType.ChargeSuccess)
+            {
+                return new System.Web.Mvc.EmptyResult();
+            }
+            else
+            {
+                return new System.Web.Mvc.EmptyResult();
+            }
+        }
+
+        private ActionResult EmptyResult()
+        {
+            throw new NotImplementedException();
         }
 
         [HttpPost]
@@ -55,13 +75,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 var chargeResult = chargesList.ToList()
                                               .Where(c => c.Status.Equals("succeeded"))
                                               .FirstOrDefault();
-
                 //StripeResponse
                 if(chargeResult != null)
                 {
                     Payment.Stripe.Models.StripeResponse stripeResponse = _StripePaymentService.BuildMrCMSOrder(chargeResult);
-
-                    var testStop = string.Empty;
 
                     return _uniquePageService.RedirectTo<OrderPlaced>(new { id = stripeResponse.Order.Guid });
                 }
@@ -75,6 +92,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 return _uniquePageService.RedirectTo<PaymentDetails>();
             }
         }
+
 
         private Payment.Stripe.Models.StripeResponse BuildStripeResponse(Charge charge)
         {
