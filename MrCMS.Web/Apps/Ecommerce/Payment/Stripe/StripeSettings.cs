@@ -17,12 +17,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe
 
         [DisplayName("Use Sandbox")]
         public bool UseSandbox { get; set; }
-
-
+        
         [DisplayName("Instance Id")]
         public string InstanceId { get; set; }
-
-
+        
         [DisplayName("Payment Method")]
         public string PaymentMethod { get; set; }
 
@@ -38,10 +36,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe
         [DisplayName("3D Secure Required?")]
         public bool ThreeDSecureRequired { get; set; }
 
-        public string MerchantId { get; set; }
-
         public string PublicKey { get; set; }
 
         public string PrivateKey { get; set; }
+
+        public string WebhookSigningSecret { get; set; }
+        
     }
 }

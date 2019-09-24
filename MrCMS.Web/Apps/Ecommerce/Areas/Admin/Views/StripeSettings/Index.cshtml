@@ -21,23 +21,27 @@
         <div class="form-group">
             @Html.InlineCheckboxFor(settings => settings.ThreeDSecureRequired)
         </div>
-        
-            <div class="form-group">
-                @Html.LabelFor(settings => settings.MerchantId)
-                @Html.TextBoxFor(settings => settings.MerchantId, new { @class = "form-control" })
-                @Html.ValidationMessageFor(settings => settings.MerchantId)
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(settings => settings.PublicKey)
-                @Html.TextBoxFor(settings => settings.PublicKey, new { @class = "form-control" })
-                @Html.ValidationMessageFor(settings => settings.PublicKey)
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(settings => settings.PrivateKey)
-                @Html.TextBoxFor(settings => settings.PrivateKey, new { @class = "form-control" })
-                @Html.ValidationMessageFor(settings => settings.PrivateKey)
-            </div>            
-        
+
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.MerchantId)
+            @Html.TextBoxFor(settings => settings.MerchantId, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.MerchantId)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.PublicKey)
+            @Html.TextBoxFor(settings => settings.PublicKey, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.PublicKey)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.PrivateKey)
+            @Html.TextBoxFor(settings => settings.PrivateKey, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.PrivateKey)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.WebhookSigningSecret)
+            @Html.TextBoxFor(settings => settings.WebhookSigningSecret, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.WebhookSigningSecret)
+        </div>
 
     </fieldset>
 }

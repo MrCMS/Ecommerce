@@ -9,21 +9,21 @@
     var token = ViewData["token"] as string;
 }
 <hr />
-<div class="alert alert-danger" role="alert" data-braintree-errors="true" style="display: none;"></div>
+<div class="alert alert-danger" role="alert" data-stripe-errors="true" style="display: none;"></div>
 
 <div class="row">
     <div class="col-sm-8">
         <div data-card="true">
 
             @using (Html.BeginForm("ConfirmPaymentStatus", "Stripe", FormMethod.Post, new { id = "payment-form" }))
-                {
+            {
                 @Html.HiddenFor(x => x.TotalAmount)
+                @Html.HiddenFor(model => model.PublicKey, new { id = "PublicKey", name = "PublicKey", value = @Model.PublicKey })
 
                 <div class="form-row">
-
-                    <label for="CustomerName"> CustomerName: </label>
-                    @Html.EditorFor(model => model.CustomerName, new { name = "CustomerName", id = "CustomerName" })
-                    <br />
+                    <div>&nbsp;</div>
+                    @Html.HiddenFor(x => x.CustomerName, new { name = "CustomerName", id = "CustomerName", value = @Model.CustomerName })
+                    <div>&nbsp;</div>
 
                     <label for="card-element"> Credit or debit card </label>
                     <div id="card-element">
@@ -31,110 +31,32 @@
                     </div>
 
                     <!-- Used to display Element errors. -->
+                    <div>&nbsp;</div>
                     <div id="card-errors" role="alert"></div>
                 </div>
 
                 @Html.HiddenFor(x => x.HandleCardPaymentStatus, new { id = "HandleCardPaymentStatus", name = "HandleCardPaymentStatus" })
 
+                <!-- User address details -->
+                @Html.HiddenFor(x => x.PostalCode, new { id = "PostalCode", name = "PostalCode", value = @Model.PostalCode })
+                @Html.HiddenFor(x => x.LineOne, new { id = "LineOne", name = "LineOne", value = @Model.LineOne })
+                @Html.HiddenFor(x => x.LineTwo, new { id = "LineTwo", name = "LineTwo", value = @Model.LineTwo })
+                @Html.HiddenFor(x => x.City, new { id = "City", name = "City", value = @Model.City })
+                @Html.HiddenFor(x => x.Country, new { id = "Country", name = "Country", value = @Model.Country })
+                @Html.HiddenFor(x => x.State, new { id = "State", name = "State", value = @Model.State })
 
+                <div> &nbsp;</div>
                 <input type="hidden" id="PaymentIntentId" , name="PaymentIntentId" value="@ViewData["PaymentIntentId"]" />
-
                 <div>&nbsp;</div>
 
                 <input type="submit" value="@Resource("Confirm Order")" class="btn btn-primary btn-lg"
                        data-submit-button="true" id="card-button" data-secret="@ViewData["ClientSecret"]" />
             }
-            
+
         </div>
     </div>
 </div>
 
-<script>
-    // Custom styling can be passed to options when creating an Element.
-    var style =
-    {
-        base: {
-            // Add your base input styles here. For example:
-            fontSize: '16px',
-            color: "#32325d",
-        }
-    };
+<script src="~/Apps/Ecommerce/Content/Scripts/custom/stripe-payment.js" type="text/javascript"></script>
 
-    //create an instance of the Stripe object,
-    var stripe = Stripe('pk_test_XY7OUNA5IDeAwOxOiN2oUbx300173QVGGl');
-
-    //create an instance of the Elements object
-    var elements = stripe.elements();         
-
-    // Create an instance of the card Element.
-    var cardElement = elements.create('card', { style: style });
-
-    // Add an instance of the card Element into the `card-element` <div>.
-    cardElement.mount('#card-element');
-       
-    var cardholderName = document.getElementById('CustomerName');
-    var cardButton = document.getElementById('card-button');
-    var clientSecret = cardButton.dataset.secret;
-
-    //Submit the payment to Stripe from the client
-    cardButton.addEventListener('click', function (ev)
-    {
-         // Complete the payment
-        stripe.handleCardPayment(
-                clientSecret,
-                cardElement,
-                {
-                    payment_method_data:
-                    {
-                        billing_details: { name: cardholderName.value}
-                    }
-                }
-        ).then(function (result)
-        {
-            if (result.error)
-            {
-                // Display error.message in your UI.
-                // Inform the customer that there was an error.
-                var errorElement = document.getElementById('card-errors');
-                    errorElement.textContent = result.error.message;
-            }
-            else
-            {
-                // The payment has succeeded. Display a success message.
-             var status = result.paymentIntent.status ? result.paymentIntent.status : result.error.message; 
-
-            var hiddenCardPaymentStatusInput = document.getElementById('HandleCardPaymentStatus');
-
-                hiddenCardPaymentStatusInput.setAttribute('value', status);       
-            }      
-        });
-    });
-        
-    var form = document.getElementById('payment-form');
-
-        form.addEventListener('submit', function (event)
-        {
-            event.preventDefault();
-           setTimeout(function()
-            { 
-               form.submit();
-            }, 1800);
-        });
-        
-
-    //Submit the token and the rest of your form to your server
-    /*
-    function stripeTokenHandler(token)
-    {
-        // Insert the token ID into the form so it gets submitted to the server
-        var cardElement = document.getElementById('card-element');
-
-        var hiddenInput = document.createElement('input');
-            hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'SourceToken');
-            hiddenInput.setAttribute('value', token.id);
-
-        cardElement.appendChild(hiddenInput);
-    }
-    */
-</script>
+   

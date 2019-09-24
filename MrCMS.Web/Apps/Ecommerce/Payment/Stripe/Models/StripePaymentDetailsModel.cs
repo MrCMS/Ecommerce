@@ -5,17 +5,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Models
     public class StripePaymentDetailsModel
     {
        // [Required]
-        // public string ApiKey { get; set; }
+       public string PublicKey { get; set; }
 
       //  [Required]
         public decimal TotalAmount { get; set; }
-
-       // [Required]
-       // public string Currency { get; set; }
-
-      //  [Required]
-        //public string Description { get; set; }
-
+                
         public string SourceToken { get; set; }
 
         public string CustomerName { get; set; }
@@ -25,6 +19,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Models
         public string HandleCardPaymentStatus { get; set; }
 
         public string PaymentIntentId { get; set; }
-        
+
+        //Address detail properties
+        public string LineOne { get; set; }
+        public string LineTwo { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+        public string PostalCode { get; set; }
+        public string State { get; set; }
     }
 }

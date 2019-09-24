@@ -10,5 +10,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Models
         public string MerchantId { get; set; }
         public string PublicKey { get; set; }
         public string PrivateKey { get; set; }
+        public string WebhookSigningSecret { get; set; }
     }
 }

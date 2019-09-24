@@ -224,12 +224,7 @@ namespace MrCMS.Web.Apps.Ecommerce
 
             context.MapRoute("Stripe Form Post", "Apps/Ecommerce/Confirm/StripePayment",
                 new { controller = "Stripe", action = "ConfirmPaymentStatus" },
-                new[] { typeof(StripeController).Namespace });
-
-            //StripeWebHook api route
-            //context.MapRoute("Stripe Webhook Post", "Apps/Ecommerce/Confirm/StripeFulfilmentWebhook",
-            //    new { controller = "StripeWebhook", action = "Post" },
-            //    new[] { typeof(StripeWebhookController).Namespace });            
+                new[] { typeof(StripeController).Namespace });                     
 
             context.MapRoute("Checkout - Stripe Notification Url", "Apps/Ecommerce/Stripe/Notification",
                 new { controller = "Stripe", action = "Notification" },

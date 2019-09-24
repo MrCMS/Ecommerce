@@ -14,5 +14,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Models
             ChargeNotFound,
             BadRequest
         }
+
+        //For exhaustive list of status refer stripe dashboard 
+        public enum CardPaymentStatus
+        {
+            succeeded,
+            failed,
+            incomplete,
+            uncaptured
+        }        
     }
 }

@@ -943,7 +943,6 @@
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountOrdersController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountReviewsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountRewardPointsController.cs" />
-    <Compile Include="Apps\Ecommerce\Controllers\StripeWebhookController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\WishlistController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\WorldPayController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\BrandOverride.cs" />
@@ -2717,6 +2716,7 @@
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\product.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\reward-points.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\shipping-methods.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\stripe-payment.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\user-account-addresses.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\user-account.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\user-login.js" />
