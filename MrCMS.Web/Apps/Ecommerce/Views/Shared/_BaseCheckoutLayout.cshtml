@@ -28,10 +28,16 @@
         This script must always load directly from js.stripe.com to remain PCI compliant.
         thought.co.uk can not include the script in a bundle or host a copy of its own.
     -->
-    <script src="https://js.stripe.com/v3/"></script>
 
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+
+    @if (Model.GetType() == typeof(MrCMS.Web.Apps.Ecommerce.Pages.PaymentDetails))
+    {
+        <script src="~/Apps/Ecommerce/Content/Scripts/custom/elavon-payment.js" type="text/javascript"></script>    
+    }
+
 
 
     @Scripts.Render(CheckoutLibScriptBundle.BundleUrl)

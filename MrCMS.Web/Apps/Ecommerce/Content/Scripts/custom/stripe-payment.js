@@ -47,8 +47,6 @@ $(document).ready(function () {
     });
 });
 
-
-
     //Handle Payment Form sudmit event to Stripe from the client
     var form = document.getElementById('payment-form');    
         form.addEventListener('submit', function (event)
@@ -59,8 +57,7 @@ $(document).ready(function () {
             //disable the submit button to prevent multiple submissions 
             //of the same order / purchase request
             cardButton.disabled = true;
-
-
+            
 
             //complete the Stripe card payment
             stripe.handleCardPayment(

@@ -1,9 +1,7 @@
-using System.Web.Mvc;
-using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.SagePay;
 using MrCMS.Website.Controllers;
+using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {

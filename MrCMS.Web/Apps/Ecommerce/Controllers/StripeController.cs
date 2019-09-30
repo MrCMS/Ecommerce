@@ -22,7 +22,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private StripeSettings _stripeSettings;
 
         public StripeController(IStripePaymentService StripePaymentService, StripeSettings stripeSettings,
-                                IUniquePageService uniquePageService, CartModel cartModel, MrCMS.Services.Resources.IStringResourceProvider stringResoureProvider)
+                                IUniquePageService uniquePageService, CartModel cartModel, 
+                                MrCMS.Services.Resources.IStringResourceProvider stringResoureProvider)
         {
             _stripePaymentService = StripePaymentService;
             _stripeSettings = stripeSettings;
@@ -85,7 +86,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 //total pay in pens
                 var adjustedTotalPay = (long)(_cartModel.TotalToPay * 100);
                 var chargeResult = chargesList.ToList()
-                                              .Where(c => c.Status.Equals("succeeded") && c.Amount == adjustedTotalPay)
+                                              .Where(c => c.Status.Equals("succeeded") && 
+                                                          c.Amount == adjustedTotalPay)
                                               .FirstOrDefault();
                 //StripeResponse
                 if(chargeResult != null)

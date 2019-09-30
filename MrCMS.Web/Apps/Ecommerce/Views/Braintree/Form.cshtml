@@ -20,7 +20,9 @@
     <div class="col-sm-8">
         <div data-card="true">
             <h4>@Resource("Pay by card")</h4>
-            @using (Html.BeginForm("MakePaymentCard", "Braintree", FormMethod.Post, new { id = "braintree-checkout", data_braintree_checkout_form = true }))
+            @using (Html.BeginForm("MakePaymentCard", "Braintree", FormMethod.Post,
+                                    new { id = "braintree-checkout",
+                                          data_braintree_checkout_form = true }))
             {
                 @Html.Hidden("ClientToken", token)
                 @Html.HiddenFor(x => x.TotalToPay)
@@ -47,14 +49,16 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             @Html.LabelFor(x => x.ExpirationMonth)
-                            @Html.DropDownListFor(x => x.ExpirationMonth, expiryMonths, new { @class = "form-control", data_braintree_name = "expiration_month" })
+                            @Html.DropDownListFor(x => x.ExpirationMonth, expiryMonths, 
+                                                  new { @class = "form-control", data_braintree_name = "expiration_month" })
                             @Html.ValidationMessageFor(x => x.ExpirationMonth)
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             @Html.LabelFor(x => x.ExpirationYear)
-                            @Html.DropDownListFor(x => x.ExpirationYear, expiryYears, new { @class = "form-control", data_braintree_name = "expiration_year" })
+                            @Html.DropDownListFor(x => x.ExpirationYear, expiryYears, 
+                                                  new { @class = "form-control", data_braintree_name = "expiration_year" })
                             @Html.ValidationMessageFor(x => x.ExpirationYear)
                         </div>
                     </div>

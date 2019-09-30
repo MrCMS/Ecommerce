@@ -3,7 +3,7 @@
 <div class="margin-bottom-20">
     @foreach (var paymentMethod in Model.AvailablePaymentMethods)
     {
-        <div class="radio">        
+        <div class="radio">    
             <label>@Html.RadioButtonFor(details => details.PaymentMethodSystemName, paymentMethod.SystemName) @paymentMethod.Name</label>
         </div>
     }

@@ -22,6 +22,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Models
             failed,
             incomplete,
             uncaptured
-        }        
+        }
+
+
     }
 }

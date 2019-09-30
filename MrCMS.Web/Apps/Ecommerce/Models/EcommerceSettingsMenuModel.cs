@@ -87,8 +87,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     new ChildMenuItem("Braintree", _urlHelper.Action("Index", "BraintreeSettings"),
                         ACLOption.Create(new BraintreeSettingsACL(), BraintreeSettingsACL.View)),
 
-                      new ChildMenuItem("Stripe", _urlHelper.Action("Index", "StripeSettings"),
-                        ACLOption.Create(new StripeSettingsACL(), StripeSettingsACL.View))
+                    new ChildMenuItem("Stripe", _urlHelper.Action("Index", "StripeSettings"),
+                        ACLOption.Create(new StripeSettingsACL(), StripeSettingsACL.View)),
+
+                    new ChildMenuItem("Elavon", _urlHelper.Action("Index", "ElavonSettings"),
+                        ACLOption.Create(new ElavonSettingsACL(), ElavonSettingsACL.View))
                 }));
 
                 subMenu.Add(new ChildMenuItem("Product Review Settings", "/Admin/Apps/Ecommerce/ProductReviewSettings/Edit",

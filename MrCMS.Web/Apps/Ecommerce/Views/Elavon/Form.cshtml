@@ -1,0 +1,38 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Payment.Elavon
+@model MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Models.ElavonPaymentDetailsModel
+
+<hr />
+<div class="alert alert-danger" role="alert" data-stripe-errors="true" style="display: none;"></div>
+<div class="row">
+    <div class="col-sm-8">
+        <div data-card="true">
+            <p> Elavon payment gateway </p>
+            <hr />
+            <input type="submit" id="payButtonId" value="Checkout with Elavon Now" />
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function ()
+    {
+        var request_method = $(this).attr("GET");
+
+        var serviceUrl = "@Model.ServiceUrl"; //https://pay.sandbox.realexpayments.com/pay
+
+        var targetControllerUrl = "Apps/Ecommerce/Confirm/PaymentRequestJson";
+
+        var responseEndpoint = "Apps/Ecommerce/Elavon/Notification"; 
+
+        $.getJSON(targetControllerUrl, function (jsonFromRequestEndpoint)
+        {
+            RealexHpp.setHppUrl(serviceUrl); 
+
+            var jsonObj = JSON.parse(jsonFromRequestEndpoint);
+
+            RealexHpp.lightbox.init("payButtonId", responseEndpoint, jsonObj);
+        });
+    });
+
+</script>

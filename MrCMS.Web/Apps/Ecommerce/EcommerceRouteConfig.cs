@@ -229,6 +229,19 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Checkout - Stripe Notification Url", "Apps/Ecommerce/Stripe/Notification",
                 new { controller = "Stripe", action = "Notification" },
                 new[] { typeof(StripeController).Namespace });
+
+
+            context.MapRoute("Elavon Form", "Apps/Ecommerce/Confirm/Elavon",
+                new { controller = "Elavon", action = "Form" },
+                new[] { typeof(ElavonController).Namespace });
+
+            context.MapRoute("Elavon PaymentRequestJson", "Apps/Ecommerce/Confirm/PaymentRequestJson",
+                new { controller = "Elavon", action = "PaymentRequest" },
+                new[] { typeof(ElavonController).Namespace });
+
+            context.MapRoute("Checkout - Elavon Notification Url", "Apps/Ecommerce/Elavon/Notification",
+                new { controller = "Elavon", action = "Notification" },
+                new[] { typeof(ElavonController).Namespace });
         }
         
         private static void MapCheckoutRoutes(MrCMSAppRegistrationContext context)

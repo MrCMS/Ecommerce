@@ -1,13 +1,11 @@
-﻿using System.Web.Mvc;
-using MrCMS.Helpers;
-using MrCMS.Services;
+﻿using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
-using MrCMS.Web.Apps.Ecommerce.Services.Paypoint;
 using MrCMS.Web.Apps.Ecommerce.Services.SagePay;
 using MrCMS.Website.Controllers;
+using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {

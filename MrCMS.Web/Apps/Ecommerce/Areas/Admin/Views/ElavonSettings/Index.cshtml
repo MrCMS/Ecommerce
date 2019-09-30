@@ -1,0 +1,49 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Payment.Elavon.ElavonSettings
+@{
+    ViewBag.Title = "Elavon Settings";
+}
+@using (Html.BeginForm("Save", "ElavonSettings", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Elavon Settings
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </span>
+        </legend>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.Enabled)
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.UseSandbox)
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.ThreeDSecureRequired)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.MerchantId)
+            @Html.TextBoxFor(settings => settings.MerchantId, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.MerchantId)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.SharedSecret)
+            @Html.TextBoxFor(settings => settings.SharedSecret, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.SharedSecret)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.AccountId)
+            @Html.TextBoxFor(settings => settings.AccountId, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.AccountId)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.ServiceUrl)
+            @Html.TextBoxFor(settings => settings.ServiceUrl, new { @class = "form-control",
+                                                                    @placeholder = "like pay.sandbox.realexpayments.com/pay" })
+            @Html.ValidationMessageFor(settings => settings.ServiceUrl)
+        </div>
+                     
+    </fieldset>
+}
