@@ -29,5 +29,11 @@
             ChargeFailure,
             Other
         }
+
+        public enum ElavonTransactionResponseCode
+        {
+            Ok = 00,
+            Other 
+        }
     }
 }

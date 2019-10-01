@@ -221,11 +221,9 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Stripe Form", "Apps/Ecommerce/Confirm/Stripe",
                 new { controller = "Stripe", action = "Form" },
                 new[] { typeof(StripeController).Namespace });
-
             context.MapRoute("Stripe Form Post", "Apps/Ecommerce/Confirm/StripePayment",
                 new { controller = "Stripe", action = "ConfirmPaymentStatus" },
-                new[] { typeof(StripeController).Namespace });                     
-
+                new[] { typeof(StripeController).Namespace });                  
             context.MapRoute("Checkout - Stripe Notification Url", "Apps/Ecommerce/Stripe/Notification",
                 new { controller = "Stripe", action = "Notification" },
                 new[] { typeof(StripeController).Namespace });
@@ -234,14 +232,24 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Elavon Form", "Apps/Ecommerce/Confirm/Elavon",
                 new { controller = "Elavon", action = "Form" },
                 new[] { typeof(ElavonController).Namespace });
-
             context.MapRoute("Elavon PaymentRequestJson", "Apps/Ecommerce/Confirm/PaymentRequestJson",
                 new { controller = "Elavon", action = "PaymentRequest" },
-                new[] { typeof(ElavonController).Namespace });
-
+                new[] { typeof(ElavonController).Namespace });        
             context.MapRoute("Checkout - Elavon Notification Url", "Apps/Ecommerce/Elavon/Notification",
                 new { controller = "Elavon", action = "Notification" },
                 new[] { typeof(ElavonController).Namespace });
+
+
+            context.MapRoute("Checkout - Elavon 3DS Challenge Notification Url", "Apps/Ecommerce/Elavon/ThreeDSecureChallengeNotification",
+                new { controller = "Elavon", action = "ThreeDsChallengeNotificationUrl" },
+                new[] { typeof(ElavonController).Namespace });
+            context.MapRoute("Checkout - Elavon 3DS Method Notification Url", "Apps/Ecommerce/Elavon/ThreeDSecureMethodNotification",
+                new { controller = "Elavon", action = "ThreeDSMethodNotification" },
+                new[] { typeof(ElavonController).Namespace });
+            context.MapRoute("Checkout - Elavon HostedPayment Data Status Notification Url", "Apps/Ecommerce/Elavon/HostedPaymentDataStatusNotification",
+                new { controller = "Elavon", action = "HostedPaymentDataStatusUpdateUrl" },
+                new[] { typeof(ElavonController).Namespace });           
+            
         }
         
         private static void MapCheckoutRoutes(MrCMSAppRegistrationContext context)

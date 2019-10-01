@@ -22,8 +22,9 @@
         var serviceUrl = "@Model.ServiceUrl"; //https://pay.sandbox.realexpayments.com/pay
 
         var targetControllerUrl = "Apps/Ecommerce/Confirm/PaymentRequestJson";
-
+        
         var responseEndpoint = "Apps/Ecommerce/Elavon/Notification"; 
+
 
         $.getJSON(targetControllerUrl, function (jsonFromRequestEndpoint)
         {

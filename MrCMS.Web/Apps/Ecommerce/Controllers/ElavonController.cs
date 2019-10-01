@@ -112,15 +112,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             {
                 return _uniquePageService.RedirectTo<PaymentDetails>();                             
             }
+        }  
+
+        public void HostedPaymentDataStatusNotification()
+        {
+            string test = string.Empty;
         }
 
-
-        //3D Secure 2 authentication process progress notification handlers - Start
-
-        //3DS Method Completion
-        public void ThreeDSMethodCompletedNotification()
-        {            
+        public void ThreeDSMethodNotification()
+        {
+            /*
+             * this sample code is intended as a simple example and should not be treated as Production-ready code 
+             * you'll need to add your own message parsing and security in line with your application or website
+             */
             var threeDSMethodData = Request.Form["threeDSMethodData"];
+
+            // sample ACS response for Method URL Response Notification
+            // threeDSMethodData = "eyJ0aHJlZURTU2VydmVyVHJhbnNJRCI6ImFmNjVjMzY5LTU5YjktNGY4ZC1iMmY2LTdkN2Q1ZjVjNjlkNSJ9";
 
             try
             {
@@ -130,7 +138,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 // map to a custom class MethodUrlResponse
                 MethodUrlResponse methodUrlResponse = JsonConvert.DeserializeObject<MethodUrlResponse>(methodUrlResponseString);
 
-                //unique Global Payments identifier for the 3D Secure authentication (Server Transaction ID)
                 string threeDSServerTransID = methodUrlResponse.ThreeDSServerTransID; // af65c369-59b9-4f8d-b2f6-7d7d5f5c69d5
 
                 // TODO: notify client-side that the Method URL step is complete
@@ -142,10 +149,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             }
         }
 
-        //ACS Challenge Completion
-        public void ACSChallengeCompletedNotification()
+
+        public void ThreeDsChallengeNotificationUrl()
         {
+            /*
+             * this sample code is intended as a simple example and should not be treated as Production-ready code 
+             * you'll need to add your own message parsing and security in line with your application or website
+             */
             var cres = Request.Form["cres"];
+
+            // Example CRes (Challenge Result) sent by the ACS
+            // var cRes = "eyJ0aHJlZURTU2VydmVyVHJhbnNJRCI6ImFmNjVjMzY5LTU5YjktNGY4ZC1iMmY2LTdkN2Q1ZjVjNjlkNSIsImF"
+            // + "jc1RyYW5zSUQiOiIxM2M3MDFhMy01YTg4LTRjNDUtODllOS1lZjY1ZTUwYThiZjkiLCJjaGFsbGVuZ2VDb21wbGV0a"
+            // + "W9uSW5kIjoiWSIsIm1lc3NhZ2VUeXBlIjoiQ3JlcyIsIm1lc3NhZ2VWZXJzaW9uIjoiMi4xLjAiLCJ0cmFuc"
+            // + "1N0YXR1cyI6IlkifQ==";
 
             try
             {
@@ -168,10 +185,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             {
                 // TODO: add your exception handling here
             }
-
         }
-        //3D Secure 2 authentication process progress notification handlers - End
-
     }
 
     public class MethodUrlResponse
@@ -179,7 +193,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public string ThreeDSServerTransID { get; set; }  //e.g. af65c369-59b9-4f8d-b2f6-7d7d5f5c69d5
 
     }
-
 
     public class ChallengeUrlResponse
     {
