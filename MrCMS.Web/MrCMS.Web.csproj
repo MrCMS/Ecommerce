@@ -1315,6 +1315,7 @@
     <Compile Include="Apps\Ecommerce\Models\ProductReviewResponseType.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductSearchQuery.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductSearchSort.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ProductSearchSuggestionItem.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductSearchView.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductValueModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductVariantPagedList.cs" />
@@ -2748,11 +2749,14 @@
     <Content Include="Apps\Ecommerce\Content\Scripts\bootstrap.dropdown.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\contact-us.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\async-paging.js" />
+    <Content Include="Scripts\handlebars.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\typeahead.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\braintree-checkout.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\brand-search.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\cart.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\category.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\checkout.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\typeahead-custom-templates.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\discount.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\elavon-payment.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\enter-order-email.js" />
@@ -2778,6 +2782,7 @@
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\respond.min.js" />
     <Content Include="Apps\Ecommerce\Content\Styles\checkout.css" />
+    <Content Include="Apps\Ecommerce\Content\Styles\custom\typeahead-custom-template.css" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\images\ui-bg_glass_55_fbf9ee_1x400.png" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\images\ui-bg_glass_65_ffffff_1x400.png" />
@@ -4122,6 +4127,16 @@
     <Content Include="Content\install\scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Apps\Ecommerce\Services\Search\products.json" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\bloodhound.js" />
+    <Content Include="Scripts\bloodhound.min.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\typeahead.bundle.js" />
+    <Content Include="Scripts\typeahead.bundle.min.js" />
+    <Content Include="Scripts\typeahead.jquery.js" />
+    <Content Include="Scripts\typeahead.jquery.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -4497,6 +4512,7 @@
     <Content Include="Views\Install\Setup.cshtml" />
     <Content Include="Views\Shared\_Installation.cshtml" />
     <Content Include="Views\Web.config" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Amazon\Controllers\" />

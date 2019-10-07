@@ -315,9 +315,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get { return Items.Sum(item => item.Weight); }
         }
-
-
-
+               
         public string PaymentMethodSystemName
         {
             get

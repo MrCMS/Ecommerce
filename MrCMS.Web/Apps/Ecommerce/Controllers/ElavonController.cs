@@ -22,7 +22,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly CartModel _cartModel;
         private readonly MrCMS.Services.Resources.IStringResourceProvider _stringResoureProvider;
         private readonly ICartGuidResetter cartGuidReseter;
-        private readonly IGetCurrentUser getCurrentUser;
         private ElavonSettings _elavonSettings;
 
         public ElavonController(IElavonPaymentService elavonPaymentService, ElavonSettings elavonSettings,
@@ -36,7 +35,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _cartModel = cartModel;
             _stringResoureProvider = stringResoureProvider;
             this.cartGuidReseter = cartGuidReseter;
-            this.getCurrentUser = getCurrentUser;
         }
                
         [HttpGet]
@@ -76,8 +74,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
          // Process HPP Response from Globalpay service
         public ActionResult Notification()
         {
-            var testStop = string.Empty;
-
             // The field containing the JSON response, i.e. hppResponse         
             var responseJson = Request.Form["hppResponse"];   
            
@@ -85,7 +81,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
             var transaction = result.ElavonResponse;
 
-            if(result.ExceptionDescription.Equals(string.Empty))
+            bool noExceptionHappened = result.ExceptionDescription.Equals(string.Empty);
+
+            //total pay adjusted to 2 digit currency
+            var adjustedTotalPay = (_cartModel.TotalToPay).ToString("C2");
+
+            if (transaction != null && noExceptionHappened)
             {
                 cartGuidReseter.ResetCartGuid(CurrentRequestData.UserGuid);
 
@@ -93,14 +94,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 if(result.ElavonResultType == ElavonCustomEnumerations.ResultType.ChargeFailure)
                 {
                     TempData.ErrorMessages().Add(_stringResoureProvider.GetValue("payment-elavon-payment-failed-charge-request-declined",
-                                           string.Format("Card Charge request for a total amount of {0} declined.", _cartModel.TotalToPay)));
+                                           string.Format("Card Charge request for a total amount of {0} declined.", adjustedTotalPay)));
 
                     return _uniquePageService.RedirectTo<PaymentDetails>();
                 }
                 else if(result.ElavonResultType == ElavonCustomEnumerations.ResultType.TamperedTotalPay)
                 {
                     TempData.ErrorMessages().Add(_stringResoureProvider.GetValue("payment-elavon-payment-failed-incorrect-value",
-                                           string.Format("No payment can be found for a total amount of {0}.", _cartModel.TotalToPay)));
+                                           string.Format("No payment can be found for a total amount of {0}.", adjustedTotalPay)));
 
                     return _uniquePageService.RedirectTo<PaymentDetails>();
                 }
@@ -108,15 +109,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 //Card payment successful
                 return _uniquePageService.RedirectTo<OrderPlaced>(new { id = transaction.Order.Guid });
             }
-            else
+            else if(transaction == null)
             {
-                return _uniquePageService.RedirectTo<PaymentDetails>();                             
+                TempData.ErrorMessages().Add(_stringResoureProvider.GetValue("payment-elavon-payment-gateway-transaction-failed",
+                       string.Format("Your payment for a total payment of {0} was unsuccessful. Error description: {1}. Please try again.", 
+                                     adjustedTotalPay, result.ElavonResultType.ToString())));
+
+                return _uniquePageService.RedirectTo<PaymentDetails>();
+            }
+            else // Exception occurred
+            {
+                TempData.ErrorMessages().Add(_stringResoureProvider.GetValue("payment-elavon-payment-gateway-failed-exception",
+                     string.Format("Payment for a total amount of {0} failed. Exception happened!", adjustedTotalPay)));
+
+                return _uniquePageService.RedirectTo<PaymentDetails>();
             }
         }  
 
+        // Required/mandatory ThreeD Secure check progress update notification handlers - Start
         public void HostedPaymentDataStatusNotification()
-        {
-            string test = string.Empty;
+        {            
         }
 
         public void ThreeDSMethodNotification()
@@ -148,8 +160,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 // TODO: add your exception handling here
             }
         }
-
-
+        
         public void ThreeDsChallengeNotificationUrl()
         {
             /*
@@ -186,6 +197,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 // TODO: add your exception handling here
             }
         }
+        // Required/mandatory ThreeD Secure check progress update notification handlers - End
     }
 
     public class MethodUrlResponse

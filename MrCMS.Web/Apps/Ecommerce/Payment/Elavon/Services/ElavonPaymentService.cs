@@ -1,6 +1,5 @@
 ﻿using GlobalPayments.Api;
 using GlobalPayments.Api.Entities;
-using GlobalPayments.Api.PaymentMethods;
 using GlobalPayments.Api.Services;
 using ISO3166;
 using MrCMS.Services;
@@ -81,6 +80,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
         public ActionResult HandleNotification(string responseJson)
         {
             ElavonCustomResult elavonCustomResult = new ElavonCustomResult();
+
             string testHpp = string.Empty;
 
             // Create HPP response object, which contains all the transaction response values 
@@ -108,15 +108,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
                 var schemeReferenceData = transaction.SchemeId; // MMC0F00YE4000000715
 
                 var responseValues = transaction.ResponseValues;
-                //var fraudFilterResult = responseValues["HPP_FRAUDFILTER_RESULT"];
+
 
                 // Total pay in pens
                 var adjustedTotalPay = Math.Round(_cartModel.TotalToPay, 2, MidpointRounding.AwayFromZero)*100;
 
-                var transactionBalanceAmount = transaction.AuthorizedAmount; 
+                var transactionBalanceAmount = transaction.AuthorizedAmount;
+
+                bool transactionResponseCodeIsOk = responseCode.Equals("00");
 
                 // TODO: update your application and display transaction outcome to the customer
-                if (responseCode.Equals(ElavonTransactionResponseCode.Ok) && transactionBalanceAmount == adjustedTotalPay)
+                if(transactionResponseCodeIsOk && transactionBalanceAmount == adjustedTotalPay)
                 {
                     ElavonResponse elavonResponse = BuildMrCMSOrder(transaction);
 
@@ -193,14 +195,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
         {
             PaymentStatus paymentStatus = PaymentStatus.Pending;
 
-            //test construct - start - to be removed for live
+            // TEST construct - start - to be removed for live
             string referenceText = "[ test system ] Authorised";
 
             if (responseMessage.ToLowerInvariant().Equals(referenceText.ToLowerInvariant()))
             {
                 responseMessage = PaymentTransactionStatus.Authorised.ToString();
             }
-            //test construct - end
+            // TEST construct - end
 
 
             if (responseMessage.ToLowerInvariant().Equals(PaymentTransactionStatus.Authorised.ToString().ToLowerInvariant()) || 
@@ -230,11 +232,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
                 HostedPaymentConfig = new HostedPaymentConfig
                 {
                     Version = "2"
-                }, 
+                } 
                 //3D Secure mandatory  fields - viz. ThreeDSecure Method & Challenge Notifications
-                Secure3dVersion = Secure3dVersion.Two,
-                MethodNotificationUrl = "Apps/Ecommerce/Elavon/ThreeDSecureMethodNotification",
-                ChallengeNotificationUrl = "Apps/Ecommerce/Elavon/ThreeDSecureChallengeNotification"  
+                //, Secure3dVersion = Secure3dVersion.Two
+               // , MethodNotificationUrl = "Apps/Ecommerce/Elavon/ThreeDSecureMethodNotification"
+               // , ChallengeNotificationUrl = "Apps/Ecommerce/Elavon/ThreeDSecureChallengeNotification"  
             });
 
             return service;
@@ -250,10 +252,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
                 AddressesMatch = false,
                 AccountHolderName = _cartModel.BillingAddress.Name,
                 ChallengeRequest = ChallengeRequestIndicator.NO_PREFERENCE,
-                CustomerNumber = _cartModel.UserGuid.ToString(),
-                ThreeDSecure = BuildThreeDSecureDetails(),
-                ProductId = "SKU1000054",
-                ReturnUrl = "https://www.example.com/responseUrl"                
+                CustomerNumber = _cartModel.UserGuid.ToString()
+                //ThreeDSecure = BuildThreeDSecureDetails(),
+                //ProductId = "SKU1000054",
+               // ReturnUrl = "https://www.example.com/responseUrl"                
             };
 
             return hostedPaymentData;
@@ -294,6 +296,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
 
             return shippingAddress;
         }
+
+        /*
         private ThreeDSecure BuildThreeDSecureDetails()
         {
             var threeDSecureDetail = new ThreeDSecure()
@@ -307,6 +311,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
 
             return threeDSecureDetail;
         }
-
+        */
     }
 }

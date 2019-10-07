@@ -35,13 +35,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public ActionResult Show(Product page, int? variant)
         {
             _trackingService.AddItemToRecentlyViewedItemsCookie(page.Id);
+
             var variantToShow = _productUiService.GetVariantToShow(page, variant);
+
             if (!page.Variants.Any())
             {
                 _webpageAdminService.Unpublish(page);
                 return Redirect("/");
             }
+
             ViewData["selected-variant"] = variantToShow;
+
             ViewData["cart"] = _cart;
 
             ViewData["productreviews-enabled"] = MrCMSApplication.Get<ProductReviewSettings>().EnableProductReviews;

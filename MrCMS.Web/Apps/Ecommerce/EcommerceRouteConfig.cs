@@ -33,9 +33,17 @@ namespace MrCMS.Web.Apps.Ecommerce
 
             context.MapRoute("Product Search - Query", "search/query",
                 new { controller = "ProductSearch", action = "Query" }, new[] { typeof(ProductSearchController).Namespace });
+
+
             context.MapRoute("Product Search - Results", "search/results",
                 new { controller = "ProductSearch", action = "Results" },
                 new[] { typeof(ProductSearchController).Namespace });
+
+            context.MapRoute("Product Search - Typeahead", "search/ProductSuggestion",
+                new { controller = "ProductSearch", action = "GetProductSuggestion" },
+                new[] { typeof(ProductSearchController).Namespace });          
+            
+
 
             context.MapRoute("Brand Search - Query", "brand/search/query",
                 new { controller = "Brand", action = "Query" }, new[] { typeof(BrandController).Namespace });
@@ -239,7 +247,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new { controller = "Elavon", action = "Notification" },
                 new[] { typeof(ElavonController).Namespace });
 
-
+            /*
             context.MapRoute("Checkout - Elavon 3DS Challenge Notification Url", "Apps/Ecommerce/Elavon/ThreeDSecureChallengeNotification",
                 new { controller = "Elavon", action = "ThreeDsChallengeNotificationUrl" },
                 new[] { typeof(ElavonController).Namespace });
@@ -248,7 +256,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new[] { typeof(ElavonController).Namespace });
             context.MapRoute("Checkout - Elavon HostedPayment Data Status Notification Url", "Apps/Ecommerce/Elavon/HostedPaymentDataStatusNotification",
                 new { controller = "Elavon", action = "HostedPaymentDataStatusUpdateUrl" },
-                new[] { typeof(ElavonController).Namespace });           
+                new[] { typeof(ElavonController).Namespace }); 
+            */          
             
         }
         

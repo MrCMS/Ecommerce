@@ -1,8 +1,9 @@
-﻿using MrCMS.Services;
+﻿using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Web.Areas.Admin.Services;
 using NHibernate;
 using Stripe;
@@ -23,15 +24,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Services
         private readonly ILogAdminService _logAdminService;
         private readonly ICartBuilder _cartBuilder;
         private readonly ISession _session;
-        private string _stripeBalanceTransactionId;
-        private IUniquePageService _uniquePageService;
+        private readonly EcommerceSettings _ecommerceSettings;
 
         //Signing secret copied from the endpoint config section of the Stripe dashboard
-        string stripeSigningSecret;
+        private readonly string _stripeSigningSecret;
 
         public StripePaymentService(StripeSettings stripeSettings, CartModel cartModel, ICartBuilder cartBuilder,
                                     ISession session, IOrderPlacementService orderPlacementService, ILogAdminService logAdminService,
-                                    IUniquePageService uniquePageService)
+                                    EcommerceSettings ecommerceSettings)                                   
         {
             _stripeSettings = stripeSettings;
             _cartModel = cartModel;
@@ -39,9 +39,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Services
             _logAdminService = logAdminService;
             _cartBuilder = cartBuilder;
             _session = session;
-            _uniquePageService = uniquePageService;
             StripeConfiguration.ApiKey = stripeSettings.PrivateKey;
-            stripeSigningSecret = stripeSettings.WebhookSigningSecret;
+            _stripeSigningSecret = stripeSettings.WebhookSigningSecret;
+            _ecommerceSettings = ecommerceSettings;
         }
 
         public PaymentIntent CreatePaymentIntent(decimal totalAmount)
@@ -50,7 +50,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Services
             var paymentIntentOptions = new PaymentIntentCreateOptions
             {
                 Amount = (long)(totalAmount * 100),
-                Currency = "gbp"
+                Currency = _ecommerceSettings.CurrencyCode()
             };
 
             //Create the PaymentIntent instance
@@ -68,7 +68,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Services
             {
                 var json = new StreamReader(System.Web.HttpContext.Current.Request.InputStream).ReadToEnd();
 
-                Event stripeEvent = EventUtility.ConstructEvent(json, request.Headers["Stripe-Signature"], stripeSigningSecret);
+                Event stripeEvent = EventUtility.ConstructEvent(json, request.Headers["Stripe-Signature"], _stripeSigningSecret);
 
                 Charge charge = null;
 
@@ -77,10 +77,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Services
                     case "charge.succeeded":
 
                         charge = (Charge)stripeEvent.Data.Object;
+
                         CartModel cart = _cartModel;
 
-                        //update the order payment status        
-                        //StripeResponse
+                        // Update the order payment status        
                         if (charge != null)
                         {
                             stripeCustomResult.StripeResultType = StripeCustomEnumerations.ResultType.ChargeSuccess;
@@ -93,18 +93,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Services
                         break;
 
                     case "charge.failed":
-                        stripeCustomResult.StripeResultType = StripeCustomEnumerations.ResultType.ChargeFailure;
+
+                            stripeCustomResult.StripeResultType = StripeCustomEnumerations.ResultType.ChargeFailure;
 
                         break;
 
                     default:
-                        // Handle other event types
+                            // Handle other event types
+                            stripeCustomResult.StripeResultType = StripeCustomEnumerations.ResultType.BadRequest;
 
                         break;
-                }
-
-                stripeCustomResult.StripeResultType = StripeCustomEnumerations.ResultType.BadRequest;
-
+                }               
             }
             catch (StripeException e)
             {
@@ -120,13 +119,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Services
 
         public StripeResponse BuildMrCMSOrder(Charge currentCharge)
         {
-                    //try creating MrCMS Order object
+            // Try creating MrCMS Order object
             try
             {
                 if (currentCharge != null)
                 {
-                    var testTwoStop = string.Empty;
-
                     Entities.Orders.Order order = _orderPlacementService.PlaceOrder(_cartModel,
                         o =>
                         {
@@ -163,7 +160,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Services
             }
         }
 
-        //Use Stripe.js to get a list of recent Charge Attemptes associated with one Payment Intent
+        // Use Stripe.js to get a list of recent Charge Attempts associated with one Payment Intent.
+        // The returned list is sorted chronologically and in a decreasing order. the first succcess case, 
+        // is always the last attempt in succeeding charge attemp. If no success entry found, 
+        // all list elements are attempted charges with status other than success
         public StripeList<Charge> GetChargeAttemptesList(string paymentIntentId)
         {
             var service = new ChargeService();

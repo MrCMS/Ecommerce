@@ -32,6 +32,7 @@
     var cardButton = document.getElementById('card-button');
     var clientSecret = cardButton.dataset.secret;
 
+    // Customer address details
     var postalCodeElement = document.getElementById('PostalCode').value;
     var lineOne = document.getElementById('LineOne').value;
     var lineTwo = document.getElementById('LineTwo').value;
@@ -39,16 +40,9 @@
     var userCountry = document.getElementById('Country').value;
     var userState = document.getElementById('State').value;
 
-
-$(document).ready(function () {
-    $("input[name='exp-date']").focusin(function () {
-        alert("exp date got focus");
-        $("input[name='postal']").setAttribute("value", postalCodeElement);
-    });
-});
-
     //Handle Payment Form sudmit event to Stripe from the client
-    var form = document.getElementById('payment-form');    
+var form = document.getElementById('payment-form');    
+
         form.addEventListener('submit', function (event)
         {
             //delay form submission by stopping default behaviour
@@ -56,8 +50,7 @@ $(document).ready(function () {
 
             //disable the submit button to prevent multiple submissions 
             //of the same order / purchase request
-            cardButton.disabled = true;
-            
+            cardButton.disabled = true;            
 
             //complete the Stripe card payment
             stripe.handleCardPayment(
@@ -83,9 +76,10 @@ $(document).ready(function () {
                 }
             ).then(function (result)
                 {
-                    if (result.error)
+                    if(result.error)
                     {                        
-                        // Display error.message in the UI so that the user is 
+                        //alert("status: error");
+                        // Display error.message in the UI so that the user is
                         // informed about the  error occurred.
                         var errorElement = document.getElementById('card-errors');
                             errorElement.textContent = result.error.message;
@@ -96,17 +90,18 @@ $(document).ready(function () {
                             contentType: 'application/html; charset=utf-8',
                             type: 'GET',
                             dataType: 'html'
-                        }).success(function (result)
-                            {
-                                $('#card-element').html(result);
-                            })
-                            .error(function (xhr, status)
-                            {
-                                alert(status);
-                            })  
+                        }).done(function (result)
+                        {
+                            $('#card-element').empty();
+                            $('#card-element').html(result);
 
-                        //enable the submit button so that the user can retry
-                        cardButton.disabled = false;                     
+                            var reloadedCardButton = document.getElementById('card-button');
+                            //enable the submit button so that the user can retry
+                            reloadedCardButton.disabled = false;
+                        }).error(function (xhr, status)
+                        {
+                            //alert("reload status: error");
+                        });                                                             
                       }
                     else
                     {

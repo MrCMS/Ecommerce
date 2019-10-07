@@ -46,7 +46,7 @@
                 @Html.HiddenFor(x => x.State, new { id = "State", name = "State", value = @Model.State })
 
                 <div> &nbsp;</div>
-                <input type="hidden" id="PaymentIntentId" , name="PaymentIntentId" value="@ViewData["PaymentIntentId"]" />
+                    <input type="hidden" id="PaymentIntentId" , name="PaymentIntentId" value="@ViewData["PaymentIntentId"]" />
                 <div>&nbsp;</div>
 
                 <input type="submit" value="@Resource("Confirm Order")" class="btn btn-primary btn-lg"

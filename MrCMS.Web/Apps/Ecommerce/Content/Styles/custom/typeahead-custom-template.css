@@ -1,0 +1,33 @@
+﻿#custom-templates .empty-message {
+    padding: 5px 10px;
+    text-align: center;
+    background-color: beige;
+    font-size: 0.95em;
+}
+
+#custom-templates .search-options-list
+{
+    background-color: aliceblue;
+    padding: 0.55em 1.25em;
+    line-height:1.25em;
+    border-bottom: solid 1px #808080; 
+    display:block;
+}
+
+#custom-templates .product-name-container {
+    font-size: 0.95em;
+    min-width:100% !important;
+}
+
+#custom-templates .price-container {
+    font-size: 0.95em;
+}
+
+#custom-templates .imageDisplayUrl-container {
+    font-size: 0.95em;
+}
+
+#custom-templates .imageDisplayUrl-container img {
+    width: 50px;
+    height: auto;
+}

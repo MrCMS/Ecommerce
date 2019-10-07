@@ -9,6 +9,7 @@ using MrCMS.Website.Controllers;
 using Stripe;
 using System.Linq;
 using System.Web.Mvc;
+using static MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Models.StripeCustomEnumerations;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
@@ -78,36 +79,42 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             // See your keys here: https://dashboard.stripe.com/account/apikeys
             StripeConfiguration.ApiKey = _stripeSettings.PrivateKey;
 
-            if(model.HandleCardPaymentStatus.ToLowerInvariant().Equals("succeeded"))
+            var cardPaymentAttemptIsSuccessful = model.HandleCardPaymentStatus.ToLowerInvariant()
+                                                .Equals(CardPaymentStatus.succeeded.ToString().ToLowerInvariant());
+
+            if(cardPaymentAttemptIsSuccessful)
             {
                 //get the order from webhook and update cart status
                 var chargesList = _stripePaymentService.GetChargeAttemptesList(model.PaymentIntentId);
 
                 //total pay in pens
                 var adjustedTotalPay = (long)(_cartModel.TotalToPay * 100);
+
+                var cardPaymentStatus = CardPaymentStatus.succeeded.ToString().ToLowerInvariant();
+
                 var chargeResult = chargesList.ToList()
-                                              .Where(c => c.Status.Equals("succeeded") && 
+                                              .Where(c => c.Status.ToLowerInvariant().Equals(cardPaymentStatus) && 
                                                           c.Amount == adjustedTotalPay)
                                               .FirstOrDefault();
-                //StripeResponse
-                if(chargeResult != null)
+                
+                if(chargeResult != null) // The current succceful charge found. Hence, create a MrCMS Order
                 {
                     Payment.Stripe.Models.StripeResponse stripeResponse = _stripePaymentService.BuildMrCMSOrder(chargeResult);
 
                     return _uniquePageService.RedirectTo<OrderPlaced>(new { id = stripeResponse.Order.Guid });
                 }
-                else
+                else // A succceful Charge was not found. 
                 {
-                    TempData.ErrorMessages().Add(_stringResoureProvider.GetValue("payment-stripe-payment-failed-incorrect-value", string.Format("No payment can be found for {0}.", _cartModel.TotalToPay)));
+                    TempData.ErrorMessages().Add(_stringResoureProvider.GetValue("payment-stripe-payment-failed-incorrect-value", 
+                        string.Format("No payment can be found for {0}.", _cartModel.TotalToPay)));
                     return _uniquePageService.RedirectTo<PaymentDetails>();
                 }
             }
-            else
+            else // Card Payment attempt was not successful
             {
                 TempData.ErrorMessages().Add(_stringResoureProvider.GetValue("payment-stripe-payment-failed-errror", $"Your payment was unsuccessful, please try again."));
                 return _uniquePageService.RedirectTo<PaymentDetails>();
             }
-        }        
-        
+        }            
     }
 }

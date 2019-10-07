@@ -16,10 +16,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Bundles
         {
             get
             {
+                yield return "~/Scripts/jquery-1.10.2.js";
+
                 yield return "~/Apps/Ecommerce/Content/bootstrap/js/bootstrap.js";
                 yield return "~/Apps/Ecommerce/Content/Scripts/jquery.validate.min.js";
                 yield return "~/Apps/Ecommerce/Content/Scripts/jquery.validate.unobtrusive.min.js";
                 yield return "~/Apps/Ecommerce/Content/Scripts/ecommerce.js";
+
+
+                yield return "~/Scripts/handlebars.js";
+                yield return "~/Scripts/typeahead.bundle.js";
+                yield return "~/Apps/Ecommerce/Content/Scripts/custom/typeahead-custom-templates.js";
             }
         }
     }

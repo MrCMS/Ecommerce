@@ -71,6 +71,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var valueCollector = new ValueCollector(indexSearcher,
                 FieldDefinition.GetFieldName<ProductSearchSpecificationsDefinition>());
             indexSearcher.Search(GetQuery(clone), valueCollector);
+
             return GetSpecifications(valueCollector);
         }
 
