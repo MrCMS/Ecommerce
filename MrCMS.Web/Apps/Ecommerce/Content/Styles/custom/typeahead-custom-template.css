@@ -1,33 +1,67 @@
-﻿#custom-templates .empty-message {
+﻿input#searchTerm {
+    width: 355px !important;
+    max-width: 355px !important;
+}
+
+#custom-templates .empty-message {
     padding: 5px 10px;
     text-align: center;
     background-color: beige;
     font-size: 0.95em;
 }
 
-#custom-templates .search-options-list
-{
+#custom-templates .search-options-list {
     background-color: aliceblue;
-    padding: 0.55em 1.25em;
-    line-height:1.25em;
-    border-bottom: solid 1px #808080; 
-    display:block;
+    line-height: 1.25em;
+    display: block;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+    color: #222;
+    cursor: pointer;
+    width:400px !important;
 }
 
 #custom-templates .product-name-container {
     font-size: 0.95em;
-    min-width:100% !important;
+    width: 68% !important;
+    max-width: 68% !important;
+    display: inline-flex;
+    float: left;
+    text-align: center;
+    padding-left: 2%;
 }
 
 #custom-templates .price-container {
-    font-size: 0.95em;
+    font-size: 0.85em;
+    color: #c90404;
+    font-weight: bold;
+    display: inline-flex;
+    float: right;
+    padding-left: 2%;
+    width: 13% !important;
+    max-width: 13% !important;
 }
 
 #custom-templates .imageDisplayUrl-container {
-    font-size: 0.95em;
+    width: 15% !important;
+    max-width: 15% !important;    
+    display: inline-flex;
+    float: left;
 }
 
 #custom-templates .imageDisplayUrl-container img {
-    width: 50px;
+    width: 40px !important;
+    max-width: 40px !important;
     height: auto;
+}
+
+header .search-box {
+    padding-right: 2px !important;
+}
+
+button#searchButton {
+    margin-top: -0.12em !important;
 }

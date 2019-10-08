@@ -6,6 +6,7 @@ using MrCMS.Services.Caching;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Search;
 using Xunit;
@@ -18,15 +19,17 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
         private readonly IProductSearchIndexService _productSearchIndexService;
         private CartModel _cartModel;
         private IHtmlCacheService _htmlCacheService;
-
+        private IProductPricingMethod _productPricingMethod;
         public ProductSearchControllerTests()
         {
             _productSearchIndexService = A.Fake<IProductSearchIndexService>();
             _cartModel = new CartModel();
             _htmlCacheService = A.Fake<IHtmlCacheService>();
+            _productPricingMethod = A.Fake<IProductPricingMethod>();
+
             Kernel.Rebind<IGetProductSearchView>().ToConstant(A.Fake<IGetProductSearchView>());
             _controller = new ProductSearchController(_productSearchIndexService, _cartModel,
-                _htmlCacheService)
+                _htmlCacheService, _productPricingMethod)
             {
                 RequestMock = A.Fake<HttpRequestBase>()
             };

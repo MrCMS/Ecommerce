@@ -6,5 +6,7 @@
         public string ProductPrice { get; set; }
 
         public string ImageDisplayUrl { get; set; }
+
+        public string AbsoluteUrl { get; set; }
     }
 }

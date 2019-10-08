@@ -12,11 +12,8 @@
                 return Bloodhound.tokenizers.whitespace(datum.ProductName);
             },
             queryTokenizer: Bloodhound.tokenizers.whitespace,
-            //local: dataSourceJsonObj
-           // prefetch: 'http://localhost:12984/Apps/Ecommerce/Services/Search/products.json'
             remote:
-            {
-                
+            {                
                 wildcard: '%QUERY',
                 url: targetControllerUrl+ '?',
                 replace: function (url, uriEncodedQuery)
@@ -30,7 +27,6 @@
 
                     return url.replace("%QUERY", uriEncodedQuery) + '&searchTerm=' + encodeURIComponent(val)
                 },
-
                 transform: function (response) {
 
                 //clear the array if previously populated
@@ -40,6 +36,7 @@
                 {                                
                     var productDetails = '{"ProductName": "' + response[index].ProductName + '", ' +
                                          '"ProductPrice": "' + response[index].ProductPrice + '", ' +
+                                         '"AbsoluteUrl": "' + response[index].AbsoluteUrl + '", ' +
                                          '"ImageDisplayUrl": "' + response[index].ImageDisplayUrl + '"}';
 
                     productsArray.push(JSON.parse(productDetails)); 
@@ -50,6 +47,7 @@
                         return {
                                 ProductName: product.ProductName,
                                 ProductPrice: product.ProductPrice, 
+                                AbsoluteUrl: product.AbsoluteUrl,
                                 ImageDisplayUrl: product.ImageDisplayUrl
                         };
                     });
@@ -78,14 +76,16 @@
                 ].join('\n'),
 
                 suggestion: Handlebars.compile('<div class="search-options-list">' +
-                    '<div class="product-name-container">Product name: {{ProductName}} </div>' +
-                    '<div class="price-container">Price: {{ProductPrice}} </div>' +
-                    '<div class="imageDisplayUrl-container"><img src="{{ImageDisplayUrl}}" alt="{{ProductName}}" /></div></div>')
+                    '<div class="imageDisplayUrl-container"><img src="{{ImageDisplayUrl}}" alt="{{ProductName}}" /></div>'+
+                    '<div class="product-name-container"> {{ProductName}} </div>' +
+                    '<div class="price-container"> {{ProductPrice}} </div>' +
+                    '</div>')
             },
             limit: 10
         }).on('typeahead:selected', function (evt, datum)
         {
             $('#searchTerm').val(datum.ProductName)
+            $('form#productSearchForm').attr("action", datum.AbsoluteUrl)            
         })
 });
 

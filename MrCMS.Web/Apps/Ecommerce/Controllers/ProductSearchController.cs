@@ -20,16 +20,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly CartModel _cart;
         private readonly IHtmlCacheService _htmlCacheService;
         private readonly IProductSearchIndexService _productSearchIndexService;
-        private IProductPricingMethod pricingMethod;
+        private IProductPricingMethod _productPricingMethod;
 
         public ProductSearchController(IProductSearchIndexService productSearchIndexService, CartModel cart,
-                                       IHtmlCacheService htmlCacheService)
+                                       IHtmlCacheService htmlCacheService, IProductPricingMethod productPricingMethod)
         {
             _productSearchIndexService = productSearchIndexService;
             _cart = cart;
             _htmlCacheService = htmlCacheService;
-
-             pricingMethod = MrCMSApplication.Get<IProductPricingMethod>();
+            _productPricingMethod = productPricingMethod; //MrCMSApplication.Get<IProductPricingMethod>();
         }
 
         public ViewResult Show(ProductSearch page,
@@ -73,10 +72,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         private IList<ProductSearchSuggestionItem> GetMatchingProduct(string query)
         {
-            IList<ProductSearchSuggestionItem> suggestionItems = new List<ProductSearchSuggestionItem>();
+            IList<ProductSearchSuggestionItem> suggestionItems = new List<ProductSearchSuggestionItem>();            
             
-            
-var productsQuery = _productSearchIndexService.SearchProducts(new ProductSearchQuery());          
+            var productsQuery = _productSearchIndexService.SearchProducts(new ProductSearchQuery());          
                         
             if (productsQuery != null && productsQuery.Count > 0)
             {
@@ -86,11 +84,12 @@ var productsQuery = _productSearchIndexService.SearchProducts(new ProductSearchQ
 
                // Filter the product that conain the serach term
                productList.ForEach(p => suggestionItems.Add(new ProductSearchSuggestionItem()
-               {
-                   ProductName = p.Name,
-                   ProductPrice = pricingMethod.GetDisplayPrice(p).ToString(),
-                   ImageDisplayUrl = p.DisplayImageUrl
-               }));
+                                                       {
+                                                           ProductName = p.Name,
+                                                           ProductPrice = _productPricingMethod.GetDisplayPrice(p).ToString(),
+                                                           ImageDisplayUrl = p.DisplayImageUrl,
+                                                           AbsoluteUrl = p.AbsoluteUrl
+                                                       }));
             }
 
             return suggestionItems;

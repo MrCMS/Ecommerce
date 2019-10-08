@@ -17,12 +17,12 @@ namespace MrCMS.Web.Apps.Ecommerce
                 "Apps/Ecommerce/ProductVariant/GetPriceBreaksForProductVariant",
                 new { controller = "ProductVariant", action = "GetPriceBreaksForProductVariant" });
 
-            MapCartRoutes(context);
-            MapCheckoutRoutes(context);
-            MapPaymentMethodRoutes(context);
-            MapRemoteValidationRoutes(context);
-            MapWishlistRoutes(context);
-            MapUserAccount(context);
+                MapCartRoutes(context);
+                MapCheckoutRoutes(context);
+                MapPaymentMethodRoutes(context);
+                MapRemoteValidationRoutes(context);
+                MapWishlistRoutes(context);
+                MapUserAccount(context);
 
             context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders",
                 new { controller = "UserAccount", action = "UserAccountOrders" });
