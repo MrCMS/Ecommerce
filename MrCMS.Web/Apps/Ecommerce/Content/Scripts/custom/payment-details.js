@@ -11,6 +11,12 @@
         }
     }
 
+    function disableSubmitButton() {
+        var form = $(this);
+        var submitters = form.find('button, input[type="submit"]');
+        submitters.text('Submitting...').attr('disabled', 'disabled');
+    }
+
     function loadPaymentForm(url) {
         if (!url) {
             $('#payment-confirmation').html('');
@@ -18,6 +24,7 @@
             $.get(url, function(response) {
                 $('#payment-confirmation').html(response);
                 $.validator.unobtrusive.parse('form');
+
             });
         }
     }
@@ -77,6 +84,7 @@
         $(document).on('remove-discount', reloadPaymentSection);
         $(document).on('reward-points-updated', reloadPaymentSection);
         setPaymentMethod();
+        $(document).on('submit', '#payment-confirmation form', disableSubmitButton);
 
         $('input[type=checkbox][name="TermsAndConditionsAccepted"]').change();
     });

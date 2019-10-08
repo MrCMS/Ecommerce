@@ -47,7 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpGet]
         public void Code(string discountCode)
         {
-            var result = _cartDiscountService.AddDiscountCode(discountCode, true);
+            var result = _cartDiscountService.AddDiscountCode(discountCode, true, Referrer);
 
             TempData[DiscountResult] = result;
 

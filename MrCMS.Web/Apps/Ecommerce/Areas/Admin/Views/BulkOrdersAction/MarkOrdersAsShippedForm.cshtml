@@ -1,0 +1,67 @@
+﻿@using System.Web.Mvc.Html
+@using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
+@using MrCMS.Web.Apps.Ecommerce.Models
+@model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.MarkOrdersAsShippedViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+}
+@using (Html.BeginForm("MarkOrdersAsShipped", "BulkOrdersAction", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            @Resource("Set Orders as Shipped")
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Set Orders as Shipped" />
+            </span>
+        </legend>
+        @Html.HiddenFor(x => x.Page)
+        @if (Model.Orders.Any())
+        {
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="col-sm-2">
+                        <label>@Resource("Orders")</label>
+                    </th>
+                    <th class="col-sm-4">
+                        <label>@Resource("Shipping Method  Name")</label>
+                    </th>
+                    <th class="col-sm-6">
+                        <label>@Resource("Tracking number (optional)")</label>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                @for(int i = 0; i < Model.Orders.Count; i++)
+                {
+                    <tr>
+                        @if (Model.Orders[i].ShippingStatus != ShippingStatus.Shipped)
+                        {
+                            <td class="col-sm-2">
+                                @Html.HiddenFor(x => x.Orders[i].Id)
+                                <label>@Model.Orders[i].Id</label>
+                            </td>
+                            <td class="col-sm-4">
+                                @Html.DropDownListFor(x => x.Orders[i].ShippingMethodName, Model.Orders[i].Id.GetShippingMethodPerOrder(), new { @class = "form-control" })
+                            </td>
+                            <td class="col-sm-6">
+                                @Html.TextBoxFor(x => x.Orders[i].TrackingNumber, new {@class = "form-control"})
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="col-sm-2">
+                                <label>@Model.Orders[i].Id</label>
+                            </td>
+                            <td class="col-sm-10" colspan="2">
+                                @Resource("Order already shipped.")
+                            </td>
+                        }
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </fieldset>
+}
+

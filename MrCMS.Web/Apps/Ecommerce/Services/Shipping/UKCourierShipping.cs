@@ -26,22 +26,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             _getDefaultTaxRate = getDefaultTaxRate;
         }
 
-        public string Name
-        {
-            get { return "UK Courier Delivery"; }
-        }
+        public string Name => "UK Courier Delivery";
 
-        public string DisplayName
-        {
-            get { return _ukCourierShippingSettings.DisplayName; }
-        }
+        public string DisplayName => _ukCourierShippingSettings.DisplayName;
 
-        public string Description
-        {
-            get { return _ukCourierShippingSettings.Description; }
-        }
+        public string Description => _ukCourierShippingSettings.Description;
 
-        public string TypeName { get { return GetType().FullName; } }
+        public string TypeName => GetType().FullName;
 
         public bool CanBeUsed(CartModel cart)
         {
@@ -63,19 +54,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         public decimal GetShippingTotal(CartModel cart)
         {
             UKCourierShippingCalculation calculation = GetBestAvailableCalculation(cart);
-            return calculation == null
-                ? decimal.Zero
-                : calculation.Amount(TaxRatePercentage);
+            return calculation?.Amount(TaxRatePercentage) ?? decimal.Zero;
         }
 
         public decimal GetShippingTax(CartModel cart)
         {
             UKCourierShippingCalculation calculation = GetBestAvailableCalculation(cart);
-            return calculation == null
-                ? decimal.Zero
-                : calculation.Tax(TaxRatePercentage);
+            return calculation?.Tax(TaxRatePercentage) ?? decimal.Zero;
         }
-
 
         public decimal TaxRatePercentage
         {
@@ -97,15 +83,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             }
         }
 
-        public string ConfigureController
-        {
-            get { return "UKCourierShipping"; }
-        }
+        public string ConfigureController => "UKCourierShipping";
 
-        public string ConfigureAction
-        {
-            get { return "Configure"; }
-        }
+        public string ConfigureAction => "Configure";
 
         private UKCourierShippingCalculation GetBestAvailableCalculation(CartModel cart)
         {

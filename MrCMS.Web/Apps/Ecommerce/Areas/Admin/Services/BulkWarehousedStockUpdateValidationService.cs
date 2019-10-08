@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using CsvHelper;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Website;
@@ -14,7 +15,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         {
             var items = new List<BulkWarehouseStockUpdateDTO>();
             var errors = new List<string>();
-
             if (rawFile != null)
             {
                 try
@@ -23,7 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                     {
                         while (file.Read())
                         {
-                            string sku = file.GetField<string>(1),
+                            string sku = file.GetField<string>(1).Trim(),
                                 name = file.GetField<string>(0);
                             var handle = name ?? sku;
 
@@ -54,6 +54,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                             items.Add(dto);
                         }
                     }
+
+                    var duplicates = items
+                        .GroupBy(x => new {x.SKU, x.WarehouseId})
+                        .Where(group => group.Count() > 1)
+                        .Select(group => new BulkWarehouseStockUpdateDTO
+                        {
+                            SKU = group.Key.SKU,
+                            WarehouseId = group.Key.WarehouseId
+                        }).ToList();
+
+                    if (duplicates.Any())
+                    {
+                        foreach (var bulkWarehouseStockUpdateDto in duplicates)
+                        {
+                            errors.Add($"A duplicate SKU of {bulkWarehouseStockUpdateDto.SKU} was found for warehouse Id {bulkWarehouseStockUpdateDto.WarehouseId}");
+                        }
+
+                    }
                 }
                 catch (CsvMissingFieldException exception)
                 {
@@ -62,7 +80,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                     {
                         "A field was missing from your import. This likely means you tried to import a simple stock list with the warehoused stock enabled."
                     });
-
                 }
                 catch (Exception exception)
                 {
