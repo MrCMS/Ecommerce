@@ -1,18 +1,16 @@
 ﻿$(document).ready(function ()
-{     
-    //Get suggestion input data from the server (i.e Product Search Controller)
+{    
     var productsArray = [];
     var targetControllerUrl = "search/ProductSuggestion";
     
     var productsBh = new Bloodhound(
         {
-            //datumTokenizer: Bloodhound.tokenizers.whitespace,
             datumTokenizer: function (datum)
             {
                 return Bloodhound.tokenizers.whitespace(datum.ProductName);
             },
             queryTokenizer: Bloodhound.tokenizers.whitespace,
-            remote:
+            remote: //get suggestion input data from the server (i.e Product Search Controller)
             {                
                 wildcard: '%QUERY',
                 url: targetControllerUrl+ '?',
@@ -45,11 +43,11 @@
                     // Map the remote source JSON array to a JavaScript object array
                     return $.map(productsArray, function (product) {
                         return {
-                                ProductName: product.ProductName,
-                                ProductPrice: product.ProductPrice, 
-                                AbsoluteUrl: product.AbsoluteUrl,
-                                ImageDisplayUrl: product.ImageDisplayUrl
-                        };
+                                    ProductName: product.ProductName,
+                                    ProductPrice: product.ProductPrice, 
+                                    AbsoluteUrl: product.AbsoluteUrl,
+                                    ImageDisplayUrl: product.ImageDisplayUrl
+                               };
                     });
                 }
             }           
@@ -85,7 +83,8 @@
         }).on('typeahead:selected', function (evt, datum)
         {
             $('#searchTerm').val(datum.ProductName)
-           // $('form#productSearchForm').attr("action", datum.AbsoluteUrl)            
+            $('form#productSearchForm').attr("action", datum.AbsoluteUrl)
+            $('form#productSearchForm').submit();
         })
 });
 
