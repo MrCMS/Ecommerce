@@ -1,17 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using System.Web.Mvc.Html;
-using MrCMS.Services.Caching;
+﻿using MrCMS.Services.Caching;
 using MrCMS.Web.Apps.Ecommerce.Filters;
 using MrCMS.Web.Apps.Ecommerce.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Website;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
@@ -28,7 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _productSearchIndexService = productSearchIndexService;
             _cart = cart;
             _htmlCacheService = htmlCacheService;
-            _productPricingMethod = productPricingMethod; //MrCMSApplication.Get<IProductPricingMethod>();
+            _productPricingMethod = productPricingMethod;
         }
 
         public ViewResult Show(ProductSearch page,
@@ -72,27 +70,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         private IList<ProductSearchSuggestionItem> GetMatchingProduct(string query)
         {
-            IList<ProductSearchSuggestionItem> suggestionItems = new List<ProductSearchSuggestionItem>();            
-            
-            var productsQuery = _productSearchIndexService.SearchProducts(new ProductSearchQuery());          
-                        
-            if (productsQuery != null && productsQuery.Count > 0)
-            {
-               var productList = productsQuery.ToList()
-                                              .Where(prod => prod.Name.ToLowerInvariant().Contains(query.ToLowerInvariant()))
-                                              .ToList();
+            IList<ProductSearchSuggestionItem> suggestionItems = new List<ProductSearchSuggestionItem>();
 
-               // Filter the product that conain the serach term
-               productList.ForEach(p => suggestionItems.Add(new ProductSearchSuggestionItem()
-                                                       {
-                                                           ProductName = p.Name,
-                                                           ProductPrice = _productPricingMethod.GetDisplayPrice(p).ToString(),
-                                                           ImageDisplayUrl = p.DisplayImageUrl,
-                                                           AbsoluteUrl = p.AbsoluteUrl
-                                                       }));
+            var productsList = _productSearchIndexService.SearchProducts(new ProductSearchQuery() { SearchTerm = query });          
+                        
+            if (productsList != null && productsList.Count > 0)
+            {
+                // Filter the products with product name that contains the serach term
+                productsList.ToList()
+                            .ForEach(p => suggestionItems.Add(new ProductSearchSuggestionItem()
+                            {
+                                ProductName = p.Name,
+                                ProductPrice = _productPricingMethod.GetDisplayPrice(p).ToString(),
+                                ImageDisplayUrl = p.DisplayImageUrl,
+                                AbsoluteUrl = p.AbsoluteUrl
+                            }));
             }
 
-            return suggestionItems;
+            return suggestionItems.OrderBy(p=>p.ProductName).ToList();
         }
     }
 }

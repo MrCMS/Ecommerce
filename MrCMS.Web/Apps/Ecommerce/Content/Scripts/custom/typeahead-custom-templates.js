@@ -85,7 +85,7 @@
         }).on('typeahead:selected', function (evt, datum)
         {
             $('#searchTerm').val(datum.ProductName)
-            $('form#productSearchForm').attr("action", datum.AbsoluteUrl)            
+           // $('form#productSearchForm').attr("action", datum.AbsoluteUrl)            
         })
 });
 

@@ -15,7 +15,7 @@
             @{ RenderZone("Header Right", allowFrontEndEditing: false); }
             @{ RenderZone("User Links", allowFrontEndEditing: false); }
 
-            <form method="GET" id="productSearchForm" action=""
+            <form method="GET" id="productSearchForm" action="@(UniquePageHelper.GetUrl<ProductSearch>())"
                   class="hidden-xs pull-right search-box" novalidate="novalidate">
 
                 <div id="custom-templates" class="input-group">
