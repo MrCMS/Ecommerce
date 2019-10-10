@@ -16,8 +16,8 @@
                 url: targetControllerUrl + '?',
                 replace: function (url, uriEncodedQuery)
                 {
-                    currentSearchTerm = $('input#search-box').val();
-                    currentSearchTermMobile = $('input#search-box-mobile').val();
+                    currentSearchTerm = $('input#searchTerm').val();
+                    currentSearchTermMobile = $('input#searchTerm-mobile').val();
 
                     var searchTerm = (!currentSearchTerm) ? currentSearchTermMobile : currentSearchTerm;
 
@@ -77,24 +77,21 @@
                 ].join('\n'),
 
                 suggestion: Handlebars.compile('<div class="search-options-list">' +
+                    '<a href="{{AbsoluteUrl}}" >'+
                     '<div class="imageDisplayUrl-container"><img src="{{ImageDisplayUrl}}" alt="{{ProductName}}" /></div>'+
                     '<div class="product-name-container"> {{ProductName}} </div>' +
                     '<div class="price-container"> {{ProductPrice}} </div>' +
+                    '</a>'+
                     '</div>')
             },
             limit: 10
         }).on('typeahead:selected', function (evt, datum)
         {
-            $('input#search-box').val(datum.ProductName)
-
-            $('form#productSearchForm').attr("action", datum.AbsoluteUrl)
             var formtoSubmit = $('form#productSearchForm');
 
-           // formtoSubmit.baseURI = datum.AbsoluteUrl;
-           // formtoSubmit.url = datum.AbsoluteUrl;
-           // formtoSubmit.documentURI = datum.AbsoluteUrl;
+                formtoSubmit.attr("action", datum.AbsoluteUrl);                    
   
-            formtoSubmit.submit();          
+                formtoSubmit.submit();          
         })
        
     // Initializing the typeahead for mobile
@@ -117,23 +114,22 @@
                 ].join('\n'),
 
                 suggestion: Handlebars.compile('<div class="search-options-list">' +
+                    '<a href="{{AbsoluteUrl}}" >' +
                     '<div class="imageDisplayUrl-container"><img src="{{ImageDisplayUrl}}" alt="{{ProductName}}" /></div>' +
                     '<div class="product-name-container"> {{ProductName}} </div>' +
                     '<div class="price-container"> {{ProductPrice}} </div>' +
+                    '</a>' +
                     '</div>')
             },
             limit: 10
-        }).on('typeahead:selected', function (evt, datum) {
-
-            $('input#search-box-mobile').val(datum.ProductName)
-
-            $('form#productSearchForm-mobile').attr("action", datum.AbsoluteUrl)
-
+        }).on('typeahead:selected', function (evt, datum)
+        {
             var formtoSubmit = $('form#productSearchForm-mobile');
 
-            formtoSubmit.submit();
-        })
+                formtoSubmit.attr("action", datum.AbsoluteUrl);
 
+                formtoSubmit.submit();   
+        })
 });
 
 

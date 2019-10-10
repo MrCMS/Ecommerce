@@ -118,4 +118,20 @@ header .search-box, .twitter-typeahead {
     #custom-templates-mobile .search-options-list {
         min-width: 280px !important;
     }
+
+
+    #custom-templates-mobile .product-name-container {
+        font-size: 0.95em;
+        width: 68% !important;
+        max-width: 68% !important;
+        display: inline-flex;
+        float: left;
+        text-align: center;
+        padding-left: 15%;
+        padding-top: 1em;
+        min-height: 3.5em;
+        vertical-align: middle;
+        color: #4679C3;
+    }
+
 }

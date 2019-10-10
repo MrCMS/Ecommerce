@@ -19,8 +19,8 @@
                   class="hidden-xs pull-right search-box" novalidate="novalidate">
 
                 <div id="custom-templates" class="input-group">
-                    <input id="search-box" class="typeahead tt-query form-control" autocomplete="off" spellcheck="false"
-                           name="productsearchterm" placeholder="e.g : Shorts or Lela" type="text" value="">
+                    <input id="searchTerm" class="typeahead tt-query form-control" autocomplete="off" spellcheck="false"
+                           name="searchTerm" placeholder="e.g : Shorts or Lela" type="text" value="">
                     <span class="input-group-btn">
                         <button id="searchButton" class="btn btn-default btn-default-blue" type="submit" name="searchButton">
                             <span class="glyphicon glyphicon-search"></span>
@@ -45,9 +45,9 @@
                           class="pull-right hidden-sm search-box" novalidate="novalidate">
 
                         <div id="custom-templates-mobile" class="input-group">
-                            <input id="search-box-mobile" class="typeahead tt-query form-control search-box"  
-                                   name="search-box-mobile" autocomplete="off" placeholder="e.g : Shorts" type="text" 
-                                   value="">
+                            <input id="searchTerm-mobile" class="typeahead tt-query form-control search-box"  
+                                   name="searchTerm" autocomplete="off" placeholder="e.g : Shorts" type="text" 
+                                   value="@Request.QueryString["searchTerm"]">
                             <span class="input-group-btn">
                                 <button id="searchButton-mobile" class="btn btn-default btn-default-blue" type="submit" name="searchButton-mobile">
                                 <span class="glyphicon glyphicon-search"></span>
