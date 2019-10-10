@@ -18,7 +18,7 @@
             <form id="productSearchForm" method="GET" name="productSearchForm" action="@(UniquePageHelper.GetUrl<ProductSearch>())"
                   class="hidden-xs pull-right search-box" novalidate="novalidate">
 
-                <div id="custom-templates" class="input-group">
+                <div id="product-search-typeahead" class="input-group">
                     <input id="searchTerm" class="typeahead tt-query form-control" autocomplete="off" spellcheck="false"
                            name="searchTerm" placeholder="e.g : Shorts or Lela" type="text" value="">
                     <span class="input-group-btn">
@@ -40,12 +40,12 @@
                 <div class="visible-xs visible-sm mobilemenu">
                     <a href="#" id="left-menu-toggle"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Menu</a>
 
-                    <form method="GET" id="productSearchForm-mobile" name="productSearchForm-mobile" 
+                    <form id="productSearchForm-mobile" method="GET" name="productSearchForm-mobile" 
                           action="@(UniquePageHelper.GetUrl<ProductSearch>())" 
                           class="pull-right hidden-sm search-box" novalidate="novalidate">
 
-                        <div id="custom-templates-mobile" class="input-group">
-                            <input id="searchTerm-mobile" class="typeahead tt-query form-control search-box"  
+                        <div id="product-search-typeahead-mobile" class="input-group">
+                            <input id="searchTerm-mobile" class="typeahead tt-query form-control"  
                                    name="searchTerm" autocomplete="off" placeholder="e.g : Shorts" type="text" 
                                    value="@Request.QueryString["searchTerm"]">
                             <span class="input-group-btn">

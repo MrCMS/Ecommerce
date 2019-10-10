@@ -58,44 +58,7 @@
 
 
     // Initializing the typeahead
-    $('#custom-templates .typeahead').typeahead(
-        {
-            hint: true,
-            highlight: true, // Enable substring highlighting 
-            minLength: 1 // Specify minimum characters required for showing suggestions
-        },
-        {
-            name: 'products', // The name of the dataset, used for .data attribute value setting
-            displayKey: "ProductName",
-            source: productsBh,
-            templates:
-            {
-                empty: [
-                    '<div class="empty-message">',
-                    'unable to find any product that match the current query',
-                    '</div>'
-                ].join('\n'),
-
-                suggestion: Handlebars.compile('<div class="search-options-list">' +
-                    '<a href="{{AbsoluteUrl}}" >'+
-                    '<div class="imageDisplayUrl-container"><img src="{{ImageDisplayUrl}}" alt="{{ProductName}}" /></div>'+
-                    '<div class="product-name-container"> {{ProductName}} </div>' +
-                    '<div class="price-container"> {{ProductPrice}} </div>' +
-                    '</a>'+
-                    '</div>')
-            },
-            limit: 10
-        }).on('typeahead:selected', function (evt, datum)
-        {
-            var formtoSubmit = $('form#productSearchForm');
-
-                formtoSubmit.attr("action", datum.AbsoluteUrl);                    
-  
-                formtoSubmit.submit();          
-        })
-       
-    // Initializing the typeahead for mobile
-    $('#custom-templates-mobile .typeahead').typeahead(
+    $('#product-search-typeahead .typeahead').typeahead(
         {
             hint: true,
             highlight: true, // Enable substring highlighting 
@@ -115,11 +78,57 @@
 
                 suggestion: Handlebars.compile('<div class="search-options-list">' +
                     '<a href="{{AbsoluteUrl}}" >' +
-                    '<div class="imageDisplayUrl-container"><img src="{{ImageDisplayUrl}}" alt="{{ProductName}}" /></div>' +
-                    '<div class="product-name-container"> {{ProductName}} </div>' +
-                    '<div class="price-container"> {{ProductPrice}} </div>' +
-                    '</a>' +
+                        '<div id="suggested-product-row" class="row">'+
+                            '<div class="col-sm-2">'+
+                            '<div class="imageDisplayUrl-container"><img src="{{ImageDisplayUrl}}" alt="{{ProductName}}" /></div>' +
+                            '</div>' +
+                            '<div class="col-sm-7">' +
+                            '<div class="product-name-container"> {{ProductName}} </div>' +
+                            '</div>' +
+                            '<div class="col-sm-3">' +
+                            '<div class="price-container"> {{ProductPrice}} </div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</a>'+
                     '</div>')
+            },
+            limit: 10
+        }).on('typeahead:selected', function (evt, datum)
+        {
+            var formtoSubmit = $('form#productSearchForm');
+
+                formtoSubmit.attr("action", datum.AbsoluteUrl);                    
+  
+                formtoSubmit.submit();          
+        })
+
+
+
+    // Initializing the typeahead for mobile
+    $('#product-search-typeahead-mobile .typeahead').typeahead(
+        {
+            hint: true,
+            highlight: true, // Enable substring highlighting 
+            minLength: 1 // Specify minimum characters required for showing suggestions
+        },
+        {
+            name: 'products', // The name of the dataset, used for .data attribute value setting
+            displayKey: "ProductName",
+            source: productsBh,
+            templates:
+            {
+                empty: [
+                    '<div class="empty-message">',
+                    'unable to find any product that match the current query',
+                    '</div>'
+                ].join('\n'),
+                suggestion: Handlebars.compile('<a href="{{AbsoluteUrl}}" >' +  
+                    '<div class="search-options-list-mobile">' +                                                       
+                            '<div class="imageDisplayUrl-container"><img src="{{ImageDisplayUrl}}" alt="{{ProductName}}" /></div>' +                                                      
+                            '<div class="product-name-container"> {{ProductName}} </div>' +                                                      
+                            '<div class="price-container"> {{ProductPrice}} </div>' +                  
+                     '</div>'+
+                    '</a>')
             },
             limit: 10
         }).on('typeahead:selected', function (evt, datum)

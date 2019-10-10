@@ -4,78 +4,76 @@
     min-width:300px;
 }
 
-#custom-templates .empty-message, 
-#custom-templates-mobile .empty-message {
+#product-search-typeahead .empty-message, 
+#product-search-typeahead-mobile .empty-message {
     padding: 5px 10px;
     text-align: center;
     background-color: beige;
     font-size: 0.95em;
 }
 
-#custom-templates .search-options-list,
-#custom-templates-mobile .search-options-list {
-    background-color: azure;
+#product-search-typeahead .search-options-list
+ {
+    background-color: #ffffff;
     min-height: 3.5em;
     display: block;
-    display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 10px 20px;
+    padding: 10px 0px;
     border-bottom: 1px solid #ccc;
     color: #222;
     cursor: pointer;
 }
 
-#custom-templates div.search-options-list:hover,
-#custom-templates-mobile div.search-options-list:hover {
-    background-color: aliceblue;
+#product-search-typeahead div.search-options-list:hover,
+#product-search-typeahead-mobile div.search-options-list:hover {
+    background-color: #f9f9f9;
 }
 
 
-#custom-templates .product-name-container,
-#custom-templates-mobile .product-name-container {
+#product-search-typeahead .product-name-container,
+#product-search-typeahead-mobile .product-name-container {
     font-size: 0.95em;
-    width: 68% !important;
-    max-width: 68% !important;
-    display: inline-flex;
+    width: 100% !important;
+    max-width: 100% !important;
     float: left;
-    text-align: center;
-    padding-left: 2%;
-    padding-top: 1em;
+    text-align: left;
     min-height: 3.5em;
     vertical-align: middle;
 }
 
-#custom-templates .price-container,
-#custom-templates-mobile .price-container {
+#product-search-typeahead .price-container,
+#product-search-typeahead-mobile .price-container {
     font-size: 0.85em;
     color: #c90404;
     font-weight: bold;
-    display: inline-flex;
-    float: right;
-    padding-left: 2%;
-    width: 13% !important;
-    max-width: 13% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: -15px !important;
 }
 
-#custom-templates .imageDisplayUrl-container,
-#custom-templates-mobile .imageDisplayUrl-container {
-    width: 15% !important;
-    max-width: 15% !important;
-    display: inline-flex;
+#product-search-typeahead .imageDisplayUrl-container
+{
+    width: 100% !important;
+    max-width: 100% !important;
     float: left;
 }
 
-#custom-templates .imageDisplayUrl-container img,
-#custom-templates-mobile .imageDisplayUrl-container img {
+#product-search-typeahead .imageDisplayUrl-container img
+ {
     width: 40px !important;
     max-width: 40px !important;
     height: auto;
 }
 
-header .search-box, .twitter-typeahead {
+header .searchTerm, .twitter-typeahead {
     padding-right: 2px !important;
     min-width: 400px;
+}
+
+#product-search-typeahead #suggested-product-row {
+    margin: 0px !important;
+    width: 100% !important;
 }
 
 /*default*/
@@ -86,7 +84,7 @@ header .search-box, .twitter-typeahead {
         font-size: 0.85em;
     }
 
-    #custom-templates .search-options-list {
+    #product-search-typeahead .search-options-list {
         min-width: 400px !important;
     }
 }
@@ -95,16 +93,24 @@ header .search-box, .twitter-typeahead {
 /*tablet*/
 @media(min-width: 768px) and (max-width:992px) 
 {
-    #search-box, .twitter-typeahead {
+    .twitter-typeahead {
         float: right !important;
-        min-width: 340px !important;
+        min-width: 250px !important;
         font-size: 0.75em;
     }
 
-    header #search-box,
-    #custom-templates .search-options-list {
-        min-width: 340px !important;
+    header #searchTerm,
+    #product-search-typeahead .search-options-list {
+        min-width: 250px !important;
     }
+
+    #product-search-typeahead-mobile search-options-list .row {
+        margin: 0px !important;
+    }
+
+    .navbar-nav {
+        margin: 0 1em 0 0 !important;
+    }    
 }
 
 /*mobile*/
@@ -112,26 +118,62 @@ header .search-box, .twitter-typeahead {
     .twitter-typeahead {
         float: right !important;
         min-width: 280px !important;
-        font-size: 0.65em;
-    }
-
-    #custom-templates-mobile .search-options-list {
-        min-width: 280px !important;
+        font-size: 0.65em;        
     }
 
 
-    #custom-templates-mobile .product-name-container {
-        font-size: 0.95em;
-        width: 68% !important;
-        max-width: 68% !important;
+    #product-search-typeahead-mobile .search-options-list-mobile {
+        background-color: #ffffff;
         display: inline-flex;
+        flex-direction:row;
+        align-items: center;
+        padding: 10px 5px;
+        border-bottom: 1px solid #ccc;
+        color: #222;
+        cursor: pointer;
+        min-width: 320px !important;
+        width: 100% !important;  
+    }
+
+    #product-search-typeahead-mobile .typeahead a, .mobilemenu a {
+        padding: 0px !important;
+    }
+
+    #product-search-typeahead-mobile .product-name-container {
+        font-size: 0.95em;
+        width: 60% !important;
+        max-width: 60% !important;
         float: left;
-        text-align: center;
-        padding-left: 15%;
-        padding-top: 1em;
-        min-height: 3.5em;
+        text-align: left;
         vertical-align: middle;
         color: #4679C3;
+        height: 100% !important;
+        padding-top: 1em !important;
     }
 
+    #product-search-typeahead-mobile .price-container {
+        font-size: 0.85em;
+        color: #c90404;
+        font-weight: bold;
+        width: auto !important;
+        padding-left: 5px !important;
+        height: 100% !important;
+    }
+
+    #product-search-typeahead-mobile .imageDisplayUrl-container {
+        width: 20% !important;
+        max-width: 20% !important;
+        float: left;
+        height: 100% !important;
+    }
+
+    #product-search-typeahead-mobile .imageDisplayUrl-container img {
+        width: 25px !important;
+        max-width: 25px !important;
+        height: auto;
+    }
+
+    #product-search-typeahead-mobile div.search-options-list-mobile:hover {
+        background-color: #f9f9f9;
+    }
 }
