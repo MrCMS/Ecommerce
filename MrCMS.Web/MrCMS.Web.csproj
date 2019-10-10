@@ -2782,7 +2782,7 @@
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\cart.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\category.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\checkout.js" />
-    <Content Include="Apps\Ecommerce\Content\Scripts\custom\typeahead-custom-templates.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\product-search-typeahead.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\discount.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\elavon-payment.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\enter-order-email.js" />
@@ -2808,7 +2808,7 @@
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\respond.min.js" />
     <Content Include="Apps\Ecommerce\Content\Styles\checkout.css" />
-    <Content Include="Apps\Ecommerce\Content\Styles\custom\typeahead-custom-template.css" />
+    <Content Include="Apps\Ecommerce\Content\Styles\custom\product-search-typeahead.css" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\images\ui-bg_glass_55_fbf9ee_1x400.png" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\images\ui-bg_glass_65_ffffff_1x400.png" />
@@ -4615,8 +4615,6 @@
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
           <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
-          <UseIIS xmlns="">false</UseIIS>
-          <UseCustomServer xmlns="">false</UseCustomServer>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

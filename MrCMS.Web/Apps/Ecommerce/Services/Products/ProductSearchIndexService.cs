@@ -12,6 +12,7 @@ using MrCMS.Web.Apps.Ecommerce.Indexing;
 using MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using Newtonsoft.Json;
@@ -24,15 +25,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         private readonly IGetProductCategories _getProductCategories;
         private readonly IGetProductSearchQueryObjects _getProductSearchQueryObjects;
         private readonly ISearcher<Product, ProductSearchIndex> _productSearcher;
+        private readonly IProductPricingMethod _productPricingMethod;
 
         public ProductSearchIndexService(ISearcher<Product, ProductSearchIndex> productSearcher,
             IGetProductCategories getProductCategories, EcommerceSearchCacheSettings ecommerceSearchCacheSettings,
-            IGetProductSearchQueryObjects getProductSearchQueryObjects)
+            IGetProductSearchQueryObjects getProductSearchQueryObjects, IProductPricingMethod productPricingMethod)
         {
             _productSearcher = productSearcher;
             _getProductCategories = getProductCategories;
             _ecommerceSearchCacheSettings = ecommerceSearchCacheSettings;
             _getProductSearchQueryObjects = getProductSearchQueryObjects;
+            _productPricingMethod = productPricingMethod;
         }
 
         public IPagedList<Product> SearchProducts(ProductSearchQuery query)
@@ -40,6 +43,34 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             IPagedList<Product> searchProducts = _productSearcher.Search(GetQuery(query), query.Page, query.PageSize,
                 sort: GetSort(query));
             return searchProducts;
+        }
+
+        public IList<ProductSearchSuggestionItem> GetQuickProductSearchResults(string query, int numberOfProductsPerPage)
+        {
+            var productSearchQuery = new ProductSearchQuery()
+            {
+                SearchTerm = query,
+                PageSize = numberOfProductsPerPage
+            };
+
+            var productsList = this.SearchProducts(productSearchQuery);
+
+            return CreateSuggestionItems(productsList); 
+        }
+
+        private IList<ProductSearchSuggestionItem> CreateSuggestionItems(IPagedList<Product> pagedProducts)
+        {
+            var suggestionItems = new List<ProductSearchSuggestionItem>();
+
+            pagedProducts.ToList().ForEach(p => suggestionItems.Add(new ProductSearchSuggestionItem()
+                        {
+                            ProductName = p.Name,
+                            ProductPrice = _productPricingMethod.GetDisplayPrice(p).ToString(),
+                            ImageDisplayUrl = p.DisplayImageUrl,
+                            AbsoluteUrl = p.AbsoluteUrl
+                        }));
+
+            return suggestionItems.OrderBy(p => p.ProductName).ToList(); 
         }
 
         public double GetMaxPrice(ProductSearchQuery query)

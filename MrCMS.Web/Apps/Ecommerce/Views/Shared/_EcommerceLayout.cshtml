@@ -15,18 +15,19 @@
             @{ RenderZone("Header Right", allowFrontEndEditing: false); }
             @{ RenderZone("User Links", allowFrontEndEditing: false); }
 
-            <form method="GET" id="productSearchForm" action="@(UniquePageHelper.GetUrl<ProductSearch>())"
+            <form id="productSearchForm" method="GET" name="productSearchForm" action="@(UniquePageHelper.GetUrl<ProductSearch>())"
                   class="hidden-xs pull-right search-box" novalidate="novalidate">
 
                 <div id="custom-templates" class="input-group">
-                    <input class="typeahead tt-query form-control" id="searchTerm" autocomplete="off" spellcheck="false"
-                           name="searchTerm" placeholder="e.g : Shorts or Lela" type="text" value="">
+                    <input id="search-box" class="typeahead tt-query form-control" autocomplete="off" spellcheck="false"
+                           name="productsearchterm" placeholder="e.g : Shorts or Lela" type="text" value="">
                     <span class="input-group-btn">
-                        <button class="btn btn-default btn-default-blue" type="submit" id="searchButton" name="searchButton">
+                        <button id="searchButton" class="btn btn-default btn-default-blue" type="submit" name="searchButton">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </span>
                 </div>
+
             </form>
         </div>
     </div>
@@ -39,11 +40,18 @@
                 <div class="visible-xs visible-sm mobilemenu">
                     <a href="#" id="left-menu-toggle"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Menu</a>
 
-                    <form method="GET" action="@(UniquePageHelper.GetUrl<ProductSearch>())" class="pull-right hidden-sm search-box" novalidate="novalidate">
-                        <div class="input-group ">
-                            <input class="typeahead tt-query form-control" id="searchTerm" name="searchTerm" placeholder="e.g : Shorts" type="text" value="@Request.QueryString["searchTerm"]">
+                    <form method="GET" id="productSearchForm-mobile" name="productSearchForm-mobile" 
+                          action="@(UniquePageHelper.GetUrl<ProductSearch>())" 
+                          class="pull-right hidden-sm search-box" novalidate="novalidate">
+
+                        <div id="custom-templates-mobile" class="input-group">
+                            <input id="search-box-mobile" class="typeahead tt-query form-control search-box"  
+                                   name="search-box-mobile" autocomplete="off" placeholder="e.g : Shorts" type="text" 
+                                   value="">
                             <span class="input-group-btn">
-                                <button class="btn btn-default btn-default-blue" type="submit" id="searchButton" name="searchButton"><span class="glyphicon glyphicon-search"></span></button>
+                                <button id="searchButton-mobile" class="btn btn-default btn-default-blue" type="submit" name="searchButton-mobile">
+                                <span class="glyphicon glyphicon-search"></span>
+                                </button>
                             </span>
                         </div>
                     </form>

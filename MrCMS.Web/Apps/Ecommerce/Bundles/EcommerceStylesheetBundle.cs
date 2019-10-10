@@ -25,7 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Bundles
                 yield return "~/Apps/Ecommerce/Content/Styles/jquery-ui-bootstrap/jquery-ui-1.9.2.custom.css";
                 yield return "~/Apps/Ecommerce/Content/Styles/prettyPhoto.css";
                 yield return "~/Apps/Ecommerce/Content/Styles/style.css";
-                yield return "~/Apps/Ecommerce/Content/Styles/custom/typeahead-custom-template.css";
+                yield return "~/Apps/Ecommerce/Content/Styles/custom/product-search-typeahead.css";
             }
         }
     }

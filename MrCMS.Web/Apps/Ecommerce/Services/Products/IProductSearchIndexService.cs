@@ -18,5 +18,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         List<int> GetCategories(ProductSearchQuery query);
 
         CachingInfo GetCachingInfo(ProductSearchQuery query, string suffix = null);
+        IList<ProductSearchSuggestionItem> GetQuickProductSearchResults(string query, int numberOfProductsPerPage);
     }
 }

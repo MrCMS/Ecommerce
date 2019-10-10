@@ -13,17 +13,20 @@
             remote: //get suggestion input data from the server (i.e Product Search Controller)
             {                
                 wildcard: '%QUERY',
-                url: targetControllerUrl+ '?',
+                url: targetControllerUrl + '?',
                 replace: function (url, uriEncodedQuery)
                 {
-                    val = $('input#searchTerm').val();
+                    currentSearchTerm = $('input#search-box').val();
+                    currentSearchTermMobile = $('input#search-box-mobile').val();
 
-                    if (!val)
+                    var searchTerm = (!currentSearchTerm) ? currentSearchTermMobile : currentSearchTerm;
+
+                    if (!searchTerm)
                     {
                         return url.replace("%QUERY", uriEncodedQuery);
                     }
 
-                    return url.replace("%QUERY", uriEncodedQuery) + '&searchTerm=' + encodeURIComponent(val)
+                    return url.replace("%QUERY", uriEncodedQuery) + '&searchTerm=' + encodeURIComponent(searchTerm);
                 },
                 transform: function (response) {
 
@@ -82,10 +85,55 @@
             limit: 10
         }).on('typeahead:selected', function (evt, datum)
         {
-            $('#searchTerm').val(datum.ProductName)
+            $('input#search-box').val(datum.ProductName)
+
             $('form#productSearchForm').attr("action", datum.AbsoluteUrl)
-            $('form#productSearchForm').submit();
+            var formtoSubmit = $('form#productSearchForm');
+
+           // formtoSubmit.baseURI = datum.AbsoluteUrl;
+           // formtoSubmit.url = datum.AbsoluteUrl;
+           // formtoSubmit.documentURI = datum.AbsoluteUrl;
+  
+            formtoSubmit.submit();          
         })
+       
+    // Initializing the typeahead for mobile
+    $('#custom-templates-mobile .typeahead').typeahead(
+        {
+            hint: true,
+            highlight: true, // Enable substring highlighting 
+            minLength: 1 // Specify minimum characters required for showing suggestions
+        },
+        {
+            name: 'products', // The name of the dataset, used for .data attribute value setting
+            displayKey: "ProductName",
+            source: productsBh,
+            templates:
+            {
+                empty: [
+                    '<div class="empty-message">',
+                    'unable to find any product that match the current query',
+                    '</div>'
+                ].join('\n'),
+
+                suggestion: Handlebars.compile('<div class="search-options-list">' +
+                    '<div class="imageDisplayUrl-container"><img src="{{ImageDisplayUrl}}" alt="{{ProductName}}" /></div>' +
+                    '<div class="product-name-container"> {{ProductName}} </div>' +
+                    '<div class="price-container"> {{ProductPrice}} </div>' +
+                    '</div>')
+            },
+            limit: 10
+        }).on('typeahead:selected', function (evt, datum) {
+
+            $('input#search-box-mobile').val(datum.ProductName)
+
+            $('form#productSearchForm-mobile').attr("action", datum.AbsoluteUrl)
+
+            var formtoSubmit = $('form#productSearchForm-mobile');
+
+            formtoSubmit.submit();
+        })
+
 });
 
 

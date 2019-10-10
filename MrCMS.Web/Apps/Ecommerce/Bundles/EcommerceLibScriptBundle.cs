@@ -26,7 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Bundles
 
                 yield return "~/Scripts/handlebars.js";
                 yield return "~/Scripts/typeahead.bundle.js";
-                yield return "~/Apps/Ecommerce/Content/Scripts/custom/typeahead-custom-templates.js";
+                yield return "~/Apps/Ecommerce/Content/Scripts/custom/product-search-typeahead.js";
             }
         }
     }

@@ -29,7 +29,7 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
 
             Kernel.Rebind<IGetProductSearchView>().ToConstant(A.Fake<IGetProductSearchView>());
             _controller = new ProductSearchController(_productSearchIndexService, _cartModel,
-                _htmlCacheService, _productPricingMethod)
+                _htmlCacheService)
             {
                 RequestMock = A.Fake<HttpRequestBase>()
             };
