@@ -1,4 +1,5 @@
 ﻿using MrCMS.Services;
+using MrCMS.Services.Resources;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Payment.Elavon;
@@ -8,9 +9,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Areas.Admin.Helpers;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
-using Newtonsoft.Json;
-using System;
-using System.Text;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
@@ -20,200 +19,59 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IElavonPaymentService _elavonPaymentService;
         private readonly IUniquePageService _uniquePageService;
         private readonly CartModel _cartModel;
-        private readonly MrCMS.Services.Resources.IStringResourceProvider _stringResoureProvider;
+        private readonly IStringResourceProvider _stringResourceProvider;
         private readonly ICartGuidResetter cartGuidReseter;
-        private ElavonSettings _elavonSettings;
 
         public ElavonController(IElavonPaymentService elavonPaymentService, ElavonSettings elavonSettings,
-                                IUniquePageService uniquePageService, CartModel cartModel, 
-                                MrCMS.Services.Resources.IStringResourceProvider stringResoureProvider, 
+                                IUniquePageService uniquePageService, CartModel cartModel, IStringResourceProvider stringResourceProvider,
                                 ICartGuidResetter cartGuidReseter, IGetCurrentUser getCurrentUser)
         {
             _elavonPaymentService = elavonPaymentService;
-            _elavonSettings = elavonSettings;
             _uniquePageService = uniquePageService;
             _cartModel = cartModel;
-            _stringResoureProvider = stringResoureProvider;
+            _stringResourceProvider = stringResourceProvider;
             this.cartGuidReseter = cartGuidReseter;
         }
-               
+
         [HttpGet]
         public PartialViewResult Form()
         {
-            var viewModel = new ElavonPaymentDetailsModel()
-            {
-                ServiceUrl = _elavonSettings.ServiceUrl
-            };
-
-            return PartialView(viewModel);
+            return PartialView(_elavonPaymentService.GetElavonPaymentDetailsModel());
         }
-
-        [HttpPost]
-        public ViewResult ConfirmPaymentRequest()
-        {
-            return View();
-        }        
 
         //Creates an HPP request object
         public JsonResult PaymentRequest()
         {
-            string requestResult = string.Empty;
-
-            var hppJson = _elavonPaymentService.BuildChargeRequest(out requestResult);
-
-            if(requestResult != string.Empty) //error happened
-            {
-                return Json("Something went wrong: " + requestResult, JsonRequestBehavior.AllowGet);               
-            }
-            else
-            {
-                return Json(hppJson, JsonRequestBehavior.AllowGet);
-            }
+            return Json(_elavonPaymentService.GetPaymentRequestResult(), JsonRequestBehavior.AllowGet);
         }
 
-         // Process HPP Response from Globalpay service
+        // Process HPP Response from Globalpay/Elavon service
         public ActionResult Notification()
         {
-            // The field containing the JSON response, i.e. hppResponse         
-            var responseJson = Request.Form["hppResponse"];   
-           
-            var result = (ElavonCustomResult)_elavonPaymentService.HandleNotification(responseJson);
+            var responseJson = Request.Unvalidated().Form["hppResponse"];
+            var elavonCustomResult =(ElavonCustomResult)_elavonPaymentService.CheckNotificationResult(responseJson, out bool isSuccessNotification);
 
-            var transaction = result.ElavonResponse;
-
-            bool noExceptionHappened = result.ExceptionDescription.Equals(string.Empty);
-
-            //total pay adjusted to 2 digit currency
-            var adjustedTotalPay = (_cartModel.TotalToPay).ToString("C2");
-
-            if (transaction != null && noExceptionHappened)
+            //success - redirect order placed
+            if (isSuccessNotification)
             {
-                cartGuidReseter.ResetCartGuid(CurrentRequestData.UserGuid);
+                var currentOrder = elavonCustomResult.ElavonResponse.Order;
 
-                //Charge request declined
-                if(result.ElavonResultType == ElavonCustomEnumerations.ResultType.ChargeFailure)
-                {
-                    TempData.ErrorMessages().Add(_stringResoureProvider.GetValue("payment-elavon-payment-failed-charge-request-declined",
-                                           string.Format("Card Charge request for a total amount of {0} declined.", adjustedTotalPay)));
-
-                    return _uniquePageService.RedirectTo<PaymentDetails>();
-                }
-                else if(result.ElavonResultType == ElavonCustomEnumerations.ResultType.TamperedTotalPay)
-                {
-                    TempData.ErrorMessages().Add(_stringResoureProvider.GetValue("payment-elavon-payment-failed-incorrect-value",
-                                           string.Format("No payment can be found for a total amount of {0}.", adjustedTotalPay)));
-
-                    return _uniquePageService.RedirectTo<PaymentDetails>();
-                }
-
-                //Card payment successful
-                return _uniquePageService.RedirectTo<OrderPlaced>(new { id = transaction.Order.Guid });
+                return _uniquePageService.RedirectTo<OrderPlaced>(new { id = currentOrder.Guid });
             }
-            else if(transaction == null)
+            else //failure - redirect to PaymentDetails page
             {
-                TempData.ErrorMessages().Add(_stringResoureProvider.GetValue("payment-elavon-payment-gateway-transaction-failed",
-                       string.Format("Your payment for a total payment of {0} was unsuccessful. Error description: {1}. Please try again.", 
-                                     adjustedTotalPay, result.ElavonResultType.ToString())));
-
+                //Reset transaction id in order to retry as per Elavon rule
+                ResetTransactionId();
+                TempData.ErrorMessages().Add(elavonCustomResult.ErrorMessageResource);
                 return _uniquePageService.RedirectTo<PaymentDetails>();
             }
-            else // Exception occurred
-            {
-                TempData.ErrorMessages().Add(_stringResoureProvider.GetValue("payment-elavon-payment-gateway-failed-exception",
-                     string.Format("Payment for a total amount of {0} failed. Exception happened!", adjustedTotalPay)));
-
-                return _uniquePageService.RedirectTo<PaymentDetails>();
-            }
-        }  
-
-        // Required/mandatory ThreeD Secure check progress update notification handlers - Start
-        public void HostedPaymentDataStatusNotification()
-        {            
         }
 
-        public void ThreeDSMethodNotification()
+        private void ResetTransactionId()
         {
-            /*
-             * this sample code is intended as a simple example and should not be treated as Production-ready code 
-             * you'll need to add your own message parsing and security in line with your application or website
-             */
-            var threeDSMethodData = Request.Form["threeDSMethodData"];
-
-            // sample ACS response for Method URL Response Notification
-            // threeDSMethodData = "eyJ0aHJlZURTU2VydmVyVHJhbnNJRCI6ImFmNjVjMzY5LTU5YjktNGY4ZC1iMmY2LTdkN2Q1ZjVjNjlkNSJ9";
-
-            try
-            {
-                byte[] data = Convert.FromBase64String(threeDSMethodData);
-                string methodUrlResponseString = Encoding.UTF8.GetString(data);
-
-                // map to a custom class MethodUrlResponse
-                MethodUrlResponse methodUrlResponse = JsonConvert.DeserializeObject<MethodUrlResponse>(methodUrlResponseString);
-
-                string threeDSServerTransID = methodUrlResponse.ThreeDSServerTransID; // af65c369-59b9-4f8d-b2f6-7d7d5f5c69d5
-
-                // TODO: notify client-side that the Method URL step is complete
-            }
-
-            catch (Exception exce)
-            {
-                // TODO: add your exception handling here
-            }
+            var currentCartGuid = _cartModel.CartGuid;
+            var currentCartUserGuid = _cartModel.UserGuid;
+            cartGuidReseter.ResetCartGuid(CurrentRequestData.UserGuid);
         }
-        
-        public void ThreeDsChallengeNotificationUrl()
-        {
-            /*
-             * this sample code is intended as a simple example and should not be treated as Production-ready code 
-             * you'll need to add your own message parsing and security in line with your application or website
-             */
-            var cres = Request.Form["cres"];
-
-            // Example CRes (Challenge Result) sent by the ACS
-            // var cRes = "eyJ0aHJlZURTU2VydmVyVHJhbnNJRCI6ImFmNjVjMzY5LTU5YjktNGY4ZC1iMmY2LTdkN2Q1ZjVjNjlkNSIsImF"
-            // + "jc1RyYW5zSUQiOiIxM2M3MDFhMy01YTg4LTRjNDUtODllOS1lZjY1ZTUwYThiZjkiLCJjaGFsbGVuZ2VDb21wbGV0a"
-            // + "W9uSW5kIjoiWSIsIm1lc3NhZ2VUeXBlIjoiQ3JlcyIsIm1lc3NhZ2VWZXJzaW9uIjoiMi4xLjAiLCJ0cmFuc"
-            // + "1N0YXR1cyI6IlkifQ==";
-
-            try
-            {
-                byte[] data = Convert.FromBase64String(cres);
-                string challengeUrlResponseString = Encoding.UTF8.GetString(data);
-                // map to a custom class ChallengeUrlResponse which has String variables for each response element
-                ChallengeUrlResponse challengeUrlResponse = JsonConvert.DeserializeObject<ChallengeUrlResponse>(challengeUrlResponseString);
-
-                var threeDSServerTransID = challengeUrlResponse.ThreeDSServerTransID; // af65c369-59b9-4f8d-b2f6-7d7d5f5c69d5
-                var acsTransId = challengeUrlResponse.AcsTransID; // 13c701a3-5a88-4c45-89e9-ef65e50a8bf9
-                var challengeCompletionInd = challengeUrlResponse.ChallengeCompletionInd; // Y
-                var messageType = challengeUrlResponse.MessageType; // Cres
-                var messageVersion = challengeUrlResponse.MessageVersion; // 2.1.0
-                var transStatus = challengeUrlResponse.TransStatus; // Y
-
-                // TODO: notify client-side that the Challenge step is complete and pass any required data
-            }
-
-            catch (Exception exce)
-            {
-                // TODO: add your exception handling here
-            }
-        }
-        // Required/mandatory ThreeD Secure check progress update notification handlers - End
-    }
-
-    public class MethodUrlResponse
-    {
-        public string ThreeDSServerTransID { get; set; }  //e.g. af65c369-59b9-4f8d-b2f6-7d7d5f5c69d5
-
-    }
-
-    public class ChallengeUrlResponse
-    {
-        public string ThreeDSServerTransID { get; set; }  //e.g. af65c369-59b9-4f8d-b2f6-7d7d5f5c69d5
-        public string AcsTransID { get; set; } // 13c701a3-5a88-4c45-89e9-ef65e50a8bf9
-        public string ChallengeCompletionInd { get; set; } //13c701a3-5a88-4c45-89e9-ef65e50a8bf9
-        public string MessageType { get; set; } //Cres
-        public string MessageVersion { get; set; } // 2.1.0
-        public string TransStatus { get; set; } // Y       
-
     }
 }

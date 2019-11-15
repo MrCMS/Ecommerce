@@ -296,8 +296,11 @@ var RealexHpp = (function () {
                     return;
                 }
 
+                var eventData = event.data;
+                var isErrorResponse = eventData.startsWith("Error:");
+
                 // check for iframe resize values
-                if (event.data && JSON.parse(event.data).iframe) {
+                if (eventData && !isErrorResponse && JSON.parse(event.data).iframe) {
                     if (!isMobileNewTab) {
                         var iframeWidth = JSON.parse(event.data).iframe.width;
                         var iframeHeight = JSON.parse(event.data).iframe.height;

@@ -1,13 +1,11 @@
-﻿using GlobalPayments.Api.Entities;
-using GlobalPayments.Api.Services;
-using System.Web.Mvc;
+﻿using MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
 {
     public interface IElavonPaymentService
     {
-        string BuildChargeRequest(out string chargeRequestResult);
-         
-        ActionResult HandleNotification(string responseJson);
+        ElavonPaymentDetailsModel GetElavonPaymentDetailsModel();
+        string GetPaymentRequestResult();
+        ElavonCustomResult CheckNotificationResult(string responseJson, out bool isSuccessNotification);
     }
 }

@@ -3,7 +3,6 @@
     public class ElavonGateway
     {
         public string MerchantId { get; set; }
-        public string SharedSecret { get; set; }
         public string AccountId { get; set; }
         public string ServiceUrl { get; set; }
     }

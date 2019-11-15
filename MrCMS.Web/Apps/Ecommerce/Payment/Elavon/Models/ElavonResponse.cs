@@ -6,7 +6,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Models
     public class ElavonResponse
     {
         public bool Success { get; set; }
-        public List<string> Errors { get; set; }
+        public string ErrorDescription { get; set; }
         public Order Order { get; set; }
     }
 }

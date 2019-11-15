@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using static MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Models.ElavonCustomEnumerations;
+using MrCMS.Services.Resources;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
 {
@@ -24,28 +25,50 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
         private readonly ElavonSettings _elavonSettings;
         private readonly CartModel _cartModel;
         private readonly IOrderPlacementService _orderPlacementService;
-        private readonly ILogAdminService _logAdminService;
-        private readonly ICartBuilder _cartBuilder;
-        private readonly ISession _session;
-        private IUniquePageService _uniquePageService;
         private EcommerceSettings _ecommerceSettings;
         private Country[] isoCountriesList;
+        private IStringResourceProvider _stringResourceProvider;
 
-        public ElavonPaymentService(ElavonSettings elavonSettings, CartModel cartModel, EcommerceSettings ecommerceSettings, 
-                                    ICartBuilder cartBuilder, ISession session, IOrderPlacementService orderPlacementService, 
-                                    ILogAdminService logAdminService, IUniquePageService uniquePageService)
+        public ElavonPaymentService(ElavonSettings elavonSettings, CartModel cartModel, EcommerceSettings ecommerceSettings,
+                                    ICartBuilder cartBuilder, ISession session, IOrderPlacementService orderPlacementService,
+                                    ILogAdminService logAdminService, IUniquePageService uniquePageService,
+                                    IStringResourceProvider stringResourceProvider)
         {
             _elavonSettings = elavonSettings;
             _cartModel = cartModel;
             _ecommerceSettings = ecommerceSettings;
             _orderPlacementService = orderPlacementService;
-            _logAdminService = logAdminService;
-            _cartBuilder = cartBuilder;
-            _session = session;
-            _uniquePageService = uniquePageService;
             isoCountriesList = ISO3166.Country.List;
+            _stringResourceProvider = stringResourceProvider;
         }
-        public string BuildChargeRequest(out string chargeRequestResult)
+
+        public ElavonPaymentDetailsModel GetElavonPaymentDetailsModel()
+        {
+            return new ElavonPaymentDetailsModel()
+            {
+                ServiceUrl = _elavonSettings.ServiceUrl
+            };
+        }
+
+        public string GetPaymentRequestResult()
+        {
+            string chargeRequestResult;
+            string requestResult;
+
+            var hppJson = BuildChargeRequest(out chargeRequestResult);
+
+            if (chargeRequestResult != string.Empty) //error happened
+            {
+                requestResult = "An error  encountered: " + chargeRequestResult;
+            }
+            else
+            {
+                requestResult = hppJson;
+            }
+
+            return requestResult;
+        }
+        private string BuildChargeRequest(out string chargeRequestResult)
         {
             var service = ConfigureHostedService();
             var hostedPaymentData = BuildHostedPaymentData();
@@ -66,6 +89,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
                                    .WithOrderId(_cartModel.CartGuid.ToString())
                                    .Serialize();
 
+                //double check why I added this
                 chargeRequestResult = string.Empty;
             }
             catch (ApiException exce)
@@ -77,12 +101,57 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
             return hppResult;
         }
 
-        public ActionResult HandleNotification(string responseJson)
+        public ElavonCustomResult CheckNotificationResult(string responseJson, out bool isSuccessNotification)
+        {
+            var elavonCustomResult = HandleNotification(responseJson);
+            isSuccessNotification = false;
+
+            switch (elavonCustomResult.ElavonResultType)
+            {
+                case ElavonCustomEnumerations.ResultType.ChargeSuccess:
+                    var succeededOrder = elavonCustomResult.ElavonResponse.Order;
+                    isSuccessNotification = true;
+                    break;
+                case ElavonCustomEnumerations.ResultType.TamperedTotalPay:
+
+                    var incorrectChargeResourceName = "payment-elavon-charge-incorrect-value";
+                    var incorrectChargeResourcePrefix = "Charge incorrect value: ";
+                    elavonCustomResult.ErrorMessageResource = GetErrorMessageResource(incorrectChargeResourceName, incorrectChargeResourcePrefix, elavonCustomResult);
+                    break;
+
+                case ElavonCustomEnumerations.ResultType.ChargeFailure:
+                    var chargeDeclinedResourceName = "payment-elavon-charge-request-declined";
+                    var chargeDeclinedResourcePrefix = "Charge request declined: ";
+                    elavonCustomResult.ErrorMessageResource = GetErrorMessageResource(chargeDeclinedResourceName, chargeDeclinedResourcePrefix, elavonCustomResult);
+                    break;
+
+                case ElavonCustomEnumerations.ResultType.TamperedHashException:
+                    var tamperedHashResourceName = "payment-elavon-charge-tampered-hash-exception";
+                    var tamperedHashResourcePrefix = "Tampered hash exception: ";
+                    elavonCustomResult.ErrorMessageResource = GetErrorMessageResource(tamperedHashResourceName, tamperedHashResourcePrefix, elavonCustomResult);
+                    break;
+
+                case ElavonCustomEnumerations.ResultType.CommsException:
+                    var commsExceptionResourceName = "payment-elavon-gateway-exception";
+                    var commsExceptionResourcePrefix = "Payment gateway exception: ";
+                    elavonCustomResult.ErrorMessageResource = GetErrorMessageResource(commsExceptionResourceName, commsExceptionResourcePrefix, elavonCustomResult);
+                    break;
+            }
+
+            return elavonCustomResult;
+        }
+
+        private string GetErrorMessageResource(string resourceName, string errorMsgPrefix, ElavonCustomResult elavonResult)
+        {
+            return GetUpdatedErrorMessage(resourceName, errorMsgPrefix + elavonResult.ElavonResponse.ErrorDescription);
+        }
+        private ElavonCustomResult HandleNotification(string responseJson)
         {
             ElavonCustomResult elavonCustomResult = new ElavonCustomResult();
+            elavonCustomResult.ExceptionDescription = string.Empty;
 
             // Create HPP response object, which contains all the transaction response values 
-            // we need to update your application
+            // we need to update our application
             // configure client settings
             var service = new HostedService(new GatewayConfig
             {
@@ -92,81 +161,91 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
                 ServiceUrl = _elavonSettings.ServiceUrl,
             });
 
-            try
+            // Check if there was communication error
+            string commsErrorMessage;
+
+            if (HasCommsException(responseJson, out commsErrorMessage))
             {
-                // create the response object from the response JSON
-                var transaction = service.ParseResponse(responseJson, true);
-
-                var responseCode = transaction.ResponseCode;
-                var responseMessage = transaction.ResponseMessage;
-                var orderId = transaction.OrderId;
-
-                var authCode = transaction.AuthorizationCode;
-                var paymentsReference = transaction.TransactionId;
-                var schemeReferenceData = transaction.SchemeId;
-
-                var responseValues = transaction.ResponseValues;
-
-
-                // Total pay in pens
-                var adjustedTotalPay = Math.Round(_cartModel.TotalToPay, 2, MidpointRounding.AwayFromZero)*100;
-
-                var transactionBalanceAmount = transaction.AuthorizedAmount;
-
-                bool transactionResponseCodeIsOk = responseCode.Equals("00");
-
-                // TODO: update your application and display transaction outcome to the customer
-                if(transactionResponseCodeIsOk && transactionBalanceAmount == adjustedTotalPay)
+                elavonCustomResult.ElavonResultType = ElavonCustomEnumerations.ResultType.CommsException;
+                elavonCustomResult.ElavonResponse = new ElavonResponse
                 {
-                    ElavonResponse elavonResponse = BuildMrCMSOrder(transaction);
-
-                    elavonCustomResult.ElavonResultType = ElavonCustomEnumerations.ResultType.ChargeSuccess;
-                    elavonCustomResult.ElavonResponse = elavonResponse;
-                }
-                else if (transactionBalanceAmount != adjustedTotalPay)
-                {
-                    elavonCustomResult.ElavonResultType = ElavonCustomEnumerations.ResultType.TamperedTotalPay;
-                    elavonCustomResult.ElavonResponse = null;
-                }
-                else
-                {
-                    elavonCustomResult.ElavonResultType = ElavonCustomEnumerations.ResultType.ChargeFailure;
-                    elavonCustomResult.ElavonResponse = null;
-                }
-                elavonCustomResult.ExceptionDescription = string.Empty;
+                    Success = false,
+                    ErrorDescription = commsErrorMessage
+                };
             }
-            catch (ApiException exce)
+            else
             {
-                // Invalid or tampred hash
-                elavonCustomResult.ElavonResultType = ElavonCustomEnumerations.ResultType.TamperedHashException;
-                elavonCustomResult.ExceptionDescription = exce.Message;
+                try
+                {
+                    // create the response object from the response JSON
+                    Transaction transaction = service.ParseResponse(responseJson, true);
+
+                    // Total pay in pens
+                    var adjustedTotalPay = Math.Round(_cartModel.TotalToPay, 2, MidpointRounding.AwayFromZero) * 100;
+                    var transactionBalanceAmount = transaction.AuthorizedAmount;
+                    bool transactionResponseCodeIsOk = transaction.ResponseCode.Equals("00");
+
+                    if (transactionResponseCodeIsOk)
+                    {
+                        if (transactionBalanceAmount == adjustedTotalPay)
+                        {
+                            ElavonResponse elavonResponse = PlaceOrder(transaction);
+                            elavonCustomResult.ElavonResultType = ElavonCustomEnumerations.ResultType.ChargeSuccess;
+                            elavonCustomResult.ElavonResponse = elavonResponse;
+                        }
+                        else
+                        {
+                            elavonCustomResult.ElavonResultType = ElavonCustomEnumerations.ResultType.TamperedTotalPay;
+                            elavonCustomResult.ElavonResponse = new ElavonResponse
+                            {
+                                Success = false,
+                                ErrorDescription = string.Format("No payment can be found for a total amount of {0}. Total pay is tampered with.", adjustedTotalPay)
+                            };
+                        }
+                    }
+                    else
+                    {
+                        elavonCustomResult.ElavonResultType = ElavonCustomEnumerations.ResultType.ChargeFailure;
+                        elavonCustomResult.ElavonResponse = new ElavonResponse
+                        {
+                            Success = false,
+                            ErrorDescription = transaction.ResponseMessage
+                        };
+                    }
+                }
+                catch (ApiException exce)
+                {
+                    // Invalid or tampered hash
+                    elavonCustomResult.ElavonResultType = ElavonCustomEnumerations.ResultType.TamperedHashException;
+                    elavonCustomResult.ExceptionDescription = exce.Message;
+                    elavonCustomResult.ElavonResponse = null;
+                }
             }
 
             return elavonCustomResult;
-        }        
-        public ElavonResponse BuildMrCMSOrder(Transaction currentTransaction)
+        }
+
+        public ElavonResponse PlaceOrder(Transaction currentTransaction)
         {
             //try creating MrCMS Order object
             try
             {
-                if(currentTransaction != null)
+                if (currentTransaction != null)
                 {
-                    var testTwoStop = string.Empty;
-
                     Entities.Orders.Order order = _orderPlacementService.PlaceOrder(_cartModel,
-                    o =>
-                    {
-                        o.PaymentStatus = MapTransactionStatus(currentTransaction.ResponseMessage);
-                        o.CaptureTransactionId = currentTransaction.TransactionId;
-                        o.PaymentMethod = _cartModel.PaymentMethod.Name;
-                    });
+                        o =>
+                        {
+                            o.PaymentStatus = MapTransactionStatus(currentTransaction.ResponseMessage);
+                            o.CaptureTransactionId = currentTransaction.TransactionId;
+                            o.PaymentMethod = _cartModel.PaymentMethod.Name;
+                        });
 
                     // Success
                     return new ElavonResponse
                     {
                         Success = true,
                         Order = order,
-                        Errors = new System.Collections.Generic.List<string>()
+                        ErrorDescription = string.Empty
                     };
                 }
                 else
@@ -175,21 +254,62 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
                     return new ElavonResponse
                     {
                         Success = false,
-                        Errors = new List<string> { currentTransaction.ResponseMessage }
+                        ErrorDescription = "No transaction found"
                     };
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 // error return      
                 return new ElavonResponse
                 {
                     Success = false,
-                    Errors = new List<string> { "Exception encountered while trying to charge your card. Description: " + ex.Message }
+                    ErrorDescription = "Exception encountered while trying to charge your card. Description: " + ex.Message
                 };
             }
-        }      
-        
+        }
+
+        private string GetUpdatedErrorMessage(string errorMsgName, string errorMessage)
+        {
+            //get the error message from resource if one exists
+            var errorMsgResource = _stringResourceProvider.AllResources.FirstOrDefault(r => r.Key.Equals(errorMsgName));
+
+            if (errorMsgResource != null)
+            {
+                //update it with the custom error message
+                errorMsgResource.Value = errorMessage;
+            }
+            else
+            {
+                errorMsgResource = new MrCMS.Entities.Resources.StringResource() { Key = errorMsgName, Value = errorMessage };
+                _stringResourceProvider.Insert(errorMsgResource);
+            }
+
+            return errorMsgResource.Value;
+        }
+
+        private bool HasCommsException(string responseJson, out string commsErrorMessage)
+        {
+            // The field containing the JSON response, i.e. hppResponse 
+            // Because the response includes html markup(i.e <BR>), the use of .Unvalidated() is
+            // required. Otherwise, it throws a potentially dangerous request error
+            var response = responseJson;
+            bool commsException = false;
+            string[] messageDetails = new string[2];
+
+            commsErrorMessage = string.Empty;
+
+            //Error encountered before payment is processed on Elavon service
+            if (responseJson.Contains("<BR>") || responseJson.Contains("<br>"))
+            {
+                messageDetails = responseJson.Replace("<BR>", ",").Split(',');
+                commsErrorMessage = messageDetails[1].Contains("COMMS ERROR") ? "Payment was not successful due to communication error. Please try again." : messageDetails[1];
+                commsException = true;
+            }
+
+            return commsException;
+        }
+
         private PaymentStatus MapTransactionStatus(string responseMessage)
         {
             PaymentStatus paymentStatus = PaymentStatus.Pending;
@@ -198,11 +318,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
             var transactionSuccessful = responseMessage.ToLowerInvariant().Equals(PaymentTransactionStatus.Successful.ToString().ToLowerInvariant());
             var transactionDeclined = responseMessage.ToLowerInvariant().Equals(PaymentTransactionStatus.Declined.ToString().ToLowerInvariant());
 
-            if (transactionAuthorised || transactionSuccessful) 
+            if (transactionAuthorised || transactionSuccessful)
             {
                 paymentStatus = PaymentStatus.Paid;
             }
-            else if(transactionDeclined)
+            else if (transactionDeclined)
             {
                 paymentStatus = PaymentStatus.Voided;
             }
@@ -217,39 +337,56 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
         {
             var service = new HostedService(new GatewayConfig
             {
-                AccountId = _elavonSettings.AccountId,           
-                SharedSecret = _elavonSettings.SharedSecret,       
-                MerchantId = _elavonSettings.MerchantId,          
+                //Normal or Non-3d Secured config
+               /*  AccountId = _elavonSettings.AccountId,
+                SharedSecret = _elavonSettings.SharedSecret,
+                MerchantId = _elavonSettings.MerchantId,
                 ServiceUrl = _elavonSettings.ServiceUrl,
                 HostedPaymentConfig = new HostedPaymentConfig
                 {
                     Version = "2"
-                } 
+                }
+                //End Normal config
+                */
+                // 3D Secure config
+                
+                 AccountId = "ecom3ds",    
+                 SharedSecret = "secret",      
+                 MerchantId = "myMerchantId",  
+                 ServiceUrl =  "https://api.sandbox.realexpayments.com/epage-remote.cgi",  
+                 HostedPaymentConfig = new HostedPaymentConfig
+                 {
+                     Version = "2"
+                 },
+                 //3D Secure mandatory fields - viz. ThreeDSecure Method & Challenge Notifications
+                 Secure3dVersion = Secure3dVersion.Two,
+                 MethodNotificationUrl = "Apps/Ecommerce/Elavon/ThreeDSecureMethodNotification",
+                 ChallengeNotificationUrl = "Apps/Ecommerce/Elavon/ThreeDSecureChallengeNotification"
+             
+                // End 3D Secure config
+
             });
 
             return service;
-        }                     
+        }
 
-        // Add 3D Secure 2 Mandatory and Recommended Fields
         private HostedPaymentData BuildHostedPaymentData()
         {
             var hostedPaymentData = new HostedPaymentData
-            {                
+            {
                 CustomerEmail = _cartModel.OrderEmail,
                 CustomerPhoneMobile = _cartModel.BillingAddress.PhoneNumber,
                 AddressesMatch = false,
                 AccountHolderName = _cartModel.BillingAddress.Name,
                 ChallengeRequest = ChallengeRequestIndicator.NO_PREFERENCE,
-                CustomerNumber = _cartModel.UserGuid.ToString()         
+                CustomerNumber = _cartModel.UserGuid.ToString()
             };
 
             return hostedPaymentData;
         }
         private GlobalPayments.Api.Entities.Address BuildBillingAddress()
         {
-            var billingAddressCountry = isoCountriesList.ToList()
-                                                        .Where(c => c.TwoLetterCode.Equals(_cartModel.BillingAddress.CountryCode))
-                                                        .FirstOrDefault();
+            var billingAddressCountry = isoCountriesList.FirstOrDefault(c => c.TwoLetterCode.Equals(_cartModel.BillingAddress.CountryCode));
 
             var billingAddress = new GlobalPayments.Api.Entities.Address
             {
@@ -258,25 +395,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
                 StreetAddress3 = _cartModel.BillingAddress.Address2,
                 City = _cartModel.BillingAddress.City,
                 PostalCode = _cartModel.BillingAddress.PostalCode,
-                Country = billingAddressCountry.NumericCode
+                Country = billingAddressCountry != null ? billingAddressCountry.NumericCode : string.Empty
             };
 
             return billingAddress;
         }
         private GlobalPayments.Api.Entities.Address BuildShippingAddress()
         {
-            var shippingAddressCountry = isoCountriesList.ToList()
-                                                         .Where(c => c.TwoLetterCode.Equals(_cartModel.BillingAddress.CountryCode))
-                                                         .FirstOrDefault();
+            var shippingAddressCountry = isoCountriesList.FirstOrDefault(c => c.TwoLetterCode.Equals(_cartModel.BillingAddress.CountryCode));
 
             var shippingAddress = new GlobalPayments.Api.Entities.Address
             {
-                 StreetAddress1 = _cartModel.ShippingAddress.Address1,
+                StreetAddress1 = _cartModel.ShippingAddress.Address1,
                 StreetAddress2 = _cartModel.ShippingAddress.Address2,
                 StreetAddress3 = _cartModel.ShippingAddress.Address2,
                 City = _cartModel.ShippingAddress.City,
                 PostalCode = _cartModel.ShippingAddress.PostalCode,
-                Country = shippingAddressCountry.NumericCode
+                Country = shippingAddressCountry != null ? shippingAddressCountry.NumericCode : string.Empty
             };
 
             return shippingAddress;

@@ -9,6 +9,7 @@
             ChargeNotFound,
             TamperedHashException,
             TamperedTotalPay,
+            CommsException,
             BadRequest
         }
 
@@ -19,14 +20,6 @@
             Declined,
             Authorised,
             Uncaptured
-        }
-
-        public enum ElavonChargeExceptionType
-        {
-            None,
-            TamperedTotalPay,
-            ChargeFailure,
-            Other
         }
     }
 }

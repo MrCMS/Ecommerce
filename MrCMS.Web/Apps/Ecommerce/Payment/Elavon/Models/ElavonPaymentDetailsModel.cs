@@ -4,12 +4,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Models
 {
     public class ElavonPaymentDetailsModel
     {
-       // [Required]
-       public string SharedSecret { get; set; }
+        // [Required]
+        public string SharedSecret { get; set; }
 
-      //  [Required]
+        //  [Required]
         public decimal TotalAmount { get; set; }
-                
+
         public string SourceToken { get; set; }
 
         public string CustomerName { get; set; }
@@ -30,5 +30,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Models
         public string Country { get; set; }
         public string PostalCode { get; set; }
         public string State { get; set; }
+
+        //Properties required for 3DSecure test
+        public string MerchantId { get; set; }
     }
 }

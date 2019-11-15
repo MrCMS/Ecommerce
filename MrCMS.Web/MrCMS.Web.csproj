@@ -2776,6 +2776,7 @@
     <Content Include="Apps\Ecommerce\Content\Scripts\bootstrap.dropdown.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\contact-us.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\async-paging.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\elavon-payment-checkout.js" />
     <Content Include="Scripts\handlebars.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\typeahead.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\braintree-checkout.js" />
@@ -4527,7 +4528,6 @@
     <Content Include="Apps\Ecommerce\Views\Stripe\Form.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ElavonSettings\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Elavon\Form.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Elavon\ConfirmPaymentRequest.cshtml" />
     <None Include="packages.config" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BulkOrdersAction\CreatePickingList.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BulkOrdersAction\MarkOrdersAsShippedForm.cshtml" />

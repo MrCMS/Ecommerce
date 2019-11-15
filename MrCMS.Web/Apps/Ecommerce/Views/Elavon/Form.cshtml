@@ -1,39 +1,19 @@
-﻿@using MrCMS.Web.Apps.Ecommerce.Payment.Elavon
-@model MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Models.ElavonPaymentDetailsModel
-
+﻿@model MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Models.ElavonPaymentDetailsModel
 <hr />
-<div class="alert alert-danger" role="alert" data-stripe-errors="true" style="display: none;"></div>
 <div class="row">
     <div class="col-sm-8">
         <div data-card="true">
             <h4> Elavon Payment Gateway </h4>
             <hr />
-            <input type="submit" id="payButtonId" value="@Resource("Confirm Order")"
-                   class="btn btn-primary btn-lg" data-submit-button="true" /> <!-- value="Checkout with Elavon Now"-->
+
+            <!-- Used to display Element errors. -->
+            <div>&nbsp;</div>
+            <div id="card-errors" class="alert alert-danger" role="alert" data-elavon-errors="true" style="display:none;"> </div>
+            @Html.HiddenFor(x => x.ServiceUrl, new { id = "ServiceUrl", name = "ServiceUrl", value = @Model.ServiceUrl })
+
+            <input type="submit" value="@Resource("Confirm Order")" class="btn btn-primary btn-lg"
+                   data-submit-button="true" id="payButtonId" data-secret="@Model.SharedSecret" />
         </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function ()
-    {
-        var request_method = $(this).attr("GET");
-
-        var serviceUrl = "@Model.ServiceUrl"; //https://pay.sandbox.realexpayments.com/pay
-
-        var targetControllerUrl = "Apps/Ecommerce/Confirm/PaymentRequestJson";
-        
-        var responseEndpoint = "Apps/Ecommerce/Elavon/Notification"; 
-
-
-        $.getJSON(targetControllerUrl, function (jsonFromRequestEndpoint)
-        {
-            RealexHpp.setHppUrl(serviceUrl); 
-
-            var jsonObj = JSON.parse(jsonFromRequestEndpoint);
-
-            RealexHpp.lightbox.init("payButtonId", responseEndpoint, jsonObj);
-        });
-    });
-
-</script>
+<script src="~/Apps/Ecommerce/Content/Scripts/custom/elavon-payment-checkout.js" type="text/javascript"></script>
