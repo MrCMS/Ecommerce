@@ -21,7 +21,6 @@
             Uncaptured
         }
 
-
         public enum ElavonChargeExceptionType
         {
             None,
@@ -29,7 +28,5 @@
             ChargeFailure,
             Other
         }
-
-
     }
 }

@@ -4,42 +4,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe
 {
     public class StripePaymentMethod : BasePaymentMethod
     {
-        private readonly StripeSettings _stripeSettings;
+        private readonly StripeSettings _settings;
 
-        public StripePaymentMethod(StripeSettings stripeSettings)
+        public StripePaymentMethod(StripeSettings settings)
         {
-            _stripeSettings = stripeSettings;
+            _settings = settings;
         }
 
-        public override string Name
-        {
-            get { return "Stripe"; }
-        }
+        public override string Name => "Pay by card (Stripe)";
 
-        public override string SystemName
-        {
-            get { return "Stripe"; }
-        }
+        public override string SystemName => "Stripe";
 
-        public override string ControllerName
-        {
-            get { return "Stripe"; }
-        }
+        public override string ControllerName => "Stripe";
 
-        public override string ActionName
-        {
-            get { return "Form"; }
-        }
+        public override string ActionName => "Form";
 
-        public override PaymentType PaymentType
-        {
-            get { return PaymentType.Redirection; }
-        }
+        public override PaymentType PaymentType => PaymentType.Redirection;
 
-        public override bool Enabled
-        {
-            get { return _stripeSettings.Enabled; }
-        }
+        public override bool Enabled => _settings.Enabled;
 
         protected override bool StandardCanUseLogic(CartModel cart)
         {

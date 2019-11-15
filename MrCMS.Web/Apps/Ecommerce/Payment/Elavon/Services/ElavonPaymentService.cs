@@ -81,8 +81,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
         {
             ElavonCustomResult elavonCustomResult = new ElavonCustomResult();
 
-            string testHpp = string.Empty;
-
             // Create HPP response object, which contains all the transaction response values 
             // we need to update your application
             // configure client settings
@@ -103,9 +101,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
                 var responseMessage = transaction.ResponseMessage;
                 var orderId = transaction.OrderId;
 
-                var authCode = transaction.AuthorizationCode; // 12345
-                var paymentsReference = transaction.TransactionId; // pasref
-                var schemeReferenceData = transaction.SchemeId; // MMC0F00YE4000000715
+                var authCode = transaction.AuthorizationCode;
+                var paymentsReference = transaction.TransactionId;
+                var schemeReferenceData = transaction.SchemeId;
 
                 var responseValues = transaction.ResponseValues;
 
@@ -156,11 +154,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
                     var testTwoStop = string.Empty;
 
                     Entities.Orders.Order order = _orderPlacementService.PlaceOrder(_cartModel,
-                        o =>
-                        {
-                            o.PaymentStatus = MapTransactionStatus(currentTransaction.ResponseMessage);
-                            o.CaptureTransactionId = currentTransaction.TransactionId;
-                        });
+                    o =>
+                    {
+                        o.PaymentStatus = MapTransactionStatus(currentTransaction.ResponseMessage);
+                        o.CaptureTransactionId = currentTransaction.TransactionId;
+                        o.PaymentMethod = _cartModel.PaymentMethod.Name;
+                    });
 
                     // Success
                     return new ElavonResponse
@@ -195,22 +194,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
         {
             PaymentStatus paymentStatus = PaymentStatus.Pending;
 
-            // TEST construct - start - to be removed for live
-            string referenceText = "[ test system ] Authorised";
+            var transactionAuthorised = responseMessage.ToLowerInvariant().Equals(PaymentTransactionStatus.Authorised.ToString().ToLowerInvariant());
+            var transactionSuccessful = responseMessage.ToLowerInvariant().Equals(PaymentTransactionStatus.Successful.ToString().ToLowerInvariant());
+            var transactionDeclined = responseMessage.ToLowerInvariant().Equals(PaymentTransactionStatus.Declined.ToString().ToLowerInvariant());
 
-            if (responseMessage.ToLowerInvariant().Equals(referenceText.ToLowerInvariant()))
-            {
-                responseMessage = PaymentTransactionStatus.Authorised.ToString();
-            }
-            // TEST construct - end
-
-
-            if (responseMessage.ToLowerInvariant().Equals(PaymentTransactionStatus.Authorised.ToString().ToLowerInvariant()) || 
-                responseMessage.ToLowerInvariant().Equals(PaymentTransactionStatus.Successful.ToString().ToLowerInvariant())) 
+            if (transactionAuthorised || transactionSuccessful) 
             {
                 paymentStatus = PaymentStatus.Paid;
             }
-            else if(responseMessage.ToLowerInvariant().Equals(PaymentTransactionStatus.Declined.ToString().ToLowerInvariant()))
+            else if(transactionDeclined)
             {
                 paymentStatus = PaymentStatus.Voided;
             }
@@ -225,18 +217,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
         {
             var service = new HostedService(new GatewayConfig
             {
-                AccountId = _elavonSettings.AccountId,         //"ecom3ds",     
-                SharedSecret = _elavonSettings.SharedSecret,    //"secret",      
-                MerchantId = _elavonSettings.MerchantId,         //"myMerchantId",   
-                ServiceUrl = _elavonSettings.ServiceUrl,         // "https://api.sandbox.realexpayments.com/epage-remote.cgi", 
+                AccountId = _elavonSettings.AccountId,           
+                SharedSecret = _elavonSettings.SharedSecret,       
+                MerchantId = _elavonSettings.MerchantId,          
+                ServiceUrl = _elavonSettings.ServiceUrl,
                 HostedPaymentConfig = new HostedPaymentConfig
                 {
                     Version = "2"
                 } 
-                //3D Secure mandatory  fields - viz. ThreeDSecure Method & Challenge Notifications
-                //, Secure3dVersion = Secure3dVersion.Two
-               // , MethodNotificationUrl = "Apps/Ecommerce/Elavon/ThreeDSecureMethodNotification"
-               // , ChallengeNotificationUrl = "Apps/Ecommerce/Elavon/ThreeDSecureChallengeNotification"  
             });
 
             return service;
@@ -252,10 +240,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
                 AddressesMatch = false,
                 AccountHolderName = _cartModel.BillingAddress.Name,
                 ChallengeRequest = ChallengeRequestIndicator.NO_PREFERENCE,
-                CustomerNumber = _cartModel.UserGuid.ToString()
-                //ThreeDSecure = BuildThreeDSecureDetails(),
-                //ProductId = "SKU1000054",
-               // ReturnUrl = "https://www.example.com/responseUrl"                
+                CustomerNumber = _cartModel.UserGuid.ToString()         
             };
 
             return hostedPaymentData;
@@ -296,21 +281,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Elavon.Services
 
             return shippingAddress;
         }
-
-        /*
-        private ThreeDSecure BuildThreeDSecureDetails()
-        {
-            var threeDSecureDetail = new ThreeDSecure()
-            {
-                AuthenticationValue = "ODQzNjgwNjU0ZjM3N2JmYTg0NTM=",
-                DirectoryServerTransactionId = "c272b04f-6e7b-43a2-bb78-90f4fb94aa25",
-                Eci = 5,
-                Version = Secure3dVersion.Two,
-                MessageVersion = "2.1.0"
-            };
-
-            return threeDSecureDetail;
-        }
-        */
     }
 }

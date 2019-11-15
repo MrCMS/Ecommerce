@@ -1,4 +1,5 @@
 ﻿using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Payment.Stripe;
@@ -6,8 +7,6 @@ using MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Services;
 using MrCMS.Web.Areas.Admin.Helpers;
 using MrCMS.Website.Controllers;
-using Stripe;
-using System.Linq;
 using System.Web.Mvc;
 using static MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Models.StripeCustomEnumerations;
 
@@ -17,104 +16,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly IStripePaymentService _stripePaymentService;
         private readonly IUniquePageService _uniquePageService;
-        private readonly CartModel _cartModel;
-        private readonly MrCMS.Services.Resources.IStringResourceProvider _stringResoureProvider;
-        private PaymentIntent _paymentIntent;
-        private StripeSettings _stripeSettings;
 
-        public StripeController(IStripePaymentService StripePaymentService, StripeSettings stripeSettings,
-                                IUniquePageService uniquePageService, CartModel cartModel, 
-                                MrCMS.Services.Resources.IStringResourceProvider stringResoureProvider)
+        public StripeController(IStripePaymentService stripePaymentService, IUniquePageService uniquePageService)
         {
-            _stripePaymentService = StripePaymentService;
-            _stripeSettings = stripeSettings;
+            _stripePaymentService = stripePaymentService;
             _uniquePageService = uniquePageService;
-            _cartModel = cartModel;
-            _stringResoureProvider = stringResoureProvider;
         }
 
         [HttpGet]
         public PartialViewResult Form()
         {
-            //Create Payment Intent using Stripe Payment Service
-            _paymentIntent = _stripePaymentService.CreatePaymentIntent(_cartModel.TotalToPay);
-
-            ViewData["ClientSecret"] = _paymentIntent.ClientSecret;
-            ViewData["PaymentIntentId"] = _paymentIntent.Id;
-
-            var viewModel = new StripePaymentDetailsModel
-            {
-                TotalAmount = _cartModel.TotalToPay,
-                PublicKey = _stripeSettings.PublicKey,
-                CustomerName = _cartModel.User.Name,
-                PostalCode = _cartModel.BillingAddress.PostalCode,
-                LineOne = _cartModel.BillingAddress.Address1,
-                LineTwo = _cartModel.BillingAddress.Address2,
-                City = _cartModel.BillingAddress.City,
-                Country = _cartModel.BillingAddress.CountryCode,
-                State = _cartModel.BillingAddress.StateProvince
-            };
-
-            return PartialView(viewModel);
-        }
-
-        public ActionResult Notification()
-        {
-            var stripeCustomResult = (StripeCustomResult)_stripePaymentService.HandleNotification(Request);
-
-            if(stripeCustomResult.StripeResultType == StripeCustomEnumerations.ResultType.ChargeSuccess)
-            {
-                return new System.Web.Mvc.EmptyResult();
-            }
-            else
-            {
-                return new System.Web.Mvc.EmptyResult();
-            }
+            return PartialView(_stripePaymentService.GetPaymentDetailsModel());
         }
 
         [HttpPost]
         public ActionResult ConfirmPaymentStatus(StripePaymentDetailsModel model)
         {
-            // Set your secret key: remember to change this to your live secret key in production
-            // See your keys here: https://dashboard.stripe.com/account/apikeys
-            StripeConfiguration.ApiKey = _stripeSettings.PrivateKey;
+            var stripeResponse = _stripePaymentService.GetChargeAttemptOutcome(model);
 
-            var cardPaymentAttemptIsSuccessful = model.HandleCardPaymentStatus.ToLowerInvariant()
-                                                .Equals(CardPaymentStatus.succeeded.ToString().ToLowerInvariant());
-
-            if(cardPaymentAttemptIsSuccessful)
+            if (stripeResponse.Success)
             {
-                //get the order from webhook and update cart status
-                var chargesList = _stripePaymentService.GetChargeAttemptesList(model.PaymentIntentId);
-
-                //total pay in pens
-                var adjustedTotalPay = (long)(_cartModel.TotalToPay * 100);
-
-                var cardPaymentStatus = CardPaymentStatus.succeeded.ToString().ToLowerInvariant();
-
-                var chargeResult = chargesList.ToList()
-                                              .Where(c => c.Status.ToLowerInvariant().Equals(cardPaymentStatus) && 
-                                                          c.Amount == adjustedTotalPay)
-                                              .FirstOrDefault();
-                
-                if(chargeResult != null) // The current succceful charge found. Hence, create a MrCMS Order
-                {
-                    Payment.Stripe.Models.StripeResponse stripeResponse = _stripePaymentService.BuildMrCMSOrder(chargeResult);
-
-                    return _uniquePageService.RedirectTo<OrderPlaced>(new { id = stripeResponse.Order.Guid });
-                }
-                else // A succceful Charge was not found. 
-                {
-                    TempData.ErrorMessages().Add(_stringResoureProvider.GetValue("payment-stripe-payment-failed-incorrect-value", 
-                        string.Format("No payment can be found for {0}.", _cartModel.TotalToPay)));
-                    return _uniquePageService.RedirectTo<PaymentDetails>();
-                }
+                return _uniquePageService.RedirectTo<OrderPlaced>(new { id = stripeResponse.Order.Guid });
             }
-            else // Card Payment attempt was not successful
-            {
-                TempData.ErrorMessages().Add(_stringResoureProvider.GetValue("payment-stripe-payment-failed-errror", $"Your payment was unsuccessful, please try again."));
-                return _uniquePageService.RedirectTo<PaymentDetails>();
-            }
-        }            
+
+            TempData.ErrorMessages().Add(stripeResponse.ErrorMessage);
+            return _uniquePageService.RedirectTo<PaymentDetails>();
+        }
     }
 }

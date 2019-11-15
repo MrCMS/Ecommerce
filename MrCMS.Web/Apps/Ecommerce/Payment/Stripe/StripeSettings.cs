@@ -10,37 +10,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe
             ThreeDSecureRequired = true;
         }
 
-        [DisplayName("Requires SSL")]
-        public bool RequiresSSL { get; set; }
-
+        [DisplayName("Enabled?")]
         public bool Enabled { get; set; }
-
-        [DisplayName("Use Sandbox")]
+        [DisplayName("Use Sandbox?")]
         public bool UseSandbox { get; set; }
-        
-        [DisplayName("Instance Id")]
-        public string InstanceId { get; set; }
-        
-        [DisplayName("Payment Method")]
-        public string PaymentMethod { get; set; }
 
+        [DisplayName("Public Key")]
+        public string PublicKey { get; set; }
 
-        [DisplayName("Callback Password")]
-        public string CallbackPassword { get; set; }
-
-
-        [DisplayName("CSS")]
-        public string CssName { get; set; }
-
+        [DisplayName("Private Key")]
+        public string PrivateKey { get; set; }
+        public override bool RenderInSettings => false;
 
         [DisplayName("3D Secure Required?")]
         public bool ThreeDSecureRequired { get; set; }
-
-        public string PublicKey { get; set; }
-
-        public string PrivateKey { get; set; }
-
-        public string WebhookSigningSecret { get; set; }
-        
     }
 }

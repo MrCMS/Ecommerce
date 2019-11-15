@@ -8,9 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Stripe.Services
 {
     public interface IStripePaymentService
     {
-        PaymentIntent CreatePaymentIntent(decimal totalAmount);
-        StripeList<Charge> GetChargeAttemptesList(string paymentIntentId);
-        Payment.Stripe.Models.StripeResponse BuildMrCMSOrder(Charge charge);
-        ActionResult HandleNotification(HttpRequestBase request);
+        StripePaymentDetailsModel GetPaymentDetailsModel();
+        Models.StripeResponse GetChargeAttemptOutcome(StripePaymentDetailsModel model);
     }
 }
